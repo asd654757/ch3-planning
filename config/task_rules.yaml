@@ -1,7 +1,6 @@
-# 正式任务生成规则（冻结版 2026-09-08）
-# 40 tasks: 10 easy + 10 medium + 15 hard + 5 infeasible
-# 注意: non_table_initial 和 intermediate_clearance 需要模拟器扩展支持
-#       （当前 pick 前置条件只允许从 table 上拾取），暂不启用
+# 正式任务生成规则（v3 极限难度版）
+# 45 tasks: 10 easy + 10 medium + 20 hard + 5 infeasible
+# 变更：hard 模糊率 100%，干扰物 5-8，模糊指令不带颜色
 
 seed: 42
 
@@ -43,12 +42,13 @@ medium:
   ambiguous_instruction: false
 
 hard:
-  count: 15
-  num_goal_objects: [2, 3]
+  count: 20
+  num_goal_objects: [2, 4]
   num_containers: [1, 2]
-  num_distractors: [2, 3, 4]
+  num_distractors: [5, 8]
   dual_arm: true
   ambiguous_instruction: true
+  ambiguity_rate: 1.0
 
 infeasible:
   count: 5

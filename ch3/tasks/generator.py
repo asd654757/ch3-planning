@@ -98,13 +98,17 @@ def _goal_phrase(color: str, shape: str, target: str, arm: Optional[str] = None)
 
 
 def _ambiguous_phrase(color: str, shape: str, target: str) -> str:
-    """Deliberately vague instruction (hard tasks)."""
-    style = random.choice([
+    """Deliberately vague instruction (hard tasks). No color/shape mention."""
+    styles = [
         f"Move it to the {target}.",
         f"Sort that one into the {target}.",
         f"Place it where it belongs — in the {target}.",
-    ])
-    return style
+        f"Put that one in the {target} too.",
+        f"Same thing for that one — into the {target}.",
+        f"And that other one goes to the {target}.",
+        f"Then handle the remaining one — {target}.",
+    ]
+    return random.choice(styles)
 
 
 # ---------------------------------------------------------------------------
@@ -163,9 +167,16 @@ class TaskGenerator:
         num_distractors = self._pick_range(rules["num_distractors"])
         dual_arm = rules["dual_arm"]
         ambiguous = rules["ambiguous_instruction"]
+        ambiguity_rate = rules.get("ambiguity_rate", 0.4)
 
         # Pick colors and shapes
-        colors = self.rng.sample(list(COLOR_RGB.keys()), num_goals + num_containers + num_distractors)
+        color_pool = list(COLOR_RGB.keys())
+        total_needed = num_goals + num_containers + num_distractors
+        if total_needed <= len(color_pool):
+            colors = self.rng.sample(color_pool, total_needed)
+        else:
+            # Allow color reuse if pool is exhausted
+            colors = [self.rng.choice(color_pool) for _ in range(total_needed)]
         shapes = [self._pick(rules.get("shapes", ["cube", "block"])) for _ in range(num_goals)]
         container_shapes = [self._pick(rules.get("containers", ["tray", "box", "bowl"])) for _ in range(num_containers)]
         distractor_shapes = [self._pick(rules.get("shapes", ["cube", "block"])) for _ in range(num_distractors)]
@@ -208,7 +219,7 @@ class TaskGenerator:
         # Instruction
         instruction = self._make_instruction(
             goal_objects, goal_facts, colors, shapes, containers,
-            dual_arm, ambiguous, difficulty
+            dual_arm, ambiguous, difficulty, ambiguity_rate
         )
 
         task_id = f"{difficulty}_{task_index:03d}"
@@ -345,6 +356,7 @@ class TaskGenerator:
         dual_arm: bool,
         ambiguous: bool,
         difficulty: str,
+        ambiguity_rate: float = 0.4,
     ) -> str:
         parts = []
         for i, fact in enumerate(goal_facts):
@@ -355,7 +367,7 @@ class TaskGenerator:
             arm = None
             if dual_arm and i < len(goal_objects):
                 arm = "left" if i % 2 == 0 else "right"
-            if ambiguous and self.rng.random() < 0.4:
+            if ambiguous and self.rng.random() < ambiguity_rate:
                 parts.append(_ambiguous_phrase(color, shape, tgt))
             else:
                 parts.append(_goal_phrase(color, shape, tgt, arm))

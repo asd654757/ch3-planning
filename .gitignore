@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.eggs/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment / secrets
+.env
+.env.*
+*.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups (keep on server, not in git)
+backups/
+*.bak-*
+
+# Large experiment outputs (re-run to reproduce; keep seed logs local)
+data/collections/vlm_pilot_*.jsonl
+data/collections/mock_test*.jsonl
+
+# Jupyter
+.ipynb_checkpoints/
+

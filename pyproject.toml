@@ -1,0 +1,13 @@
+[project]
+name = "ch3-planning"
+version = "0.1.0"
+description = "第三章：ModelPlan-ExecutablePlan 分离 + 确定性校验/前缀保留修正（阶段0/1 骨架）"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2", "PyYAML"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

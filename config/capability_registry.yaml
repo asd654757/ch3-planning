@@ -1,0 +1,33 @@
+# 能力注册表（冻结版 2026-09-08）
+# 技能名 = pick/place（任务/计划层）；primitive = AD-Flow 底层原语 grasp/place
+# policy = 执行器服务/策略名（真机 Adapter 据此绑定 AD-Flow）
+
+arms:
+  - left
+  - right
+
+capabilities:
+  pick:
+    primitive: grasp            # AD-Flow 原语名
+    args: [object_id, arm]
+    policy: adflow_grasp
+    preconditions:
+      - "hand_empty(arm)"
+      - "on_table(object_id)"
+    effects:
+      - "holding(arm, object_id)"
+      - "-on_table(object_id)"
+  place:
+    primitive: place
+    args: [object_id, target_id, arm]
+    policy: adflow_place
+    preconditions:
+      - "holding(arm, object_id)"
+      - "target_exists(target_id)"
+    effects:
+      - "on(object_id, target_id)"
+      - "-holding(arm, object_id)"
+
+# 目标位（target）合法性：table 固定存在；其余须是场景对象
+special_targets:
+  table: {kind: surface}

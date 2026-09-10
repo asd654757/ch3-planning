@@ -33,3 +33,4 @@ Hard constraints:
 4. A pick action must have target_id=null. A place action must include target_id.
 5. Each pick must be immediately followed by the corresponding place for the same object and arm.
 6. Do not pick a new object while an arm is holding one.
+7. Each object may be picked at most once. Do not repeat a pick of the same object.

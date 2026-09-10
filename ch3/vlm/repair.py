@@ -92,23 +92,31 @@ class PlanRepairer:
             prompt_input.pop("current_state", None)
 
         suffix_start = len(validation.validated_prefix) + 1
+        render_values: dict[str, Any] = {
+            "instruction": task["instruction"],
+            "objects": sorted(task["objects"]),
+            "goal": task["goal"],
+        }
         if repair_mode == "R2":
-            user_prompt, prompt_id, prompt_hash = self.prompts.render(
-                "repair",
-                mode="R2",
-                task_data=prompt_input,
-                output_requirement=(
-                    f"The first {suffix_start - 1} steps are locked. Return only the "
-                    f"replacement suffix. Its first step_id must be {suffix_start}."
-                ),
+            render_values.update(
+                {
+                    "mode": "R2",
+                    "task_data": prompt_input,
+                    "output_requirement": (
+                        f"The first {suffix_start - 1} steps are locked. Return only the "
+                        f"replacement suffix. Its first step_id must be {suffix_start}."
+                    ),
+                }
             )
         else:
-            user_prompt, prompt_id, prompt_hash = self.prompts.render(
-                "repair",
-                mode=repair_mode,
-                task_data=prompt_input,
-                output_requirement="Return the complete replacement plan.",
+            render_values.update(
+                {
+                    "mode": repair_mode,
+                    "task_data": prompt_input,
+                    "output_requirement": "Return the complete replacement plan.",
+                }
             )
+        user_prompt, prompt_id, prompt_hash = self.prompts.render("repair", **render_values)
 
         response = self.client.complete(
             system_prompt=system_prompt,

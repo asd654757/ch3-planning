@@ -41,6 +41,8 @@ COLOR_RGB = {
     "pink": (240, 100, 160),
     "white": (235, 235, 235),
     "brown": (150, 100, 50),
+    "black": (30, 30, 30),
+    "gray": (128, 128, 128),
 }
 
 # ---------------------------------------------------------------------------
@@ -121,15 +123,20 @@ class TaskGenerator:
         self.rng = random.Random(seed)
         self.used_names: set[str] = set()
         self.used_ids: set[str] = set()
+        self.object_counter: int = 0
 
     def _fresh_name(self, color: str, shape: str) -> str:
-        """Generate a unique object name."""
-        for i in range(100):
-            name = f"{color}_{shape}_{i}"
-            if name not in self.used_names:
-                self.used_names.add(name)
-                return name
-        raise RuntimeError("Object name pool exhausted")
+        """Generate a globally unique object name.
+
+        The counter must be independent of (color, shape): otherwise a base
+        name already used by an earlier scene would make `_fresh_name` skip
+        to a higher suffix and accidentally recreate the same color/shape
+        description later within the current scene.
+        """
+        name = f"{color}_{shape}_{self.object_counter}"
+        self.object_counter += 1
+        self.used_names.add(name)
+        return name
 
     def _pick(self, pool: list[str]) -> str:
         return self.rng.choice(pool)
@@ -169,32 +176,72 @@ class TaskGenerator:
         ambiguous = rules["ambiguous_instruction"]
         ambiguity_rate = rules.get("ambiguity_rate", 0.4)
 
-        # Pick colors and shapes
-        color_pool = list(COLOR_RGB.keys())
+        # Pick descriptions first. When enabled, every object in the scene
+        # has a unique (color, shape) pair so natural-language phrases such
+        # as "the pink cube" can refer to exactly one visible object.
+        unique_descriptions = bool(rules.get("unique_descriptions", False))
         total_needed = num_goals + num_containers + num_distractors
-        if total_needed <= len(color_pool):
-            colors = self.rng.sample(color_pool, total_needed)
+        if unique_descriptions:
+            movable_shapes = rules.get("shapes", ["cube", "block"])
+            container_shapes_pool = rules.get("containers", ["tray", "box", "bowl"])
+            # Goals and distractors must both draw from the same movable
+            # shape pool so a distractor can look like a potential goal.
+            # Containers use their own shape pool; color may repeat across
+            # roles, but the full (color, shape) description remains unique.
+            movable_pool = [
+                (color, shape)
+                for color in COLOR_RGB
+                for shape in movable_shapes
+            ]
+            container_pool = [
+                (color, shape)
+                for color in COLOR_RGB
+                for shape in container_shapes_pool
+            ]
+            movable_needed = num_goals + num_distractors
+            if movable_needed > len(movable_pool):
+                raise RuntimeError(
+                    "Not enough unique (color, shape) descriptions for scene"
+                )
+            if num_containers > len(container_pool):
+                raise RuntimeError(
+                    "Not enough unique (color, container-shape) descriptions"
+                )
+            movable_descriptions = self.rng.sample(movable_pool, movable_needed)
+            container_descriptions = self.rng.sample(
+                container_pool, num_containers
+            )
+            goal_descriptions = movable_descriptions[:num_goals]
+            distractor_descriptions = movable_descriptions[num_goals:]
         else:
-            # Allow color reuse if pool is exhausted
-            colors = [self.rng.choice(color_pool) for _ in range(total_needed)]
-        shapes = [self._pick(rules.get("shapes", ["cube", "block"])) for _ in range(num_goals)]
-        container_shapes = [self._pick(rules.get("containers", ["tray", "box", "bowl"])) for _ in range(num_containers)]
-        distractor_shapes = [self._pick(rules.get("shapes", ["cube", "block"])) for _ in range(num_distractors)]
+            # Pick colors and shapes
+            color_pool = list(COLOR_RGB.keys())
+            if total_needed <= len(color_pool):
+                colors = self.rng.sample(color_pool, total_needed)
+            else:
+                # Allow color reuse if pool is exhausted
+                colors = [self.rng.choice(color_pool) for _ in range(total_needed)]
+            shapes = [self._pick(rules.get("shapes", ["cube", "block"])) for _ in range(num_goals)]
+            container_shapes = [self._pick(rules.get("containers", ["tray", "box", "bowl"])) for _ in range(num_containers)]
+            distractor_shapes = [self._pick(rules.get("shapes", ["cube", "block"])) for _ in range(num_distractors)]
+            goal_descriptions = list(zip(colors, shapes))
+            container_descriptions = list(zip(colors[num_goals:], container_shapes))
+            distractor_descriptions = list(zip(colors[num_goals + num_containers:], distractor_shapes))
 
         # Build object list
         goal_objects = []
-        for i in range(num_goals):
-            name = self._fresh_name(colors[i], shapes[i])
+        for color, shape in goal_descriptions:
+            name = self._fresh_name(color, shape)
             goal_objects.append(name)
 
         containers = []
-        for i in range(num_containers):
-            name = self._fresh_name(colors[num_goals + i], container_shapes[i])
+        for color, shape in container_descriptions:
+            name = self._fresh_name(color, shape)
             containers.append(name)
 
         distractors = []
-        for i in range(num_distractors):
-            name = self._fresh_name(colors[num_goals + num_containers + i], distractor_shapes[i])
+        for color, shape in distractor_descriptions:
+            name = self._fresh_name(color, shape)
             distractors.append(name)
 
         all_objects = goal_objects + containers + distractors
@@ -218,7 +265,10 @@ class TaskGenerator:
 
         # Instruction
         instruction = self._make_instruction(
-            goal_objects, goal_facts, colors, shapes, containers,
+            goal_objects, goal_facts,
+            [color for color, _ in goal_descriptions],
+            [shape for _, shape in goal_descriptions],
+            containers,
             dual_arm, ambiguous, difficulty, ambiguity_rate
         )
 
@@ -362,8 +412,9 @@ class TaskGenerator:
         for i, fact in enumerate(goal_facts):
             inner = fact[3:-1]
             obj, tgt = [s.strip() for s in inner.split(",", 1)]
-            color = obj.rsplit("_", 2)[0] if "_" in obj else obj
-            shape = "cube"
+            name_parts = obj.rsplit("_", 2) if "_" in obj else [obj]
+            color = name_parts[0]
+            shape = name_parts[1] if len(name_parts) >= 3 else "cube"
             arm = None
             if dual_arm and i < len(goal_objects):
                 arm = "left" if i % 2 == 0 else "right"
@@ -379,8 +430,9 @@ class TaskGenerator:
         idx = 0
         for diff in ["easy", "medium", "hard"]:
             rules = self.rules[diff]
+            scene_rules = {**self.rules, **rules}
             for i in range(rules["count"]):
-                t = self._generate_feasible_task(diff, rules, idx)
+                t = self._generate_feasible_task(diff, scene_rules, idx)
                 t["solvable"] = self._verify_solvability(
                     t["objects"], t["initial_state"]["at"], t["goal"]["facts"],
                     rules.get("dual_arm", False)

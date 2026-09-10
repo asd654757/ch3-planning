@@ -1,0 +1,49 @@
+# v6 task rules: identical frozen size/difficulty to v5, but every object in a
+# scene has a unique (color, shape) description. This removes natural-language
+# referential ambiguity such as "the pink cube" matching pink_cube_7 and
+# pink_cube_8 while preserving the long-horizon workload.
+
+seed: 42
+unique_descriptions: true
+
+shapes:
+  - cube
+  - block
+
+containers:
+  - tray
+  - box
+  - bowl
+
+easy:
+  count: 10
+  num_goal_objects: 1
+  num_containers: 1
+  num_distractors: 0
+  dual_arm: false
+  ambiguous_instruction: false
+
+medium:
+  count: 5
+  num_goal_objects: [2, 3]
+  num_containers: [1, 2]
+  num_distractors: [1, 2]
+  dual_arm: false
+  ambiguous_instruction: false
+
+hard:
+  count: 35
+  num_goal_objects: [8, 12]
+  num_containers: [2, 3]
+  num_distractors: [5, 8]
+  dual_arm: true
+  ambiguous_instruction: false
+  ambiguity_rate: 0.0
+
+infeasible:
+  count: 5
+  num_goal_objects: 1
+  num_containers: 1
+  num_distractors: 0
+  dual_arm: false
+  ambiguous_instruction: false

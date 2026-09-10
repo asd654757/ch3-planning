@@ -12,6 +12,7 @@ from ch3.tasks.generator import TaskGenerator, build_arg_parser, main
 
 
 RULES_PATH = Path(__file__).parent.parent / "config" / "task_rules.yaml"
+RULES_V6_PATH = Path(__file__).parent.parent / "config" / "task_rules_v6.yaml"
 
 
 @pytest.fixture()
@@ -76,6 +77,20 @@ class TestTaskGenerator:
         for t in tasks:
             all_names.extend(t["objects"])
         assert len(all_names) == len(set(all_names)), "Object names must be globally unique"
+
+    def test_v6_scene_object_descriptions_are_unique(self) -> None:
+        with open(RULES_V6_PATH, "r", encoding="utf-8") as f:
+            rules = yaml.safe_load(f)
+        tasks = TaskGenerator(rules, seed=42).generate_all()
+        for task in tasks:
+            descriptions = [
+                tuple(name.rsplit("_", 2)[:2])
+                for name in task["objects"]
+            ]
+            assert len(descriptions) == len(set(descriptions)), (
+                f"{task['task_id']} has ambiguous color/shape descriptions: "
+                f"{sorted(descriptions)}"
+            )
 
     def test_required_fields(self, rules: dict) -> None:
         gen = TaskGenerator(rules, seed=42)

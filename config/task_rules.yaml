@@ -1,6 +1,6 @@
-# 正式任务生成规则（v3 极限难度版）
-# 45 tasks: 10 easy + 10 medium + 20 hard + 5 infeasible
-# 变更：hard 模糊率 100%，干扰物 5-8，模糊指令不带颜色
+# 正式任务生成规则（v5 长序列版）
+# 55 tasks: 10 easy + 5 medium + 35 long-horizon hard + 5 infeasible
+# 核心变更：hard 目标数 8-12（16-24步），干扰物 5-8
 
 seed: 42
 
@@ -15,6 +15,8 @@ colors:
   - pink
   - white
   - brown
+  - black
+  - gray
 
 shapes:
   - cube
@@ -34,21 +36,21 @@ easy:
   ambiguous_instruction: false
 
 medium:
-  count: 10
-  num_goal_objects: [1, 2]
+  count: 5
+  num_goal_objects: [2, 3]
   num_containers: [1, 2]
-  num_distractors: [0, 1, 2]
+  num_distractors: [1, 2]
   dual_arm: false
   ambiguous_instruction: false
 
 hard:
-  count: 20
-  num_goal_objects: [2, 4]
-  num_containers: [1, 2]
+  count: 35
+  num_goal_objects: [8, 12]
+  num_containers: [2, 3]
   num_distractors: [5, 8]
   dual_arm: true
-  ambiguous_instruction: true
-  ambiguity_rate: 1.0
+  ambiguous_instruction: false
+  ambiguity_rate: 0.0
 
 infeasible:
   count: 5

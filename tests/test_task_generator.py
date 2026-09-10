@@ -24,7 +24,7 @@ class TestTaskGenerator:
     def test_generates_40_tasks(self, rules: dict) -> None:
         gen = TaskGenerator(rules, seed=42)
         tasks = gen.generate_all()
-        assert len(tasks) == 40
+        assert len(tasks) == 55
 
     def test_difficulty_distribution(self, rules: dict) -> None:
         gen = TaskGenerator(rules, seed=42)
@@ -32,7 +32,7 @@ class TestTaskGenerator:
         counts = {"easy": 0, "medium": 0, "hard": 0, "infeasible": 0}
         for t in tasks:
             counts[t["difficulty"]] += 1
-        assert counts == {"easy": 10, "medium": 10, "hard": 15, "infeasible": 5}
+        assert counts == {"easy": 10, "medium": 5, "hard": 35, "infeasible": 5}
 
     def test_all_feasible_tasks_solvable(self, rules: dict) -> None:
         gen = TaskGenerator(rules, seed=42)
@@ -108,7 +108,7 @@ class TestCLI:
         assert rc == 0
         assert out.exists()
         lines = [json.loads(l) for l in out.read_text().strip().splitlines()]
-        assert len(lines) == 40
+        assert len(lines) == 55
         assert all("task_id" in t for t in lines)
 
     def test_cli_no_images(self, tmp_path: Path) -> None:

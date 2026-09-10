@@ -26,6 +26,17 @@ Return one ModelPlan JSON object only:
   ]
 }
 
+Before planning, first extract every object ID in the instruction and Goal facts.
+Then compare those IDs with the visible/closed-world list.  If any required
+object ID is absent, return exactly one refusal object instead:
+{
+  "status": "infeasible",
+  "reason": "<short reason>"
+}
+Do not substitute another object and do not return the refusal object when every
+required ID is visible.
+For R2, return only the replacement suffix requested by the output requirement.
+
 Hard constraints:
 1. Only use skill "pick" or "place".
 2. Only use object IDs from the closed-world list.
@@ -34,3 +45,4 @@ Hard constraints:
 5. Each pick must be immediately followed by the corresponding place for the same object and arm.
 6. Do not pick a new object while an arm is holding one.
 7. Each object may be picked at most once. Do not repeat a pick of the same object.
+8. For R0/R1, return the complete plan, never a partial prefix. For R2, return the requested complete suffix.

@@ -19,6 +19,7 @@ from typing import Any, Iterable, Mapping, Optional
 
 from ch3.capability.registry import CapabilityRegistry
 from ch3.goal.goal_checker import goal_satisfied
+from ch3.errors import ErrorCode
 from ch3.logger.episode_logger import EpisodeLogger
 from ch3.protocols.frozen import REPAIR_GROUPS
 from ch3.schema.model_plan import GoalSpec, ModelPlan
@@ -111,11 +112,18 @@ def validation_summary(
         }
     error_code = validation.error_code.value if validation.error_code else None
     layer = validation.layer
+    protocol_refusal = layer == "protocol"
     return {
-        "format_valid": layer not in {"syntax"} if not validation.valid else True,
-        "object_valid": not (validation.valid is False and layer == "object"),
-        "capability_valid": not (validation.valid is False and layer == "capability"),
-        "state_valid": not (validation.valid is False and layer == "state"),
+        "format_valid": not protocol_refusal and (layer not in {"syntax"} if not validation.valid else True),
+        "object_valid": not protocol_refusal and not (
+            validation.valid is False and layer == "object"
+        ),
+        "capability_valid": not protocol_refusal and not (
+            validation.valid is False and layer == "capability"
+        ),
+        "state_valid": not protocol_refusal and not (
+            validation.valid is False and layer == "state"
+        ),
         "valid": validation.valid,
         "first_invalid_step": validation.first_invalid_step,
         "error_code": error_code,
@@ -214,6 +222,9 @@ def make_record(
             pass_but_wrong=pass_but_wrong,
         )
     )
+    if getattr(generation, "infeasible", False):
+        record["response_protocol"] = "infeasible"
+        record["infeasible_reason"] = generation.infeasible_reason
     return record
 
 
@@ -226,6 +237,18 @@ def schema_error_result(message: str) -> ValidationResult:
         error_code=ErrorCode.SCHEMA_ERROR,
         message=message,
         layer="syntax",
+        validated_prefix=[],
+    )
+
+
+def infeasible_result(reason: str) -> ValidationResult:
+    """Create a validation record for an accepted explicit refusal."""
+    return ValidationResult(
+        valid=False,
+        first_invalid_step=None,
+        error_code=ErrorCode.INFEASIBLE_RESPONSE,
+        message=reason,
+        layer="protocol",
         validated_prefix=[],
     )
 
@@ -247,7 +270,10 @@ def collect_one(
     shared = planner.plan(task, seed=seed)
     calls += 1
 
-    if shared.plan is None:
+    if getattr(shared, "infeasible", False):
+        validation = infeasible_result(shared.infeasible_reason or "task infeasible")
+        goal_ok, pass_but_wrong = False, False
+    elif shared.plan is None:
         validation, goal_ok, pass_but_wrong = schema_error_result(
             shared.parse_error or "plan_parse_error"
         ), False, False
@@ -283,7 +309,11 @@ def collect_one(
                 seed=seed,
             )
             calls += 1
-            if repaired.plan is None:
+            if getattr(repaired, "infeasible", False):
+                repair_validation = infeasible_result(
+                    repaired.infeasible_reason or "task infeasible"
+                )
+            elif repaired.plan is None:
                 repair_validation = None
             else:
                 repair_validation, repair_goal_ok, repair_pbw = evaluate_plan(
@@ -314,7 +344,12 @@ def collect_one(
 
     b0 = direct_planner.plan(task, seed=seed)
     calls += 1
-    if b0.plan is None:
+    if getattr(b0, "infeasible", False):
+        b0_validation: Optional[ValidationResult] = infeasible_result(
+            b0.infeasible_reason or "task infeasible"
+        )
+        b0_goal_ok, b0_pbw = False, False
+    elif b0.plan is None:
         b0_validation: Optional[ValidationResult] = schema_error_result(
             b0.parse_error or "plan_parse_error"
         )

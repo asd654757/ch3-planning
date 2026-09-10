@@ -17,7 +17,13 @@ from ch3.vlm.collector import (
     world_state_from_task,
 )
 from ch3.vlm.mock import MockVLMClient
-from ch3.vlm.parser import PlanParseError, parse_direct_plan, parse_structured_plan
+from ch3.vlm.parser import (
+    PlanParseError,
+    parse_direct_plan,
+    parse_direct_plan_or_infeasible,
+    parse_structured_plan,
+    parse_structured_plan_or_infeasible,
+)
 from ch3.vlm.planner import DirectPlanner, InitialPlanner
 from ch3.vlm.prompts import PromptLibrary
 from ch3.vlm.repair import PlanRepairer
@@ -62,6 +68,22 @@ def test_parse_structured_plan() -> None:
     assert [action.skill.value for action in plan.actions] == ["pick", "place"]
 
 
+def test_parse_structured_infeasible_refusal() -> None:
+    plan, reason = parse_structured_plan_or_infeasible(
+        '{"status":"infeasible","reason":"orange_cube_99 is absent"}'
+    )
+    assert plan is None
+    assert reason == "orange_cube_99 is absent"
+
+
+def test_parse_direct_infeasible_refusal() -> None:
+    plan, reason = parse_direct_plan_or_infeasible(
+        "INFEASIBLE: orange_cube_99 is not in the visible list"
+    )
+    assert plan is None
+    assert reason == "orange_cube_99 is not in the visible list"
+
+
 def test_parse_direct_plan_aliases() -> None:
     plan = parse_direct_plan(
         "1. pick red_cube_0 with right arm\n"
@@ -81,6 +103,55 @@ def test_initial_planner_uses_mock_and_prompt_hash() -> None:
     assert len(generation.prompt_hash) == 64
     assert "Visible/closed-world scene object IDs" in generation.prompt
     assert client.payloads[0]["seed"] == 3
+
+
+def test_initial_planner_accepts_infeasible_protocol() -> None:
+    client = MockVLMClient(
+        {"status": "infeasible", "reason": "required object is absent"}
+    )
+    planner = InitialPlanner(client, PromptLibrary())
+    generation = planner.plan(SCENARIO, seed=1)
+    assert generation.plan is None
+    assert generation.infeasible
+    assert generation.infeasible_reason == "required object is absent"
+
+
+def test_initial_planner_enforces_closed_world_goal_facts() -> None:
+    valid_but_wrong = {
+        "actions": [
+            {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "black_cube_724",
+                "target_id": None,
+                "arm": "left",
+            },
+            {
+                "step_id": 2,
+                "skill": "place",
+                "object_id": "black_cube_724",
+                "target_id": "cyan_bowl_725",
+                "arm": "left",
+            },
+        ]
+    }
+    client = MockVLMClient(valid_but_wrong)
+    scenario = {
+        **SCENARIO,
+        "difficulty": "infeasible",
+        "objects": ["black_cube_724", "cyan_bowl_725"],
+        "initial_state": {
+            "at": {"black_cube_724": "table", "cyan_bowl_725": "table"},
+            "holding": {},
+        },
+        "goal": {"facts": ["on(orange_cube_99, cyan_bowl_725)"]},
+    }
+    generation = InitialPlanner(client).plan(scenario, seed=1)
+    assert generation.plan is None
+    assert generation.infeasible
+    assert generation.infeasible_reason == (
+        "goal object orange_cube_99 is not in the visible list"
+    )
 
 
 def test_image_data_url(tmp_path: Path) -> None:
@@ -266,3 +337,45 @@ class EpisodeLoggerForTest:
     def append(self, record: dict) -> None:
         with open(self.path, "a", encoding="utf-8") as f:
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
+def test_collect_one_records_infeasible_protocol_without_pbw() -> None:
+    validator, _ = _registry_and_state()
+    refusal = {"status": "infeasible", "reason": "required object is absent"}
+
+    def fake_response(payload: dict) -> str | dict:
+        system_prompt = payload["messages"][0]["content"]
+        if "free text" in system_prompt:
+            return "INFEASIBLE: required object is absent"
+        return refusal
+
+    client = MockVLMClient(fake_response)
+    scenario = {
+        **SCENARIO,
+        "task_id": "infeasible_test",
+        "difficulty": "infeasible",
+        "instruction": "Put the orange cube into the tray.",
+        "objects": ["tray_1"],
+        "initial_state": {"at": {"tray_1": "table"}, "holding": {}},
+        "goal": {"facts": ["on(orange_cube_99, tray_1)"]},
+        "image_path": None,
+    }
+    with tempfile.TemporaryDirectory() as tmp:
+        output = Path(tmp) / "collection.jsonl"
+        summary = collect_one(
+            scenario,
+            1,
+            planner=InitialPlanner(client),
+            direct_planner=DirectPlanner(client),
+            repairer=PlanRepairer(client),
+            validator=validator,
+            logger=EpisodeLoggerForTest(output),
+        )
+        assert summary["shared_valid"] is False
+        assert summary["b0_valid"] is False
+        assert all(not value["pass_but_wrong"] for value in summary["repairs"].values())
+        records = [json.loads(line) for line in output.read_text().splitlines()]
+        assert len(records) == 5
+        assert all(record["response_protocol"] == "infeasible" for record in records)
+        assert all(record["error_code"] == "INFEASIBLE_RESPONSE" for record in records)
+        assert all(not record["pass_but_wrong"] for record in records)

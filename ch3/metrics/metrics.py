@@ -31,6 +31,7 @@ def compute_b1_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
     valid = sum(1 for r in shared if r["valid"])
     goal = sum(1 for r in shared if r.get("goal_satisfied"))
     pbw = sum(1 for r in shared if r.get("pass_but_wrong"))
+    refusals = sum(1 for r in shared if r.get("response_protocol") == "infeasible")
     invalid = n - valid
 
     return {
@@ -41,6 +42,7 @@ def compute_b1_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
         "GSR": goal / n,
         "pass_but_wrong": pbw,
         "pass_but_wrong_rate": pbw / n,
+        "infeasible_refusals": refusals,
     }
 
 
@@ -56,6 +58,7 @@ def compute_b0_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
     valid = sum(1 for r in b0 if r["valid"])
     goal = sum(1 for r in b0 if r.get("goal_satisfied"))
     pbw = sum(1 for r in b0 if r.get("pass_but_wrong"))
+    refusals = sum(1 for r in b0 if r.get("response_protocol") == "infeasible")
 
     return {
         "n": n,
@@ -65,6 +68,7 @@ def compute_b0_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
         "GSR": goal / n,
         "pass_but_wrong": pbw,
         "pass_but_wrong_rate": pbw / n,
+        "infeasible_refusals": refusals,
     }
 
 
@@ -84,6 +88,7 @@ def compute_repair_metrics(records: list[dict[str, Any]]) -> dict[str, dict[str,
         valid = sum(1 for r in rs if r["valid"])
         goal = sum(1 for r in rs if r.get("goal_satisfied"))
         pbw = sum(1 for r in rs if r.get("pass_but_wrong"))
+        refusals = sum(1 for r in rs if r.get("response_protocol") == "infeasible")
         results[mode] = {
             "n": n,
             "FVR": valid / n,
@@ -92,6 +97,7 @@ def compute_repair_metrics(records: list[dict[str, Any]]) -> dict[str, dict[str,
             "FRR": 0.0,  # computed at task level
             "pass_but_wrong": pbw,
             "pass_but_wrong_rate": pbw / n,
+            "infeasible_refusals": refusals,
         }
     return results
 
@@ -197,7 +203,12 @@ def format_summary(result: dict[str, Any]) -> str:
         b1d = metrics["B1"]
         b0d = metrics["B0"]
         if b1d:
-            lines.append(f"  {d:12s}  B1: FVR={b1d['FVR']:.1%} GSR={b1d['GSR']:.1%} pbw={b1d['pass_but_wrong']}  |  B0: FVR={b0d['FVR']:.1%} GSR={b0d['GSR']:.1%}")
+            lines.append(
+                f"  {d:12s}  B1: FVR={b1d['FVR']:.1%} GSR={b1d['GSR']:.1%} "
+                f"refusal={b1d.get('infeasible_refusals', 0)} pbw={b1d['pass_but_wrong']}  |  "
+                f"B0: FVR={b0d['FVR']:.1%} GSR={b0d['GSR']:.1%} "
+                f"refusal={b0d.get('infeasible_refusals', 0)}"
+            )
 
     return "\n".join(lines)
 

@@ -14,6 +14,7 @@ class ErrorCode(str, Enum):
     OBJECT_NOT_HELD = "OBJECT_NOT_HELD"
     TARGET_NOT_FOUND = "TARGET_NOT_FOUND"
     STATE_TRANSITION_ERROR = "STATE_TRANSITION_ERROR"
+    INFEASIBLE_RESPONSE = "INFEASIBLE_RESPONSE"
 
 
 ERROR_ID: dict[ErrorCode, str] = {
@@ -25,4 +26,5 @@ ERROR_ID: dict[ErrorCode, str] = {
     ErrorCode.OBJECT_NOT_HELD: "E06",
     ErrorCode.TARGET_NOT_FOUND: "E07",
     ErrorCode.STATE_TRANSITION_ERROR: "E08",
+    ErrorCode.INFEASIBLE_RESPONSE: "E09",
 }

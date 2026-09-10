@@ -10,7 +10,7 @@ from ch3.schema.model_plan import ModelPlan
 from ch3.state.world_state import WorldState
 from ch3.validator.result import ValidationResult
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
-from ch3.vlm.parser import PlanParseError, parse_structured_plan
+from ch3.vlm.parser import PlanParseError, parse_structured_plan_or_infeasible
 from ch3.vlm.planner import PlanGeneration
 from ch3.vlm.prompts import PromptLibrary
 
@@ -30,6 +30,11 @@ class RepairGeneration:
     prompt_hash: str = ""
     locked_prefix_step_ids: tuple[int, ...] = ()
     merged_with_prefix: bool = False
+    infeasible_reason: Optional[str] = None
+
+    @property
+    def infeasible(self) -> bool:
+        return self.infeasible_reason is not None
 
 
 class PlanRepairer:
@@ -47,6 +52,34 @@ class PlanRepairer:
         self.prompts = prompts or PromptLibrary()
         self.max_tokens = max_tokens
         self.json_mode = json_mode
+
+    @staticmethod
+    def _closed_world_infeasibility(
+        task: Mapping[str, Any],
+        *,
+        plan: Optional[ModelPlan],
+        reason: Optional[str] = None,
+    ) -> Optional[str]:
+        """Apply the same deterministic closure rule to repair responses."""
+        visible = set(map(str, task["objects"]))
+        if plan is not None:
+            for action in plan.actions:
+                for value in (action.object_id, action.target_id):
+                    if value and value != "table" and value not in visible:
+                        return f"object {value} is not in the visible list"
+        if reason is not None:
+            return reason
+
+        for fact in task.get("goal", {}).get("facts", []):
+            if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
+                continue
+            inner = fact[3:-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2:
+                for object_id in parts:
+                    if object_id != "table" and object_id not in visible:
+                        return f"goal object {object_id} is not in the visible list"
+        return None
 
     def repair(
         self,
@@ -129,7 +162,9 @@ class PlanRepairer:
         )
 
         try:
-            returned_plan = parse_structured_plan(response.content)
+            returned_plan, infeasible_reason = parse_structured_plan_or_infeasible(
+                response.content
+            )
         except PlanParseError as exc:
             return RepairGeneration(
                 repair_mode,
@@ -141,6 +176,33 @@ class PlanRepairer:
                 prompt=user_prompt,
                 prompt_id=prompt_id,
                 prompt_hash=prompt_hash,
+            )
+
+        closure_reason = self._closed_world_infeasibility(
+            task, plan=returned_plan, reason=infeasible_reason
+        )
+        if closure_reason is not None:
+            return RepairGeneration(
+                repair_mode,
+                None,
+                response,
+                accepted=True,
+                prompt=user_prompt,
+                prompt_id=prompt_id,
+                prompt_hash=prompt_hash,
+                infeasible_reason=closure_reason,
+            )
+
+        if returned_plan is None:
+            return RepairGeneration(
+                repair_mode,
+                None,
+                response,
+                accepted=True,
+                prompt=user_prompt,
+                prompt_id=prompt_id,
+                prompt_hash=prompt_hash,
+                infeasible_reason=infeasible_reason,
             )
 
         if repair_mode == "R2":

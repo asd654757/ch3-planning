@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional
 
 from pydantic import ValidationError
 
@@ -35,6 +35,38 @@ def parse_json_object(content: str) -> dict[str, Any]:
     if not isinstance(parsed, dict):
         raise PlanParseError("Response JSON must be an object")
     return parsed
+
+
+def parse_structured_plan_or_infeasible(
+    content: str,
+) -> tuple[Optional[ModelPlan], Optional[str]]:
+    """Parse a structured plan or an explicit infeasible refusal.
+
+    The refusal protocol is:
+      ``{"status": "infeasible", "reason": "<short reason>"}``
+
+    A refusal must not contain ``actions``.  Any other object must be a normal
+    ``ModelPlan``.  This keeps refusals explicit instead of allowing the model
+    to invent missing object IDs.
+    """
+    mapping = parse_json_object(content)
+    status = mapping.get("status")
+    if status is not None:
+        if status != "infeasible":
+            raise PlanParseError("status must be 'infeasible' when present")
+        if "actions" in mapping:
+            raise PlanParseError("infeasible response must not contain actions")
+        reason = mapping.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            raise PlanParseError("infeasible response requires a non-empty reason")
+        return None, reason.strip()
+
+    if "actions" not in mapping:
+        raise PlanParseError("JSON object is missing 'actions'")
+    try:
+        return ModelPlan.model_validate(mapping), None
+    except ValidationError as exc:
+        raise PlanParseError(f"ModelPlan schema validation failed: {exc}") from exc
 
 
 def parse_structured_plan(content: str) -> ModelPlan:
@@ -142,6 +174,20 @@ def parse_direct_plan(content: str) -> ModelPlan:
         return ModelPlan.model_validate({"actions": actions})
     except ValidationError as exc:
         raise PlanParseError(f"Direct plan schema validation failed: {exc}") from exc
+
+
+def parse_direct_plan_or_infeasible(
+    content: str,
+) -> tuple[Optional[ModelPlan], Optional[str]]:
+    """Parse B0 free text, or an explicit one-line ``INFEASIBLE:`` refusal."""
+    match = re.fullmatch(
+        r"INFEASIBLE\s*[:：]\s*(.+)",
+        content.strip(),
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if match:
+        return None, match.group(1).strip()
+    return parse_direct_plan(content), None
 
 
 def plan_to_dict(plan: ModelPlan) -> dict[str, Any]:

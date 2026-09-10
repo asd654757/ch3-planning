@@ -7,7 +7,11 @@ from typing import Any, Mapping, Optional
 
 from ch3.schema.model_plan import ModelPlan
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
-from ch3.vlm.parser import PlanParseError, parse_direct_plan, parse_structured_plan
+from ch3.vlm.parser import (
+    PlanParseError,
+    parse_direct_plan_or_infeasible,
+    parse_structured_plan_or_infeasible,
+)
 from ch3.vlm.prompts import PromptLibrary
 
 
@@ -21,6 +25,11 @@ class PlanGeneration:
     prompt: str = ""
     prompt_id: str = ""
     prompt_hash: str = ""
+    infeasible_reason: Optional[str] = None
+
+    @property
+    def infeasible(self) -> bool:
+        return self.infeasible_reason is not None
 
 
 class InitialPlanner:
@@ -38,6 +47,36 @@ class InitialPlanner:
         self.prompts = prompts or PromptLibrary()
         self.max_tokens = max_tokens
         self.json_mode = json_mode
+
+    @staticmethod
+    def _closed_world_infeasibility(
+        task: Mapping[str, Any],
+        *,
+        plan: Optional[ModelPlan],
+    ) -> Optional[str]:
+        """Enforce referential closure against instruction IDs and goal facts.
+
+        This is deliberately deterministic.  The prompt asks the VLM to check
+        closure, but a valid-looking substitution plan must not bypass the
+        closed-world goal facts on infeasible tasks.
+        """
+        visible = set(map(str, task["objects"]))
+        if plan is not None:
+            for action in plan.actions:
+                for value in (action.object_id, action.target_id):
+                    if value and value != "table" and value not in visible:
+                        return f"object {value} is not in the visible list"
+
+        for fact in task.get("goal", {}).get("facts", []):
+            if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
+                continue
+            inner = fact[3:-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2:
+                for object_id in parts:
+                    if object_id != "table" and object_id not in visible:
+                        return f"goal object {object_id} is not in the visible list"
+        return None
 
     def plan(
         self,
@@ -66,8 +105,26 @@ class InitialPlanner:
             json_mode=self.json_mode,
         )
         try:
-            plan = parse_structured_plan(response.content)
-            return PlanGeneration(plan, response, None, user_prompt, prompt_id, prompt_hash)
+            plan, infeasible_reason = parse_structured_plan_or_infeasible(
+                response.content
+            )
+            if plan is not None:
+                infeasible_reason = self._closed_world_infeasibility(task, plan=plan)
+                if infeasible_reason is not None:
+                    plan = None
+            elif infeasible_reason is None:
+                infeasible_reason = self._closed_world_infeasibility(task, plan=None)
+                if infeasible_reason is None:
+                    infeasible_reason = "task infeasible"
+            return PlanGeneration(
+                plan,
+                response,
+                None,
+                user_prompt,
+                prompt_id,
+                prompt_hash,
+                infeasible_reason=infeasible_reason,
+            )
         except PlanParseError as exc:
             return PlanGeneration(None, response, str(exc), user_prompt, prompt_id, prompt_hash)
 
@@ -87,6 +144,34 @@ class DirectPlanner:
         self.prompts = prompts or PromptLibrary()
         self.max_tokens = max_tokens
         self.json_mode = json_mode
+
+    @staticmethod
+    def _closed_world_infeasibility(
+        task: Mapping[str, Any],
+        *,
+        plan: Optional[ModelPlan],
+        reason: Optional[str] = None,
+    ) -> Optional[str]:
+        """Apply the same closure rule to B0 free-text refusals and plans."""
+        visible = set(map(str, task["objects"]))
+        if plan is not None:
+            for action in plan.actions:
+                for value in (action.object_id, action.target_id):
+                    if value and value != "table" and value not in visible:
+                        return f"object {value} is not in the visible list"
+        if reason is not None:
+            return reason
+
+        for fact in task.get("goal", {}).get("facts", []):
+            if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
+                continue
+            inner = fact[3:-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2:
+                for object_id in parts:
+                    if object_id != "table" and object_id not in visible:
+                        return f"goal object {object_id} is not in the visible list"
+        return None
 
     def plan(
         self,
@@ -115,7 +200,20 @@ class DirectPlanner:
             json_mode=self.json_mode,
         )
         try:
-            plan = parse_direct_plan(response.content)
-            return PlanGeneration(plan, response, None, user_prompt, prompt_id, prompt_hash)
+            plan, infeasible_reason = parse_direct_plan_or_infeasible(response.content)
+            closure_reason = self._closed_world_infeasibility(
+                task, plan=plan, reason=infeasible_reason
+            )
+            if closure_reason is not None:
+                plan, infeasible_reason = None, closure_reason
+            return PlanGeneration(
+                plan,
+                response,
+                None,
+                user_prompt,
+                prompt_id,
+                prompt_hash,
+                infeasible_reason=infeasible_reason,
+            )
         except PlanParseError as exc:
             return PlanGeneration(None, response, str(exc), user_prompt, prompt_id, prompt_hash)

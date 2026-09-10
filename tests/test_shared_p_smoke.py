@@ -18,6 +18,7 @@ def build_cases():
         act(1, Skill.PICK, "red_cube_0", Arm.LEFT),
         act(2, Skill.PLACE, "red_cube_0", Arm.LEFT, "tray_0"),
         act(3, Skill.PICK, "blue_cube_0", Arm.RIGHT),
+        act(4, Skill.PLACE, "blue_cube_0", Arm.RIGHT, "box_0"),
     )
     invalid_state = plan(
         act(1, Skill.PICK, "red_cube_0", Arm.LEFT),

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ch3.schema.model_plan import ModelPlan, ModelPlanAction
+from ch3.schema.model_plan import ModelPlan
 from ch3.errors import ErrorCode
 
 

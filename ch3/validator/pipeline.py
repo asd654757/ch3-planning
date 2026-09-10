@@ -87,6 +87,19 @@ class Validator:
                 message=msg, layer="state", validated_prefix=valid_prefix,
                 final_state=final_state,
             )
+        # 语义完整性约束：ModelPlan 是完整规划，不能以未释放的 pick 结束。
+        # 该检查放在状态模拟之后，避免掩盖 object/capability/state 的首错。
+        if final_state.holding:
+            last_action = plan.actions[-1] if plan.actions else None
+            return ValidationResult(
+                valid=False,
+                first_invalid_step=last_action.step_id if last_action else None,
+                error_code=ErrorCode.SCHEMA_ERROR,
+                message="计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束",
+                layer="syntax",
+                validated_prefix=list(plan.actions),
+                final_state=final_state,
+            )
         return ValidationResult(
             valid=True,
             validated_prefix=list(plan.actions),

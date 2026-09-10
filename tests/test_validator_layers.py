@@ -14,11 +14,12 @@ def test_valid_plan(registry, scene_objects, init_state):
         act(1, Skill.PICK, "red_cube_0", Arm.LEFT),
         act(2, Skill.PLACE, "red_cube_0", Arm.LEFT, "tray_0"),
         act(3, Skill.PICK, "blue_cube_0", Arm.RIGHT),
+        act(4, Skill.PLACE, "blue_cube_0", Arm.RIGHT, "tray_0"),
     )
     r = v.validate(p, init_state)
     assert r.valid and r.first_invalid_step is None
-    assert [a.step_id for a in r.validated_prefix] == [1, 2, 3]
-    assert r.final_state.holding.get("right") == "blue_cube_0"
+    assert [a.step_id for a in r.validated_prefix] == [1, 2, 3, 4]
+    assert r.final_state.holding.get("right") is None
 
 
 def test_step_id_not_continuous(registry, scene_objects, init_state):
@@ -27,6 +28,14 @@ def test_step_id_not_continuous(registry, scene_objects, init_state):
     r = v.validate(p, init_state)
     assert not r.valid and r.error_code == ErrorCode.SCHEMA_ERROR and r.layer == "syntax"
     assert r.first_invalid_step == 2
+
+
+def test_unclosed_pick_is_syntax_error(registry, scene_objects, init_state):
+    v = make_validator(registry, scene_objects)
+    p = plan(act(1, Skill.PICK, "red_cube_0", Arm.LEFT))
+    r = v.validate(p, init_state)
+    assert not r.valid and r.error_code == ErrorCode.SCHEMA_ERROR and r.layer == "syntax"
+    assert r.first_invalid_step == 1
 
 
 def test_unknown_object(registry, scene_objects, init_state):

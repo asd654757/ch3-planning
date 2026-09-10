@@ -1,0 +1,9 @@
+# Table 3: McNemar Paired Tests
+
+| Comparison | n00 | a_only | b_only | n11 | p_value | significant |
+|---|---|---|---|---|---|---|
+| B0_vs_B1_valid | 130 | 76 | 8 | 61 | 0.0000 | yes |
+| B0_vs_B1_goal | 93 | 80 | 11 | 91 | 0.0000 | yes |
+| R0_vs_R1_valid | 6 | 16 | 60 | 55 | 0.0000 | yes |
+| R0_vs_R2_valid | 1 | 21 | 57 | 58 | 0.0001 | yes |
+| R1_vs_R2_valid | 55 | 11 | 3 | 68 | 0.0574 | no |

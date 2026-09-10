@@ -27,3 +27,4 @@ Hard constraints:
 5. A pick action must have target_id=null. A place action must include target_id (an object ID or "table").
 6. Each pick must be immediately followed by the corresponding place for the same object and arm.
 7. Do not pick a new object while an arm is holding one.
+8. Each object may be picked at most once. If several objects match the same color/shape phrase, choose distinct object IDs so that every goal fact is satisfied exactly once.

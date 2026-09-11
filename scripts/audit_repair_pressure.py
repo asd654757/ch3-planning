@@ -15,12 +15,15 @@ MODES = ("R0", "R1", "R2")
 PAIRS = (("R0", "R1"), ("R0", "R2"), ("R1", "R2"))
 
 
+def _canonical(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
 def _load(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.open(encoding="utf-8") if line.strip()]
 
 
 def _extract_original_plan(prompt: str) -> dict[str, Any] | None:
-    """Extract the JSON object following ``original_plan`` in a prompt."""
     marker = '"original_plan":'
     start = prompt.find(marker)
     if start < 0:
@@ -77,7 +80,13 @@ def _mcnemar(a: list[bool], b: list[bool]) -> dict[str, Any]:
     else:
         k = min(a_only, b_only)
         p = min(1.0, 2 * sum(math.comb(n, i) for i in range(k + 1)) / (2**n))
-    return {"n00": n00, "a_only": a_only, "b_only": b_only, "n11": n11, "p": p}
+    return {
+        "n00": n00,
+        "a_only": a_only,
+        "b_only": b_only,
+        "n11": n11,
+        "p": p,
+    }
 
 
 def audit(rows: list[dict[str, Any]]) -> dict[str, Any]:

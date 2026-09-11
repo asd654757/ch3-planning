@@ -60,6 +60,61 @@ receive the corrupted stress plan as `original_plan`, and a regression test now
 checks that the repair prompt contains the injected unknown object rather than
 leaking the valid source plan.  A corrected formal rerun is required.
 
+## Corrected formal v8 run (no-oracle)
+
+After the runner fix, we reran the formal benchmark as
+`data/collections/repair_pressure_formal_v8_no_oracle_20260911_153655.jsonl`.
+It completed 48/48 task-seed slices (16 feasible tasks × 3 seeds), all 48
+baseline plans were valid, and 720 repair calls were made in 2518 seconds.
+
+### Overall result
+
+| Mode | n | CRR | GSR after repair | FRR | pass-but-wrong | Dominant invalid-plan code |
+|---|---:|---:|---:|---:|---:|---|
+| R0 | 240 | 41.3% | 41.3% | 0.0% | 0 | `SCHEMA_ERROR` × 141 |
+| R1 | 240 | 100.0% | 99.2% | 0.8% | 2 | — |
+| R2 | 240 | 55.8% | 55.8% | 0.0% | 0 | `ARM_NOT_EMPTY` × 58 |
+
+### Result by pressure type
+
+| Pressure type | R0 CRR | R1 CRR | R2 CRR |
+|---|---:|---:|---:|
+| `duplicate_pick_after_prefix` | 41.7% | 100.0% | 58.3% |
+| `unknown_object_after_prefix` | 37.5% | 100.0% | 2.1% |
+| `invalid_target_after_prefix` | 41.7% | 100.0% | 89.6% |
+| `place_before_pick` | 43.8% | 100.0% | 72.9% |
+| `repeat_pick_after_valid_plan` | 41.7% | 100.0% | 56.3% |
+
+### Oracle audit
+
+The corrected run was audited with
+`scripts/audit_repair_pressure.py`.  For R1/R2, the `original_plan` extracted
+from every prompt was the corrupted stress plan (240/240 for each mode), never
+the valid source plan.  Exact equality to the valid source plan can occur as a
+legitimate repair outcome, especially when the task admits a canonical plan:
+
+| Mode | n | Exact equal to source plan | Prompt original = source | Prompt original = stress |
+|---|---:|---:|---:|---:|
+| R0 | 240 | 49 (20.4%) | 0 | 0 |
+| R1 | 240 | 190 (79.2%) | 0 | 240 |
+| R2 | 240 | 113 (47.1%) | 0 | 240 |
+
+### Paired McNemar test
+
+The outcome is whether the repaired plan is valid after the deterministic
+validator.  Pairs are matched on task, seed, and pressure type.
+
+| Comparison | n00 | A only | B only | n11 | p |
+|---|---:|---:|---:|---:|---:|
+| R0 vs R1 | 0 | 0 | 141 | 99 | 7.17e-43 |
+| R0 vs R2 | 73 | 33 | 68 | 66 | 6.41e-04 |
+| R1 vs R2 | 0 | 106 | 0 | 134 | 2.47e-32 |
+
+R2 fails catastrophically on `unknown_object_after_prefix` (1/48 valid),
+while R1 uses the full corrupted-plan context to repair all five pressure
+types.  The corrected benchmark therefore exposes a much larger R1/R2 gap than
+the contaminated first run and is the version to use for paper reporting.
+
 ### First calibration (R0/R1/R2)
 
 The runner initially used all 90 repair calls after the scene-object fix.  The

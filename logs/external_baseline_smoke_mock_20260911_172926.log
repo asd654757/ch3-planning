@@ -1,0 +1,19 @@
+[external] attribute_grouped_000 seed=0 pressure=duplicate_pick_after_prefix baseline=self_refine
+{"task_id": "attribute_grouped_000", "seed": 0, "pressure_type": "duplicate_pick_after_prefix", "baseline": "self_refine", "rounds": 1, "valid": false, "goal_satisfied": false, "pass_but_wrong": false}
+[external] attribute_grouped_000 seed=0 pressure=duplicate_pick_after_prefix baseline=checker_loop
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/root/autodl-tmp/ch3-planning/scripts/external_baselines.py", line 566, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/autodl-tmp/ch3-planning/scripts/external_baselines.py", line 535, in main
+    summary = run_baseline_case(
+              ^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/ch3-planning/scripts/external_baselines.py", line 378, in run_baseline_case
+    generation = run_checker_loop(
+                 ^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/ch3-planning/scripts/external_baselines.py", line 277, in run_checker_loop
+    if returned_plan is not None:
+       ^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'returned_plan' where it is not associated with a value

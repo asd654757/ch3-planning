@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Optional
 
+from ch3.goal.infeasibility import logical_conflict_infeasibility
 from ch3.repair.prefix_guard import merge_locked_prefix
 from ch3.schema.model_plan import ModelPlan
 from ch3.state.world_state import WorldState
@@ -62,6 +63,9 @@ class PlanRepairer:
     ) -> Optional[str]:
         """Apply the same deterministic closure rule to repair responses."""
         visible = set(map(str, task["objects"]))
+        conflict_reason = logical_conflict_infeasibility(task)
+        if conflict_reason is not None:
+            return conflict_reason
         if plan is not None:
             for action in plan.actions:
                 for value in (action.object_id, action.target_id):

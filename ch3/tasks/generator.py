@@ -336,6 +336,252 @@ class TaskGenerator:
             "hard_factors": {},
         }
 
+    def _generate_attribute_grouped_task(
+        self,
+        rules: dict[str, Any],
+        task_index: int,
+    ) -> dict[str, Any]:
+        """Generate a task defined by an object attribute, not object IDs.
+
+        The target objects intentionally share one color but differ in shape.
+        This requires the VLM to instantiate a natural-language group ("all
+        red objects") into multiple closed-world object IDs.
+        """
+        num_containers = self._pick_range(rules["num_containers"])
+        num_distractors = self._pick_range(rules["num_distractors"])
+
+        shapes = rules.get("shapes", ["cube", "block", "wedge", "sphere"])
+        num_groups = self._pick_range(rules.get("num_groups", 1))
+        objects_per_group = self._pick_range(
+            rules.get("objects_per_group", rules.get("num_goal_objects", 2))
+        )
+        if objects_per_group > len(shapes):
+            raise RuntimeError("attribute_grouped needs enough distinct shapes")
+
+        group_colors = rules.get("group_colors", ["red", "blue", "green"])
+        if num_groups > len(group_colors):
+            raise RuntimeError("attribute_grouped needs enough distinct group colors")
+        target_colors = self.rng.sample(group_colors, num_groups)
+        goal_descriptions: list[tuple[str, str]] = []
+        group_sizes: dict[str, int] = {}
+        for target_color in target_colors:
+            selected_shapes = self.rng.sample(shapes, objects_per_group)
+            goal_descriptions.extend((target_color, shape) for shape in selected_shapes)
+            group_sizes[target_color] = objects_per_group
+        num_goals = len(goal_descriptions)
+
+        movable_pool = [
+            (color, shape)
+            for color in COLOR_RGB
+            for shape in shapes
+            if color not in target_colors
+        ]
+        distractor_descriptions = self.rng.sample(movable_pool, num_distractors)
+
+        container_shapes = rules.get("containers", ["tray", "box", "bowl"])
+        container_pool = [
+            (color, shape)
+            for color in COLOR_RGB
+            for shape in container_shapes
+            if color not in target_colors
+        ]
+        container_descriptions = self.rng.sample(container_pool, num_containers)
+
+        goal_objects = [self._fresh_name(color, shape) for color, shape in goal_descriptions]
+        containers = [self._fresh_name(color, shape) for color, shape in container_descriptions]
+        distractors = [self._fresh_name(color, shape) for color, shape in distractor_descriptions]
+        all_objects = goal_objects + containers + distractors
+        at = {obj: "table" for obj in all_objects}
+
+        goal_facts = []
+        description_cursor = 0
+        for group_idx, target_color in enumerate(target_colors):
+            target_container = containers[group_idx % len(containers)]
+            for _ in range(group_sizes[target_color]):
+                obj = goal_objects[description_cursor]
+                goal_facts.append(f"on({obj}, {target_container})")
+                description_cursor += 1
+        solvable = self._verify_solvability(
+            all_objects, at, goal_facts, bool(rules.get("dual_arm", False))
+        )
+        instruction_parts = []
+        for group_idx, target_color in enumerate(target_colors):
+            container_shape = containers[group_idx % len(containers)].rsplit("_", 2)[1]
+            instruction_parts.append(
+                f"put every {target_color} object into the {container_shape}"
+            )
+        instruction = "; then ".join(instruction_parts) + "."
+        task_id = f"attribute_grouped_{task_index:03d}"
+        return {
+            "task_id": task_id,
+            "difficulty": "attribute_grouped",
+            "instruction": instruction,
+            "objects": all_objects,
+            "initial_state": {"at": at, "holding": {}},
+            "goal": {"facts": goal_facts},
+            "solvable": solvable,
+            "hard_factors": {
+                "attribute_grouped": True,
+                "attribute_groups": num_groups,
+                "attribute_group_size": objects_per_group,
+                "multi_distractors": num_distractors >= 2,
+                "multi_step": num_goals >= 2,
+                "dual_arm": bool(rules.get("dual_arm", False)) and num_goals >= 2,
+            },
+        }
+
+    def _generate_exclusion_constraint_task(
+        self,
+        rules: dict[str, Any],
+        task_index: int,
+    ) -> dict[str, Any]:
+        """Generate a feasible task with explicit do-not-move distractors."""
+        num_goals = self._pick_range(rules["num_goal_objects"])
+        num_containers = self._pick_range(rules["num_containers"])
+        num_distractors = self._pick_range(rules["num_distractors"])
+
+        shapes = rules.get("shapes", ["cube", "block", "wedge", "sphere"])
+        goal_colors = set()
+        movable_pool = [
+            (color, shape)
+            for color in COLOR_RGB
+            for shape in shapes
+        ]
+        movable_descriptions = self.rng.sample(movable_pool, num_goals + num_distractors)
+        goal_descriptions = movable_descriptions[:num_goals]
+        goal_colors = {color for color, _ in goal_descriptions}
+
+        constraint_color = self._pick(
+            [color for color in COLOR_RGB if color not in goal_colors]
+        )
+        if num_distractors > len(shapes):
+            raise RuntimeError("exclusion_constraint needs enough distinct shapes")
+        distractor_descriptions = [
+            (constraint_color, shape)
+            for shape in self.rng.sample(shapes, num_distractors)
+        ]
+
+        container_shapes = rules.get("containers", ["tray", "box", "bowl"])
+        container_pool = [
+            (color, shape)
+            for color in COLOR_RGB
+            for shape in container_shapes
+        ]
+        container_descriptions = self.rng.sample(container_pool, num_containers)
+
+        goal_objects = [self._fresh_name(color, shape) for color, shape in goal_descriptions]
+        containers = [self._fresh_name(color, shape) for color, shape in container_descriptions]
+        distractors = [self._fresh_name(color, shape) for color, shape in distractor_descriptions]
+        all_objects = goal_objects + containers + distractors
+        at = {obj: "table" for obj in all_objects}
+
+        goal_facts = []
+        for i, obj in enumerate(goal_objects):
+            target = containers[i % len(containers)]
+            goal_facts.append(f"on({obj}, {target})")
+        # A preserved distractor is part of the goal: final on(d, table).
+        # This keeps the constraint measurable under the existing goal checker.
+        goal_facts.extend(f"on({obj}, table)" for obj in distractors)
+
+        solvable = self._verify_solvability(
+            all_objects, at, goal_facts, bool(rules.get("dual_arm", False))
+        )
+        target_phrase = ", ".join(
+            f"the {color} {shape}" for color, shape in goal_descriptions
+        )
+        if rules.get("generic_constraint", False):
+            instruction = (
+                f"Put {target_phrase} into the {container_descriptions[0][1]}, "
+                f"but do not move any {constraint_color} object."
+            )
+        else:
+            constraint_phrase = ", ".join(
+                f"the {color} {shape}" for color, shape in distractor_descriptions
+            )
+            instruction = (
+                f"Put {target_phrase} into the {container_descriptions[0][1]}, "
+                f"but do not move {constraint_phrase}."
+            )
+        task_id = f"exclusion_constraint_{task_index:03d}"
+        return {
+            "task_id": task_id,
+            "difficulty": "exclusion_constraint",
+            "instruction": instruction,
+            "objects": all_objects,
+            "initial_state": {"at": at, "holding": {}},
+            "goal": {"facts": goal_facts},
+            "solvable": solvable,
+            "hard_factors": {
+                "exclusion_constraint": True,
+                "constraint_attribute": constraint_color,
+                "generic_constraint": bool(rules.get("generic_constraint", False)),
+                "preserved_distractors": num_distractors,
+                "multi_distractors": num_distractors >= 2,
+                "multi_step": num_goals >= 2,
+                "dual_arm": bool(rules.get("dual_arm", False)) and num_goals >= 2,
+            },
+        }
+
+    def _generate_logical_conflict_task(
+        self,
+        rules: dict[str, Any],
+        task_index: int,
+    ) -> dict[str, Any]:
+        """Generate a deterministic logical-conflict infeasible task."""
+        num_containers = max(2, self._pick_range(rules.get("num_containers", 2)))
+        num_distractors = self._pick_range(rules.get("num_distractors", 0))
+        shapes = rules.get("shapes", ["cube", "block", "wedge", "sphere"])
+        movable_pool = [
+            (color, shape)
+            for color in COLOR_RGB
+            for shape in shapes
+        ]
+        needed = 1 + num_distractors
+        if needed > len(movable_pool):
+            raise RuntimeError("Not enough unique descriptions for logical conflict scene")
+        movable_descriptions = self.rng.sample(movable_pool, needed)
+        goal_description = movable_descriptions[0]
+        distractor_descriptions = movable_descriptions[1:]
+
+        container_shapes = rules.get("containers", ["tray", "box", "bowl"])
+        if num_containers > len(container_shapes):
+            raise RuntimeError("logical_conflict needs two containers")
+        container_shapes_selected = self.rng.sample(container_shapes, num_containers)
+        colors = self.rng.sample(list(COLOR_RGB.keys()), num_containers)
+        container_descriptions = list(zip(colors, container_shapes_selected))
+
+        goal_color, goal_shape = goal_description
+        goal_object = self._fresh_name(goal_color, goal_shape)
+        containers = [self._fresh_name(color, shape) for color, shape in container_descriptions]
+        distractors = [self._fresh_name(color, shape) for color, shape in distractor_descriptions]
+        all_objects = [goal_object] + containers + distractors
+        at = {obj: "table" for obj in all_objects}
+
+        # Same visible object is required on two distinct non-table surfaces.
+        # This is contradictory under the pick/place transition system.
+        goal_facts = [
+            f"on({goal_object}, {containers[0]})",
+            f"on({goal_object}, {containers[1]})",
+        ]
+        instruction = (
+            f"Put the {goal_color} {goal_shape} into both the "
+            f"{container_shapes_selected[0]} and the {container_shapes_selected[1]}."
+        )
+        task_id = f"logical_conflict_{task_index:03d}"
+        return {
+            "task_id": task_id,
+            "difficulty": "logical_conflict",
+            "instruction": instruction,
+            "objects": all_objects,
+            "initial_state": {"at": at, "holding": {}},
+            "goal": {"facts": goal_facts},
+            "solvable": False,
+            "hard_factors": {
+                "logical_conflict": True,
+                "conflicting_surfaces": [containers[0], containers[1]],
+            },
+        }
+
     def _verify_solvability(
         self,
         objects: list[str],
@@ -429,6 +675,8 @@ class TaskGenerator:
         tasks = []
         idx = 0
         for diff in ["easy", "medium", "hard"]:
+            if diff not in self.rules:
+                continue
             rules = self.rules[diff]
             scene_rules = {**self.rules, **rules}
             for i in range(rules["count"]):
@@ -439,12 +687,36 @@ class TaskGenerator:
                 )
                 tasks.append(t)
                 idx += 1
+        for diff in ["attribute_grouped", "exclusion_constraint"]:
+            if diff not in self.rules:
+                continue
+            rules = self.rules[diff]
+            scene_rules = {**self.rules, **rules}
+            for i in range(rules["count"]):
+                if diff == "attribute_grouped":
+                    t = self._generate_attribute_grouped_task(scene_rules, idx)
+                else:
+                    t = self._generate_exclusion_constraint_task(scene_rules, idx)
+                if diff != "logical_conflict":
+                    t["solvable"] = self._verify_solvability(
+                        t["objects"], t["initial_state"]["at"], t["goal"]["facts"],
+                        rules.get("dual_arm", False)
+                    )
+                tasks.append(t)
+                idx += 1
+        if "logical_conflict" in self.rules:
+            rules = self.rules["logical_conflict"]
+            for i in range(rules["count"]):
+                t = self._generate_logical_conflict_task({**self.rules, **rules}, idx)
+                tasks.append(t)
+                idx += 1
         # Infeasible
-        rules = self.rules["infeasible"]
-        for i in range(rules["count"]):
-            t = self._generate_infeasible_task(rules, idx)
-            tasks.append(t)
-            idx += 1
+        if "infeasible" in self.rules:
+            rules = self.rules["infeasible"]
+            for i in range(rules["count"]):
+                t = self._generate_infeasible_task(rules, idx)
+                tasks.append(t)
+                idx += 1
         return tasks
 
 
@@ -523,7 +795,8 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     total = len(tasks)
     print(f"Generated {total} tasks → {output}")
-    print(f"  easy: {stats['easy']}  medium: {stats['medium']}  hard: {stats['hard']}  infeasible: {stats['infeasible']}")
+    pretty_stats = ", ".join(f"{name}: {count}" for name, count in stats.items())
+    print(f"  {pretty_stats}")
     print(f"  solvable: {solvable_count}/{total}")
     return 0
 

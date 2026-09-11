@@ -1,0 +1,41 @@
+# v8 stress-benchmark pilot: keep it small for difficulty calibration.
+# Canonical v6 feasible/infeasible families remain untouched for regression.
+seed: 20260911
+unique_descriptions: true
+
+shapes:
+  - cube
+  - block
+  - wedge
+  - sphere
+
+containers:
+  - tray
+  - box
+  - bowl
+
+attribute_grouped:
+  count: 8
+  num_groups: 2
+  objects_per_group: 2
+  num_containers: 2
+  num_distractors: [3, 4]
+  group_colors: [red, blue, green, yellow, purple, orange, cyan]
+  dual_arm: false
+  ambiguous_instruction: false
+
+exclusion_constraint:
+  count: 8
+  num_goal_objects: [2, 3]
+  num_containers: [1, 2]
+  num_distractors: [2, 3]
+  generic_constraint: true
+  dual_arm: false
+  ambiguous_instruction: false
+
+logical_conflict:
+  count: 6
+  num_containers: 2
+  num_distractors: [0, 1]
+  dual_arm: false
+  ambiguous_instruction: false

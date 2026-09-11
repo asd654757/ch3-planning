@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Optional
 
+from ch3.goal.infeasibility import logical_conflict_infeasibility
 from ch3.schema.model_plan import ModelPlan
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
 from ch3.vlm.parser import (
@@ -61,6 +62,9 @@ class InitialPlanner:
         closed-world goal facts on infeasible tasks.
         """
         visible = set(map(str, task["objects"]))
+        conflict_reason = logical_conflict_infeasibility(task)
+        if conflict_reason is not None:
+            return conflict_reason
         if plan is not None:
             for action in plan.actions:
                 for value in (action.object_id, action.target_id):
@@ -154,6 +158,9 @@ class DirectPlanner:
     ) -> Optional[str]:
         """Apply the same closure rule to B0 free-text refusals and plans."""
         visible = set(map(str, task["objects"]))
+        conflict_reason = logical_conflict_infeasibility(task)
+        if conflict_reason is not None:
+            return conflict_reason
         if plan is not None:
             for action in plan.actions:
                 for value in (action.object_id, action.target_id):

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import time
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Optional
@@ -155,6 +156,26 @@ def response_summary(response: VLMResponse) -> dict[str, Any]:
     }
 
 
+def is_model_only_refusal(raw_output: Any) -> bool:
+    """Detect whether the VLM itself used the frozen refusal protocol.
+
+    A deterministic guard may later overwrite ``infeasible_reason`` with a
+    canonical reason, but the raw response still shows whether the model
+    independently refused.  This distinction is required for the v8
+    model-only vs system-level ablation.
+    """
+    if not isinstance(raw_output, str):
+        return False
+    text = raw_output.strip()
+    if re.fullmatch(r"INFEASIBLE\s*[:：].*", text, flags=re.IGNORECASE | re.DOTALL):
+        return True
+    try:
+        mapping = json.loads(text)
+    except (json.JSONDecodeError, TypeError):
+        return False
+    return isinstance(mapping, dict) and mapping.get("status") == "infeasible"
+
+
 def plan_summary(plan: Optional[ModelPlan], parse_error: Optional[str] = None) -> dict[str, Any]:
     return {
         "model_plan": plan.model_dump() if plan else None,
@@ -224,6 +245,11 @@ def make_record(
     )
     if getattr(generation, "infeasible", False):
         record["response_protocol"] = "infeasible"
+        record["infeasible_source"] = (
+            "model_refusal"
+            if is_model_only_refusal(generation.response.content)
+            else "deterministic_guard"
+        )
         record["infeasible_reason"] = generation.infeasible_reason
     return record
 

@@ -31,7 +31,11 @@ def compute_b1_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
     valid = sum(1 for r in shared if r["valid"])
     goal = sum(1 for r in shared if r.get("goal_satisfied"))
     pbw = sum(1 for r in shared if r.get("pass_but_wrong"))
-    refusals = sum(1 for r in shared if r.get("response_protocol") == "infeasible")
+    refusal_records = [r for r in shared if r.get("response_protocol") == "infeasible"]
+    refusals = len(refusal_records)
+    model_refusals = sum(
+        1 for r in refusal_records if r.get("infeasible_source") == "model_refusal"
+    )
     invalid = n - valid
 
     return {
@@ -43,6 +47,8 @@ def compute_b1_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
         "pass_but_wrong": pbw,
         "pass_but_wrong_rate": pbw / n,
         "infeasible_refusals": refusals,
+        "model_only_refusals": model_refusals,
+        "deterministic_guard_refusals": refusals - model_refusals,
     }
 
 
@@ -58,7 +64,11 @@ def compute_b0_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
     valid = sum(1 for r in b0 if r["valid"])
     goal = sum(1 for r in b0 if r.get("goal_satisfied"))
     pbw = sum(1 for r in b0 if r.get("pass_but_wrong"))
-    refusals = sum(1 for r in b0 if r.get("response_protocol") == "infeasible")
+    refusal_records = [r for r in b0 if r.get("response_protocol") == "infeasible"]
+    refusals = len(refusal_records)
+    model_refusals = sum(
+        1 for r in refusal_records if r.get("infeasible_source") == "model_refusal"
+    )
 
     return {
         "n": n,
@@ -69,6 +79,8 @@ def compute_b0_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
         "pass_but_wrong": pbw,
         "pass_but_wrong_rate": pbw / n,
         "infeasible_refusals": refusals,
+        "model_only_refusals": model_refusals,
+        "deterministic_guard_refusals": refusals - model_refusals,
     }
 
 
@@ -88,7 +100,11 @@ def compute_repair_metrics(records: list[dict[str, Any]]) -> dict[str, dict[str,
         valid = sum(1 for r in rs if r["valid"])
         goal = sum(1 for r in rs if r.get("goal_satisfied"))
         pbw = sum(1 for r in rs if r.get("pass_but_wrong"))
-        refusals = sum(1 for r in rs if r.get("response_protocol") == "infeasible")
+        refusal_records = [r for r in rs if r.get("response_protocol") == "infeasible"]
+        refusals = len(refusal_records)
+        model_refusals = sum(
+            1 for r in refusal_records if r.get("infeasible_source") == "model_refusal"
+        )
         results[mode] = {
             "n": n,
             "FVR": valid / n,
@@ -98,6 +114,8 @@ def compute_repair_metrics(records: list[dict[str, Any]]) -> dict[str, dict[str,
             "pass_but_wrong": pbw,
             "pass_but_wrong_rate": pbw / n,
             "infeasible_refusals": refusals,
+            "model_only_refusals": model_refusals,
+            "deterministic_guard_refusals": refusals - model_refusals,
         }
     return results
 

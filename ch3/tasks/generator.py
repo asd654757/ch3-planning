@@ -466,6 +466,7 @@ class TaskGenerator:
             (color, shape)
             for color in COLOR_RGB
             for shape in container_shapes
+            if color != constraint_color
         ]
         container_descriptions = self.rng.sample(container_pool, num_containers)
 
@@ -486,9 +487,13 @@ class TaskGenerator:
         solvable = self._verify_solvability(
             all_objects, at, goal_facts, bool(rules.get("dual_arm", False))
         )
-        target_phrase = ", ".join(
-            f"the {color} {shape}" for color, shape in goal_descriptions
-        )
+        goal_phrases = [f"the {color} {shape}" for color, shape in goal_descriptions]
+        if len(goal_phrases) == 1:
+            target_phrase = goal_phrases[0]
+        elif len(goal_phrases) == 2:
+            target_phrase = " and ".join(goal_phrases)
+        else:
+            target_phrase = ", ".join(goal_phrases[:-1]) + f", and {goal_phrases[-1]}"
         if rules.get("generic_constraint", False):
             instruction = (
                 f"Put {target_phrase} into the {container_descriptions[0][1]}, "

@@ -12,8 +12,10 @@ from ch3.state.world_state import WorldState
 from ch3.validator.pipeline import Validator
 from ch3.vlm.client import VLMResponse, image_data_url, response_from_raw
 from ch3.vlm.collector import (
+    EpisodeLogger,
     collect_one,
     load_scenarios,
+    is_model_only_refusal,
     world_state_from_task,
 )
 from ch3.vlm.mock import MockVLMClient
@@ -152,6 +154,38 @@ def test_initial_planner_enforces_closed_world_goal_facts() -> None:
     assert generation.infeasible_reason == (
         "goal object orange_cube_99 is not in the visible list"
     )
+
+
+def test_model_only_refusal_detector() -> None:
+    assert is_model_only_refusal('{"status":"infeasible","reason":"absent"}')
+    assert is_model_only_refusal("INFEASIBLE: required object is absent")
+    assert not is_model_only_refusal('{"actions":[]}')
+    assert not is_model_only_refusal("normal text")
+
+
+def test_records_distinguish_model_refusal_from_guard(tmp_path: Path) -> None:
+    client = MockVLMClient({"status": "infeasible", "reason": "required object is absent"})
+    direct_client = MockVLMClient("INFEASIBLE: required object is absent")
+    scenario = {
+        **SCENARIO,
+        "difficulty": "infeasible",
+        "objects": ["red_cube_0", "tray_1"],
+        "goal": {"facts": ["on(orange_cube_99, tray_1)"]},
+    }
+    output = tmp_path / "records.jsonl"
+    summaries = collect_one(
+        scenario,
+        seed=0,
+        planner=InitialPlanner(client, PromptLibrary()),
+        direct_planner=DirectPlanner(direct_client, PromptLibrary()),
+        repairer=PlanRepairer(client),
+        validator=Validator(scene_objects=set(scenario["objects"]), registry=CapabilityRegistry.from_yaml("config/capability_registry.yaml")),
+        logger=EpisodeLogger(output),
+        repair_groups=("R0",),
+    )
+    records = [json.loads(line) for line in output.read_text().splitlines()]
+    assert all(record["infeasible_source"] == "model_refusal" for record in records)
+    assert summaries["shared_valid"] is False
 
 
 def test_image_data_url(tmp_path: Path) -> None:

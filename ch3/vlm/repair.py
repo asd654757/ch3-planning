@@ -11,7 +11,11 @@ from ch3.schema.model_plan import ModelPlan
 from ch3.state.world_state import WorldState
 from ch3.validator.result import ValidationResult
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
-from ch3.vlm.parser import PlanParseError, parse_structured_plan_or_infeasible
+from ch3.vlm.parser import (
+    PlanParseError,
+    parse_json_object,
+    parse_structured_plan_or_infeasible,
+)
 from ch3.vlm.planner import PlanGeneration
 from ch3.vlm.prompts import PromptLibrary
 
@@ -135,14 +139,23 @@ class PlanRepairer:
             "goal": task["goal"],
         }
         if repair_mode == "R2":
+            if validation.validated_prefix:
+                output_requirement = (
+                    f"The first {suffix_start - 1} steps are locked. Return only the "
+                    f"replacement suffix. Its first step_id must be {suffix_start}. "
+                    'If the error is caused solely by actions after the locked prefix, '
+                    'return exactly {"actions": []}.'
+                )
+            else:
+                output_requirement = (
+                    "No steps are locked because the invalid plan has no validated "
+                    "prefix. Return the complete corrected plan."
+                )
             render_values.update(
                 {
                     "mode": "R2",
                     "task_data": prompt_input,
-                    "output_requirement": (
-                        f"The first {suffix_start - 1} steps are locked. Return only the "
-                        f"replacement suffix. Its first step_id must be {suffix_start}."
-                    ),
+                    "output_requirement": output_requirement,
                 }
             )
         else:
@@ -164,6 +177,70 @@ class PlanRepairer:
             seed=seed,
             json_mode=self.json_mode,
         )
+
+        # A valid complete prefix plus an illegal suffix is correctly repaired
+        # by deleting that suffix.  ModelPlan intentionally forbids an empty
+        # full plan, so R2 treats an explicit empty suffix as a no-op merge.
+        try:
+            empty_probe = parse_json_object(response.content)
+        except PlanParseError:
+            empty_probe = None
+        if (
+            empty_probe is not None
+            and empty_probe.get("status") is None
+            and empty_probe.get("actions") == []
+        ):
+            if repair_mode == "R2" and validation.validated_prefix:
+                merged_plan = ModelPlan(
+                    actions=[
+                        action.model_copy(deep=True)
+                        for action in validation.validated_prefix
+                    ]
+                )
+                closure_reason = self._closed_world_infeasibility(
+                    task, plan=merged_plan, reason=None
+                )
+                if closure_reason is not None:
+                    return RepairGeneration(
+                        repair_mode,
+                        None,
+                        response,
+                        accepted=True,
+                        prompt=user_prompt,
+                        prompt_id=prompt_id,
+                        prompt_hash=prompt_hash,
+                        locked_prefix_step_ids=tuple(
+                            action.step_id for action in validation.validated_prefix
+                        ),
+                        merged_with_prefix=True,
+                        infeasible_reason=closure_reason,
+                    )
+                return RepairGeneration(
+                    repair_mode,
+                    merged_plan,
+                    response,
+                    accepted=True,
+                    prompt=user_prompt,
+                    prompt_id=prompt_id,
+                    prompt_hash=prompt_hash,
+                    locked_prefix_step_ids=tuple(
+                        action.step_id for action in validation.validated_prefix
+                    ),
+                    merged_with_prefix=True,
+                )
+            return RepairGeneration(
+                repair_mode,
+                None,
+                response,
+                accepted=False,
+                reject_reason="empty_suffix_without_validated_prefix"
+                if repair_mode == "R2"
+                else "empty_plan",
+                parse_error="ModelPlan cannot be empty",
+                prompt=user_prompt,
+                prompt_id=prompt_id,
+                prompt_hash=prompt_hash,
+            )
 
         try:
             returned_plan, infeasible_reason = parse_structured_plan_or_infeasible(

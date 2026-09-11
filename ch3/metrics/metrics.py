@@ -13,10 +13,29 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Optional
 
+from ch3.vlm.collector import is_model_only_refusal
+
 
 def load_records(path: str | Path) -> list[dict[str, Any]]:
     with open(path, "r", encoding="utf-8") as f:
         return [json.loads(line) for line in f if line.strip()]
+
+
+def refusal_source(record: dict[str, Any]) -> str:
+    """Return refusal provenance, recomputing it for pre-v8 records.
+
+    Formal v7 predates ``infeasible_source`` but retains ``raw_vlm_output``.
+    Keeping a deterministic fallback lets us analyze old collections without
+    mutating frozen data.
+    """
+    recorded = record.get("infeasible_source")
+    if recorded in {"model_refusal", "deterministic_guard"}:
+        return recorded
+    return (
+        "model_refusal"
+        if is_model_only_refusal(record.get("raw_vlm_output"))
+        else "deterministic_guard"
+    )
 
 
 def compute_b1_metrics(records: list[dict[str, Any]], difficulty: Optional[str] = None) -> dict[str, Any]:
@@ -33,9 +52,7 @@ def compute_b1_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
     pbw = sum(1 for r in shared if r.get("pass_but_wrong"))
     refusal_records = [r for r in shared if r.get("response_protocol") == "infeasible"]
     refusals = len(refusal_records)
-    model_refusals = sum(
-        1 for r in refusal_records if r.get("infeasible_source") == "model_refusal"
-    )
+    model_refusals = sum(1 for r in refusal_records if refusal_source(r) == "model_refusal")
     invalid = n - valid
 
     return {
@@ -66,9 +83,7 @@ def compute_b0_metrics(records: list[dict[str, Any]], difficulty: Optional[str] 
     pbw = sum(1 for r in b0 if r.get("pass_but_wrong"))
     refusal_records = [r for r in b0 if r.get("response_protocol") == "infeasible"]
     refusals = len(refusal_records)
-    model_refusals = sum(
-        1 for r in refusal_records if r.get("infeasible_source") == "model_refusal"
-    )
+    model_refusals = sum(1 for r in refusal_records if refusal_source(r) == "model_refusal")
 
     return {
         "n": n,
@@ -102,9 +117,7 @@ def compute_repair_metrics(records: list[dict[str, Any]]) -> dict[str, dict[str,
         pbw = sum(1 for r in rs if r.get("pass_but_wrong"))
         refusal_records = [r for r in rs if r.get("response_protocol") == "infeasible"]
         refusals = len(refusal_records)
-        model_refusals = sum(
-            1 for r in refusal_records if r.get("infeasible_source") == "model_refusal"
-        )
+        model_refusals = sum(1 for r in refusal_records if refusal_source(r) == "model_refusal")
         results[mode] = {
             "n": n,
             "FVR": valid / n,

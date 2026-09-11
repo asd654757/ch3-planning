@@ -85,6 +85,40 @@ def test_pressure_runner_uses_frozen_repair_record(tmp_path: Path) -> None:
     assert metrics["R0"]["FRR"] == 0.0
 
 
+def test_r2_accepts_empty_suffix_to_delete_illegal_tail() -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "repeat_pick_after_valid_plan",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+    assert stress_validation.validated_prefix == valid_plan.actions
+
+    repaired = PlanRepairer(MockVLMClient({"actions": []})).repair(
+        repair_mode="R2",
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        seed=0,
+    )
+    assert repaired.accepted is True
+    assert repaired.reject_reason is None
+    assert repaired.merged_with_prefix is True
+    assert repaired.plan == valid_plan
+
+
 def test_main_sets_scene_objects_per_task(tmp_path, monkeypatch, capsys) -> None:
     import scripts.repair_pressure as runner
 

@@ -119,6 +119,24 @@ def test_r2_accepts_empty_suffix_to_delete_illegal_tail() -> None:
     assert repaired.plan == valid_plan
 
 
+def test_repair_prompt_does_not_leak_valid_source_plan(tmp_path: Path) -> None:
+    client = MockVLMClient(VALID_PLAN)
+    output = tmp_path / "records.jsonl"
+    run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(client, PromptLibrary()),
+        repairer=PlanRepairer(client),
+        validator=_validator(),
+        logger=EpisodeLogger(output),
+        pressure_types=("unknown_object_after_prefix",),
+        repair_groups=("R1",),
+    )
+    assert len(client.payloads) == 2
+    repair_prompt = client.payloads[1]["messages"][1]["content"]
+    assert "__unknown_object__" in repair_prompt
+
+
 def test_main_sets_scene_objects_per_task(tmp_path, monkeypatch, capsys) -> None:
     import scripts.repair_pressure as runner
 

@@ -37,7 +37,7 @@ from ch3.vlm.collector import (
 )
 from ch3.vlm.mock import MockVLMClient
 from ch3.vlm.parser import plan_to_dict
-from ch3.vlm.planner import InitialPlanner
+from ch3.vlm.planner import InitialPlanner, PlanGeneration
 from ch3.vlm.prompts import PromptLibrary
 from ch3.vlm.repair import PlanRepairer
 
@@ -263,11 +263,22 @@ def run_pressure_slice(
             raise ValueError(
                 f"Stress plan unexpectedly valid: {task['task_id']} / {pressure_type}"
             )
+        # Critical fairness rule: repairers must see the corrupted plan as the
+        # "original plan".  Passing the valid source plan would leak the answer
+        # to R1/R2 through the repair prompt.
+        stress_generation = PlanGeneration(
+            stress_plan,
+            source.response,
+            None,
+            source.prompt,
+            source.prompt_id,
+            source.prompt_hash,
+        )
         for repair_mode in requested_repairs:
             repaired = repairer.repair(
                 repair_mode=repair_mode,
                 task=task,
-                initial_generation=source,
+                initial_generation=stress_generation,
                 validation=stress_validation,
                 initial_state=initial_state,
                 seed=seed,

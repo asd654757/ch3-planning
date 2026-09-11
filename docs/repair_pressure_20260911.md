@@ -39,6 +39,27 @@ Metrics:
 Six feasible tasks (3 `attribute_grouped`, 3 `exclusion_constraint`) × one seed
 were used.  All 6 baseline plans were valid.
 
+## Formal-run caveat: do not use the first formal run for arm comparison
+
+The first formal run
+(`data/collections/repair_pressure_formal_v8_20260911_064919.jsonl`) completed
+48/48 slices, but its runner passed the valid source plan as the repair input.
+Consequently, the R1/R2 prompts contained the correct answer.  Exact-match
+audit found:
+
+| Mode | n | Repairs exactly equal to the valid source plan |
+|---|---:|---:|
+| R0 | 240 | 46 |
+| R1 | 240 | 186 |
+| R2 | 240 | 167 |
+
+Thus its reported R1 `100%` and R2 `87.1%` CRR are oracle-contaminated and must
+not be used for the paper.  R0 remains useful only as a diagnostic because R0
+does not receive the original plan.  The runner has been corrected so R1/R2
+receive the corrupted stress plan as `original_plan`, and a regression test now
+checks that the repair prompt contains the injected unknown object rather than
+leaking the valid source plan.  A corrected formal rerun is required.
+
 ### First calibration (R0/R1/R2)
 
 The runner initially used all 90 repair calls after the scene-object fix.  The

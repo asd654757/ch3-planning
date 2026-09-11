@@ -177,6 +177,56 @@ R2 的主要弱点出现在 `unknown_object_after_prefix`，仅 1/48 个样本�
 
 R0 本身不接收 `original_plan`。R1 与 R2 的 240 条 prompt 中，`original_plan` 全部为损坏后的 stress plan，而非合法 source plan。R1 中较高的 exact-match 数量不构成泄漏证据；这些任务的合法修复方案具有较强的规范性，模型修复后回到同一条合法计划是合理现象。
 
+### 5.3.6　外部基线对比
+
+为进一步检验修复增益并非仅由“多调用一次模型”带来，本文在 formal_v8 的同一组 240 个受污染案例上增加两类外部基线。为避免初始规划随机性引入偏差，两个基线直接复用 formal_v8 冻结集合中的 stress plan，而不是重新生成 baseline。评估指标、四层校验器与目标检查器与 R0/R1/R2 完全一致。
+
+- **Self-Refine**：给模型损坏计划、任务描述、对象列表、目标与当前状态，让其自检并返回一次完整修复计划；不提供 validator 错误码、首错位置或已验证前缀。
+- **AutoTAMP-style checker-loop**：在确定性 checker 反馈下进行全计划重生成，最多 2 轮；反馈包含错误码、错误层、错误消息、首错位置与已验证前缀 step id，但没有 R2 的前缀锁和后缀输出约束。
+
+两类基线均使用同一 VLM `qwen3-vl-flash`、同一 JSON 解析协议和同一 1024-token 上限。失败仍按 parser/schema/validation 结果判定，不做宽松重解释。
+
+#### 总体对比
+
+| Method | n | CRR | GSR after repair | FRR | pass-but-wrong | tokens | avg rounds |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| R0 | 240 | 41.3% | 41.3% | 0.0% | 0 | 242,248 | 1.00 |
+| R1 | 240 | 100.0% | 99.2% | 0.8% | 2 | 419,859 | 1.00 |
+| R2 | 240 | 55.8% | 55.8% | 0.0% | 0 | 399,193 | 1.00 |
+| Self-Refine | 240 | 57.1% | 55.8% | 1.2% | 3 | 291,264 | 1.00 |
+| Checker-loop | 240 | 79.6% | 79.6% | 0.0% | 0 | 396,693 | 1.29 |
+
+Checker-loop 是最强的外部基线，显著优于 R0 和 R2，但仍明显低于 R1。Self-Refine 与 R2 的总体成功率接近，说明只让模型自评并不能稳定利用计划错误。
+
+#### 按压力类型对比
+
+| 压力类型 | R0 | R1 | R2 | Self-Refine | Checker-loop |
+|---|---:|---:|---:|---:|---:|
+| `duplicate_pick_after_prefix` | 41.7% | 100.0% | 58.3% | 64.6% | 72.9% |
+| `unknown_object_after_prefix` | 37.5% | 100.0% | 2.1% | 54.2% | 62.5% |
+| `invalid_target_after_prefix` | 41.7% | 100.0% | 89.6% | 93.8% | 93.8% |
+| `place_before_pick` | 43.8% | 100.0% | 72.9% | 54.2% | 91.7% |
+| `repeat_pick_after_valid_plan` | 41.7% | 100.0% | 56.3% | 18.8% | 77.1% |
+
+R2 在 `unknown_object_after_prefix` 上仅成功 1/48，而 Self-Refine 与 Checker-loop 分别成功 26/48 和 30/48。这进一步支持 5.4.3 的判断：R2 的主要限制不是模型能力不足，而是前缀锁迫使模型只输出后缀时，无法自然替换已经锁定的非法相关片段。
+
+Self-Refine 在 `repeat_pick_after_valid_plan` 上只有 9/48 成功，显著弱于 Checker-loop 的 37/48。该类错误发生在合法动作序列末尾，只靠模型自评较难发现终态违反；确定性 checker 提供的错误反馈能有效缓解该问题。
+
+#### 配对显著性检验
+
+按 `(task_id, seed, pressure_type)` 与 formal_v8 严格配对，二值结果为修复后计划是否通过完整校验，使用 exact McNemar 检验：
+
+| 比较 | A only | B only | p |
+|---|---:|---:|---:|
+| Self-Refine vs R0 | 63 | 25 | 6.27e-05 |
+| Self-Refine vs R1 | 0 | 103 | 1.97e-31 |
+| Self-Refine vs R2 | 54 | 51 | 0.845 |
+| Checker-loop vs R0 | 104 | 12 | 1.87e-19 |
+| Checker-loop vs R1 | 0 | 49 | 3.55e-15 |
+| Checker-loop vs R2 | 78 | 21 | 6.88e-09 |
+
+结果说明：Checker-loop 显著优于 R0/R2，Self-Refine 显著优于 R0，但 Self-Refine 与 R2 无显著差异；R1 仍显著优于两个外部基线。
+
 ## 5.4　讨论
 
 ### 5.4.1　结构化链路的价值
@@ -201,6 +251,8 @@ formal_v7 的不可行子集显示，系统可以稳定输出显式拒绝并消�
 
 formal_v7 全部 625 条记录共消耗 730,819 tokens，平均延迟约 5.2 s。formal_v8 的 720 次修复调用中，输入 tokens 为 890,982，输出 tokens 为 170,318，总计 1,061,300 tokens；该数字不含 48 次 baseline 生成调用的额外消耗。
 
+在相同 240 个压力案例上，外部基线共消耗 687,957 tokens：Self-Refine 为 291,264，Checker-loop 为 396,693；Checker-loop 平均使用 1.29 轮。R0/R1/R2 分别消耗 242,248、419,859 和 399,193 tokens。因此 Checker-loop 的成本接近 R2，低于 R1，但修复率仍低于 R1。
+
 ## 5.5　当前局限
 
 1. **单模型结果**：所有正式结果均使用 `qwen3-vl-flash`，尚不能推广到其他 VLM 或更大规模模型。
@@ -208,6 +260,7 @@ formal_v7 全部 625 条记录共消耗 730,819 tokens，平均延迟约 5.2 s�
 3. **任务域有限**：当前任务集中在闭世界桌面 pick/place，未覆盖开放世界物体、连续抓取失败、感知遮挡与人机干扰。
 4. **不可行类别单一**：formal_v7 的不可行任务主要是目标对象缺失，不能代表全部不可行类型。
 5. **R1/R2 差异可能与 prompt 设计耦合**：R2 的后缀约束是本文实现的一种具体形式，结论不宜外推到所有前缀保护机制。
+6. **外部基线为协议级复现**：Self-Refine 与 Checker-loop 使用同一模型和统一 parser，但不是对应原论文系统的完整重实现；宽松输出重解释可能会改变其绝对成功率。
 
 ## 5.6　可写入论文的核心结论
 
@@ -216,3 +269,4 @@ formal_v7 全部 625 条记录共消耗 730,819 tokens，平均延迟约 5.2 s�
 3. model-only 拒绝存在漏检，闭世界 guard 可在 B1 与 R2 中额外捕获 15/25 与 11/25 的不可行情况。
 4. 在五类受控修复压力下，R1 显著优于 R0 与 R2；R2 虽然保留已验证前缀，但受后缀生成限制，在未知对象替换场景中失败最严重。
 5. 修复 benchmark 必须进行 prompt 级 oracle 泄漏审计；本文修正后的 formal_v8 已确认 R1/R2 只看到损坏计划，而未看到合法答案。
+6. 外部基线显示确定性 checker 反馈具有重要价值：Checker-loop 达到 79.6% 并显著优于 R0/R2，但仍低于 R1；这表明完整结构化反馈与任务级重生成比单纯增加调用轮数更关键。

@@ -216,7 +216,14 @@ class PlanRepairer:
                         "repeat any action from executed_prefix and never "
                         "return the complete original plan. Use "
                         "prefix_final_state and held_objects as the current "
-                        "world state."
+                        "world state. The returned suffix must make the "
+                        "merged plan satisfy every fact in "
+                        "remaining_goal_facts. Returning only the immediate "
+                        "place for an object already held by the prefix is "
+                        "insufficient unless remaining_goal_facts becomes "
+                        "empty after that suffix. Plan any additional "
+                        "pick/place actions needed to finish the whole "
+                        "remaining goal."
                     ),
                 }
             )

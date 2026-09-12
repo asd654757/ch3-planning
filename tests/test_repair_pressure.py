@@ -438,6 +438,12 @@ def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
     assert "Repair mode: R1_FROM_STATE" in prompt
     assert "holding(right, red_cube_0)" in prompt
     assert "executed_prefix" in prompt
+    assert "satisfy every fact in" in prompt
+    assert "remaining_goal_facts" in prompt
+    assert (
+        "Returning only the immediate place for an object already held by "
+        "the prefix is insufficient" in prompt
+    )
     assert '"original_plan":' not in prompt
 
 

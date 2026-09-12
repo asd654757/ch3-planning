@@ -631,3 +631,38 @@ formal v11 总体结果：
 
 机器可读汇总见
 `data/reports/formal_v11_routed_metrics_20260912.json`。
+
+## 12. MetaWorld 仿真执行接口 smoke
+
+在 formal v11 之后，本项目补充了任务级计划到机器人仿真执行的桥接验证。
+目标不是重新训练策略，也不是声明完成完整真机闭环，而是验证：
+`ModelPlan → Validator → Compiler → ExecutablePlan → MetaWorld executor`
+这一接口链路是否可执行。
+
+当前仿真环境使用 `metaworld-pick-place-v3`，验证范围限定为单物体
+pick/place。执行适配器位于 `ch3/execution/metaworld_executor.py`，
+它只接受由 `compile_plan()` 产生的 `ExecutablePlan`，并将
+`adflow_grasp/adflow_place` 映射到 MetaWorld 的内置 expert policy。
+符号对象和目标在当前 smoke 中映射到仿真环境的单一 puck 与 goal。
+
+两层 smoke 均通过：
+
+1. 环境层 smoke：直接验证 MetaWorld expert policy 执行闭环，
+   3/3 success。
+2. 计划桥接 smoke：先使用 Validator 校验一条手工冻结的
+   `pick(red_cube_0) → place(red_cube_0, tray_1)` 计划，再编译执行。
+   3/3 success，每个 episode 的两个 primitive 均成功，最终
+   puck-goal 距离约为 0.073–0.076 m。
+
+结果文件：
+
+- `data/collections/sim_metaworld_pickplace_smoke_20260912_124638.json`
+- `data/collections/sim_metaworld_plan_execution_20260912_125605.json`
+
+数据边界：
+
+- 当前 smoke 不调用 VLM，不产生新的 API 消耗；
+- 当前使用 MetaWorld expert policy 完成底层运动，不等价于 AD-Flow 真机策略；
+- 当前只验证单物体 pick/place 的执行接口，不是多任务仿真 benchmark；
+- 该结果可用于说明“任务级计划接口可以映射到仿真 primitive”，但不能
+  直接声明系统已经完成通用仿真泛化或真机部署。

@@ -1,0 +1,454 @@
+{
+  "completed_at_utc": "2026-09-12T12:56:15.110222+00:00",
+  "record_type": "sim_metaworld_plan_execution_summary",
+  "episodes": 3,
+  "successes": 3,
+  "success_rate": 1.0,
+  "output": "data/collections/sim_metaworld_plan_execution_20260912_125605.json",
+  "episodes_detail": [
+    {
+      "success": true,
+      "steps": [
+        {
+          "step_id": 1,
+          "policy_id": "adflow_grasp",
+          "primitive": "grasp",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right"
+          },
+          "success": true,
+          "steps": 38,
+          "elapsed_s": 0.09792566299438477,
+          "final_puck_pos": [
+            -0.016991885347558303,
+            0.7258576866421379,
+            0.04578289510079968
+          ],
+          "final_hand_pos": [
+            -0.01601831618167186,
+            0.7247239646285797,
+            0.08423502454584095
+          ],
+          "target_pos": [
+            -0.023311696234844456,
+            0.8791725038082665,
+            0.1822237299382261
+          ],
+          "final_puck_target_distance": 0.25006396428889127,
+          "min_puck_target_distance": 0.20533259503417467,
+          "gripper_distance": 0.4701931798312442,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        },
+        {
+          "step_id": 2,
+          "policy_id": "adflow_place",
+          "primitive": "place",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right",
+            "target_id": "tray_1"
+          },
+          "success": true,
+          "steps": 13,
+          "elapsed_s": 0.035233497619628906,
+          "final_puck_pos": [
+            -0.02643780138396541,
+            0.8189903309811982,
+            0.1360863087701298
+          ],
+          "final_hand_pos": [
+            -0.024929685896026815,
+            0.8148019743260574,
+            0.17555731814538733
+          ],
+          "target_pos": [
+            -0.023311696234844456,
+            0.8791725038082665,
+            0.1822237299382261
+          ],
+          "final_puck_target_distance": 0.20533259503417467,
+          "min_puck_target_distance": 0.07589682530668049,
+          "gripper_distance": 0.51392069831358,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        }
+      ],
+      "final_puck_pos": [
+        -0.02643780138396541,
+        0.8189903309811982,
+        0.1360863087701298
+      ],
+      "target_pos": [
+        -0.023311696234844456,
+        0.8791725038082665,
+        0.1822237299382261
+      ],
+      "final_puck_target_distance": 0.07589682530668049,
+      "elapsed_s": 0.1338338851928711,
+      "task": "metaworld-pick-place-v3",
+      "record_type": "sim_metaworld_plan_execution",
+      "episode": 0,
+      "model_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "red_cube_0",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "red_cube_0",
+            "target_id": "tray_1",
+            "arm": "right"
+          }
+        ]
+      },
+      "executable_plan": [
+        {
+          "step_id": 1,
+          "policy_id": "adflow_grasp",
+          "primitive": "grasp",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right"
+          }
+        },
+        {
+          "step_id": 2,
+          "policy_id": "adflow_place",
+          "primitive": "place",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right",
+            "target_id": "tray_1"
+          }
+        }
+      ],
+      "validation": {
+        "valid": true,
+        "first_invalid_step": null,
+        "error_code": null
+      },
+      "reset": {
+        "initial_puck_pos": [
+          -0.0124825577474615,
+          0.689177300078208,
+          0.02
+        ],
+        "initial_hand_pos": [
+          0.0047398237114848725,
+          0.6013941554408069,
+          0.1951077138533845
+        ],
+        "target_pos": [
+          -0.023311696234844456,
+          0.8791725038082665,
+          0.1822237299382261
+        ]
+      }
+    },
+    {
+      "success": true,
+      "steps": [
+        {
+          "step_id": 1,
+          "policy_id": "adflow_grasp",
+          "primitive": "grasp",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right"
+          },
+          "success": true,
+          "steps": 39,
+          "elapsed_s": 0.11648154258728027,
+          "final_puck_pos": [
+            -0.03540108239833877,
+            0.723573859369303,
+            0.0470961911572764
+          ],
+          "final_hand_pos": [
+            -0.032960619950847085,
+            0.7223007776385766,
+            0.08586119720680503
+          ],
+          "target_pos": [
+            0.034093502035680456,
+            0.8417304802367127,
+            0.18967245711143793
+          ],
+          "final_puck_target_distance": 0.24731867923150255,
+          "min_puck_target_distance": 0.1977839122221361,
+          "gripper_distance": 0.4708531724541463,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        },
+        {
+          "step_id": 2,
+          "policy_id": "adflow_place",
+          "primitive": "place",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right",
+            "target_id": "tray_1"
+          },
+          "success": true,
+          "steps": 11,
+          "elapsed_s": 0.03533673286437988,
+          "final_puck_pos": [
+            0.017617036537164777,
+            0.80118493409932,
+            0.13043989822805668
+          ],
+          "final_hand_pos": [
+            0.02146115352979805,
+            0.7977655167089389,
+            0.16992928486136505
+          ],
+          "target_pos": [
+            0.034093502035680456,
+            0.8417304802367127,
+            0.18967245711143793
+          ],
+          "final_puck_target_distance": 0.1977839122221361,
+          "min_puck_target_distance": 0.07364720808541518,
+          "gripper_distance": 0.5136981047777456,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        }
+      ],
+      "final_puck_pos": [
+        0.017617036537164777,
+        0.80118493409932,
+        0.13043989822805668
+      ],
+      "target_pos": [
+        0.034093502035680456,
+        0.8417304802367127,
+        0.18967245711143793
+      ],
+      "final_puck_target_distance": 0.07364720808541518,
+      "elapsed_s": 0.1525261402130127,
+      "task": "metaworld-pick-place-v3",
+      "record_type": "sim_metaworld_plan_execution",
+      "episode": 1,
+      "model_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "red_cube_0",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "red_cube_0",
+            "target_id": "tray_1",
+            "arm": "right"
+          }
+        ]
+      },
+      "executable_plan": [
+        {
+          "step_id": 1,
+          "policy_id": "adflow_grasp",
+          "primitive": "grasp",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right"
+          }
+        },
+        {
+          "step_id": 2,
+          "policy_id": "adflow_place",
+          "primitive": "place",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right",
+            "target_id": "tray_1"
+          }
+        }
+      ],
+      "validation": {
+        "valid": true,
+        "first_invalid_step": null,
+        "error_code": null
+      },
+      "reset": {
+        "initial_puck_pos": [
+          -0.059109550053696516,
+          0.6878117436390945,
+          0.02
+        ],
+        "initial_hand_pos": [
+          0.0047398237114848725,
+          0.6013941554408069,
+          0.1951077138533845
+        ],
+        "target_pos": [
+          0.034093502035680456,
+          0.8417304802367127,
+          0.18967245711143793
+        ]
+      }
+    },
+    {
+      "success": true,
+      "steps": [
+        {
+          "step_id": 1,
+          "policy_id": "adflow_grasp",
+          "primitive": "grasp",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right"
+          },
+          "success": true,
+          "steps": 37,
+          "elapsed_s": 0.1046910285949707,
+          "final_puck_pos": [
+            -0.05722446981735776,
+            0.6980561414716827,
+            0.04577121877122521
+          ],
+          "final_hand_pos": [
+            -0.055546114077975085,
+            0.697179889342516,
+            0.08384670174575534
+          ],
+          "target_pos": [
+            -0.04663454497942668,
+            0.8621133832769295,
+            0.18228552356925976
+          ],
+          "final_puck_target_distance": 0.2580034648135461,
+          "min_puck_target_distance": 0.21368921477535768,
+          "gripper_distance": 0.47487606563257484,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        },
+        {
+          "step_id": 2,
+          "policy_id": "adflow_place",
+          "primitive": "place",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right",
+            "target_id": "tray_1"
+          },
+          "success": true,
+          "steps": 14,
+          "elapsed_s": 0.03711247444152832,
+          "final_puck_pos": [
+            -0.05079976118868919,
+            0.803339706986016,
+            0.13856123904483317
+          ],
+          "final_hand_pos": [
+            -0.048415119526458175,
+            0.7996102343336932,
+            0.17779592692864754
+          ],
+          "target_pos": [
+            -0.04663454497942668,
+            0.8621133832769295,
+            0.18228552356925976
+          ],
+          "final_puck_target_distance": 0.21368921477535768,
+          "min_puck_target_distance": 0.07337238654965511,
+          "gripper_distance": 0.5138024429875842,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        }
+      ],
+      "final_puck_pos": [
+        -0.05079976118868919,
+        0.803339706986016,
+        0.13856123904483317
+      ],
+      "target_pos": [
+        -0.04663454497942668,
+        0.8621133832769295,
+        0.18228552356925976
+      ],
+      "final_puck_target_distance": 0.07337238654965511,
+      "elapsed_s": 0.1424541473388672,
+      "task": "metaworld-pick-place-v3",
+      "record_type": "sim_metaworld_plan_execution",
+      "episode": 2,
+      "model_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "red_cube_0",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "red_cube_0",
+            "target_id": "tray_1",
+            "arm": "right"
+          }
+        ]
+      },
+      "executable_plan": [
+        {
+          "step_id": 1,
+          "policy_id": "adflow_grasp",
+          "primitive": "grasp",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right"
+          }
+        },
+        {
+          "step_id": 2,
+          "policy_id": "adflow_place",
+          "primitive": "place",
+          "args": {
+            "object_id": "red_cube_0",
+            "arm": "right",
+            "target_id": "tray_1"
+          }
+        }
+      ],
+      "validation": {
+        "valid": true,
+        "first_invalid_step": null,
+        "error_code": null
+      },
+      "reset": {
+        "initial_puck_pos": [
+          -0.0590702731924315,
+          0.6619270966350663,
+          0.02
+        ],
+        "initial_hand_pos": [
+          0.0047398237114848725,
+          0.6013941554408069,
+          0.1951077138533845
+        ],
+        "target_pos": [
+          -0.04663454497942668,
+          0.8621133832769295,
+          0.18228552356925976
+        ]
+      }
+    }
+  ]
+}

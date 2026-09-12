@@ -179,3 +179,21 @@ formal v9/v10 保留为版本演化诊断数据，不得与 v11 混合统计。
 5. formal_v11 是当前正式 ROUTED 主结果。后续若再修改 prompt、路由、
    validator 或状态推导，必须另建 formal v12，使用新时间戳输出与
    冻结 baseline；不得覆盖、筛选后覆盖或与旧版本混合。
+
+## MetaWorld 仿真执行 smoke
+
+formal v11 之后新增了两层仿真接入验证：
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_metaworld_pickplace_smoke_20260912_124638.json` | 环境层 expert-policy smoke：3/3 success |
+| `data/collections/sim_metaworld_plan_execution_20260912_125605.json` | 计划桥接 smoke：`ModelPlan → Validator → Compiler → ExecutablePlan → MetaWorld`，3/3 success |
+
+桥接 smoke 使用一条冻结的合法计划
+`pick(red_cube_0, right) → place(red_cube_0, tray_1, right)`。
+适配器 `ch3/execution/metaworld_executor.py` 将编译后的
+`adflow_grasp/adflow_place` 映射到 `metaworld-pick-place-v3` 的内置
+expert policy。该数据不调用 VLM。
+
+数据边界：这是单物体 pick/place 的接口级验证，不是仿真 benchmark，
+也不是 AD-Flow 真机策略验证。

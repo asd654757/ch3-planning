@@ -15,6 +15,7 @@ Output is JSONL and is deliberately not overwritten unless ``--append`` or
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import time
 from pathlib import Path
@@ -229,6 +230,79 @@ def load_frozen_sources(path: str | Path) -> dict[tuple[str, int], ModelPlan]:
     return sources
 
 
+ROUTED_GROUP = "ROUTED"
+ROUTED_REPAIR_GROUPS: dict[str, str] = {
+    **REPAIR_GROUPS,
+    ROUTED_GROUP: "Adaptive routed repair (state-aware R2 first, R1 fallback on "
+                  "validation or goal failure)",
+}
+
+
+def routed_repair(
+    *,
+    repairer: PlanRepairer,
+    task: Mapping[str, Any],
+    initial_generation: PlanGeneration,
+    validation: Any,
+    initial_state: WorldState,
+    validator: Validator,
+    seed: Optional[int],
+    temperature: float,
+) -> tuple[Any, dict[str, Any]]:
+    """Error-aware routed repair (docs/method_design_20260912.md, section 3).
+
+    Route: state-aware R2 suffix first; fall back to R1 full replan when the
+    R2 result fails validation or does not satisfy the goal (VGF).  Returns
+    ``(final_generation, route_info)``; the caller records both attempts'
+    outcome for system-level analysis.
+    """
+    r2 = repairer.repair(
+        repair_mode="R2",
+        task=task,
+        initial_generation=initial_generation,
+        validation=validation,
+        initial_state=initial_state,
+        seed=seed,
+        temperature=temperature,
+    )
+    r2_validation, r2_goal, r2_pbw = evaluate_plan(
+        r2.plan, task, validator, initial_state
+    )
+    r2_ok = bool(r2_validation and r2_validation.valid) and bool(r2_goal)
+    info: dict[str, Any] = {
+        "route_taken": ["R2"],
+        "fallback_triggered": False,
+        "r2_valid": bool(r2_validation and r2_validation.valid),
+        "r2_goal_ok": bool(r2_goal),
+        "r2_pbw": bool(r2_pbw),
+    }
+    if r2_ok:
+        return r2, info
+
+    info["route_taken"].append("R1")
+    info["fallback_triggered"] = True
+    r1 = repairer.repair(
+        repair_mode="R1",
+        task=task,
+        initial_generation=initial_generation,
+        validation=validation,
+        initial_state=initial_state,
+        seed=seed,
+        temperature=temperature,
+    )
+    return r1, info
+
+
+def _relabeled_repair(
+    repaired: Any,
+    repair_mode: str,
+) -> Any:
+    """Return a repair generation relabeled for record aggregation."""
+    if repair_mode == ROUTED_GROUP and repaired.repair_mode != ROUTED_GROUP:
+        return dataclasses.replace(repaired, repair_mode=ROUTED_GROUP)
+    return repaired
+
+
 def run_pressure_slice(
     task: Mapping[str, Any],
     seed: int,
@@ -254,7 +328,7 @@ def run_pressure_slice(
             raise ValueError(f"Unknown pressure type: {pressure_type}")
     requested_repairs = list(repair_groups)
     for repair_mode in requested_repairs:
-        if repair_mode not in REPAIR_GROUPS:
+        if repair_mode not in ROUTED_REPAIR_GROUPS:
             raise ValueError(f"Unknown repair group: {repair_mode}")
 
     initial_state = world_state_from_task(task)
@@ -306,15 +380,31 @@ def run_pressure_slice(
             source.prompt_hash,
         )
         for repair_mode in requested_repairs:
-            repaired = repairer.repair(
-                repair_mode=repair_mode,
-                task=task,
-                initial_generation=stress_generation,
-                validation=stress_validation,
-                initial_state=initial_state,
-                seed=seed,
-                temperature=repair_temperature,
-            )
+            route_info: dict[str, Any] = {}
+            if repair_mode == ROUTED_GROUP:
+                repaired, route_info = routed_repair(
+                    repairer=repairer,
+                    task=task,
+                    initial_generation=stress_generation,
+                    validation=stress_validation,
+                    initial_state=initial_state,
+                    validator=validator,
+                    seed=seed,
+                    temperature=repair_temperature,
+                )
+                # The routed generation may come from the R1 fallback; label
+                # the record as ROUTED and keep per-route fields for analysis.
+                repaired = _relabeled_repair(repaired, repair_mode)
+            else:
+                repaired = repairer.repair(
+                    repair_mode=repair_mode,
+                    task=task,
+                    initial_generation=stress_generation,
+                    validation=stress_validation,
+                    initial_state=initial_state,
+                    seed=seed,
+                    temperature=repair_temperature,
+                )
             repaired_validation, repaired_goal, repaired_pbw = evaluate_plan(
                 repaired.plan, task, validator, initial_state
             )
@@ -331,6 +421,10 @@ def run_pressure_slice(
                 repaired_goal_ok=repaired_goal,
                 repaired_pbw=repaired_pbw,
             )
+            if repair_mode == ROUTED_GROUP:
+                record["repair_mode"] = ROUTED_GROUP
+                record["baseline"] = ROUTED_GROUP
+                record.update(route_info)
             logger.append(record)
             repairs.setdefault(pressure_type, {})[repair_mode] = {
                 "accepted": repaired.accepted,
@@ -338,6 +432,7 @@ def run_pressure_slice(
                 "valid": bool(repaired_validation and repaired_validation.valid),
                 "goal_satisfied": repaired_goal,
                 "pass_but_wrong": repaired_pbw,
+                **route_info,
             }
 
     return {
@@ -385,7 +480,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--repair-groups",
         nargs="+",
-        choices=sorted(REPAIR_GROUPS),
+        choices=sorted(ROUTED_REPAIR_GROUPS),
         default=sorted(REPAIR_GROUPS),
     )
     parser.add_argument("--temperature", type=float, default=0.7)

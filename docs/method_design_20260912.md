@@ -39,7 +39,7 @@ place 完成配对**（跨前缀 pick/place 允许），且持物手臂必须先
 注意：该 prompt 改动改变 prompt hash，新 R2 数据不得与 formal_v8 旧
 R2 混合比较。
 
-## 3. 自适应修复路由（设计定稿，实现分步）
+## 3. 自适应修复路由（2026-09-12 核心路径已实现）
 
 ```
 VLM Planner
@@ -55,8 +55,15 @@ VLM Planner
 → AD-Flow
 ```
 
-实施顺序：先验证 R2 状态感知 pilot 达标，再实现路由器与确定性截断；
-两者都通过后才构成完整方法。
+当前实现状态：`ROUTED` 核心路径已落地于
+`scripts/repair_pressure.py`，并已覆盖单元测试。
+其路由规则是先执行状态感知 R2；若 R2 结果未通过 Validator 或
+Goal Checker，则自动回退 R1。记录中新增 `repair_mode="ROUTED"`、
+`route_taken`、`fallback_triggered`、`r2_valid`、`r2_goal_ok` 与
+`r2_pbw` 字段。
+
+注意：程序侧确定性截断（Deterministic Truncation）仍属后续增强，
+尚未实现为独立路由分支；本轮 pilot 不声称该项已完成。
 
 ## 4. R2 Pilot 预注册方案与决策标准
 
@@ -156,3 +163,35 @@ prefix mutation：0。
 实验表述：状态感知使 R2 在其语义范围（状态恢复）内从 58.3%→100%，
 在超出语义范围（对象重写）时不足，需要回退路由。这正好支撑
 "按执行阶段与错误类型路由修复策略"的方法主张。
+
+## 6. ROUTED pilot 与 VGF 根因（2026-09-12）
+
+第二轮 R2-only pilot 的 5 例 VGF 逐条检查后确认：均为
+`merged_with_prefix=True` 且模型返回空后缀。模型正确处理了“删除非法
+尾部”这一合法操作，但当前压力场景中的合法前缀本身尚未完成全部任务；
+空后缀 merge 后计划合法但不完整。这直接支持两个方法结论：
+
+1. 结构合法性不等于任务完成性，必须同时使用 Validator 和 Goal Checker；
+2. R2-only 不应作为统一修复器，需要系统级路由与回退。
+
+随后实现 `ROUTED` 核心路径：状态感知 R2 先行，Validator/Goal Checker
+失败后自动回退 R1。Routed pilot 为 6 任务 × 3 seeds × 2 压力 = 36 例，
+冻结 baseline 全部复用（0 次 baseline 调用），输出：
+
+`data/collections/repair_pressure_routed_pilot_20260912_134946.jsonl`
+
+| 压力 | n | CRR | Final Goal | VGF | R2 直接成功 | R1 回退成功 |
+|---|---:|---:|---:|---:|---:|---:|
+| duplicate_pick_after_prefix | 18 | 100% | 100% | 0 | 15 | 3 |
+| unknown_object_after_prefix | 18 | 100% | 100% | 0 | 8 | 10 |
+| overall | 36 | 100% | 100% | 0 | 23 | 13 |
+
+论文措辞：
+
+- 不写“R2 在 unknown-object 上达到 100%”；
+- 写“R2 在状态恢复语义范围内直接修复多数状态层错误；对象引用重写
+  超出固定后缀补全边界，由 R1 回退承担”；
+- 写“ROUTED 在该 pilot 中将系统级任务完成率恢复到 100%，VGF 为 0”；
+- 该 pilot 是机制验证，不替代 formal v9 大样本正式实验。
+
+数据血缘与旧版本定位见 `docs/data_lineage_20260912.md`。

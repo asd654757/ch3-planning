@@ -13,8 +13,11 @@ from ch3.vlm.prompts import PromptLibrary
 from ch3.vlm.repair import PlanRepairer
 
 from scripts.repair_pressure import (
+    ROUTED_GROUP,
     PRESSURE_TYPES,
+    build_arg_parser,
     build_stress_plan,
+    routed_repair,
     run_pressure_slice,
 )
 
@@ -135,6 +138,124 @@ def test_repair_prompt_does_not_leak_valid_source_plan(tmp_path: Path) -> None:
     assert len(client.payloads) == 2
     repair_prompt = client.payloads[1]["messages"][1]["content"]
     assert "__unknown_object__" in repair_prompt
+
+
+def test_routed_repair_accepts_state_aware_r2_without_fallback(tmp_path: Path) -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "unknown_object_after_prefix",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+    assert stress_validation.validated_prefix == valid_plan.actions[:1]
+
+    def r2_success(payload):
+        prompt = payload["messages"][1]["content"]
+        if "Repair mode: R2" in prompt:
+            return {"actions": [VALID_PLAN["actions"][1]]}
+        return VALID_PLAN
+
+    generation, route_info = routed_repair(
+        repairer=PlanRepairer(MockVLMClient(r2_success), PromptLibrary()),
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        validator=validator,
+        seed=0,
+        temperature=0.0,
+    )
+    assert generation.accepted is True
+    assert route_info == {
+        "route_taken": ["R2"],
+        "fallback_triggered": False,
+        "r2_valid": True,
+        "r2_goal_ok": True,
+        "r2_pbw": False,
+    }
+
+
+def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "unknown_object_after_prefix",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+
+    def r2_failure_then_r1(payload):
+        prompt = payload["messages"][1]["content"]
+        if "Repair mode: R2" in prompt:
+            return {"actions": []}
+        return VALID_PLAN
+
+    output = tmp_path / "records.jsonl"
+    summary = run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()),
+        repairer=PlanRepairer(MockVLMClient(r2_failure_then_r1), PromptLibrary()),
+        validator=validator,
+        logger=EpisodeLogger(output),
+        pressure_types=("unknown_object_after_prefix",),
+        repair_groups=(ROUTED_GROUP,),
+    )
+    routed = summary["repairs"]["unknown_object_after_prefix"][ROUTED_GROUP]
+    assert routed["fallback_triggered"] is True
+    assert routed["route_taken"] == ["R2", "R1"]
+    assert routed["r2_valid"] is False
+    assert routed["valid"] is True
+    assert routed["goal_satisfied"] is True
+
+    records = [
+        json.loads(line)
+        for line in output.read_text(encoding="utf-8").splitlines()
+    ]
+    assert len(records) == 1
+    record = records[0]
+    assert record["repair_mode"] == ROUTED_GROUP
+    assert record["baseline"] == ROUTED_GROUP
+    assert record["fallback_triggered"] is True
+    assert record["r2_valid"] is False
+
+    metrics = compute_pressure_metrics(records)
+    assert metrics[ROUTED_GROUP]["n"] == 1
+    assert metrics[ROUTED_GROUP]["GSR_after_repair"] == 1.0
+    assert metrics[ROUTED_GROUP]["VGF"] == 0.0
+
+
+def test_cli_accepts_routed_repair_group() -> None:
+    args = build_arg_parser().parse_args(
+        [
+            "--output",
+            "data/collections/tmp.jsonl",
+            "--repair-groups",
+            ROUTED_GROUP,
+        ]
+    )
+    assert args.repair_groups == [ROUTED_GROUP]
 
 
 def test_main_sets_scene_objects_per_task(tmp_path, monkeypatch, capsys) -> None:

@@ -783,3 +783,86 @@ pilot”，不是完整仿真 benchmark，也不是通用 MetaWorld 泛化
    primitive 并进入 MetaWorld；
 3. 在 20 点小样本中，仿真终层 ROUTED 与 Checker-loop 没有
    统计显著差异；ROUTED 的优势主要由 240 点符号层结果支撑。
+
+## 15. 扩展四臂配对仿真对照（50 点）
+
+由于第 14 章的 20 点 pilot 规模较小，无法稳定区分 ROUTED 与
+Checker-loop，随后把同一协议扩展到 50 个配对点：5 类压力 ×
+10 个不同任务。执行协议、四臂定义、冻结结果复用方式和
+`pick/place` 对到 MetaWorld episode 的映射保持不变；全程仍不
+调用 VLM。第 14 章的 20 点结果是该 50 点集合的前 4 个任务
+子集，其“无显著差异”结论只属于小样本诊断，不应继续单独引用。
+
+50 点终层结果如下：
+
+| 臂 | 符号有效 | 仿真尝试 | 仿真成功 | 最终成功 | 95% Wilson CI |
+|---|---:|---:|---:|---:|---|
+| NO_REPAIR | 0/50 | 0/50 | 0/50 | **0/50 = 0.00%** | [0.00%, 7.15%] |
+| R2_ONLY | 29/50 | 29/50 | 16/50 | **16/50 = 32.00%** | [20.70%, 45.71%] |
+| CHECKER_LOOP | 42/50 | 42/50 | 34/50 | **34/50 = 68.00%** | [54.07%, 79.33%] |
+| ROUTED | 49/50 | 49/50 | 45/50 | **45/50 = 90.00%** | [78.53%, 95.70%] |
+
+按压力类型的最终成功数是：
+
+| 压力类型 | R2_ONLY | CHECKER_LOOP | ROUTED |
+|---|---:|---:|---:|
+| duplicate_pick_after_prefix | 2/10 | 7/10 | 8/10 |
+| unknown_object_after_prefix | 0/10 | 5/10 | 10/10 |
+| invalid_target_after_prefix | 5/10 | 7/10 | 9/10 |
+| place_before_pick | 4/10 | 9/10 | 8/10 |
+| repeat_pick_after_valid_plan | 5/10 | 6/10 | 10/10 |
+
+关键配对比较使用精确 McNemar 检验：
+
+| 比较 | ROUTED-only | 对手-only | 双成功 | 双失败 | 精确 p |
+|---|---:|---:|---:|---:|---:|
+| ROUTED vs CHECKER_LOOP | 13 | 2 | 32 | 3 | **0.0074** |
+| ROUTED vs R2_ONLY | 31 | 2 | 14 | 3 | **<0.0001** |
+| CHECKER_LOOP vs R2_ONLY | 22 | 4 | 12 | 12 | **0.0005** |
+
+因此，扩展到 50 点后，仿真终层结论变为：
+
+1. ROUTED 显著高于 Checker-loop；
+2. ROUTED 显著高于 R2-only；
+3. Checker-loop 也显著高于 R2-only；
+4. 20 点 pilot 中 ROUTED 略低于 Checker-loop 是小样本波动，
+   不能作为正式结论。
+
+对级 primitive 结果为：
+
+| 臂 | `pick/place` 对成功 |
+|---|---:|
+| R2_ONLY | 91/104 = 87.50% |
+| CHECKER_LOOP | 146/154 = 94.81% |
+| ROUTED | 172/176 = 97.73% |
+
+ROUTED 的 5 个失败点分别是：
+
+1. P03：第 1 对 grasp 执行超时；
+2. P04：第 1 对 grasp 执行超时；
+3. P22：第 1 对 grasp 执行超时；
+4. P31：第 3 对 grasp 执行超时；
+5. P34：`place_before_pick` 的 ROUTED 修复计划为
+   `SCHEMA_ERROR`，未进入仿真。
+
+因此，ROUTED 在 50 点中只有 1 例是符号层修复失败，其余 4 例
+均为底层 MetaWorld expert policy 的 primitive 执行失败。这个
+分布支持论文把 ROUTED 的主要贡献定位在符号层计划修复，并把
+MetaWorld 用作“修复计划可编译、可执行”的接口级验证。
+
+结果文件：
+
+- `data/collections/sim_compare_baselines_20260912_152744.json`
+- `logs/sim_compare_baselines_50points_20260912_151909.log`
+- `data/reports/sim_compare_baselines_20260912_152744_analysis.json`
+
+论文写作边界仍然要保守：
+
+1. 这是冻结修复计划的接口级仿真对照，不是在线 VLM 仿真
+   benchmark；
+2. 当前 MetaWorld 环境仍使用单 puck/goal，符号对象逐
+   `pick/place` 对映射到独立 episode；
+3. 仿真层只能说明修复后的计划可以进入 primitive 执行接口，
+   不能声称连续视觉感知、真实运动控制或真机泛化能力；
+4. 可以报告“ROUTED 在 50 个配对仿真点上达到 90%，显著高于
+   Checker-loop 的 68%”，但应同时说明执行协议。

@@ -260,3 +260,36 @@ ROUTED 与 CHECKER_LOOP 的配对差异为
 数据边界：这是冻结修复计划的接口级仿真对照 pilot，只用于检查
 修复计划能否进入同一执行接口；不能与 240 点符号层 formal v11
 结果合并为一个“仿真 benchmark 成功率”，也不能外推为真机结论。
+
+## 四臂配对仿真对照扩展（50 点）
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_compare_baselines_20260912_152744.json` | 50 个配对点上 NO_REPAIR / R2_ONLY / CHECKER_LOOP / ROUTED 的冻结计划仿真对照 |
+| `logs/sim_compare_baselines_50points_20260912_151909.log` | 对应运行日志 |
+| `data/reports/sim_compare_baselines_20260912_152744_analysis.json` | 派生分析：按臂汇总、按压力汇总、配对差异和置信区间 |
+
+抽样规则扩展为 5 类压力 × 10 个不同任务，共 50 个配对点。
+四臂来源、执行协议和符号层重校验规则与 20 点 pilot 保持一致；
+20 点 pilot 文件
+`data/collections/sim_compare_baselines_20260912_134818.json`
+是该 50 点集合前 4 个任务子集的早期诊断结果。
+
+终层结果：
+
+| 臂 | 最终成功 |
+|---|---:|
+| NO_REPAIR | 0/50 |
+| R2_ONLY | 16/50 |
+| CHECKER_LOOP | 34/50 |
+| ROUTED | 45/50 |
+
+ROUTED 与 CHECKER_LOOP 的配对差异为
+`(32 both success, 3 both failure, 13 ROUTED-only, 2 CHECKER_LOOP-only)`，
+精确 McNemar `p=0.0074`。因此 50 点扩展结果支持 ROUTED 在
+仿真终层显著优于 CHECKER_LOOP；20 点 pilot 的反向结果应视为
+小样本波动。
+
+数据边界：仍是冻结修复计划的接口级仿真对照，不是在线 VLM
+仿真 benchmark，不能与 formal v11 的 240 点符号层结果合并，
+也不能外推为真机结论。

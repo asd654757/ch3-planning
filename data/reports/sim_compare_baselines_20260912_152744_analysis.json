@@ -1,0 +1,197 @@
+{
+  "completed_at_utc": "2026-09-12T15:33:47.222979+00:00",
+  "record_type": "sim_compare_baselines_50points_analysis",
+  "source_result": "data/collections/sim_compare_baselines_20260912_152744.json",
+  "protocol": "one_pick_place_pair_per_fresh_meta_world_episode",
+  "vlm_calls": 0,
+  "matched_points": 50,
+  "summary_by_arm": {
+    "NO_REPAIR": {
+      "points": 50,
+      "symbolic_valid": 0,
+      "symbolic_rate": 0.0,
+      "symbolic_ci95_wilson": {
+        "lower": 6.938893903907228e-18,
+        "upper": 0.07134759913335872
+      },
+      "sim_attempted": 0,
+      "sim_success": 0,
+      "sim_success_rate_among_attempted": null,
+      "sim_ci95_wilson_among_attempted": null,
+      "final_success": 0,
+      "final_success_rate": 0.0,
+      "final_ci95_wilson": {
+        "lower": 6.938893903907228e-18,
+        "upper": 0.07134759913335872
+      },
+      "pair_total": 0,
+      "pair_success": 0,
+      "pair_success_rate": null,
+      "pair_ci95_wilson": null
+    },
+    "R2_ONLY": {
+      "points": 50,
+      "symbolic_valid": 29,
+      "symbolic_rate": 0.58,
+      "symbolic_ci95_wilson": {
+        "lower": 0.4423344176857823,
+        "upper": 0.7062499664528802
+      },
+      "sim_attempted": 29,
+      "sim_success": 16,
+      "sim_success_rate_among_attempted": 0.5517241379310345,
+      "sim_ci95_wilson_among_attempted": {
+        "lower": 0.37547963210970914,
+        "upper": 0.7158683197696281
+      },
+      "final_success": 16,
+      "final_success_rate": 0.32,
+      "final_ci95_wilson": {
+        "lower": 0.20758216260656845,
+        "upper": 0.45810297308144077
+      },
+      "pair_total": 104,
+      "pair_success": 91,
+      "pair_success_rate": 0.875,
+      "pair_ci95_wilson": {
+        "lower": 0.7978100094584702,
+        "upper": 0.9254739747621908
+      }
+    },
+    "CHECKER_LOOP": {
+      "points": 50,
+      "symbolic_valid": 42,
+      "symbolic_rate": 0.84,
+      "symbolic_ci95_wilson": {
+        "lower": 0.7148578393696501,
+        "upper": 0.916625793219666
+      },
+      "sim_attempted": 42,
+      "sim_success": 34,
+      "sim_success_rate_among_attempted": 0.8095238095238095,
+      "sim_ci95_wilson_among_attempted": {
+        "lower": 0.6669922598996131,
+        "upper": 0.9001799171835226
+      },
+      "final_success": 34,
+      "final_success_rate": 0.68,
+      "final_ci95_wilson": {
+        "lower": 0.5418970269185592,
+        "upper": 0.7924178373934316
+      },
+      "pair_total": 154,
+      "pair_success": 146,
+      "pair_success_rate": 0.948051948051948,
+      "pair_ci95_wilson": {
+        "lower": 0.9008499436378805,
+        "upper": 0.9734450675148372
+      }
+    },
+    "ROUTED": {
+      "points": 50,
+      "symbolic_valid": 49,
+      "symbolic_rate": 0.98,
+      "symbolic_ci95_wilson": {
+        "lower": 0.8950455641036219,
+        "upper": 0.9964607407283539
+      },
+      "sim_attempted": 49,
+      "sim_success": 45,
+      "sim_success_rate_among_attempted": 0.9183673469387755,
+      "sim_ci95_wilson_among_attempted": {
+        "lower": 0.808108724034287,
+        "upper": 0.9677971823322362
+      },
+      "final_success": 45,
+      "final_success_rate": 0.9,
+      "final_ci95_wilson": {
+        "lower": 0.7863976856252035,
+        "upper": 0.9565242350681096
+      },
+      "pair_total": 176,
+      "pair_success": 172,
+      "pair_success_rate": 0.9772727272727273,
+      "pair_ci95_wilson": {
+        "lower": 0.9430289809859341,
+        "upper": 0.9911271424221823
+      }
+    }
+  },
+  "pressure_success_counts": {
+    "NO_REPAIR": {
+      "duplicate_pick_after_prefix": 0,
+      "invalid_target_after_prefix": 0,
+      "place_before_pick": 0,
+      "repeat_pick_after_valid_plan": 0,
+      "unknown_object_after_prefix": 0
+    },
+    "R2_ONLY": {
+      "duplicate_pick_after_prefix": 2,
+      "invalid_target_after_prefix": 5,
+      "place_before_pick": 4,
+      "repeat_pick_after_valid_plan": 5,
+      "unknown_object_after_prefix": 0
+    },
+    "CHECKER_LOOP": {
+      "duplicate_pick_after_prefix": 7,
+      "invalid_target_after_prefix": 7,
+      "place_before_pick": 9,
+      "repeat_pick_after_valid_plan": 6,
+      "unknown_object_after_prefix": 5
+    },
+    "ROUTED": {
+      "duplicate_pick_after_prefix": 8,
+      "invalid_target_after_prefix": 9,
+      "place_before_pick": 8,
+      "repeat_pick_after_valid_plan": 10,
+      "unknown_object_after_prefix": 10
+    }
+  },
+  "paired_endpoint_comparisons": {
+    "ROUTED_vs_CHECKER_LOOP": {
+      "both_success": 32,
+      "both_failure": 3,
+      "ROUTED_only": 13,
+      "CHECKER_LOOP_only": 2,
+      "exact_mcnemar_p": 0.00738525390625
+    },
+    "ROUTED_vs_R2_ONLY": {
+      "both_success": 14,
+      "both_failure": 3,
+      "ROUTED_only": 31,
+      "R2_ONLY_only": 2,
+      "exact_mcnemar_p": 1.3085082173347473e-07
+    },
+    "CHECKER_LOOP_vs_R2_ONLY": {
+      "both_success": 12,
+      "both_failure": 12,
+      "CHECKER_LOOP_only": 22,
+      "R2_ONLY_only": 4,
+      "exact_mcnemar_p": 0.0005335211753845215
+    }
+  },
+  "paired_symbolic_comparisons": {
+    "ROUTED_vs_CHECKER_LOOP": {
+      "both_success": 42,
+      "both_failure": 1,
+      "ROUTED_only": 7,
+      "CHECKER_LOOP_only": 0,
+      "exact_mcnemar_p": 0.015625
+    },
+    "ROUTED_vs_R2_ONLY": {
+      "both_success": 29,
+      "both_failure": 1,
+      "ROUTED_only": 20,
+      "R2_ONLY_only": 0,
+      "exact_mcnemar_p": 1.9073486328125e-06
+    },
+    "CHECKER_LOOP_vs_R2_ONLY": {
+      "both_success": 27,
+      "both_failure": 6,
+      "CHECKER_LOOP_only": 15,
+      "R2_ONLY_only": 2,
+      "exact_mcnemar_p": 0.002349853515625
+    }
+  },
+  "supersedes_20point_result": "data/collections/sim_compare_baselines_20260912_134818.json"
+}

@@ -131,3 +131,19 @@ def test_pick_object_not_on_table(registry, scene_objects, init_state):
     r = v.validate(p, init_state)
     assert not r.valid and r.error_code == ErrorCode.STATE_TRANSITION_ERROR and r.layer == "state"
     assert r.first_invalid_step == 3
+
+
+def test_object_layer_failure_still_reports_prefix_final_state(registry, scene_objects, init_state):
+    """UNKNOWN_OBJECT fails at the object layer, but the locked prefix still has
+    execution semantics: final_state must expose the post-prefix world state so
+    state-aware repair can see what the arms are holding."""
+    v = make_validator(registry, scene_objects)
+    p = plan(
+        act(1, Skill.PICK, "red_cube_0", Arm.LEFT),
+        act(2, Skill.PICK, "ghost_object", Arm.LEFT),
+    )
+    r = v.validate(p, init_state)
+    assert not r.valid and r.layer == "object" and r.first_invalid_step == 2
+    assert [a.step_id for a in r.validated_prefix] == [1]
+    assert r.final_state is not None
+    assert r.final_state.holding.get("left") == "red_cube_0"

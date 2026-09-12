@@ -207,6 +207,28 @@ def pressure_source_record(
     return record
 
 
+def load_frozen_sources(path: str | Path) -> dict[tuple[str, int], ModelPlan]:
+    """Reuse baseline plans recorded in a prior pressure collection.
+
+    Every ``repair_pressure`` row stores the (uncorrupted) baseline plan in
+    ``pressure_source_plan``.  Keying by (task_id, seed) lets a follow-up run
+    skip the 1 baseline call per slice and compare repairs against the exact
+    frozen baselines.
+    """
+    sources: dict[tuple[str, int], ModelPlan] = {}
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            key = (r.get("task_id"), r.get("seed"))
+            plan_dict = r.get("pressure_source_plan")
+            if key in sources or not plan_dict:
+                continue
+            sources[key] = ModelPlan(**plan_dict)
+    return sources
+
+
 def run_pressure_slice(
     task: Mapping[str, Any],
     seed: int,
@@ -219,8 +241,13 @@ def run_pressure_slice(
     repair_groups: Iterable[str] = ("R0", "R1", "R2"),
     initial_temperature: float = 0.7,
     repair_temperature: float = 0.3,
+    source_plan: Optional[ModelPlan] = None,
 ) -> dict[str, Any]:
-    """Run one task/seed pressure slice. The baseline must be valid."""
+    """Run one task/seed pressure slice. The baseline must be valid.
+
+    ``source_plan`` reuses a frozen baseline plan (no planner call).  When it
+    is None the baseline is generated fresh via ``planner.plan``.
+    """
     requested_pressure = list(pressure_types)
     for pressure_type in requested_pressure:
         if pressure_type not in PRESSURE_TYPES:
@@ -231,7 +258,11 @@ def run_pressure_slice(
             raise ValueError(f"Unknown repair group: {repair_mode}")
 
     initial_state = world_state_from_task(task)
-    source = planner.plan(task, seed=seed, temperature=initial_temperature)
+    if source_plan is not None:
+        # Frozen baseline reuse: validate the stored plan, no model call.
+        source = PlanGeneration(source_plan, None, None, None, None, None)
+    else:
+        source = planner.plan(task, seed=seed, temperature=initial_temperature)
     source_validation, source_goal, source_pbw = evaluate_plan(
         source.plan, task, validator, initial_state
     )
@@ -364,6 +395,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--difficulties", nargs="*")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--no-image", action="store_true")
+    parser.add_argument(
+        "--source-collection",
+        default=None,
+        help="Reuse frozen baseline plans from a prior pressure JSONL "
+             "(keyed by task_id/seed) instead of calling the planner.",
+    )
     parser.add_argument("--append", action="store_true")
     parser.add_argument("--resume", action="store_true")
     return parser
@@ -408,6 +445,15 @@ def main(argv: Optional[list[str]] = None) -> int:
             client_kwargs["api_key"] = args.api_key
         client = DashScopeVLMClient(**client_kwargs)
 
+    frozen_sources: dict[tuple[str, int], ModelPlan] = {}
+    if args.source_collection:
+        frozen_sources = load_frozen_sources(args.source_collection)
+        print(
+            f"[pressure] loaded {len(frozen_sources)} frozen baseline plans "
+            f"from {args.source_collection}",
+            flush=True,
+        )
+
     json_mode = not args.no_json_mode
     planner = InitialPlanner(client, max_tokens=args.max_tokens, json_mode=json_mode)
     repairer = PlanRepairer(client, max_tokens=args.max_tokens, json_mode=json_mode)
@@ -429,6 +475,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 repair_groups=args.repair_groups,
                 initial_temperature=args.temperature,
                 repair_temperature=args.repair_temperature,
+                source_plan=frozen_sources.get((task["task_id"], seed)),
             )
             summaries.append(summary)
             print(json.dumps(summary, ensure_ascii=False), flush=True)

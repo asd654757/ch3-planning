@@ -38,6 +38,22 @@ class Validator:
     def valid_targets(self) -> set[str]:
         return set(self.scene_objects) | set(self.special_targets or set())
 
+    def _prefix_state(self, prefix: list, initial_state: WorldState) -> Optional[WorldState]:
+        """Simulate the validated prefix to expose the post-prefix state.
+
+        Even when validation fails at the object/capability layer, the locked
+        prefix has execution semantics ("these steps would have run"), so
+        downstream state-aware repair needs the world state after the prefix.
+        If the prefix itself contains a state error, the state reached before
+        that error is returned.
+        """
+        if not prefix:
+            return None
+        _ok, _bad, _code, _msg, final_state = state_validator.simulate_plan(
+            ModelPlan(actions=list(prefix)), initial_state, valid_targets=self.valid_targets
+        )
+        return final_state
+
     # ---------- 第三层能力 ----------
     def _capability_error(self, action) -> tuple[Optional[str], str]:
         code, msg = capability_validator.check_action(action, self.registry)
@@ -66,12 +82,14 @@ class Validator:
                 return ValidationResult(
                     valid=False, first_invalid_step=action.step_id, error_code=code,
                     message=msg, layer="object", validated_prefix=list(prefix),
+                    final_state=self._prefix_state(prefix, initial_state),
                 )
             code, msg = capability_validator.check_action(action, self.registry)
             if code is not None:
                 return ValidationResult(
                     valid=False, first_invalid_step=action.step_id, error_code=code,
                     message=msg, layer="capability", validated_prefix=list(prefix),
+                    final_state=self._prefix_state(prefix, initial_state),
                 )
             prefix.append(action)
 

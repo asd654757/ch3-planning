@@ -175,3 +175,35 @@ def test_main_sets_scene_objects_per_task(tmp_path, monkeypatch, capsys) -> None
          "brown_tray_14", "white_box_15", "gray_block_16", "black_wedge_17",
          "black_cube_18", "brown_sphere_19"},
     ]
+
+
+def test_load_frozen_sources_reuses_baseline_plans(tmp_path):
+    """Frozen baseline reuse: sources load by (task_id, seed), skipping planner."""
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from repair_pressure import load_frozen_sources  # noqa: E402
+
+    plan = ModelPlan(
+        actions=[
+            {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "red_cube_0",
+                "target_id": None,
+                "arm": "left",
+            }
+        ]
+    )
+    record = {
+        "task_id": "t1",
+        "seed": 0,
+        "record_type": "repair_pressure",
+        "pressure_source_plan": plan.model_dump(),
+    }
+    path = tmp_path / "frozen.jsonl"
+    path.write_text(json.dumps(record) + "\n", encoding="utf-8")
+
+    sources = load_frozen_sources(path)
+    assert ("t1", 0) in sources
+    assert sources[("t1", 0)].actions[0].object_id == "red_cube_0"

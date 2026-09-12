@@ -130,11 +130,25 @@ class PlanRepairer:
         if repair_mode == "R2" and validation.final_state is not None:
             # State-aware suffix repair: report the world state *after* the
             # validated prefix executes, so the model knows what the arms are
-            # holding before generating the replacement suffix.
-            prompt_input["prefix_final_state"] = sorted(
+            # holding before generating the replacement suffix.  All derived
+            # fields are computed programmatically; the model must not infer
+            # them itself.
+            final_facts = (
                 validation.final_state.facts()
                 | validation.final_state.empty_hand_facts({"left", "right"})
             )
+            prompt_input["prefix_final_state"] = sorted(final_facts)
+            prompt_input["held_objects"] = dict(
+                sorted(validation.final_state.holding.items())
+            )
+            goal_facts = [
+                f for f in task.get("goal", {}).get("facts", [])
+                if isinstance(f, str)
+            ]
+            prompt_input["remaining_goal_facts"] = [
+                f for f in goal_facts if f not in final_facts
+            ]
+            prompt_input["next_step_id"] = len(validation.validated_prefix) + 1
         if repair_mode == "R0":
             # Frozen: no error localization and no validated prefix leakage.
             prompt_input.pop("original_plan", None)
@@ -152,7 +166,14 @@ class PlanRepairer:
                     f"The first {suffix_start - 1} steps are locked. Return only the "
                     f"replacement suffix. Its first step_id must be {suffix_start}. "
                     'If the error is caused solely by actions after the locked prefix, '
-                    'return exactly {"actions": []}.'
+                    'return exactly {"actions": []}. '
+                    "If the locked prefix ends with a pick, you may complete its "
+                    "pairing with a place as the first suffix action; this "
+                    "cross-prefix pick/place pairing is allowed even though "
+                    "constraint 5 applies inside a complete plan. "
+                    "Use prefix_final_state and held_objects to check what each "
+                    "arm is currently holding; an arm holding an object must "
+                    "place it before picking a new one."
                 )
             else:
                 output_requirement = (

@@ -49,7 +49,7 @@ VLM Planner
    ├─ Deterministic Truncation（合法计划后仅冗余非法尾部，程序截断）
    ├─ Full Replanning / R1（执行前纠错）
    └─ State-aware Suffix Repair / R2（执行中恢复，持物状态感知）
-→ R2 失败回退 R1（从当前状态规划剩余任务）
+→ R2 失败回退 R1_FROM_STATE（从 prefix_final_state 只规划剩余后缀）
 → Goal Checker
 → ExecutablePlan
 → AD-Flow
@@ -58,7 +58,9 @@ VLM Planner
 当前实现状态：`ROUTED` 核心路径已落地于
 `scripts/repair_pressure.py`，并已覆盖单元测试。
 其路由规则是先执行状态感知 R2；若 R2 结果未通过 Validator 或
-Goal Checker，则自动回退 R1。记录中新增 `repair_mode="ROUTED"`、
+Goal Checker，则自动回退 `R1_FROM_STATE`。该 fallback 不返回/不执行
+完整旧计划，而是以 `prefix_final_state` 为当前状态重新规划剩余任务，
+再程序化合并到已执行前缀之后。记录中新增 `repair_mode="ROUTED"`、
 `route_taken`、`fallback_triggered`、`r2_valid`、`r2_goal_ok` 与
 `r2_pbw` 字段。
 
@@ -195,3 +197,71 @@ prefix mutation：0。
 - 该 pilot 是机制验证，不替代 formal v9 大样本正式实验。
 
 数据血缘与旧版本定位见 `docs/data_lineage_20260912.md`。
+
+## 7. 执行边界安全修正（2026-09-12）
+
+初审发现：先前的 `ROUTED` fallback 使用普通 R1，prompt 的
+`current_state` 仍为初始状态，且返回完整计划。这在执行中修复语义下
+可能重复执行已确认前缀。
+
+已实现新的 fallback 模式 `R1_FROM_STATE`：
+
+```
+R2 失败
+→ 只保留 validated_prefix / prefix_final_state / held_objects /
+  remaining_goal_facts / next_step_id
+→ R1_FROM_STATE 仅返回 remaining-task suffix
+→ 程序执行 merge_locked_prefix(executed_prefix, returned_suffix)
+→ Validator + Goal Checker
+```
+
+约束：
+
+- `R1_FROM_STATE` 的 `current_state` 必须是 `prefix_final_state`；
+- prompt 不含损坏 `original_plan`，只含 `executed_prefix`；
+- 返回后缀第一步步号必须为 `len(prefix)+1`；
+- 前缀动作不允许出现在返回后缀中；
+- 程序侧合并后再次校验完整计划。
+
+因此，`repair_pressure_routed_pilot_20260912_134946.jsonl` 降级为
+**fallback 语义修正前的 router 机制诊断数据**，不作为正式安全修复
+结果。后续必须使用 `R1_FROM_STATE` 重新采集 routed pilot / formal。
+
+## 8. R1_FROM_STATE ROUTED pilot（2026-09-12）
+
+在执行边界修正后重新采集 36 例受控 pilot：
+
+`data/collections/repair_pressure_routed_state_pilot_20260912_141702.jsonl`
+
+| 指标 | 结果 |
+|---|---:|
+| pressure points | 36 |
+| baseline slices | 18/18 valid |
+| CRR | 36/36 = 100% |
+| Final Goal / GSR after repair | 36/36 = 100% |
+| VGF | 0/36 = 0% |
+| pass-but-wrong | 0/36 |
+| R2 direct | 25/36 |
+| R1_FROM_STATE fallback | 11/36 |
+| total repair calls | 47 |
+| average calls per pressure | 47 / 36 = 1.306 |
+
+按压力：
+
+| 压力 | n | Final Goal | R2 direct | R1_FROM_STATE fallback |
+|---|---:|---:|---:|---:|
+| duplicate_pick_after_prefix | 18 | 18/18 | 17 | 1 |
+| unknown_object_after_prefix | 18 | 18/18 | 8 | 10 |
+
+Fallback 审计：
+
+- 11 个 fallback 全部满足最终目标；
+- 原始模型后缀没有包含已执行前缀 step；
+- 全部 fallback prompt 含 `holding(...)` / `prefix_final_state`；
+- 没有空后缀导致的合法但不完整样本。
+
+结论措辞：
+
+> 在修正执行边界后的受控 pilot 中，R2 优先、R1_FROM_STATE 回退的
+> ROUTED 机制保持 100% 系统级任务完成，平均每压力点 1.31 次修复调用。
+> 该结果仍是机制验证，不替代 formal v9。

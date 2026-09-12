@@ -290,7 +290,7 @@ def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
     assert "Repair mode: R1_FROM_STATE" in prompt
     assert "holding(right, red_cube_0)" in prompt
     assert "executed_prefix" in prompt
-    assert "__unknown_object__" not in prompt
+    assert '"original_plan":' not in prompt
 
 
 def test_cli_accepts_routed_repair_group() -> None:

@@ -132,14 +132,13 @@ class PlanRepairer:
                 raise ValueError(
                     "R1_FROM_STATE requires an executed prefix and final state"
                 )
-            final_facts = (
-                validation.final_state.facts()
-                | validation.final_state.empty_hand_facts({"left", "right"})
-            )
             # Execution-time fallback semantics: the prefix has already run,
             # so the model must not see the initial state as current and must
             # not return those executed actions again.
-            prompt_input["current_state"] = sorted(final_facts)
+            prompt_input["current_state"] = sorted(
+                validation.final_state.facts()
+                | validation.final_state.empty_hand_facts({"left", "right"})
+            )
             prompt_input.pop("original_plan", None)
             prompt_input["executed_prefix"] = [
                 action.model_dump() for action in validation.validated_prefix
@@ -151,6 +150,10 @@ class PlanRepairer:
             # holding before generating the replacement suffix.  All derived
             # fields are computed programmatically; the model must not infer
             # them itself.
+            final_facts = (
+                validation.final_state.facts()
+                | validation.final_state.empty_hand_facts({"left", "right"})
+            )
             prompt_input["prefix_final_state"] = sorted(final_facts)
             prompt_input["held_objects"] = dict(
                 sorted(validation.final_state.holding.items())

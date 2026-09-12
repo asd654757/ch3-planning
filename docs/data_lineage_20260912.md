@@ -27,24 +27,33 @@
 
 | 数据 | 文件 | 定位 | 说明 |
 |---|---|---|---|
-| routed pilot | `data/collections/repair_pressure_routed_pilot_20260912_134946.jsonl` | 系统级路由验证，不写成大样本正式结论 | 6 任务 × 3 seeds × 2 压力 = 36 例；冻结 baseline 全部复用，0 次 baseline 调用 |
+| routed pilot v1 | `data/collections/repair_pressure_routed_pilot_20260912_134946.jsonl` | **fallback 语义修正前的诊断数据** | Router 机制有效，但 fallback 使用普通 R1/完整计划，不符合执行中安全边界；不得作为正式结果 |
+| routed state pilot | `data/collections/repair_pressure_routed_state_pilot_20260912_141702.jsonl` | 当前有效机制验证 | 36 例；`R2 -> R1_FROM_STATE`；CRR/Final Goal 100%，VGF 0，fallback 11/36，总修复调用 47 |
 
-### ROUTED 结果
+### ROUTED v1 结果（仅诊断）
 
 - CRR：36/36 = 100%
 - Final Task Goal Rate / GSR after repair：36/36 = 100%
 - VGF：0/36 = 0%
 - pass-but-wrong：0/36
-- 路由：R2 直接成功 23/36；R2 失败并回退 R1 成功 13/36
+- 路由：R2 直接成功 23/36；R2 失败并回退普通 R1 成功 13/36
 - 按压力：
   - duplicate_pick_after_prefix：18/18 goal，R2 直接成功 15，回退 3
   - unknown_object_after_prefix：18/18 goal，R2 直接成功 8，回退 10
 
-### 解释
+### ROUTED state pilot 结果（当前有效机制验证）
 
-ROUTED 的系统级 100% 不能解释为“R2 在所有错误上 100%”。准确表述是：
-
-> 分层路由把状态感知后缀恢复与完整重规划回退组合后，在该 36 例受控 pilot 中恢复了全部任务目标；其中状态层错误多数由 R2 直接完成，超出 R2 边界的对象引用错误主要依赖 R1 回退。
+- CRR：36/36 = 100%
+- Final Task Goal Rate / GSR after repair：36/36 = 100%
+- VGF：0/36 = 0%
+- pass-but-wrong：0/36
+- 路由：R2 直接成功 25/36；R1_FROM_STATE 回退成功 11/36
+- 修复调用：47 次；平均 47/36 = 1.306 次/压力点
+- 按压力：
+  - duplicate_pick_after_prefix：18/18 goal，R2 直接成功 17，回退 1
+  - unknown_object_after_prefix：18/18 goal，R2 直接成功 8，回退 10
+- fallback 审计：11/11 达成目标；原始后缀无前缀动作重复；prompt 均含
+  `prefix_final_state` / holding；无空后缀 VGF。
 
 ## 当前数据边界
 

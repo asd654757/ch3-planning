@@ -1,0 +1,175 @@
+{
+  "schema_version": "v11-20260912",
+  "collection": "data/collections/repair_pressure_formal_v11_routed_20260912_200252.jsonl",
+  "protocol": "ROUTED with state-aware R2, R1_FROM_STATE fallback, deterministic truncation, and required_transports prompt support",
+  "baseline": {
+    "accepted_feasible_slices": 48,
+    "rejected_source_slices": 18,
+    "rejected_reason": "logical conflict / infeasible source tasks",
+    "pressure_points": 240,
+    "source_collection": "data/collections/frozen_sources_v10_20260912_071103.jsonl"
+  },
+  "overall": {
+    "CRR": 0.9708333333333333,
+    "valid_after": 233,
+    "Final_Goal": 0.9708333333333333,
+    "goal_after": 233,
+    "VGF": 0.0,
+    "vgf_count": 0,
+    "pass_but_wrong": 0,
+    "route_counts": {
+      "R2": 116,
+      "R2 > R1_FROM_STATE": 28,
+      "R2 > R1": 48,
+      "DETERMINISTIC_TRUNCATION": 48
+    },
+    "model_calls": 268,
+    "avg_model_calls": 1.1166666666666667
+  },
+  "by_pressure_type": {
+    "duplicate_pick_after_prefix": {
+      "n": 48,
+      "CRR": 1.0,
+      "Final_Goal": 1.0,
+      "VGF": 0.0,
+      "pass_but_wrong": 0,
+      "routes": {
+        "R2": 48
+      }
+    },
+    "invalid_target_after_prefix": {
+      "n": 48,
+      "CRR": 1.0,
+      "Final_Goal": 1.0,
+      "VGF": 0.0,
+      "pass_but_wrong": 0,
+      "routes": {
+        "R2 > R1_FROM_STATE": 15,
+        "R2": 33
+      }
+    },
+    "place_before_pick": {
+      "n": 48,
+      "CRR": 0.8541666666666666,
+      "Final_Goal": 0.8541666666666666,
+      "VGF": 0.0,
+      "pass_but_wrong": 0,
+      "routes": {
+        "R2 > R1": 48
+      }
+    },
+    "repeat_pick_after_valid_plan": {
+      "n": 48,
+      "CRR": 1.0,
+      "Final_Goal": 1.0,
+      "VGF": 0.0,
+      "pass_but_wrong": 0,
+      "routes": {
+        "DETERMINISTIC_TRUNCATION": 48
+      }
+    },
+    "unknown_object_after_prefix": {
+      "n": 48,
+      "CRR": 1.0,
+      "Final_Goal": 1.0,
+      "VGF": 0.0,
+      "pass_but_wrong": 0,
+      "routes": {
+        "R2": 35,
+        "R2 > R1_FROM_STATE": 13
+      }
+    }
+  },
+  "safety": {
+    "locked_prefix_points": 192,
+    "prefix_mutation_points": 0,
+    "deterministic_truncation_vlm_calls": 0
+  },
+  "failures": [
+    {
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    },
+    {
+      "task_id": "attribute_grouped_003",
+      "seed": 1,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    },
+    {
+      "task_id": "exclusion_constraint_009",
+      "seed": 1,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    },
+    {
+      "task_id": "exclusion_constraint_009",
+      "seed": 2,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    },
+    {
+      "task_id": "exclusion_constraint_011",
+      "seed": 0,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    },
+    {
+      "task_id": "exclusion_constraint_015",
+      "seed": 1,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    },
+    {
+      "task_id": "exclusion_constraint_015",
+      "seed": 2,
+      "pressure_type": "place_before_pick",
+      "route_taken": [
+        "R2",
+        "R1"
+      ],
+      "error_code": "SCHEMA_ERROR",
+      "error_message": "计划不完整：每个 pick 必须立即跟一个对应的 place，不能以 holding 状态结束"
+    }
+  ],
+  "decision_standards": {
+    "repeat_pick_Final_Goal_ge_95": true,
+    "overall_Final_Goal_ge_95": true,
+    "VGF_le_2": true,
+    "prefix_mutation_zero": true,
+    "truncation_zero_vlm_calls": true
+  },
+  "formal_result": "PASS"
+}

@@ -109,11 +109,73 @@ formal v10 使用以下冻结源：
   缺少程序化确定性截断；另有 8 例合法但未达成目标，集中在
   `invalid_target_after_prefix` 与 `unknown_object_after_prefix`。
 
+## Formal v10 ROUTED 结果摘要
+
+- 采集文件：
+  `data/collections/repair_pressure_formal_v10_routed_20260912_071739.jsonl`
+- 机器可读汇总：
+  `data/reports/formal_v10_routed_metrics_20260912.json`
+- pressure points：240；
+- CRR：233/240 = 97.1%；
+- Final Goal / GSR after repair：212/240 = 88.3%；
+- VGF：21/240 = 8.75%；
+- pass-but-wrong：21/240；
+- prefix mutation：0/192；
+- 路由：R2 直接 62；`R2 → R1_FROM_STATE` 82；`R2 → R1` 48；
+  `DETERMINISTIC_TRUNCATION` 48；
+- 修复调用：322 次，平均 1.34 次/压力点。
+
+formal v10 证明确定性截断解决了 repeat_pick 冗余尾部失败簇，但
+`R1_FROM_STATE` 出现“只完成当前 held object 的 place”的局部补全倾向，
+导致 VGF 上升。因此 formal v10 不作为最终论文主结果。
+
+## v11 required_transports 数据链
+
+### Pilot 数据
+
+| 数据 | 文件 | 定位 | 结果 |
+|---|---|---|---|
+| 目标失败 pilot | `data/collections/repair_pressure_required_transports_pilot_20260912_195941.jsonl` | 针对 v10 剩余 VGF 点 | 3/3 Final Goal，0 VGF，3/3 R2 直接 |
+| 18 点复验 | `data/collections/repair_pressure_required_transports_18pt_20260912_200107.jsonl` | 复用 v10 最难子集做机制验证 | 18/18 Final Goal，0 VGF，R2 直接 16/18，`R2 → R1_FROM_STATE` 2/18 |
+
+### Formal v11
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/repair_pressure_formal_v11_routed_20260912_200252.jsonl` | formal v11 正式修复压力数据 |
+| `logs/repair_pressure_formal_v11_routed_20260912_200252.log` | formal v11 运行日志 |
+| `data/reports/formal_v11_routed_metrics_20260912.json` | formal v11 机器可读汇总 |
+
+formal v11 复用 v10 冻结源
+`frozen_sources_v10_20260912_071103.jsonl`。运行时尝试了 66 个
+task/seed：其中 18 个逻辑冲突不可行源被 source-goal 双检拒绝并记录为
+`pressure_source`；48 个可行源进入压力修复，产生 240 个
+`repair_pressure` 点。18 个拒绝源不进入正式指标。
+
+formal v11 结果：
+
+- CRR：233/240 = 97.1%；
+- Final Goal / GSR after repair：233/240 = 97.1%；
+- VGF：0/240 = 0%；
+- pass-but-wrong：0/240；
+- prefix mutation：0/192；
+- 路由：R2 直接 116；`R2 → R1_FROM_STATE` 28；`R2 → R1` 48；
+  `DETERMINISTIC_TRUNCATION` 48；
+- 修复调用：268 次，平均 1.117 次/压力点；
+- 剩余失败：7 个 `place_before_pick`，全部是 `R2 → R1` 后 R1 返回
+  以 pick 结束的不完整计划，Validator 给出 `SCHEMA_ERROR`。
+
+formal v11 通过 v10 预注册标准，可作为 ROUTED 当前正式主结果。
+formal v9/v10 保留为版本演化诊断数据，不得与 v11 混合统计。
+
 ## 当前数据边界
 
-1. ROUTED pilot 不是 formal v9；不用于主结果表的最终功效结论。
+1. ROUTED pilot 不是 formal 数据；不用于主结果表的最终功效结论。
 2. formal_v8 旧 R2 结果应标记 legacy，不与状态感知 R2 或 ROUTED 混合。
 3. pilot 1 因 pipeline defect 作废，论文中可作为调试/审计证据，不作性能数据。
-4. formal_v9 已成为当前正式 ROUTED 数据。后续若加入确定性尾部截断
-   或修改 R1_FROM_STATE prompt，必须作为 formal v10 重新采集，使用新
-   时间戳输出、冻结 baseline，并另建版本记录；不得覆盖或混合 formal_v9。
+4. formal_v9 是无确定性截断、无 required_transports 的版本；formal_v10
+   是确定性截断版本但未达 Final Goal/VGF 标准；两者保留为版本演化
+   诊断数据。
+5. formal_v11 是当前正式 ROUTED 主结果。后续若再修改 prompt、路由、
+   validator 或状态推导，必须另建 formal v12，使用新时间戳输出与
+   冻结 baseline；不得覆盖、筛选后覆盖或与旧版本混合。

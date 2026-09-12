@@ -512,3 +512,122 @@ v10 formal 决策标准：
 4. prefix mutation 仍为 0；
 5. R2 / R1_FROM_STATE 回退语义不变；
 6. `DETERMINISTIC_TRUNCATION` 不产生 VLM 调用。
+
+## 11. v11 修复：required_transports 与状态约束后缀生成
+
+formal v10 达成了 repeat_pick 修复和确定性截断目标，但暴露出
+`R1_FROM_STATE` 的“局部补全”倾向：模型经常只完成当前机械臂手持对象的
+place，而遗漏 remaining goal facts 中的其他搬运需求，导致
+“结构合法但目标未完成”的 VGF 样本。为此，v11 在程序侧增加
+`required_transports`。
+
+该字段的推导规则如下：
+
+```text
+declared goal facts + prefix_final_state
+    → 对每条 on(object, target) 检查 object 当前是否已在 target
+    → 未完成项写入 required_transports
+```
+
+每条记录包含：
+
+```json
+{
+  "object_id": "...",
+  "target_id": "...",
+  "currently_held": false,
+  "current_location": "table"
+}
+```
+
+这不是 oracle，也不是相似对象替换；它只把已经声明给系统的任务目标和
+已验证前缀终态转换为显式搬运需求。`R2` 与 `R1_FROM_STATE` 的 prompt
+同时加入以下约束：
+
+1. 后缀必须完成全部 `required_transports`；
+2. 当前已持有对象只需 place；
+3. 未持有对象必须 pick 后立即 place；
+4. 除非没有剩余搬运项，不得只完成第一个 transport 就停止。
+
+该修改会改变 prompt hash，因此正式采集使用新时间戳并标记为
+formal v11，不与 v9/v10 混合。
+
+### 11.1 v11 pilot
+
+针对 v10 剩余 VGF 最集中的
+`exclusion_constraint_011 unknown_object_after_prefix`，先运行 3 seed
+目标 pilot：
+
+- Final Goal：3/3；
+- VGF：0/3；
+- 全部由 R2 直接完成，未触发回退。
+
+随后复跑 v10 中 VGF 最集中的 18 个压力点
+（`exclusion_constraint_011/014/015` × 3 seeds × duplicate/unknown）：
+
+- Final Goal：18/18；
+- VGF：0/18；
+- pass-but-wrong：0/18；
+- R2 直接成功：16/18；
+- `R2 → R1_FROM_STATE`：2/18。
+
+### 11.2 formal v11 结果
+
+formal v11 使用与 v10 相同的冻结源
+`frozen_sources_v10_20260912_071103.jsonl`，核心压力集仍为：
+
+```text
+48 accepted feasible task/seed slices
+× 5 pressure types
+= 240 repair-pressure points
+```
+
+采集日志中出现的 66 个 task/seed 包含 18 个逻辑冲突不可行任务源，
+这些源被 source-goal 双检拒绝，只产生 `pressure_source` 记录，
+不进入 240 个修复压力点，因此没有污染正式结果。
+
+formal v11 总体结果：
+
+| 指标 | 数值 |
+|---|---:|
+| CRR | 233/240 = 97.1% |
+| Final Goal | 233/240 = 97.1% |
+| VGF | 0/240 = 0% |
+| pass-but-wrong | 0/240 |
+| prefix mutation | 0/192 |
+| 修复模型调用 | 268 次，平均 1.117 次/点 |
+
+路由分布：
+
+| 路由 | 数量 |
+|---|---:|
+| R2 直接 | 116 |
+| `R2 → R1_FROM_STATE` | 28 |
+| `R2 → R1` | 48 |
+| `DETERMINISTIC_TRUNCATION` | 48 |
+
+按压力类型的 Final Goal：
+
+| 压力类型 | Final Goal | VGF |
+|---|---:|---:|
+| duplicate_pick_after_prefix | 48/48 | 0 |
+| unknown_object_after_prefix | 48/48 | 0 |
+| invalid_target_after_prefix | 48/48 | 0 |
+| place_before_pick | 41/48 | 0 |
+| repeat_pick_after_valid_plan | 48/48 | 0 |
+
+剩余 7 个失败全部出现在 `place_before_pick`：R2 失败后回退 R1，
+但 R1 返回了以 pick 结束的不完整计划，Validator 给出
+`SCHEMA_ERROR`。它们不是 VGF，也未修改任何锁定前缀。
+
+对照 v10 预注册标准，formal v11 通过：
+
+1. `repeat_pick_after_valid_plan` Final Goal 100% ≥ 95%；
+2. ROUTED 总体 Final Goal 97.1% ≥ 95%；
+3. VGF 0% ≤ 2%；
+4. prefix mutation 0/192；
+5. 回退语义保持不变；
+6. 确定性截断仍为 0 次 VLM 调用。
+
+机器可读汇总见
+`data/reports/formal_v11_routed_metrics_20260912.json`。

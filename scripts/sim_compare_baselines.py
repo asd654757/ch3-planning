@@ -83,20 +83,33 @@ def validate_plan(plan: ModelPlan, registry) -> tuple[bool, str | None, str | No
     return result.valid, result.error_code, result.layer
 
 
-def select_points(rows: list[dict[str, Any]], per_pressure: int) -> list[tuple[str, int, str]]:
+def select_points(
+    rows: list[dict[str, Any]],
+    per_pressure: int,
+    *,
+    all_slices: bool = False,
+) -> list[tuple[str, int, str]]:
     by_pressure: dict[str, list[tuple[str, int, str]]] = defaultdict(list)
     for row in rows:
         by_pressure[row["pressure_type"]].append(key(row))
     selected: list[tuple[str, int, str]] = []
     for pressure in PRESSURES:
-        tasks: dict[str, tuple[str, int, str]] = {}
-        for k in sorted(by_pressure[pressure]):
-            # Keep the lowest seed for each task, then take a deterministic
-            # task-diverse subset rather than repeated samples of one task.
-            tasks.setdefault(k[0], k)
-        if len(tasks) < per_pressure:
-            raise RuntimeError(f"only {len(tasks)} distinct tasks for {pressure}")
-        selected.extend(sorted(tasks.values())[:per_pressure])
+        if all_slices:
+            # Sim-IF-240 uses every frozen task x seed slice for each pressure.
+            if len(by_pressure[pressure]) < per_pressure:
+                raise RuntimeError(
+                    f"only {len(by_pressure[pressure])} paired slices for {pressure}"
+                )
+            selected.extend(sorted(by_pressure[pressure])[:per_pressure])
+        else:
+            tasks: dict[str, tuple[str, int, str]] = {}
+            for k in sorted(by_pressure[pressure]):
+                # Keep the lowest seed for each task, then take a deterministic
+                # task-diverse subset rather than repeated samples of one task.
+                tasks.setdefault(k[0], k)
+            if len(tasks) < per_pressure:
+                raise RuntimeError(f"only {len(tasks)} distinct tasks for {pressure}")
+            selected.extend(sorted(tasks.values())[:per_pressure])
     return selected
 
 
@@ -152,7 +165,21 @@ def main() -> None:
         type=Path,
         default=Path("data/collections/external_baseline_formal_20260911_173240.jsonl"),
     )
+    parser.add_argument(
+        "--self-refine-source",
+        type=Path,
+        default=Path("data/collections/external_baseline_formal_20260911_173240.jsonl"),
+    )
     parser.add_argument("--points-per-pressure", type=int, default=4)
+    parser.add_argument(
+        "--selection-mode",
+        choices=("task_diverse", "all_slices"),
+        default="task_diverse",
+        help=(
+            "task_diverse keeps the lowest seed for selected tasks; "
+            "all_slices uses every task x seed slice, required for Sim-IF-240"
+        ),
+    )
     parser.add_argument("--max-steps-per-primitive", type=int, default=300)
     parser.add_argument("--observation-size", type=int, default=224)
     parser.add_argument("--output-dir", type=Path, default=Path("data/collections"))
@@ -173,24 +200,35 @@ def main() -> None:
         for r in load_jsonl(args.checker_source)
         if r.get("repair_mode") == "checker_loop"
     ]
+    self_refine_rows = [
+        r
+        for r in load_jsonl(args.self_refine_source)
+        if r.get("repair_mode") == "self_refine"
+    ]
 
     routed = {key(r): r for r in routed_rows}
     r2 = {key(r): r for r in r2_rows}
     checker = {key(r): r for r in checker_rows}
-    common = set(routed) & set(r2) & set(checker)
+    self_refine = {key(r): r for r in self_refine_rows}
+    common = set(routed) & set(r2) & set(checker) & set(self_refine)
     candidates = [r for r in routed_rows if key(r) in common]
-    points = select_points(candidates, args.points_per_pressure)
+    points = select_points(
+        candidates,
+        args.points_per_pressure,
+        all_slices=args.selection_mode == "all_slices",
+    )
     if len(points) != len(PRESSURES) * args.points_per_pressure:
         raise RuntimeError("failed to select the expected paired pressure points")
 
     registry = load_registry("config/capability_registry.yaml")
-    arms = ["NO_REPAIR", "R2_ONLY", "CHECKER_LOOP", "ROUTED"]
+    arms = ["NO_REPAIR", "R2_ONLY", "SELF_REFINE", "CHECKER_LOOP", "ROUTED"]
     records: list[dict[str, Any]] = []
 
     for point_index, point_key in enumerate(points, 1):
         routed_row = routed[point_key]
         r2_row = r2[point_key]
         checker_row = checker[point_key]
+        self_refine_row = self_refine[point_key]
         print(
             f"[sim-compare] point={point_index}/{len(points)} "
             f"pressure={point_key[2]} task={point_key[0]} seed={point_key[1]} start",
@@ -212,6 +250,9 @@ def main() -> None:
                 plan_data = source_row.get("stress_plan")
             elif arm == "R2_ONLY":
                 source_row = r2_row
+                plan_data = source_row.get("model_plan")
+            elif arm == "SELF_REFINE":
+                source_row = self_refine_row
                 plan_data = source_row.get("model_plan")
             elif arm == "CHECKER_LOOP":
                 source_row = checker_row

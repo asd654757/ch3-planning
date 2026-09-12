@@ -709,3 +709,77 @@ pick/place。执行适配器位于 `ch3/execution/metaworld_executor.py`，
 benchmark，也不是 AD-Flow 真机策略验证。论文中可以报告为
 “修复后计划可以被分解并在 MetaWorld 中执行”，但不能写成
 “formal v11 系统在仿真中达到 96.43% 任务成功率”。
+
+## 14. 四臂配对仿真对照 pilot
+
+在接口 smoke 和 ROUTED 计划仿真 pilot 之后，进一步做了一个
+四臂配对对照，用来观察“无修复、R2-only、Checker-loop 和
+ROUTED”的修复计划能否进入同一个 MetaWorld 执行接口。该对照
+不调用 VLM，只复用冻结修复结果；每个配对点先重新做符号层
+Validator 与 Goal Checker，通过后再逐个 `pick/place` 对进入
+MetaWorld。当前仿真场景仍然采用
+`one_pick_place_pair_per_fresh_meta_world_episode` 协议。
+
+抽样规模为 20 个配对点：5 类压力 × 4 个不同任务，任务取最低
+seed。四臂为：
+
+1. `NO_REPAIR`：formal v11 中的受扰计划，不修复；
+2. `R2_ONLY`：formal v8 no-oracle 中独立 R2 臂的修复计划；
+3. `CHECKER_LOOP`：外部基线中 checker-loop 的修复计划；
+4. `ROUTED`：formal v11 的错误类型感知路由修复计划。
+
+最终成功同时要求符号计划有效、目标满足，以及该计划的所有
+`pick/place` 对在 MetaWorld 中执行成功。结果如下：
+
+| 臂 | 符号有效 | 仿真尝试 | 仿真成功 | 最终成功 |
+|---|---:|---:|---:|---:|
+| NO_REPAIR | 0/20 | 0/20 | 0/20 | 0/20 = 0.00% |
+| R2_ONLY | 11/20 | 11/20 | 6/20 | 6/20 = 30.00% |
+| CHECKER_LOOP | 19/20 | 19/20 | 16/20 | 16/20 = 80.00% |
+| ROUTED | 19/20 | 19/20 | 15/20 | 15/20 = 75.00% |
+
+`pick/place` 对级结果为：
+
+| 臂 | 对级成功 |
+|---|---:|
+| R2_ONLY | 39/44 = 88.64% |
+| CHECKER_LOOP | 73/76 = 96.05% |
+| ROUTED | 72/76 = 94.74% |
+
+ROUTED 与 CHECKER_LOOP 的配对差异是：两者同时成功 14 点，
+同时失败 3 点，Checker-loop 单独成功 2 点，ROUTED 单独成功
+1 点；精确 McNemar 检验 `p=1.000`。因此，在这 20 点小样本中，
+不能声称 ROUTED 在仿真终层显著优于 Checker-loop。
+
+这个结果的正确解释是：
+
+1. ROUTED 的主要增益仍然在符号层。240 点 formal v11 中，
+   ROUTED 达到 233/240 = 97.08%，而 Checker-loop 为
+   191/240 = 79.58%。
+2. 在 20 点仿真对照中，ROUTED 与 Checker-loop 的符号有效数
+   都达到 19/20，说明该小样本已经不足以区分二者的符号层差异。
+3. 仿真终层还叠加了底层 expert policy 的执行随机性/失败。
+   ROUTED 在第 3、4、10、13 点出现 primitive 执行失败；
+   Checker-loop 在第 3、5、10 点出现 primitive 执行失败。
+   因此仿真终层差异不能直接解释为修复方法整体失效。
+
+第 16 点是唯一 ROUTED 与 Checker-loop 均未进入仿真的符号层
+共同失败，压力类型为 `place_before_pick`，错误为
+`SCHEMA_ERROR`。这与 formal v11 中 `place_before_pick` 是
+当前失败模式集中的压力类型一致。
+
+结果文件：
+
+- `data/collections/sim_compare_baselines_20260912_134818.json`
+- `logs/sim_compare_baselines_20260912_134332.log`
+- `data/reports/sim_compare_baselines_20260912_134818_analysis.json`
+
+论文边界必须写清楚：这是“冻结修复计划的接口级仿真对照
+pilot”，不是完整仿真 benchmark，也不是通用 MetaWorld 泛化
+实验。它支持三个较保守的结论：
+
+1. 无修复的压力计划在符号层全部无法进入执行接口；
+2. ROUTED 和 Checker-loop 修复后的计划绝大多数可以编译为
+   primitive 并进入 MetaWorld；
+3. 在 20 点小样本中，仿真终层 ROUTED 与 Checker-loop 没有
+   统计显著差异；ROUTED 的优势主要由 240 点符号层结果支撑。

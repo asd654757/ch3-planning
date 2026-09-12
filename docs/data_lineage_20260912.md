@@ -221,3 +221,42 @@ pilot 源为
 
 边界：该数据只支持“修复后计划可映射到仿真 primitive 并执行”的
 接口级结论，不能与 formal v11 的 240 点修复压力结果混合计算。
+
+## 四臂配对仿真对照 pilot
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_compare_baselines_20260912_134818.json` | 20 个配对点上 NO_REPAIR / R2_ONLY / CHECKER_LOOP / ROUTED 的冻结计划仿真对照 |
+| `logs/sim_compare_baselines_20260912_134332.log` | 对应运行日志 |
+| `data/reports/sim_compare_baselines_20260912_134818_analysis.json` | 派生分析：按臂汇总、配对差异和失败模式 |
+
+对照点来自三个冻结源：
+
+- formal v11 ROUTED 结果：
+  `data/collections/repair_pressure_formal_v11_routed_20260912_200252.jsonl`；
+- formal v8 no-oracle R2-only 结果：
+  `data/collections/repair_pressure_formal_v8_no_oracle_20260911_153655.jsonl`；
+- 外部基线 Checker-loop 结果：
+  `data/collections/external_baseline_formal_20260911_173240.jsonl`。
+
+抽样规则是 5 类压力 × 4 个不同任务，共 20 个配对点；所有臂在同一
+`task_id / seed / pressure_type` 上配对。执行协议仍是
+`one_pick_place_pair_per_fresh_meta_world_episode`，全程不调用 VLM。
+
+终层汇总：
+
+| 臂 | 最终成功 |
+|---|---:|
+| NO_REPAIR | 0/20 |
+| R2_ONLY | 6/20 |
+| CHECKER_LOOP | 16/20 |
+| ROUTED | 15/20 |
+
+ROUTED 与 CHECKER_LOOP 的配对差异为
+`(14 both success, 3 both failure, 1 ROUTED-only, 2 CHECKER_LOOP-only)`，
+精确 McNemar `p=1.000`。因此该 20 点仿真 pilot 不能用来声称 ROUTED
+在仿真终层显著优于 Checker-loop。
+
+数据边界：这是冻结修复计划的接口级仿真对照 pilot，只用于检查
+修复计划能否进入同一执行接口；不能与 240 点符号层 formal v11
+结果合并为一个“仿真 benchmark 成功率”，也不能外推为真机结论。

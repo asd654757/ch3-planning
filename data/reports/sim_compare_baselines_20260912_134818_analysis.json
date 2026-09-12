@@ -1,0 +1,916 @@
+{
+  "completed_at_utc": "2026-09-12T15:06:53.673314+00:00",
+  "record_type": "sim_compare_baselines_analysis",
+  "source_result": "data/collections/sim_compare_baselines_20260912_134818.json",
+  "protocol": "one_pick_place_pair_per_fresh_meta_world_episode",
+  "vlm_calls": 0,
+  "matched_points": 20,
+  "summary_by_arm": {
+    "NO_REPAIR": {
+      "points": 20,
+      "symbolic_valid": 0,
+      "symbolic_rate": 0.0,
+      "symbolic_ci95_wilson": {
+        "lower": 0.0,
+        "upper": 0.16112515805281938
+      },
+      "sim_attempted": 0,
+      "sim_success": 0,
+      "sim_success_rate_among_attempted": null,
+      "sim_ci95_wilson_among_attempted": null,
+      "final_success": 0,
+      "final_success_rate": 0.0,
+      "final_ci95_wilson": {
+        "lower": 0.0,
+        "upper": 0.16112515805281938
+      },
+      "pair_total": 0,
+      "pair_success": 0,
+      "pair_success_rate": null,
+      "pair_ci95_wilson": null
+    },
+    "R2_ONLY": {
+      "points": 20,
+      "symbolic_valid": 11,
+      "symbolic_rate": 0.55,
+      "symbolic_ci95_wilson": {
+        "lower": 0.34208534245034233,
+        "upper": 0.7418021417443759
+      },
+      "sim_attempted": 11,
+      "sim_success": 6,
+      "sim_success_rate_among_attempted": 0.5454545454545454,
+      "sim_ci95_wilson_among_attempted": {
+        "lower": 0.280091537409322,
+        "upper": 0.7872872837754024
+      },
+      "final_success": 6,
+      "final_success_rate": 0.3,
+      "final_ci95_wilson": {
+        "lower": 0.1454772448676043,
+        "upper": 0.5189728183535235
+      },
+      "pair_total": 44,
+      "pair_success": 39,
+      "pair_success_rate": 0.8863636363636364,
+      "pair_ci95_wilson": {
+        "lower": 0.7602084758339172,
+        "upper": 0.950472193989075
+      }
+    },
+    "CHECKER_LOOP": {
+      "points": 20,
+      "symbolic_valid": 19,
+      "symbolic_rate": 0.95,
+      "symbolic_ci95_wilson": {
+        "lower": 0.763868806553258,
+        "upper": 0.9911185511992047
+      },
+      "sim_attempted": 19,
+      "sim_success": 16,
+      "sim_success_rate_among_attempted": 0.8421052631578947,
+      "sim_ci95_wilson_among_attempted": {
+        "lower": 0.6243452472967093,
+        "upper": 0.9447952836146585
+      },
+      "final_success": 16,
+      "final_success_rate": 0.8,
+      "final_ci95_wilson": {
+        "lower": 0.5839825677481064,
+        "upper": 0.919342337420202
+      },
+      "pair_total": 76,
+      "pair_success": 73,
+      "pair_success_rate": 0.9605263157894737,
+      "pair_ci95_wilson": {
+        "lower": 0.8902521225345447,
+        "upper": 0.9864853649054605
+      }
+    },
+    "ROUTED": {
+      "points": 20,
+      "symbolic_valid": 19,
+      "symbolic_rate": 0.95,
+      "symbolic_ci95_wilson": {
+        "lower": 0.763868806553258,
+        "upper": 0.9911185511992047
+      },
+      "sim_attempted": 19,
+      "sim_success": 15,
+      "sim_success_rate_among_attempted": 0.7894736842105263,
+      "sim_ci95_wilson_among_attempted": {
+        "lower": 0.5666572155618583,
+        "upper": 0.9149232336708375
+      },
+      "final_success": 15,
+      "final_success_rate": 0.75,
+      "final_ci95_wilson": {
+        "lower": 0.531299122381256,
+        "upper": 0.8881382985923343
+      },
+      "pair_total": 76,
+      "pair_success": 72,
+      "pair_success_rate": 0.9473684210526315,
+      "pair_ci95_wilson": {
+        "lower": 0.8723432742411035,
+        "upper": 0.9793445707006156
+      }
+    }
+  },
+  "pressure_success_counts": {
+    "NO_REPAIR": {
+      "duplicate_pick_after_prefix": 0,
+      "invalid_target_after_prefix": 0,
+      "place_before_pick": 0,
+      "repeat_pick_after_valid_plan": 0,
+      "unknown_object_after_prefix": 0
+    },
+    "R2_ONLY": {
+      "duplicate_pick_after_prefix": 0,
+      "invalid_target_after_prefix": 2,
+      "place_before_pick": 1,
+      "repeat_pick_after_valid_plan": 3,
+      "unknown_object_after_prefix": 0
+    },
+    "CHECKER_LOOP": {
+      "duplicate_pick_after_prefix": 3,
+      "invalid_target_after_prefix": 3,
+      "place_before_pick": 3,
+      "repeat_pick_after_valid_plan": 4,
+      "unknown_object_after_prefix": 3
+    },
+    "ROUTED": {
+      "duplicate_pick_after_prefix": 2,
+      "invalid_target_after_prefix": 3,
+      "place_before_pick": 2,
+      "repeat_pick_after_valid_plan": 4,
+      "unknown_object_after_prefix": 4
+    }
+  },
+  "paired_endpoint_comparisons": {
+    "ROUTED_vs_CHECKER_LOOP": {
+      "both_success": 14,
+      "both_failure": 3,
+      "ROUTED_only": 1,
+      "CHECKER_LOOP_only": 2,
+      "exact_mcnemar_p": 1.0
+    },
+    "ROUTED_vs_R2_ONLY": {
+      "both_success": 4,
+      "both_failure": 3,
+      "ROUTED_only": 11,
+      "R2_ONLY_only": 2,
+      "exact_mcnemar_p": 0.0224609375
+    },
+    "ROUTED_vs_NO_REPAIR": {
+      "both_success": 0,
+      "both_failure": 5,
+      "ROUTED_only": 15,
+      "NO_REPAIR_only": 0,
+      "exact_mcnemar_p": 6.103515625e-05
+    },
+    "CHECKER_LOOP_vs_R2_ONLY": {
+      "both_success": 5,
+      "both_failure": 3,
+      "CHECKER_LOOP_only": 11,
+      "R2_ONLY_only": 1,
+      "exact_mcnemar_p": 0.00634765625
+    }
+  },
+  "failures": [
+    {
+      "point_index": 1,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 1,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 2,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 2,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 1,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.0399163613992759,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 3,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 3,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 3,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "CHECKER_LOOP",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 2,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.03266023248007221,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 3,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "ROUTED",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 1,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.041371258062981656,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 4,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 4,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 4,
+      "pressure_type": "duplicate_pick_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "ROUTED",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 1,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.036133465236890684,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 5,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 5,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 5,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "CHECKER_LOOP",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 1,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.03932426755174022,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 6,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 6,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 7,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 7,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 8,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 8,
+      "pressure_type": "unknown_object_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "ARM_NOT_EMPTY",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 9,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 9,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 0,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.021354262529598232,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 10,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 10,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "CHECKER_LOOP",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 2,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.04005262631395842,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 10,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "ROUTED",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 1,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.03278994913637865,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 11,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 12,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 12,
+      "pressure_type": "invalid_target_after_prefix",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 2,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.03958350051116234,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 13,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 13,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "ROUTED",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 3,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.040532363871153464,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 14,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 14,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 3,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.04105046384130442,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 15,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 15,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": true,
+      "symbolic_goal_satisfied": true,
+      "sim_attempted": true,
+      "sim_success": false,
+      "error_code": null,
+      "failed_pairs": [
+        {
+          "pair_index": 1,
+          "step_results": [
+            false
+          ],
+          "final_puck_target_distance": 0.029713068912018477,
+          "primitive_steps": [
+            300
+          ]
+        }
+      ],
+      "exception": null
+    },
+    {
+      "point_index": 16,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "OBJECT_NOT_HELD",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 16,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "SCHEMA_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 16,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "CHECKER_LOOP",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": null,
+      "failed_pairs": [],
+      "exception": "ValidationError: 1 validation error for ModelPlan\n  Input should be a valid dictionary or instance of ModelPlan [type=model_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.13/v/model_type"
+    },
+    {
+      "point_index": 16,
+      "pressure_type": "place_before_pick",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "ROUTED",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "SCHEMA_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 17,
+      "pressure_type": "repeat_pick_after_valid_plan",
+      "task_id": "attribute_grouped_000",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "STATE_TRANSITION_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 18,
+      "pressure_type": "repeat_pick_after_valid_plan",
+      "task_id": "attribute_grouped_001",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "STATE_TRANSITION_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 19,
+      "pressure_type": "repeat_pick_after_valid_plan",
+      "task_id": "attribute_grouped_002",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "STATE_TRANSITION_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 20,
+      "pressure_type": "repeat_pick_after_valid_plan",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "NO_REPAIR",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "STATE_TRANSITION_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    },
+    {
+      "point_index": 20,
+      "pressure_type": "repeat_pick_after_valid_plan",
+      "task_id": "attribute_grouped_003",
+      "seed": 0,
+      "arm": "R2_ONLY",
+      "symbolic_valid": false,
+      "symbolic_goal_satisfied": false,
+      "sim_attempted": false,
+      "sim_success": null,
+      "error_code": "STATE_TRANSITION_ERROR",
+      "failed_pairs": [],
+      "exception": null
+    }
+  ]
+}

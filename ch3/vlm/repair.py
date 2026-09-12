@@ -100,7 +100,7 @@ class PlanRepairer:
         seed: Optional[int] = None,
         temperature: float = 0.3,
     ) -> RepairGeneration:
-        if repair_mode not in {"R0", "R1", "R2"}:
+        if repair_mode not in {"R0", "R1", "R1_FROM_STATE", "R2"}:
             raise ValueError(f"Unknown repair mode: {repair_mode}")
         system_prompt = (
             "You are a robotics plan repairer. Output only one JSON object. "
@@ -115,7 +115,7 @@ class PlanRepairer:
             ),
             "original_plan": initial_generation.plan.model_dump() if initial_generation.plan else None,
         }
-        if repair_mode in {"R1", "R2"}:
+        if repair_mode in {"R1", "R1_FROM_STATE", "R2"}:
             prompt_input.update(
                 {
                     "first_invalid_step": validation.first_invalid_step,
@@ -127,16 +127,30 @@ class PlanRepairer:
                     ],
                 }
             )
-        if repair_mode == "R2" and validation.final_state is not None:
+        if repair_mode == "R1_FROM_STATE":
+            if validation.final_state is None or not validation.validated_prefix:
+                raise ValueError(
+                    "R1_FROM_STATE requires an executed prefix and final state"
+                )
+            final_facts = (
+                validation.final_state.facts()
+                | validation.final_state.empty_hand_facts({"left", "right"})
+            )
+            # Execution-time fallback semantics: the prefix has already run,
+            # so the model must not see the initial state as current and must
+            # not return those executed actions again.
+            prompt_input["current_state"] = sorted(final_facts)
+            prompt_input.pop("original_plan", None)
+            prompt_input["executed_prefix"] = [
+                action.model_dump() for action in validation.validated_prefix
+            ]
+
+        if repair_mode in {"R2", "R1_FROM_STATE"} and validation.final_state is not None:
             # State-aware suffix repair: report the world state *after* the
             # validated prefix executes, so the model knows what the arms are
             # holding before generating the replacement suffix.  All derived
             # fields are computed programmatically; the model must not infer
             # them itself.
-            final_facts = (
-                validation.final_state.facts()
-                | validation.final_state.empty_hand_facts({"left", "right"})
-            )
             prompt_input["prefix_final_state"] = sorted(final_facts)
             prompt_input["held_objects"] = dict(
                 sorted(validation.final_state.holding.items())
@@ -187,6 +201,22 @@ class PlanRepairer:
                     "output_requirement": output_requirement,
                 }
             )
+        elif repair_mode == "R1_FROM_STATE":
+            render_values.update(
+                {
+                    "mode": repair_mode,
+                    "task_data": prompt_input,
+                    "output_requirement": (
+                        f"The first {suffix_start - 1} steps have already "
+                        "executed. Return only a new remaining-task suffix; "
+                        f"its first step_id must be {suffix_start}. Never "
+                        "repeat any action from executed_prefix and never "
+                        "return the complete original plan. Use "
+                        "prefix_final_state and held_objects as the current "
+                        "world state."
+                    ),
+                }
+            )
         else:
             render_values.update(
                 {
@@ -219,7 +249,7 @@ class PlanRepairer:
             and empty_probe.get("status") is None
             and empty_probe.get("actions") == []
         ):
-            if repair_mode == "R2" and validation.validated_prefix:
+            if repair_mode in {"R2", "R1_FROM_STATE"} and validation.validated_prefix:
                 merged_plan = ModelPlan(
                     actions=[
                         action.model_copy(deep=True)
@@ -262,9 +292,11 @@ class PlanRepairer:
                 None,
                 response,
                 accepted=False,
-                reject_reason="empty_suffix_without_validated_prefix"
-                if repair_mode == "R2"
-                else "empty_plan",
+                reject_reason=(
+                    "empty_suffix_without_validated_prefix"
+                    if repair_mode == "R2"
+                    else "empty_suffix"
+                ),
                 parse_error="ModelPlan cannot be empty",
                 prompt=user_prompt,
                 prompt_id=prompt_id,
@@ -315,7 +347,7 @@ class PlanRepairer:
                 infeasible_reason=infeasible_reason,
             )
 
-        if repair_mode == "R2":
+        if repair_mode in {"R2", "R1_FROM_STATE"}:
             guard = merge_locked_prefix(
                 validation.validated_prefix, returned_plan
             )

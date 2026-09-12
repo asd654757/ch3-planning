@@ -279,10 +279,19 @@ def routed_repair(
     if r2_ok:
         return r2, info
 
-    info["route_taken"].append("R1")
+    # A plan-time fallback may return a full replacement plan.  But when the
+    # validated prefix represents an already-executed robot prefix, R1 must
+    # not repeat those actions.  R1_FROM_STATE replans from prefix_final_state
+    # and merges the returned suffix behind the executed prefix.
+    fallback_mode = (
+        "R1_FROM_STATE"
+        if validation.final_state is not None and validation.validated_prefix
+        else "R1"
+    )
+    info["route_taken"].append(fallback_mode)
     info["fallback_triggered"] = True
     r1 = repairer.repair(
-        repair_mode="R1",
+        repair_mode=fallback_mode,
         task=task,
         initial_generation=initial_generation,
         validation=validation,
@@ -290,6 +299,7 @@ def routed_repair(
         seed=seed,
         temperature=temperature,
     )
+    info["fallback_mode"] = fallback_mode
     return r1, info
 
 

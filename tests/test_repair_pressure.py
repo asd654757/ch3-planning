@@ -10,7 +10,7 @@ from ch3.validator.pipeline import Validator
 from ch3.vlm.mock import MockVLMClient
 from ch3.vlm.planner import InitialPlanner
 from ch3.vlm.prompts import PromptLibrary
-from ch3.vlm.repair import PlanRepairer
+from ch3.vlm.repair import PlanRepairer, RepairGeneration
 
 from scripts.repair_pressure import (
     ROUTED_GROUP,
@@ -205,18 +205,20 @@ def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
     )
     stress_validation = validator.validate(stress_plan, state)
 
-    def r2_failure_then_r1(payload):
+    def r2_failure_then_state_replan(payload):
         prompt = payload["messages"][1]["content"]
         if "Repair mode: R2" in prompt:
             return {"actions": []}
-        return VALID_PLAN
+        return {"actions": [VALID_PLAN["actions"][1]]}
 
     output = tmp_path / "records.jsonl"
     summary = run_pressure_slice(
         SCENARIO,
         0,
         planner=InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()),
-        repairer=PlanRepairer(MockVLMClient(r2_failure_then_r1), PromptLibrary()),
+        repairer=PlanRepairer(
+            MockVLMClient(r2_failure_then_state_replan), PromptLibrary()
+        ),
         validator=validator,
         logger=EpisodeLogger(output),
         pressure_types=("unknown_object_after_prefix",),
@@ -224,7 +226,8 @@ def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
     )
     routed = summary["repairs"]["unknown_object_after_prefix"][ROUTED_GROUP]
     assert routed["fallback_triggered"] is True
-    assert routed["route_taken"] == ["R2", "R1"]
+    assert routed["route_taken"] == ["R2", "R1_FROM_STATE"]
+    assert routed["fallback_mode"] == "R1_FROM_STATE"
     assert routed["r2_valid"] is False
     assert routed["valid"] is True
     assert routed["goal_satisfied"] is True
@@ -239,11 +242,55 @@ def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
     assert record["baseline"] == ROUTED_GROUP
     assert record["fallback_triggered"] is True
     assert record["r2_valid"] is False
+    assert record["fallback_mode"] == "R1_FROM_STATE"
 
     metrics = compute_pressure_metrics(records)
     assert metrics[ROUTED_GROUP]["n"] == 1
     assert metrics[ROUTED_GROUP]["GSR_after_repair"] == 1.0
     assert metrics[ROUTED_GROUP]["VGF"] == 0.0
+
+
+def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "unknown_object_after_prefix",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+    assert stress_validation.final_state is not None
+
+    suffix = {"actions": [VALID_PLAN["actions"][1]]}
+    repaired: RepairGeneration = PlanRepairer(
+        MockVLMClient(suffix), PromptLibrary()
+    ).repair(
+        repair_mode="R1_FROM_STATE",
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        seed=0,
+    )
+    assert repaired.accepted is True
+    assert repaired.repair_mode == "R1_FROM_STATE"
+    assert repaired.merged_with_prefix is True
+    assert repaired.plan == valid_plan
+
+    prompt = repaired.prompt
+    assert "Repair mode: R1_FROM_STATE" in prompt
+    assert "holding(right, red_cube_0)" in prompt
+    assert "executed_prefix" in prompt
+    assert "__unknown_object__" not in prompt
 
 
 def test_cli_accepts_routed_repair_group() -> None:

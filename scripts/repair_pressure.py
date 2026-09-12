@@ -28,6 +28,7 @@ from ch3.schema.model_plan import ModelPlan, ModelPlanAction, Skill
 from ch3.state.world_state import WorldState
 from ch3.validator.pipeline import Validator
 from ch3.vlm.client import DashScopeVLMClient
+from ch3.vlm.client import VLMResponse
 from ch3.vlm.collector import (
     SHARED_BASELINE,
     evaluate_plan,
@@ -41,6 +42,7 @@ from ch3.vlm.parser import plan_to_dict
 from ch3.vlm.planner import InitialPlanner, PlanGeneration
 from ch3.vlm.prompts import PromptLibrary
 from ch3.vlm.repair import PlanRepairer
+from ch3.vlm.repair import RepairGeneration
 
 PRESSURE_TYPES = (
     "duplicate_pick_after_prefix",
@@ -177,6 +179,7 @@ def repair_pressure_record(
             "pressure_type": pressure_type,
             "pressure_source_plan": plan_to_dict(source_generation.plan),
             "pressure_source_valid": True,
+            "pressure_source_goal_satisfied": True,
             **stress_plan_summary(stress_plan, stress_validation),
         }
     )
@@ -205,6 +208,8 @@ def pressure_source_record(
     )
     record["schema_version"] = SCHEMA_VERSION
     record["record_type"] = "pressure_source"
+    record["pressure_source_valid"] = bool(validation and validation.valid)
+    record["pressure_source_goal_satisfied"] = bool(goal_ok)
     return record
 
 
@@ -238,6 +243,57 @@ ROUTED_REPAIR_GROUPS: dict[str, str] = {
 }
 
 
+def _prefix_completes_goal(
+    *,
+    task: Mapping[str, Any],
+    validation: Any,
+) -> bool:
+    """Return whether the validated prefix already satisfies the full goal.
+
+    This is a program-side deterministic rule for the common corruption
+    pattern ``valid complete plan + redundant invalid tail``.  It must not
+    fire while an arm is holding an object, because an executable final plan
+    should not leave a manipulated object unplaced.
+    """
+    final_state = validation.final_state
+    if final_state is None or not validation.validated_prefix:
+        return False
+    if final_state.holding:
+        return False
+    prefix_final = final_state.facts() | final_state.empty_hand_facts({"left", "right"})
+    goal_facts = task.get("goal", {}).get("facts", [])
+    return all(isinstance(fact, str) and fact in prefix_final for fact in goal_facts)
+
+
+def _deterministic_truncation(
+    validation: Any,
+) -> RepairGeneration:
+    """Build a no-model-call repair by retaining the validated prefix."""
+    prefix_plan = ModelPlan(
+        actions=[
+            action.model_copy(deep=True)
+            for action in validation.validated_prefix
+        ]
+    )
+    return RepairGeneration(
+        repair_mode=ROUTED_GROUP,
+        plan=prefix_plan,
+        response=VLMResponse(
+            content="",
+            model="deterministic-truncation",
+            latency_ms=0,
+        ),
+        accepted=True,
+        prompt="",
+        prompt_id="deterministic_truncation",
+        prompt_hash="deterministic_truncation",
+        locked_prefix_step_ids=tuple(
+            action.step_id for action in validation.validated_prefix
+        ),
+        merged_with_prefix=True,
+    )
+
+
 def routed_repair(
     *,
     repairer: PlanRepairer,
@@ -252,10 +308,24 @@ def routed_repair(
     """Error-aware routed repair (docs/method_design_20260912.md, section 3).
 
     Route: state-aware R2 suffix first; fall back to R1 full replan when the
-    R2 result fails validation or does not satisfy the goal (VGF).  Returns
-    ``(final_generation, route_info)``; the caller records both attempts'
-    outcome for system-level analysis.
+    R2 result fails validation or does not satisfy the goal (VGF).  When the
+    executed prefix already satisfies every goal fact and both arms are empty,
+    deterministic truncation removes the invalid tail without a model call.
+    Returns ``(final_generation, route_info)``; the caller records both
+    attempts' outcome for system-level analysis.
     """
+    if _prefix_completes_goal(task=task, validation=validation):
+        info: dict[str, Any] = {
+            "route_taken": ["DETERMINISTIC_TRUNCATION"],
+            "fallback_triggered": False,
+            "r2_skipped": True,
+            "r2_valid": None,
+            "r2_goal_ok": None,
+            "r2_pbw": None,
+            "deterministic_truncation": True,
+        }
+        return _deterministic_truncation(validation), info
+
     r2 = repairer.repair(
         repair_mode="R2",
         task=task,
@@ -351,7 +421,16 @@ def run_pressure_slice(
         source.plan, task, validator, initial_state
     )
 
-    if source_validation is None or not source_validation.valid or source.plan is None:
+    # A pressure source must be a complete task solution, not merely a
+    # state-valid plan.  A state-valid but goal-failing baseline would turn a
+    # repair benchmark into an unintended planning benchmark: even the
+    # "valid prefix" could be far short of the remaining task goal.
+    if (
+        source_validation is None
+        or not source_validation.valid
+        or source.plan is None
+        or not source_goal
+    ):
         source_record = pressure_source_record(
             task=task,
             seed=seed,

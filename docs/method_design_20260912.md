@@ -412,3 +412,103 @@ else:
 > `remaining_goal_facts` is empty, return exactly `{"actions": []}`.
 
 v10 必须使用新时间戳采集，不得覆盖 formal v9。
+
+## 10. v10 修复：确定性尾部截断与 R1_FROM_STATE 空后缀（已实现）
+
+formal v9 暴露的唯一主要失败簇是“完整目标已由合法前缀完成，但压力
+计划追加了冗余非法尾部”。针对该失败簇，v10 加入程序侧确定性截断：
+
+```
+if validation.validated_prefix 非空
+   and validation.final_state 非空
+   and prefix_final_state 已满足全部 goal facts
+   and final_state.holding 为空:
+       ROUTED = Deterministic Truncation（不加模型调用）
+else:
+       R2 → R1_FROM_STATE / R1 fallback
+```
+
+安全边界：
+
+- 只在已有合法/已执行前缀时触发；
+- 只在剩余目标事实为空时触发；
+- 只在双臂均不持物时触发；
+- 不使用相似对象替换；
+- 不改变已执行前缀；
+- 结果仍会重新通过 Validator 和 Goal Checker。
+
+记录字段新增：
+
+```json
+{
+  "route_taken": ["DETERMINISTIC_TRUNCATION"],
+  "r2_skipped": true,
+  "r2_valid": null,
+  "r2_goal_ok": null,
+  "r2_pbw": null,
+  "deterministic_truncation": true
+}
+```
+
+同时，`repair.md` 的 hard constraint 8 修正为：
+
+> For R2 and R1_FROM_STATE, return only the requested suffix. For
+> R1_FROM_STATE, if `remaining_goal_facts` is empty, return exactly
+> `{"actions": []}`.
+
+该修改会改变 prompt hash；后续采集必须使用新时间戳并标记 formal v10，
+不得与 formal v9 混合。当前测试：`79 passed`。
+
+### 10.1 v10 压力源协议修正
+
+formal v9 使用旧协议时，`baseline_valid` 的含义只是
+`Validator.valid`；这允许了一个状态合法但未完成任务的计划进入压力源。
+事后审计发现 `exclusion_constraint_012` 的 3 个 seed 都属于这种
+“state-valid, goal-failing”源：baseline 只完成
+`white_wedge_104 → white_bowl_106`，未完成
+`red_sphere_105 → red_tray_107`。
+
+这不是 Goal Checker 判错，而是压力 runner 的准入条件过宽。v10 修正为：
+
+```
+Pressure source accepted iff
+    source_validation.valid
+    and source_goal_satisfied
+```
+
+同时在 JSONL 中显式记录：
+
+```json
+{
+  "pressure_source_valid": true,
+  "pressure_source_goal_satisfied": true
+}
+```
+
+formal v10 使用 `stress_tasks_v8_pilot_v3_source_goal.jsonl`。该版本
+修正了 `exclusion_constraint_012` 的 instruction 表述，使自然语言描述
+与 Goal facts 一致：red sphere 放到 red tray，而不是放进 bowl。
+冻结源文件为
+`frozen_sources_v10_20260912_071103.jsonl`：45 个 task/seed 继续复用
+formal v8 no-oracle 的旧冻结源，`exclusion_constraint_012` 的 3 个
+seed 在 v3 任务定义下重新生成，且三条都在首次生成时通过
+Validator 与 Goal Checker。
+
+v10 source-goal pilot（48 个 repeat_pick 压力点）结果为：
+
+- Final Goal：48/48；
+- VGF：0/48；
+- 全部路由：`DETERMINISTIC_TRUNCATION`；
+- 0 次 VLM 修复调用；
+- `exclusion_constraint_012` 三个 seed 全部成功。
+
+这只验证 v10 压力源和截断分支，不用于最终正式性能结论。
+
+v10 formal 决策标准：
+
+1. `repeat_pick_after_valid_plan` Final Goal ≥ 95%（v9 为 64.6%）；
+2. ROUTED 总体 Final Goal ≥ 95%（v9 为 89.6%）；
+3. VGF ≤ 2%（v9 为 3.3%）；
+4. prefix mutation 仍为 0；
+5. R2 / R1_FROM_STATE 回退语义不变；
+6. `DETERMINISTIC_TRUNCATION` 不产生 VLM 调用。

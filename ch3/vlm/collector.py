@@ -233,7 +233,25 @@ def make_record(
         baseline=baseline,
         generation=generation,
     )
-    record.update(response_summary(generation.response))
+    if generation.response is None:
+        # Frozen sources are replayed from a prior collection and make no
+        # model call.  Keep the JSONL schema stable with explicit nulls.
+        record.update(
+            {
+                "raw_vlm_output": None,
+                "model": "frozen_source",
+                "finish_reason": None,
+                "response_id": None,
+                "request_id": None,
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "total_tokens": 0,
+                "latency_ms": 0,
+                "raw_api_response": None,
+            }
+        )
+    else:
+        record.update(response_summary(generation.response))
     record.update(plan_summary(plan, generation.parse_error))
     record.update(
         validation_summary(
@@ -247,7 +265,8 @@ def make_record(
         record["response_protocol"] = "infeasible"
         record["infeasible_source"] = (
             "model_refusal"
-            if is_model_only_refusal(generation.response.content)
+            if generation.response is not None
+            and is_model_only_refusal(generation.response.content)
             else "deterministic_guard"
         )
         record["infeasible_reason"] = generation.infeasible_reason

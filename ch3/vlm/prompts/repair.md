@@ -45,4 +45,4 @@ Hard constraints:
 5. Each pick must be immediately followed by the corresponding place for the same object and arm.
 6. Do not pick a new object while an arm is holding one.
 7. Each object may be picked at most once. Do not repeat a pick of the same object.
-8. For R0/R1, return the complete plan, never a partial prefix. For R2, return the requested complete suffix.
+8. For R0/R1, return the complete plan, never a partial prefix. For R2 and R1_FROM_STATE, return only the requested suffix. For R1_FROM_STATE, if `remaining_goal_facts` is empty, return exactly `{"actions": []}`.

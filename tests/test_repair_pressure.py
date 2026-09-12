@@ -250,6 +250,154 @@ def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
     assert metrics[ROUTED_GROUP]["VGF"] == 0.0
 
 
+def test_routed_repair_uses_deterministic_truncation_when_goal_complete(
+    tmp_path: Path,
+) -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "repeat_pick_after_valid_plan",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+    assert stress_validation.validated_prefix == valid_plan.actions
+
+    repaired, route_info = routed_repair(
+        repairer=PlanRepairer(MockVLMClient({"actions": []})),
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        validator=validator,
+        seed=0,
+        temperature=0.3,
+    )
+
+    assert route_info["route_taken"] == ["DETERMINISTIC_TRUNCATION"]
+    assert route_info["fallback_triggered"] is False
+    assert route_info["r2_skipped"] is True
+    assert route_info["deterministic_truncation"] is True
+    assert repaired.accepted is True
+    assert repaired.plan == valid_plan
+    assert repaired.merged_with_prefix is True
+
+    output = tmp_path / "routed_truncation.jsonl"
+    summary = run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()),
+        repairer=PlanRepairer(MockVLMClient({"actions": []})),
+        validator=validator,
+        logger=EpisodeLogger(output),
+        pressure_types=("repeat_pick_after_valid_plan",),
+        repair_groups=(ROUTED_GROUP,),
+    )
+    records = [
+        json.loads(line)
+        for line in output.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert summary["pressure_calls"] == 1
+    assert records[0]["route_taken"] == ["DETERMINISTIC_TRUNCATION"]
+    assert records[0]["valid"] is True
+    assert records[0]["goal_satisfied"] is True
+
+
+def test_pressure_runner_rejects_state_valid_goal_failing_source(
+    tmp_path: Path,
+) -> None:
+    """A state-valid partial solution is not a valid pressure source."""
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    partial_plan = ModelPlan.model_validate(
+        {
+            "actions": [
+                VALID_PLAN["actions"][0],
+                {
+                    **VALID_PLAN["actions"][1],
+                    "target_id": "table",
+                },
+            ]
+        }
+    )
+    output = tmp_path / "source_goal.jsonl"
+
+    summary = run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()),
+        repairer=PlanRepairer(MockVLMClient(VALID_PLAN)),
+        validator=validator,
+        logger=EpisodeLogger(output),
+        pressure_types=("repeat_pick_after_valid_plan",),
+        repair_groups=(ROUTED_GROUP,),
+        source_plan=partial_plan,
+    )
+
+    assert summary["baseline_valid"] is False
+    assert summary["pressure_calls"] == 0
+    assert summary["repairs"] == {}
+
+    records = [
+        json.loads(line)
+        for line in output.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert len(records) == 1
+    record = records[0]
+    assert record["record_type"] == "pressure_source"
+    assert record["valid"] is True
+    assert record["goal_satisfied"] is False
+    assert record["pressure_source_valid"] is True
+    assert record["pressure_source_goal_satisfied"] is False
+
+
+def test_r1_from_state_prompt_allows_empty_suffix_when_goal_complete() -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "repeat_pick_after_valid_plan",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+
+    repaired = PlanRepairer(MockVLMClient({"actions": []})).repair(
+        repair_mode="R1_FROM_STATE",
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        seed=0,
+    )
+    assert repaired.accepted is True
+    assert repaired.plan == valid_plan
+    assert "if `remaining_goal_facts` is empty" in repaired.prompt
+
+
 def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
     validator = _validator()
     state = WorldState(

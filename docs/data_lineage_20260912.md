@@ -10,12 +10,40 @@
 | external baselines | `data/collections/external_baseline_formal_20260911_173240.jsonl` | 正式 | 协议级 Self-Refine / Checker-loop 对比 |
 | formal_v9 ROUTED | `data/collections/repair_pressure_formal_v9_routed_20260912_142533.jsonl` | 正式 | 240 压力点；R2 优先 + R1_FROM_STATE/R1 回退；CRR 92.9%，Final Goal 89.6%，VGF 3.3% |
 
+## v10 代码增强（尚未采集 formal）
+
+2026-09-12 已实现确定性尾部截断和 R1_FROM_STATE 空后缀提示词修正：
+
+- 触发条件：合法前缀非空、前缀终态满足全部 goal facts、双臂空；
+- 路由标记：`DETERMINISTIC_TRUNCATION`；
+- 该路径不调用 VLM；
+- 结果仍需通过 Validator 和 Goal Checker；
+- 相关测试：`78 passed`。
+
+因为 `repair.md` 的 prompt hash 发生变化，formal v10 必须使用新时间戳
+采集，不得覆盖或与 formal_v9 混合。
+
 ## Legacy / 诊断数据（不与新 R2 结果混合）
 
 | 数据 | 文件 | 定位 | 说明 |
 |---|---|---|---|
 | formal_v8（含 oracle） | `data/collections/repair_pressure_formal_v8_20260911_064919.jsonl` | legacy | 早期压力协议，R2 无状态感知输入 |
 | formal_v8 no-oracle | `data/collections/repair_pressure_formal_v8_no_oracle_20260911_153655.jsonl` | legacy + 冻结 baseline 源 | 旧式 R2/R0/R1 压力结果只作诊断；其中的 `pressure_source_plan` 可复用为冻结 baseline |
+
+## v10 source-goal 修正（尚未采集 formal）
+
+v10 在压力 runner 中新增硬准入：压力源必须同时通过 Validator 和
+Goal Checker。审计确认 formal_v8/v9 的 48 个冻结源中只有
+`exclusion_constraint_012` 的 3 个 seed 不满足该条件；原因是其 baseline
+只完成白楔子放入白碗，没有完成红球放到红托盘的目标。
+
+formal v10 使用以下冻结源：
+
+| 文件 | 状态 |
+|---|---|
+| `data/scenarios/stress_tasks_v8_pilot_v3_source_goal.jsonl` | v3 任务集；修正 `exclusion_constraint_012` 的 instruction 与 goal 不一致 |
+| `data/collections/frozen_sources_v10_20260912_071103.jsonl` | 48 个 task/seed；45 个复用 formal_v8，`exclusion_constraint_012` 的 3 个 seed 在 v3 下重新生成且首次即通过双检 |
+| `data/collections/repair_pressure_v10_source_goal_pilot_20260912_071330.jsonl` | 48 点 repeat_pick pilot：48/48 Final Goal，VGF 0，全走 `DETERMINISTIC_TRUNCATION` |
 
 ## R2 状态感知 pilot
 
@@ -62,7 +90,11 @@
   `data/collections/repair_pressure_formal_v9_routed_20260912_142533.jsonl`
 - 机器可读汇总：
   `data/reports/formal_v9_routed_metrics_20260912.json`
-- baseline：48/48 有效，复用 formal_v8 no-oracle 冻结 baseline；
+- baseline：48/48 通过旧协议的 `Validator.valid`，复用 formal_v8
+  no-oracle 冻结 baseline。v10 审计发现其中
+  `exclusion_constraint_012` 的 3 个 seed 属于 state-valid 但
+  goal-failing；formal_v9 的该子集因此标记为旧协议诊断边界，不算
+  Goal Checker 失误；
 - pressure points：240（16 任务 × 3 seeds × 5 压力）；
 - CRR：223/240 = 92.9%；
 - Final Goal / GSR after repair：215/240 = 89.6%；

@@ -42,6 +42,45 @@ class RepairGeneration:
         return self.infeasible_reason is not None
 
 
+def required_transports(
+    task: Mapping[str, Any],
+    state: WorldState,
+) -> list[dict[str, Any]]:
+    """Derive unfinished ``on(object, target)`` transports deterministically.
+
+    This is a prompt-support field, not an oracle: it is computed only from the
+    declared task goal and the already-validated prefix state.  For a held
+    object, ``current_location`` is ``null`` because the object is in the hand.
+    """
+    transports: list[dict[str, Any]] = []
+    held = set(state.holding.values())
+    for fact in task.get("goal", {}).get("facts", []):
+        if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
+            continue
+        inner = fact[3:-1]
+        parts = [part.strip() for part in inner.split(",", 1)]
+        if len(parts) != 2:
+            continue
+        object_id, target_id = parts
+        if object_id == "table" or object_id not in state.objects:
+            continue
+        if state.location_of(object_id) != target_id:
+            transports.append(
+                {
+                    "object_id": object_id,
+                    "target_id": target_id,
+                    "currently_held": object_id in held,
+                    "current_location": (
+                        None if object_id in held else state.at.get(object_id)
+                    ),
+                }
+            )
+    return sorted(
+        transports,
+        key=lambda item: (item["object_id"], item["target_id"]),
+    )
+
+
 class PlanRepairer:
     """Implements the frozen one-call repair protocol."""
 
@@ -165,6 +204,9 @@ class PlanRepairer:
             prompt_input["remaining_goal_facts"] = [
                 f for f in goal_facts if f not in final_facts
             ]
+            prompt_input["required_transports"] = required_transports(
+                task, validation.final_state
+            )
             prompt_input["next_step_id"] = len(validation.validated_prefix) + 1
         if repair_mode == "R0":
             # Frozen: no error localization and no validated prefix leakage.
@@ -190,7 +232,14 @@ class PlanRepairer:
                     "constraint 5 applies inside a complete plan. "
                     "Use prefix_final_state and held_objects to check what each "
                     "arm is currently holding; an arm holding an object must "
-                    "place it before picking a new one."
+                    "place it before picking a new one. "
+                    "The program has computed required_transports from "
+                    "remaining_goal_facts. If required_transports is not "
+                    "empty, the replacement suffix must complete every listed "
+                    "transport; do not return an empty suffix in that case. "
+                    "For an entry whose object is already held, use only its "
+                    "place action; otherwise use pick immediately followed by "
+                    "place."
                 )
             else:
                 output_requirement = (
@@ -223,7 +272,13 @@ class PlanRepairer:
                         "insufficient unless remaining_goal_facts becomes "
                         "empty after that suffix. Plan any additional "
                         "pick/place actions needed to finish the whole "
-                        "remaining goal."
+                        "remaining goal. The program has computed "
+                        "required_transports. Complete every listed transport "
+                        "in one returned suffix: if an entry's object is "
+                        "already held, place it on target_id; otherwise pick "
+                        "it and then place it on target_id. Do not return "
+                        "only the first transport unless it is the only "
+                        "entry."
                     ),
                 }
             )

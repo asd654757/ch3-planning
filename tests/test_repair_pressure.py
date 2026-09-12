@@ -10,7 +10,7 @@ from ch3.validator.pipeline import Validator
 from ch3.vlm.mock import MockVLMClient
 from ch3.vlm.planner import InitialPlanner
 from ch3.vlm.prompts import PromptLibrary
-from ch3.vlm.repair import PlanRepairer, RepairGeneration
+from ch3.vlm.repair import PlanRepairer, RepairGeneration, required_transports
 
 from scripts.repair_pressure import (
     ROUTED_GROUP,
@@ -445,6 +445,39 @@ def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
         "the prefix is insufficient" in prompt
     )
     assert '"original_plan":' not in prompt
+    assert '"required_transports"' in prompt
+    assert '"object_id": "red_cube_0"' in prompt
+
+
+def test_required_transports_are_derived_from_goal_and_prefix_state() -> None:
+    task = {
+        "goal": {
+            "facts": [
+                "on(red_cube_0, tray_1)",
+                "on(blue_cube_2, table)",
+                "not_a_transport(green_cube_3)",
+            ]
+        }
+    }
+    state = WorldState(
+        objects={"red_cube_0", "tray_1", "blue_cube_2", "green_cube_3"},
+        at={"red_cube_0": "table", "tray_1": "table"},
+        holding={"left": "blue_cube_2"},
+    )
+    assert required_transports(task, state) == [
+        {
+            "object_id": "blue_cube_2",
+            "target_id": "table",
+            "currently_held": True,
+            "current_location": None,
+        },
+        {
+            "object_id": "red_cube_0",
+            "target_id": "tray_1",
+            "currently_held": False,
+            "current_location": "table",
+        },
+    ]
 
 
 def test_cli_accepts_routed_repair_group() -> None:

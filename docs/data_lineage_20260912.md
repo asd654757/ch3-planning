@@ -8,6 +8,7 @@
 |---|---|---|---|
 | formal_v7 | `data/collections/formal_v7_flash_prompt_protocol_20260911.jsonl` | 正式 | 闭世界规划、结构化输出与不可行拒绝验证 |
 | external baselines | `data/collections/external_baseline_formal_20260911_173240.jsonl` | 正式 | 协议级 Self-Refine / Checker-loop 对比 |
+| formal_v9 ROUTED | `data/collections/repair_pressure_formal_v9_routed_20260912_142533.jsonl` | 正式 | 240 压力点；R2 优先 + R1_FROM_STATE/R1 回退；CRR 92.9%，Final Goal 89.6%，VGF 3.3% |
 
 ## Legacy / 诊断数据（不与新 R2 结果混合）
 
@@ -55,9 +56,32 @@
 - fallback 审计：11/11 达成目标；原始后缀无前缀动作重复；prompt 均含
   `prefix_final_state` / holding；无空后缀 VGF。
 
+## Formal v9 ROUTED 结果摘要
+
+- 采集文件：
+  `data/collections/repair_pressure_formal_v9_routed_20260912_142533.jsonl`
+- 机器可读汇总：
+  `data/reports/formal_v9_routed_metrics_20260912.json`
+- baseline：48/48 有效，复用 formal_v8 no-oracle 冻结 baseline；
+- pressure points：240（16 任务 × 3 seeds × 5 压力）；
+- CRR：223/240 = 92.9%；
+- Final Goal / GSR after repair：215/240 = 89.6%；
+- VGF：8/240 = 3.3%；
+- pass-but-wrong：8/240；
+- R2-only：140/240；
+- `R2 → R1_FROM_STATE`：70/240；
+- `R2 → R1`：30/240；
+- 修复调用：340 次，平均 1.42 次/压力点；
+- 主要失败簇：17 个 invalid 全部在
+  `repeat_pick_after_valid_plan`，根因是“合法完整计划 + 冗余重复尾部”
+  缺少程序化确定性截断；另有 8 例合法但未达成目标，集中在
+  `invalid_target_after_prefix` 与 `unknown_object_after_prefix`。
+
 ## 当前数据边界
 
 1. ROUTED pilot 不是 formal v9；不用于主结果表的最终功效结论。
 2. formal_v8 旧 R2 结果应标记 legacy，不与状态感知 R2 或 ROUTED 混合。
 3. pilot 1 因 pipeline defect 作废，论文中可作为调试/审计证据，不作性能数据。
-4. 后续若重跑 formal v9，必须使用新的时间戳输出、冻结 baseline、状态感知 prompt 和 ROUTED 协议，并另建版本记录。
+4. formal_v9 已成为当前正式 ROUTED 数据。后续若加入确定性尾部截断
+   或修改 R1_FROM_STATE prompt，必须作为 formal v10 重新采集，使用新
+   时间戳输出、冻结 baseline，并另建版本记录；不得覆盖或混合 formal_v9。

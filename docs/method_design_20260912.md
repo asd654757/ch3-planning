@@ -265,3 +265,150 @@ Fallback 审计：
 > 在修正执行边界后的受控 pilot 中，R2 优先、R1_FROM_STATE 回退的
 > ROUTED 机制保持 100% 系统级任务完成，平均每压力点 1.31 次修复调用。
 > 该结果仍是机制验证，不替代 formal v9。
+
+## 9. Formal v9 ROUTED 正式结果（2026-09-12）
+
+正式采集文件：
+
+`data/collections/repair_pressure_formal_v9_routed_20260912_142533.jsonl`
+
+协议：
+
+- 16 任务 × 3 seeds × 5 压力类型 = **240 个压力点**；
+- 48/48 个 task×seed baseline 全部有效；
+- 复用 formal_v8 no-oracle 的冻结 baseline，0 次 baseline 调用；
+- 模型：`qwen3-vl-flash`；
+- 路由协议：状态感知 R2 先行，失败后按有无合法前缀终态回退
+  `R1_FROM_STATE` 或普通 `R1`；
+- 耗时：884.0 s；
+- 机器可读汇总：
+  `data/reports/formal_v9_routed_metrics_20260912.json`。
+
+### 9.1 总体结果
+
+| 指标 | 结果 |
+|---|---:|
+| pressure points | 240 |
+| CRR / valid after repair | 223/240 = **92.9%** |
+| Final Goal / GSR after repair | 215/240 = **89.6%** |
+| VGF（合法但未达成目标） | 8/240 = **3.3%** |
+| pass-but-wrong | 8/240 = 3.3% |
+| accepted | 238/240 |
+| R2-only 路由 | 140/240 = 58.3% |
+| fallback 路由 | 100/240 = 41.7% |
+| 修复模型调用 | 340 次 |
+| 平均调用次数 | 340/240 = **1.42 次/压力点** |
+
+路由明细：
+
+| 路由 | 数量 |
+|---|---:|
+| R2 直接成功 | 140/240 |
+| `R2 → R1_FROM_STATE` | 70/240 |
+| `R2 → R1` | 30/240 |
+| fallback 后最终成功 | 75/100 |
+
+因此，论文不能把 pilot 的 100% 扩展为普遍结论。formal v9 的正确主张
+是：**ROUTED 将系统级任务完成率恢复到 89.6%，明显高于外部基线；
+剩余失败集中在可诊断的压力类型上。**
+
+### 9.2 分压力结果
+
+| 压力类型 | n | CRR | Final Goal | VGF | R2 直接成功 | fallback |
+|---|---:|---:|---:|---:|---:|---|
+| duplicate_pick_after_prefix | 48 | 100% | 100% | 0 | 41/48 | 7/7 成功 |
+| invalid_target_after_prefix | 48 | 100% | 89.6% | 5 | 25/48 | 18/23 成功 |
+| place_before_pick | 48 | 100% | 100% | 0 | 18/48 | 30/30 成功 |
+| repeat_pick_after_valid_plan | 48 | **64.6%** | **64.6%** | 0 | 31/48 | 0/17 成功 |
+| unknown_object_after_prefix | 48 | 100% | 93.8% | 3 | 25/48 | 20/23 成功 |
+
+解释：
+
+- `duplicate_pick_after_prefix` 仍然最贴合 R2 的执行中状态恢复语义，
+  状态感知 R2 直接成功率从 legacy 的 58.3% 提升到 85.4%，ROUTED 最终
+  达到 100%。
+- `place_before_pick` 没有合法前缀终态，router 自动回退普通 R1；
+  30/30 全部恢复。
+- `unknown_object_after_prefix` 大部分由 R1_FROM_STATE 回退救回，
+  说明固定后缀补全不适合对象引用重写，但系统级回退有效。
+- `invalid_target_after_prefix` 与 `unknown_object_after_prefix` 共有
+  8 例 VGF。它们通过 Validator 但未通过 Goal Checker，再次说明结构
+  合法性不等于任务完成性。
+
+### 9.3 唯一主要失败簇与根因
+
+formal v9 的 17 个 invalid 结果全部来自
+`repeat_pick_after_valid_plan`：
+
+| 任务 | 失败 seeds |
+|---|---|
+| attribute_grouped_003 | 0, 2 |
+| exclusion_constraint_009 | 0, 1, 2 |
+| exclusion_constraint_012 | 0, 1, 2 |
+| exclusion_constraint_013 | 0, 1, 2 |
+| exclusion_constraint_014 | 0, 1, 2 |
+| exclusion_constraint_015 | 0, 1, 2 |
+
+失败语义不是“无法恢复任务”，而是：**压力计划在一个已经完成目标的
+合法计划后追加了重复 pick，program 侧缺少确定性尾部截断分支**。
+其中：
+
+- 9 例最终解析为 `E01 plan_parse_error`；
+- 5 例是模型尝试从已完成状态继续 pick，触发
+  `STATE_TRANSITION_ERROR`；
+- 3 例因误解“只返回后缀”的约束，输出不完整动作序列，触发
+  `SCHEMA_ERROR`；
+- 2 例模型返回 infeasible refusal 对象，但 `remaining_goal_facts`
+  实际为空，goal 已在已执行前缀终态满足。
+
+同时，`R1_FROM_STATE` prompt 的 hard constraint 8 仍写着
+“For R0/R1, return the complete plan”，与 R1_FROM_STATE 的
+“only return remaining-task suffix”存在措辞冲突。该措辞不是安全问题，
+但会放大模型在“空后缀是否合法”上的犹豫。
+
+### 9.4 与 legacy / external baseline 的对比
+
+| 方法 | n | CRR | Final Goal | 说明 |
+|---|---:|---:|---:|---|
+| legacy R0 | 240 | 41.2% | 41.2% | 从头重试，legacy 协议 |
+| legacy R1 | 240 | 100% | 99.2% | 执行前完整重规划，不宜与 R2/ROUTED 当作同一阶段直接竞争 |
+| legacy R2 | 240 | 55.8% | 55.8% | 无状态感知输入的旧式 R2 |
+| Self-Refine | 240 | 57.1% | 55.8% | 协议级外部基线 |
+| Checker-loop | 240 | 79.6% | 79.6% | 协议级外部基线 |
+| **ROUTED formal v9** | 240 | **92.9%** | **89.6%** | R2 优先 + R1_FROM_STATE/R1 回退 |
+
+对比措辞：
+
+> 在 240 个受控修复压力点上，ROUTED 的最终任务完成率为 89.6%，高于
+> 协议级 Checker-loop 的 79.6% 和 Self-Refine 的 55.8%。ROUTED 的优势
+> 不是 R2 单独优于所有方法，而是把状态恢复、对象引用重写和无前缀
+> 纠错路由到不同修复边界。
+
+### 9.5 论文采用边界
+
+formal v9 可以作为 ROUTED 的正式主结果；pilot 数据仍只作机制验证。
+但结果章节必须同时报告：
+
+1. 92.9% CRR、89.6% GSR 和 3.3% VGF；
+2. 平均 1.42 次修复调用的成本；
+3. `repeat_pick_after_valid_plan` 的失败簇与缺失确定性截断；
+4. Validator 与 Goal Checker 的分工；
+5. `place_before_pick` 回退普通 R1、`unknown_object`/`invalid_target`
+   回退 R1_FROM_STATE 的路由差异。
+
+若后续做 v10，预注册增强应是：
+
+```
+if prefix_final_state already satisfies all goal facts
+   and no arm is holding an object:
+       return / merge empty suffix (deterministic tail truncation)
+else:
+       R2 → R1_FROM_STATE / R1 fallback
+```
+
+同时把 R1_FROM_STATE hard constraint 8 改成：
+
+> For R1_FROM_STATE, return only the remaining-task suffix; if
+> `remaining_goal_facts` is empty, return exactly `{"actions": []}`.
+
+v10 必须使用新时间戳采集，不得覆盖 formal v9。

@@ -49,7 +49,7 @@ VLM Planner
 - **EPR**：显式拒绝或不可行响应比例；
 - **IDR**：初始计划非法检出率；
 - **CRR**：非法初始计划经修复后变为合法计划的比例；
-- **FRR**：合法计划被误拒或误修为非法的比例；
+- **VGF（valid-but-goal-fail）**：修复后计划通过校验但未达成目标的比例。注：系统级 FRR（合法计划被误修为非法）在本数据流中不可观测，因为修复仅在初始计划非法时触发；
 - **pass-but-wrong**：计划通过校验但目标状态不满足；
 - **Final Task-Ready**：初始计划成功，或初始非法后修复成功的比例。
 
@@ -133,7 +133,7 @@ formal_v8 使用 16 个可行任务：8 个 `attribute_grouped` 与 8 个 `exclu
 
 ### 5.3.2　总体修复结果
 
-| Mode | n | CRR | GSR after repair | FRR | pass-but-wrong |
+| Mode | n | CRR | GSR after repair | VGF | pass-but-wrong |
 |---|---:|---:|---:|---:|---:|
 | R0 | 240 | 41.3% | 41.3% | 0.0% | 0 |
 | R1 | 240 | 100.0% | 99.2% | 0.8% | 2 |
@@ -188,7 +188,7 @@ R0 本身不接收 `original_plan`。R1 与 R2 的 240 条 prompt 中，`origina
 
 #### 总体对比
 
-| Method | n | CRR | GSR after repair | FRR | pass-but-wrong | tokens | avg rounds |
+| Method | n | CRR | GSR after repair | VGF | pass-but-wrong | tokens | avg rounds |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | R0 | 240 | 41.3% | 41.3% | 0.0% | 0 | 242,248 | 1.00 |
 | R1 | 240 | 100.0% | 99.2% | 0.8% | 2 | 419,859 | 1.00 |

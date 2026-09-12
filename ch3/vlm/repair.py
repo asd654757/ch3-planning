@@ -127,6 +127,14 @@ class PlanRepairer:
                     ],
                 }
             )
+        if repair_mode == "R2" and validation.final_state is not None:
+            # State-aware suffix repair: report the world state *after* the
+            # validated prefix executes, so the model knows what the arms are
+            # holding before generating the replacement suffix.
+            prompt_input["prefix_final_state"] = sorted(
+                validation.final_state.facts()
+                | validation.final_state.empty_hand_facts({"left", "right"})
+            )
         if repair_mode == "R0":
             # Frozen: no error localization and no validated prefix leakage.
             prompt_input.pop("original_plan", None)

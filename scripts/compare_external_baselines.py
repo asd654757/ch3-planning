@@ -45,11 +45,11 @@ def summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "CRR": valid / n,
         "goal": goal,
         "GSR_after": goal / n,
-        "FRR": sum(bool(r.get("valid")) and not bool(r.get("goal_satisfied")) for r in rows) / n,
+        "VGF": sum(bool(r.get("valid")) and not bool(r.get("goal_satisfied")) for r in rows) / n,
         "pass_but_wrong": sum(bool(r.get("pass_but_wrong")) for r in rows),
         "total_tokens": sum(
-            int(r.get("total_tokens", 0) or 0) + int(r.get("baseline_total_tokens", 0) or 0)
-            - int(r.get("total_tokens", 0) or 0)
+            int(r.get("baseline_total_tokens", 0) or 0)
+            or int(r.get("total_tokens", 0) or 0)
             for r in rows
         ),
         "avg_rounds": sum(int(r.get("baseline_rounds", 1) or 1) for r in rows) / n,
@@ -89,7 +89,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     summary_path = prefix.with_name(prefix.name + "_overall.csv")
     write_csv(
         summary_path,
-        ["method", "n", "valid", "CRR", "goal", "GSR_after", "FRR", "pass_but_wrong", "total_tokens", "avg_rounds"],
+        ["method", "n", "valid", "CRR", "goal", "GSR_after", "VGF", "pass_but_wrong", "total_tokens", "avg_rounds"],
         summary_rows,
     )
 
@@ -105,7 +105,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     by_pressure_path = prefix.with_name(prefix.name + "_by_pressure.csv")
     write_csv(
         by_pressure_path,
-        ["pressure_type", "method", "n", "valid", "CRR", "goal", "GSR_after", "FRR", "pass_but_wrong", "total_tokens", "avg_rounds"],
+        ["pressure_type", "method", "n", "valid", "CRR", "goal", "GSR_after", "VGF", "pass_but_wrong", "total_tokens", "avg_rounds"],
         by_pressure_rows,
     )
 

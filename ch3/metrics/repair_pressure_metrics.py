@@ -36,12 +36,14 @@ def compute_pressure_metrics(
         n = len(mode_rows)
         valid = sum(bool(r.get("valid")) for r in mode_rows)
         goal = sum(bool(r.get("goal_satisfied")) for r in mode_rows)
-        false_repair = sum(bool(r.get("valid")) and not bool(r.get("goal_satisfied")) for r in mode_rows)
+        valid_but_goal_fail = sum(
+            bool(r.get("valid")) and not bool(r.get("goal_satisfied")) for r in mode_rows
+        )
         result[mode] = {
             "n": n,
             "CRR": valid / n if n else None,
             "GSR_after_repair": goal / n if n else None,
-            "FRR": false_repair / n if n else None,
+            "VGF": valid_but_goal_fail / n if n else None,
             "valid_after": valid,
             "goal_after": goal,
             "pass_but_wrong": sum(bool(r.get("pass_but_wrong")) for r in mode_rows),
@@ -99,9 +101,9 @@ def format_summary(result: dict[str, Any]) -> str:
     for mode, m in result["overall_by_mode"].items():
         crr = m["CRR"]
         gsr = m["GSR_after_repair"]
-        frr = m["FRR"]
+        vgf = m["VGF"]
         lines.append(
-            f"{mode}: n={m['n']} CRR={crr:.1%} GSR_after={gsr:.1%} FRR={frr:.1%} "
+            f"{mode}: n={m['n']} CRR={crr:.1%} GSR_after={gsr:.1%} VGF={vgf:.1%} "
             f"pbw={m['pass_but_wrong']} accepted={m['accepted']}"
         )
     lines.append("")
@@ -111,7 +113,7 @@ def format_summary(result: dict[str, Any]) -> str:
         for mode, m in by_mode.items():
             lines.append(
                 f"  {mode}: n={m['n']} CRR={m['CRR']:.1%} GSR_after={m['GSR_after_repair']:.1%} "
-                f"FRR={m['FRR']:.1%} codes={m['failure_codes']}"
+                f"VGF={m['VGF']:.1%} codes={m['failure_codes']}"
             )
     return "\n".join(lines)
 

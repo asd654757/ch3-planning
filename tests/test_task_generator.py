@@ -238,12 +238,12 @@ class TestCLI:
         rc = main(["--rules", str(RULES_PATH), "--output", str(out), "--no-images"])
         assert rc == 0
         assert out.exists()
-        lines = [json.loads(l) for l in out.read_text().strip().splitlines()]
+        lines = [json.loads(l) for l in out.read_text(encoding="utf-8").strip().splitlines()]
         assert len(lines) == 55
         assert all("task_id" in t for t in lines)
 
     def test_cli_no_images(self, tmp_path: Path) -> None:
         out = tmp_path / "tasks.jsonl"
         main(["--rules", str(RULES_PATH), "--output", str(out), "--no-images"])
-        lines = [json.loads(l) for l in out.read_text().strip().splitlines()]
+        lines = [json.loads(l) for l in out.read_text(encoding="utf-8").strip().splitlines()]
         assert all(t.get("image_path") is None for t in lines)

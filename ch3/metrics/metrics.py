@@ -140,11 +140,25 @@ def compute_system_metrics(records: list[dict[str, Any]]) -> dict[str, Any]:
     n_tasks = len(shared)
     n_invalid = sum(1 for r in shared if not r["valid"])
 
-    # IDR = Invalid Detection Rate (validator catches all invalid plans)
-    # Since validator is deterministic and always catches invalid, IDR = 100%
-    idr = 1.0 if n_invalid > 0 else None
+    # IDR: the deterministic closed-world validator detects every invalid plan
+    # present in the data.  The rate is 100% by construction, so report
+    # detected/total explicitly instead of presenting it as sampled accuracy.
+    idr = {
+        "detected": n_invalid,
+        "total_invalid": n_invalid,
+        "rate": 1.0 if n_invalid > 0 else None,
+        "note": "deterministic closed-world validator; rate is by construction",
+    }
 
-    # Repair outcomes per mode
+    # Initial-plan lookup keyed by (task_id, seed) for system-level joins.
+    initial_by_key = {(r.get("task_id"), r.get("seed")): r for r in shared}
+
+    # Repair outcomes per mode.  Final_Task_Ready is a *system-level* rate:
+    # (initial-valid plans already reaching the goal
+    #  + initially-invalid plans repaired to goal) / n_tasks.
+    initial_valid_goal = sum(
+        1 for r in shared if r["valid"] and r.get("goal_satisfied")
+    )
     by_mode: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in repairs:
         by_mode[r.get("repair_mode", "?")].append(r)
@@ -155,12 +169,21 @@ def compute_system_metrics(records: list[dict[str, Any]]) -> dict[str, Any]:
         valid_after = sum(1 for r in rs if r["valid"])
         goal_after = sum(1 for r in rs if r.get("goal_satisfied"))
         pbw_after = sum(1 for r in rs if r.get("pass_but_wrong"))
+        repaired_goal = sum(
+            1
+            for r in rs
+            if (initial_by_key.get((r.get("task_id"), r.get("seed"))) is not None
+                and not initial_by_key[(r.get("task_id"), r.get("seed"))]["valid"]
+                and r.get("goal_satisfied"))
+        )
         repair_summary[mode] = {
             "repair_calls": n_repair,
             "CRR": valid_after / n_repair if n_repair else None,
             "GSR_after_repair": goal_after / n_repair if n_repair else None,
             "pass_but_wrong": pbw_after,
-            "Final_Task_Ready": goal_after / n_repair if n_repair else None,
+            "Final_Task_Ready": (
+                (initial_valid_goal + repaired_goal) / n_tasks if n_tasks else None
+            ),
         }
 
     total_tokens = sum(r.get("total_tokens", 0) for r in records)
@@ -171,6 +194,10 @@ def compute_system_metrics(records: list[dict[str, Any]]) -> dict[str, Any]:
         "n_initial": n_tasks,
         "n_invalid_initial": n_invalid,
         "IDR": idr,
+        # FRR (false repair of an initially-valid plan) is not observable in
+        # the current data flow: repairs are only triggered on invalid plans.
+        "FRR": None,
+        "FRR_note": "not observable; collector only repairs initially-invalid plans",
         "repair_summary": repair_summary,
         "total_records": len(records),
         "total_tokens": total_tokens,
@@ -222,7 +249,7 @@ def format_summary(result: dict[str, Any]) -> str:
     lines.append("")
     lines.append("=== System ===")
     sys = overall["system"]
-    lines.append(f"  IDR={sys['IDR']}  total_records={sys['total_records']}  total_tokens={sys['total_tokens']}  avg_latency={sys['avg_latency_ms']}ms")
+    lines.append(f"  IDR={sys['IDR']['rate']}  total_records={sys['total_records']}  total_tokens={sys['total_tokens']}  avg_latency={sys['avg_latency_ms']}ms")
     for mode, s in sys["repair_summary"].items():
         crr = f"{s['CRR']:.1%}" if s["CRR"] is not None else "n/a"
         gsr = f"{s['GSR_after_repair']:.1%}" if s["GSR_after_repair"] is not None else "n/a"

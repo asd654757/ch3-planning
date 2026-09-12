@@ -236,7 +236,7 @@ def run_pressure_slice(
         source.plan, task, validator, initial_state
     )
 
-    if not source_validation.valid or source.plan is None:
+    if source_validation is None or not source_validation.valid or source.plan is None:
         source_record = pressure_source_record(
             task=task,
             seed=seed,

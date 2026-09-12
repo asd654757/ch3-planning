@@ -183,7 +183,7 @@ def test_records_distinguish_model_refusal_from_guard(tmp_path: Path) -> None:
         logger=EpisodeLogger(output),
         repair_groups=("R0",),
     )
-    records = [json.loads(line) for line in output.read_text().splitlines()]
+    records = [json.loads(line) for line in output.read_text(encoding="utf-8").splitlines()]
     assert all(record["infeasible_source"] == "model_refusal" for record in records)
     assert summaries["shared_valid"] is False
 
@@ -352,7 +352,7 @@ def test_collect_one_emits_shared_repairs_and_b0() -> None:
         assert summary["task_id"] == "test_task"
         assert summary["seed"] == 7
         assert summary["llm_calls_in_slice"] == 5  # P + R0/R1/R2 + B0
-        lines = [json.loads(line) for line in output.read_text().splitlines()]
+        lines = [json.loads(line) for line in output.read_text(encoding="utf-8").splitlines()]
         assert [record["record_type"] for record in lines] == [
             "initial_shared_plan",
             "repair",
@@ -408,7 +408,7 @@ def test_collect_one_records_infeasible_protocol_without_pbw() -> None:
         assert summary["shared_valid"] is False
         assert summary["b0_valid"] is False
         assert all(not value["pass_but_wrong"] for value in summary["repairs"].values())
-        records = [json.loads(line) for line in output.read_text().splitlines()]
+        records = [json.loads(line) for line in output.read_text(encoding="utf-8").splitlines()]
         assert len(records) == 5
         assert all(record["response_protocol"] == "infeasible" for record in records)
         assert all(record["error_code"] == "INFEASIBLE_RESPONSE" for record in records)

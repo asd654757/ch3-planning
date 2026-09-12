@@ -68,7 +68,7 @@ def test_pressure_runner_uses_frozen_repair_record(tmp_path: Path) -> None:
     assert summary["baseline_valid"] is True
     assert summary["repairs"]["duplicate_pick_after_prefix"]["R0"]["goal_satisfied"] is True
 
-    records = [json.loads(line) for line in output.read_text().splitlines()]
+    records = [json.loads(line) for line in output.read_text(encoding="utf-8").splitlines()]
     assert len(records) == 1
     record = records[0]
     assert record["record_type"] == "repair_pressure"
@@ -82,7 +82,7 @@ def test_pressure_runner_uses_frozen_repair_record(tmp_path: Path) -> None:
     assert metrics["R0"]["n"] == 1
     assert metrics["R0"]["CRR"] == 1.0
     assert metrics["R0"]["GSR_after_repair"] == 1.0
-    assert metrics["R0"]["FRR"] == 0.0
+    assert metrics["R0"]["VGF"] == 0.0
 
 
 def test_r2_accepts_empty_suffix_to_delete_illegal_tail() -> None:

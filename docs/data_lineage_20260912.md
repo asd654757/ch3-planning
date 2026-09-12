@@ -197,3 +197,27 @@ expert policy。该数据不调用 VLM。
 
 数据边界：这是单物体 pick/place 的接口级验证，不是仿真 benchmark，
 也不是 AD-Flow 真机策略验证。
+
+## formal v11 修复计划仿真 pilot
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_pilot_from_formal_v11_20260912_132251.json` | 从 formal v11 抽取 7 条 ROUTED 成功计划做 MetaWorld 接口执行 pilot |
+| `logs/sim_pilot_from_formal_v11_20260912_132251.log` | 对应运行日志 |
+| `logs/sim_pilot_from_formal_v11_20260912_131553.log` | 首次启动失败的诊断日志；因 `ValidationResult.error_layer` 字段名错误终止 |
+
+pilot 源为
+`data/collections/repair_pressure_formal_v11_routed_20260912_200252.jsonl`。
+选样覆盖 5 类压力与主要路由模式，共 7 条计划、28 个
+`pick/place` 对。执行协议是
+`one_pick_place_pair_per_fresh_meta_world_episode`，不调用 VLM。
+
+结果：
+
+- 对级成功：27/28 = 96.43%；
+- 全对成功 case：6/7 = 85.71%；
+- 唯一失败是 case 6 的 grasp primitive，属于 MetaWorld expert
+  policy 执行失败，不是计划修复或 Validator 失败。
+
+边界：该数据只支持“修复后计划可映射到仿真 primitive 并执行”的
+接口级结论，不能与 formal v11 的 240 点修复压力结果混合计算。

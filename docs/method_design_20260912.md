@@ -666,3 +666,46 @@ pick/place。执行适配器位于 `ch3/execution/metaworld_executor.py`，
 - 当前只验证单物体 pick/place 的执行接口，不是多任务仿真 benchmark；
 - 该结果可用于说明“任务级计划接口可以映射到仿真 primitive”，但不能
   直接声明系统已经完成通用仿真泛化或真机部署。
+
+## 13. formal v11 修复计划的仿真执行 pilot
+
+在执行接口 smoke 通过后，进一步从 formal v11 正式数据中抽取
+7 条 ROUTED 修复成功计划做仿真执行 pilot。抽样覆盖 5 类压力；
+其中 `unknown_object_after_prefix` 和 `invalid_target_after_prefix`
+分别补充了一个不同路由变体。选样规则是：按压力类型与路由组合取
+第一条满足 `valid=true`、`goal_satisfied=true` 的记录，并要求计划
+可拆成连续 pick/place 对。该 pilot 不调用 VLM。
+
+由于 MetaWorld smoke 任务只有单一可动物体和一个 goal，当前采用
+`one_pick_place_pair_per_fresh_meta_world_episode` 协议：把每条符号
+计划的每个 `pick → place` 对映射为一次独立仿真 episode。符号对象
+映射到仿真 puck，符号目标映射到当前仿真 goal。该协议验证的是
+修复后计划能否分解为可执行 primitive，不声称多个符号对象同时在
+仿真场景中共存。
+
+结果：
+
+- cases：7；
+- `pick/place` 对：28；
+- 对级成功：27/28 = 96.43%；
+- 全对成功 case：6/7 = 85.71%；
+- VLM 调用：0。
+
+唯一失败位于 case 6：`place_before_pick`，路由 `R2 → R1`，
+任务 `attribute_grouped_000`，seed 0。失败片段是
+`pick(yellow_block_2) → place(yellow_block_2, white_tray_5)`。
+它在 grasp primitive 的 300 步内未达到持物条件，最终 puck 高度
+约 0.033 m，低于当前 holding 判定阈值 0.04 m；place primitive
+未执行。该失败不是 Validator、Router、修复计划或符号接口失败，
+而是 MetaWorld expert policy 的底层执行失败。记录文件保留完整
+失败轨迹和对象/目标映射。
+
+结果文件：
+
+- `data/collections/sim_pilot_from_formal_v11_20260912_132251.json`
+- `logs/sim_pilot_from_formal_v11_20260912_132251.log`
+
+边界：这是 formal v11 修复计划的接口级仿真 pilot，不是完整仿真
+benchmark，也不是 AD-Flow 真机策略验证。论文中可以报告为
+“修复后计划可以被分解并在 MetaWorld 中执行”，但不能写成
+“formal v11 系统在仿真中达到 96.43% 任务成功率”。

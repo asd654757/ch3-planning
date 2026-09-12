@@ -1,0 +1,40 @@
+[sim-pilot] case=1/7 pressure=duplicate_pick_after_prefix route=R2 start
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/metaworld/policies/policy.py:49: UserWarning: Constant(s) may be too high. Environments clip response to [-1, 1]
+  warnings.warn(
+[sim-pilot] case=1/7 pair=1/4 success=True steps=[True, True] distance=0.0757
+[sim-pilot] case=1/7 pair=2/4 success=True steps=[True, True] distance=0.0779
+[sim-pilot] case=1/7 pair=3/4 success=True steps=[True, True] distance=0.0743
+[sim-pilot] case=1/7 pair=4/4 success=True steps=[True, True] distance=0.0797
+[sim-pilot] case=2/7 pressure=unknown_object_after_prefix route=R2 start
+[sim-pilot] case=2/7 pair=1/4 success=True steps=[True, True] distance=0.0788
+[sim-pilot] case=2/7 pair=2/4 success=True steps=[True, True] distance=0.0769
+[sim-pilot] case=2/7 pair=3/4 success=True steps=[True, True] distance=0.0758
+[sim-pilot] case=2/7 pair=4/4 success=True steps=[True, True] distance=0.0341
+[sim-pilot] case=3/7 pressure=unknown_object_after_prefix route=R2/R1_FROM_STATE start
+[sim-pilot] case=3/7 pair=1/4 success=True steps=[True, True] distance=0.0740
+[sim-pilot] case=3/7 pair=2/4 success=True steps=[True, True] distance=0.0784
+[sim-pilot] case=3/7 pair=3/4 success=True steps=[True, True] distance=0.0748
+[sim-pilot] case=3/7 pair=4/4 success=True steps=[True, True] distance=0.0750
+[sim-pilot] case=4/7 pressure=invalid_target_after_prefix route=R2/R1_FROM_STATE start
+[sim-pilot] case=4/7 pair=1/4 success=True steps=[True, True] distance=0.0768
+[sim-pilot] case=4/7 pair=2/4 success=True steps=[True, True] distance=0.0794
+[sim-pilot] case=4/7 pair=3/4 success=True steps=[True, True] distance=0.0797
+[sim-pilot] case=4/7 pair=4/4 success=True steps=[True, True] distance=0.0732
+[sim-pilot] case=5/7 pressure=invalid_target_after_prefix route=R2 start
+[sim-pilot] case=5/7 pair=1/4 success=True steps=[True, True] distance=0.0756
+[sim-pilot] case=5/7 pair=2/4 success=True steps=[True, True] distance=0.0795
+[sim-pilot] case=5/7 pair=3/4 success=True steps=[True, True] distance=0.0794
+[sim-pilot] case=5/7 pair=4/4 success=True steps=[True, True] distance=0.0735
+[sim-pilot] case=6/7 pressure=place_before_pick route=R2/R1 start
+[sim-pilot] case=6/7 pair=1/4 success=True steps=[True, True] distance=0.0751
+[sim-pilot] case=6/7 pair=2/4 success=True steps=[True, True] distance=0.0789
+[sim-pilot] case=6/7 pair=3/4 success=False steps=[False] distance=0.0243
+[sim-pilot] case=6/7 pair=4/4 success=True steps=[True, True] distance=0.0771
+[sim-pilot] case=7/7 pressure=repeat_pick_after_valid_plan route=DETERMINISTIC_TRUNCATION start
+[sim-pilot] case=7/7 pair=1/4 success=True steps=[True, True] distance=0.0791
+[sim-pilot] case=7/7 pair=2/4 success=True steps=[True, True] distance=0.0733
+[sim-pilot] case=7/7 pair=3/4 success=True steps=[True, True] distance=0.0733
+[sim-pilot] case=7/7 pair=4/4 success=True steps=[True, True] distance=0.0730
+{"completed_at_utc": "2026-09-12T13:23:36.046236+00:00", "record_type": "sim_pilot_from_formal_v11_summary", "source": "data/collections/repair_pressure_formal_v11_routed_20260912_200252.jsonl", "cases": 7, "successful_cases": 6, "pairs": 28, "successful_pairs": 27, "case_success_rate": 0.8571428571428571, "pair_success_rate": 0.9642857142857143, "vlm_calls": 0, "execution_protocol": "one_pick_place_pair_per_fresh_meta_world_episode", "output": "data/collections/sim_pilot_from_formal_v11_20260912_132251.json"}

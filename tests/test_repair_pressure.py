@@ -14,6 +14,7 @@ from ch3.vlm.repair import PlanRepairer, RepairGeneration, required_transports
 
 from scripts.repair_pressure import (
     ROUTED_GROUP,
+    ROUTED_ABLATIONS,
     PRESSURE_TYPES,
     build_arg_parser,
     build_stress_plan,
@@ -183,6 +184,7 @@ def test_routed_repair_accepts_state_aware_r2_without_fallback(tmp_path: Path) -
         "r2_valid": True,
         "r2_goal_ok": True,
         "r2_pbw": False,
+        "deterministic_truncation": False,
     }
 
 
@@ -494,6 +496,102 @@ def test_cli_accepts_routed_repair_group() -> None:
         ]
     )
     assert args.repair_groups == [ROUTED_GROUP]
+
+
+def test_cli_accepts_routed_ablation_modes() -> None:
+    args = build_arg_parser().parse_args(
+        [
+            "--output",
+            "data/collections/tmp.jsonl",
+            "--repair-groups",
+            ROUTED_GROUP,
+            "--routed-ablation",
+            "no_r2",
+        ]
+    )
+    assert args.routed_ablation == "no_r2"
+    assert set(ROUTED_ABLATIONS) == {
+        "none",
+        "no_truncation",
+        "no_r2",
+        "no_fallback",
+    }
+
+
+def test_no_truncation_routes_complete_goal_prefix_to_r2(tmp_path: Path) -> None:
+    output = tmp_path / "no_truncation.jsonl"
+    summary = run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()),
+        repairer=PlanRepairer(MockVLMClient({"actions": []})),
+        validator=_validator(),
+        logger=EpisodeLogger(output),
+        pressure_types=("repeat_pick_after_valid_plan",),
+        repair_groups=(ROUTED_GROUP,),
+        routed_ablation="no_truncation",
+    )
+    routed = summary["repairs"]["repeat_pick_after_valid_plan"][ROUTED_GROUP]
+    assert routed["route_taken"] == ["R2"]
+    assert routed["deterministic_truncation"] is False
+    assert routed["valid"] is True
+    assert routed["goal_satisfied"] is True
+
+
+def test_no_r2_routes_directly_to_state_aware_full_replan(tmp_path: Path) -> None:
+    def state_replan_only(payload):
+        prompt = payload["messages"][1]["content"]
+        if "Repair mode:" not in prompt:
+            return VALID_PLAN
+        assert "Repair mode: R1_FROM_STATE" in prompt
+        assert "Repair mode: R2" not in prompt
+        return {"actions": [VALID_PLAN["actions"][1]]}
+
+    output = tmp_path / "no_r2.jsonl"
+    summary = run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(
+            MockVLMClient(state_replan_only), PromptLibrary()
+        ),
+        repairer=PlanRepairer(
+            MockVLMClient(state_replan_only), PromptLibrary()
+        ),
+        validator=_validator(),
+        logger=EpisodeLogger(output),
+        pressure_types=("unknown_object_after_prefix",),
+        repair_groups=(ROUTED_GROUP,),
+        routed_ablation="no_r2",
+    )
+    routed = summary["repairs"]["unknown_object_after_prefix"][ROUTED_GROUP]
+    assert routed["route_taken"] == ["R1_FROM_STATE"]
+    assert routed["r2_skipped"] is True
+    assert routed["fallback_triggered"] is False
+    assert routed["fallback_mode"] == "R1_FROM_STATE"
+    assert routed["valid"] is True
+    assert routed["goal_satisfied"] is True
+
+
+def test_no_fallback_keeps_failed_r2_as_final_result(tmp_path: Path) -> None:
+    output = tmp_path / "no_fallback.jsonl"
+    summary = run_pressure_slice(
+        SCENARIO,
+        0,
+        planner=InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()),
+        repairer=PlanRepairer(MockVLMClient({"actions": []})),
+        validator=_validator(),
+        logger=EpisodeLogger(output),
+        pressure_types=("unknown_object_after_prefix",),
+        repair_groups=(ROUTED_GROUP,),
+        routed_ablation="no_fallback",
+    )
+    routed = summary["repairs"]["unknown_object_after_prefix"][ROUTED_GROUP]
+    assert routed["route_taken"] == ["R2"]
+    assert routed["fallback_triggered"] is False
+    assert routed["r2_valid"] is False
+    assert routed["r2_goal_ok"] is False
+    assert routed["valid"] is False
+    assert routed["goal_satisfied"] is False
 
 
 def test_main_sets_scene_objects_per_task(tmp_path, monkeypatch, capsys) -> None:

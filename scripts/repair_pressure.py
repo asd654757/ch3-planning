@@ -59,6 +59,12 @@ PRESSURE_TYPES = (
 
 SCHEMA_VERSION = "2026-09-11-repair-pressure-v1"
 DEFAULT_BENCHMARK = "legacy_pick_place"
+ROUTED_ABLATIONS = (
+    "none",
+    "no_truncation",
+    "no_r2",
+    "no_fallback",
+)
 
 
 def _renumber(actions: Iterable[ModelPlanAction]) -> ModelPlan:
@@ -357,6 +363,7 @@ def routed_repair(
     validator: Validator,
     seed: Optional[int],
     temperature: float,
+    ablation: str = "none",
 ) -> tuple[Any, dict[str, Any]]:
     """Error-aware routed repair (docs/method_design_20260912.md, section 3).
 
@@ -364,10 +371,19 @@ def routed_repair(
     R2 result fails validation or does not satisfy the goal (VGF).  When the
     executed prefix already satisfies every goal fact and both arms are empty,
     deterministic truncation removes the invalid tail without a model call.
+    ``ablation`` disables one component for controlled ablation.  Modes:
+    ``no_truncation`` always enters model repair; ``no_r2`` goes directly to
+    state-aware R1; ``no_fallback`` accepts an R2 failure as final result.
     Returns ``(final_generation, route_info)``; the caller records both
     attempts' outcome for system-level analysis.
     """
-    if _prefix_completes_goal(task=task, validation=validation):
+    if ablation not in ROUTED_ABLATIONS:
+        raise ValueError(f"Unknown ROUTED ablation: {ablation}")
+
+    if (
+        ablation != "no_truncation"
+        and _prefix_completes_goal(task=task, validation=validation)
+    ):
         info: dict[str, Any] = {
             "route_taken": ["DETERMINISTIC_TRUNCATION"],
             "fallback_triggered": False,
@@ -378,6 +394,32 @@ def routed_repair(
             "deterministic_truncation": True,
         }
         return _deterministic_truncation(validation), info
+
+    if ablation == "no_r2":
+        fallback_mode = (
+            "R1_FROM_STATE"
+            if validation.final_state is not None and validation.validated_prefix
+            else "R1"
+        )
+        info = {
+            "route_taken": [fallback_mode],
+            "fallback_triggered": False,
+            "r2_skipped": True,
+            "r2_valid": None,
+            "r2_goal_ok": None,
+            "r2_pbw": None,
+            "deterministic_truncation": False,
+            "fallback_mode": fallback_mode,
+        }
+        return repairer.repair(
+            repair_mode=fallback_mode,
+            task=task,
+            initial_generation=initial_generation,
+            validation=validation,
+            initial_state=initial_state,
+            seed=seed,
+            temperature=temperature,
+        ), info
 
     r2 = repairer.repair(
         repair_mode="R2",
@@ -398,8 +440,9 @@ def routed_repair(
         "r2_valid": bool(r2_validation and r2_validation.valid),
         "r2_goal_ok": bool(r2_goal),
         "r2_pbw": bool(r2_pbw),
+        "deterministic_truncation": False,
     }
-    if r2_ok:
+    if r2_ok or ablation == "no_fallback":
         return r2, info
 
     # A plan-time fallback may return a full replacement plan.  But when the
@@ -446,6 +489,7 @@ def run_pressure_slice(
     logger: EpisodeLogger,
     pressure_types: Iterable[str] = PRESSURE_TYPES,
     repair_groups: Iterable[str] = ("R0", "R1", "R2"),
+    routed_ablation: str = "none",
     benchmark: str = DEFAULT_BENCHMARK,
     initial_temperature: float = 0.7,
     repair_temperature: float = 0.3,
@@ -536,6 +580,7 @@ def run_pressure_slice(
                     validator=validator,
                     seed=seed,
                     temperature=repair_temperature,
+                    ablation=routed_ablation,
                 )
                 # The routed generation may come from the R1 fallback; label
                 # the record as ROUTED and keep per-route fields for analysis.
@@ -635,6 +680,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
         choices=sorted(ROUTED_REPAIR_GROUPS),
         default=sorted(REPAIR_GROUPS),
     )
+    parser.add_argument(
+        "--routed-ablation",
+        choices=ROUTED_ABLATIONS,
+        default="none",
+        help="Disable one ROUTED component for controlled ablation.",
+    )
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--repair-temperature", type=float, default=0.3)
     parser.add_argument("--max-tokens", type=int, default=1024)
@@ -720,6 +771,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 logger=logger,
                 pressure_types=args.pressure_types,
                 repair_groups=args.repair_groups,
+                routed_ablation=args.routed_ablation,
                 initial_temperature=args.temperature,
                 repair_temperature=args.repair_temperature,
                 source_plan=frozen_sources.get((task["task_id"], seed)),

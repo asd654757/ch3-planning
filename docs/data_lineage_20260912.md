@@ -393,3 +393,60 @@ real-world baseline，而是压力注入下的安全对照。
 6 个失败全部位于 pick/place 的第一个 pick/place pair，且都在第一
 grasp primitive 失败；没有失败来自符号校验、目标检查或路由回退。
 因此这些是接口级仿真执行失败，不应解释为 MultiSkill 修复路由失败。
+
+## MultiSkill 外部基线 formal：Self-Refine 与 Checker-loop
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/external_baseline_multiskill_formal_v1_20260913_145938.jsonl` | 321 个配对压力点上 Self-Refine 与 Checker-loop 的符号层 formal 结果，共 642 条 |
+| `data/reports/multiskill_external_baselines_20260913_072737_overall.csv` | 总表，含 CRR、GSR、VGF、pass-but-wrong、token 与平均轮次 |
+| `data/reports/multiskill_external_baselines_20260913_072737_by_pressure.csv` | 按压力类型分解表 |
+| `data/reports/multiskill_external_baselines_20260913_072737_mcnemar.csv` | ROUTED 与两个外部基线的配对精确 McNemar 表 |
+| `data/reports/multiskill_external_baselines_analysis_20260913_072821.json` | 派生审计报告，含技能族分解与失败模式 |
+| `logs/external_baseline_multiskill_formal_v1_20260913_145938.log` | 对应运行日志 |
+
+来源集合为 `repair_pressure_multiskill_formal_v1_20260913_140057.jsonl`。
+配对键为 `task_id / seed / pressure_type`，共 321 点。运行参数为
+Self-Refine 1 轮、Checker-loop 最多 2 轮。总 VLM 调用上限 963 次；
+实际日志显示 `completed_cases: 642`，与两个基线各 321 点一致。
+
+符号层结果：
+
+| 臂 | CRR | GSR | VGF | pass-but-wrong | 平均轮次 | 基线总 token |
+|---|---:|---:|---:|---:|---:|---:|
+| ROUTED | 321/321 = 100.0% | 321/321 = 100.0% | 0 | 0 | 1.000 | 145,728 |
+| Self-Refine | 106/321 = 33.0% | 106/321 = 33.0% | 0 | 0 | 1.000 | 199,601 |
+| Checker-loop | 242/321 = 75.4% | 148/321 = 46.1% | 94 | 94 | 1.361 | 292,806 |
+
+token 口径：Checker-loop 使用 `baseline_total_tokens`，因此包含
+checker 反馈调用；Self-Refine 与 ROUTED 两种字段一致。
+
+按技能族：
+
+| 技能族 | ROUTED CRR/GSR | Self-Refine CRR/GSR | Checker-loop CRR/GSR |
+|---|---:|---:|---:|
+| pick/place | 108/108 | 105/108 | 108/108 |
+| push | 108/108 | 0/108 | 105/108 CRR，11/108 GSR |
+| press | 105/105 | 1/105 | 29/105 |
+
+主要失败模式：
+
+1. Self-Refine 在 push/press 上大量把任务误解为 pick/place，产生
+   `INFEASIBLE_RESPONSE`；这解释了 push 0/108、press 1/105。
+2. Checker-loop 在 push 上产生 94 个 pass-but-wrong：计划通过
+   Validator，但没有满足 pushed-to 目标。它主要表现为“计划结构合法但
+   任务未完成”，而不是统一报告成功。
+3. Checker-loop 在 press 上常见 `ARM_NOT_EMPTY`，说明其反馈仍然难以
+   稳定处理执行状态约束。
+
+配对精确 McNemar（CRR 层）：
+
+| 对比 | ROUTED 成功 | 基线成功 | only ROUTED | only baseline | p 值 |
+|---|---:|---:|---:|---:|---:|
+| ROUTED vs Self-Refine | 321/321 | 106/321 | 215 | 0 | 3.80e-65 |
+| ROUTED vs Checker-loop | 321/321 | 242/321 | 79 | 0 | 3.31e-24 |
+
+该结果是 MultiSkill 符号修复层 formal 对照，不调用仿真执行层；不能
+与 `sim_compare_baselines_multiskill_20260913_065107.json` 的仿真
+终层结果直接相加或平均。论文中应分别报告符号层 CRR/GSR 和仿真层
+final success。

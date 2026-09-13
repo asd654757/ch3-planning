@@ -1,0 +1,496 @@
+{
+  "source_formal": "data/collections/repair_pressure_multiskill_formal_v1_20260913_140057.jsonl",
+  "source_external": "data/collections/external_baseline_multiskill_formal_v1_20260913_145938.jsonl",
+  "paired_points": 321,
+  "summary": {
+    "ROUTED": {
+      "n": 321,
+      "CRR": 321,
+      "GSR": 321,
+      "valid_but_goal_fail": 0,
+      "pass_but_wrong": 0,
+      "parse_errors": 0,
+      "avg_rounds": 1.0,
+      "total_tokens": 145728,
+      "baseline_total_tokens": 145728
+    },
+    "self_refine": {
+      "n": 321,
+      "CRR": 106,
+      "GSR": 106,
+      "valid_but_goal_fail": 0,
+      "pass_but_wrong": 0,
+      "parse_errors": 1,
+      "avg_rounds": 1.0,
+      "total_tokens": 199601,
+      "baseline_total_tokens": 199601
+    },
+    "checker_loop": {
+      "n": 321,
+      "CRR": 242,
+      "GSR": 148,
+      "valid_but_goal_fail": 94,
+      "pass_but_wrong": 94,
+      "parse_errors": 1,
+      "avg_rounds": 1.361,
+      "total_tokens": 217047,
+      "baseline_total_tokens": 292806
+    }
+  },
+  "by_family": {
+    "pick_place": {
+      "ROUTED": {
+        "n": 108,
+        "CRR": 108,
+        "GSR": 108,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 145728,
+        "baseline_total_tokens": 145728
+      },
+      "self_refine": {
+        "n": 108,
+        "CRR": 105,
+        "GSR": 105,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 1,
+        "avg_rounds": 1.0,
+        "total_tokens": 70308,
+        "baseline_total_tokens": 70308
+      },
+      "checker_loop": {
+        "n": 108,
+        "CRR": 108,
+        "GSR": 108,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 78525,
+        "baseline_total_tokens": 78525
+      }
+    },
+    "push": {
+      "ROUTED": {
+        "n": 108,
+        "CRR": 108,
+        "GSR": 108,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 0,
+        "baseline_total_tokens": 0
+      },
+      "self_refine": {
+        "n": 108,
+        "CRR": 0,
+        "GSR": 0,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 65673,
+        "baseline_total_tokens": 65673
+      },
+      "checker_loop": {
+        "n": 108,
+        "CRR": 105,
+        "GSR": 11,
+        "valid_but_goal_fail": 94,
+        "pass_but_wrong": 94,
+        "parse_errors": 0,
+        "avg_rounds": 1.333,
+        "total_tokens": 72246,
+        "baseline_total_tokens": 96462
+      }
+    },
+    "press": {
+      "ROUTED": {
+        "n": 105,
+        "CRR": 105,
+        "GSR": 105,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 0,
+        "baseline_total_tokens": 0
+      },
+      "self_refine": {
+        "n": 105,
+        "CRR": 1,
+        "GSR": 1,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 63620,
+        "baseline_total_tokens": 63620
+      },
+      "checker_loop": {
+        "n": 105,
+        "CRR": 29,
+        "GSR": 29,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 1,
+        "avg_rounds": 1.762,
+        "total_tokens": 66276,
+        "baseline_total_tokens": 117819
+      }
+    }
+  },
+  "by_pressure": {
+    "duplicate_skill_after_prefix": {
+      "ROUTED": {
+        "n": 107,
+        "CRR": 107,
+        "GSR": 107,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 48609,
+        "baseline_total_tokens": 48609
+      },
+      "self_refine": {
+        "n": 107,
+        "CRR": 35,
+        "GSR": 35,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 66162,
+        "baseline_total_tokens": 66162
+      },
+      "checker_loop": {
+        "n": 107,
+        "CRR": 69,
+        "GSR": 36,
+        "valid_but_goal_fail": 33,
+        "pass_but_wrong": 33,
+        "parse_errors": 0,
+        "avg_rounds": 1.664,
+        "total_tokens": 73259,
+        "baseline_total_tokens": 120108
+      }
+    },
+    "invalid_action_after_prefix": {
+      "ROUTED": {
+        "n": 107,
+        "CRR": 107,
+        "GSR": 107,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 48660,
+        "baseline_total_tokens": 48660
+      },
+      "self_refine": {
+        "n": 107,
+        "CRR": 37,
+        "GSR": 37,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 67004,
+        "baseline_total_tokens": 67004
+      },
+      "checker_loop": {
+        "n": 107,
+        "CRR": 72,
+        "GSR": 47,
+        "valid_but_goal_fail": 25,
+        "pass_but_wrong": 25,
+        "parse_errors": 0,
+        "avg_rounds": 1.327,
+        "total_tokens": 72578,
+        "baseline_total_tokens": 95211
+      }
+    },
+    "unknown_object_after_generic_prefix": {
+      "ROUTED": {
+        "n": 107,
+        "CRR": 107,
+        "GSR": 107,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 0,
+        "avg_rounds": 1.0,
+        "total_tokens": 48459,
+        "baseline_total_tokens": 48459
+      },
+      "self_refine": {
+        "n": 107,
+        "CRR": 34,
+        "GSR": 34,
+        "valid_but_goal_fail": 0,
+        "pass_but_wrong": 0,
+        "parse_errors": 1,
+        "avg_rounds": 1.0,
+        "total_tokens": 66435,
+        "baseline_total_tokens": 66435
+      },
+      "checker_loop": {
+        "n": 107,
+        "CRR": 101,
+        "GSR": 65,
+        "valid_but_goal_fail": 36,
+        "pass_but_wrong": 36,
+        "parse_errors": 1,
+        "avg_rounds": 1.093,
+        "total_tokens": 71210,
+        "baseline_total_tokens": 77487
+      }
+    }
+  },
+  "paired_mcnemar": {
+    "self_refine": {
+      "n_pairs": 321,
+      "success_a": 106,
+      "success_b": 321,
+      "both_success": 106,
+      "only_a": 0,
+      "only_b": 215,
+      "exact_p": 3.7982270983039195e-65
+    },
+    "checker_loop": {
+      "n_pairs": 321,
+      "success_a": 242,
+      "success_b": 321,
+      "both_success": 242,
+      "only_a": 0,
+      "only_b": 79,
+      "exact_p": 3.308722450212111e-24
+    }
+  },
+  "failure_modes": {
+    "self_refine": [
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan includes a 'place' action after 'push', which contradicts the goal of pushing the block to the goal pad. The push action should directly move the block to the goal pad, and no subsequent place action is needed or allowed.",
+        "count": 5
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The orange button is on the table and not in the hand, so pressing it directly without first picking it up is not possible. The current plan incorrectly attempts to press the button while it's still on the table, which violates the action schema since 'press' requires the object to be held (target_id=null implies the object is in the hand). Additionally, the second step 'place' is unnecessary and incorrect because the goal is to press the button, not place it.",
+        "count": 4
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan includes a 'place' action after 'push', which contradicts the goal of pushing the cube to the goal pad. The push action should directly move the cube to the goal pad, and no subsequent place action is needed or allowed.",
+        "count": 4
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan includes a 'place' action after 'press', which is unnecessary and incorrect since pressing the button does not require placing it. Also, the button is already on the table, so no pick is needed before pressing.",
+        "count": 3
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan includes a 'place' action after 'push', which is unnecessary and counterproductive since the goal is to push the block to the goal pad, not place it back on the table.",
+        "count": 3
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The red button is on the table and not in the hand, so pressing it directly without first picking it up is not possible. The current plan incorrectly attempts to press the button without first picking it up, and then places it back on the table, which is unnecessary and does not achieve the goal.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The blue button is on the table and not in the hand, so it cannot be pressed directly without first picking it up. The current plan attempts to press an unknown object in step 2, which is invalid.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The pink button is on the table and not in the hand, so pressing it directly without first picking it up is not possible. The plan incorrectly attempts to press the button while it's still on the table, which violates the action schema since 'press' requires the object to be held (target_id=null implies the object is in the hand). Additionally, the second step 'place' is unnecessary and incorrect because the goal is to press the button, not place it.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The pink button is on the table and the left hand is empty, so the robot must first pick up the button before pressing it. The current plan attempts to press the button directly without picking it up, which is not feasible since the button is not in the hand.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The gray button is on the table and the left hand is empty, so the robot must first pick up the button before pressing it. The current plan attempts to press the button directly without picking it up, which is not possible since the button is not in the hand.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The blue block is on the table and not in the hand, so it cannot be pushed directly without first picking it up. The current plan attempts to push without a prior pick action, making it infeasible.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan includes a 'place' action after 'push', which contradicts the goal of pushing the cube to the goal pad. The cube should not be placed back on the table after being pushed.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The first action in the plan attempts to push the white cube directly to the goal pad, but the cube is on the table and the hand is empty. A push action requires the arm to be in contact with the object, which cannot happen without first picking up or positioning the arm appropriately. Additionally, the second action has an unknown target, making it invalid.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan includes a 'place' action after 'push', which contradicts the goal of pushing the cube to the goal pad. Once pushed, the cube should remain at the goal pad, not be placed back on the table.",
+        "count": 2
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The second pick action attempts to pick an unknown object (__unknown_object__), which is not visible in the scene. The only green cube available is green_cube_4, which should be picked in step 1, not step 2.",
+        "count": 1
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The plan attempts to pick the purple block twice in a row without placing it first, which is redundant and unnecessary. Also, the first pick action should be performed with the right arm as specified in the instruction, but the current plan has two identical pick actions (both with arm 'right') which may cause confusion; however, the main issue is that the first pick is repeated unnecessarily. More critically, the plan does not account for the fact that after picking, the block must be placed into the bowl — but the current plan's second pick is redundant and could lead to failure if the block is already in hand. The correct approach is to pick once, then place.",
+        "count": 1
+      },
+      {
+        "layer": "syntax",
+        "code": "SCHEMA_ERROR",
+        "message": "status must be 'infeasible' when present",
+        "count": 1
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The red button is on the table and the hand is empty; pressing it directly without first picking it up (if required by the press skill's preconditions) is not possible. However, since the object is on the table and the press skill may not require the object to be held, but the current plan includes an unnecessary place step after press, the correct plan should only include pressing the button with the left arm, as the button is already accessible.",
+        "count": 1
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The red button is on the table and not in the hand, so pressing it directly without first picking it up is not possible. However, the 'press' skill does not require the object to be held; it can press an object on a surface if the arm can reach it. But the current plan includes an unnecessary 'place' step after 'press', which would undo the press. The correct plan should only include one 'press' action with the left arm.",
+        "count": 1
+      },
+      {
+        "layer": "protocol",
+        "code": "INFEASIBLE_RESPONSE",
+        "message": "The red button is on the table and the left hand is empty, so the robot cannot press the button without first picking it up. The current plan attempts to press the button directly without picking it first, which is not feasible given the object's location and the hand state.",
+        "count": 1
+      }
+    ],
+    "checker_loop": [
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press orange_button_40",
+        "count": 8
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press pink_button_43",
+        "count": 8
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press black_button_46",
+        "count": 7
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press red_button_36",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press blue_button_37",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press yellow_button_39",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press purple_button_41",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press cyan_button_42",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press white_button_44",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press brown_button_45",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press gray_button_47",
+        "count": 6
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "left 非空，不能 press green_button_38",
+        "count": 4
+      },
+      {
+        "layer": "syntax",
+        "code": "SCHEMA_ERROR",
+        "message": "status must be 'infeasible' when present",
+        "count": 1
+      },
+      {
+        "layer": "state",
+        "code": "OBJECT_NOT_HELD",
+        "message": "left 未持有 blue_block_25，无法 place",
+        "count": 1
+      },
+      {
+        "layer": "state",
+        "code": "OBJECT_NOT_HELD",
+        "message": "left 未持有 brown_block_33，无法 place",
+        "count": 1
+      },
+      {
+        "layer": "state",
+        "code": "ARM_NOT_EMPTY",
+        "message": "right 非空，不能 push brown_block_33",
+        "count": 1
+      }
+    ]
+  }
+}

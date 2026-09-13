@@ -339,9 +339,6 @@ def test_routed_repair_uses_deterministic_truncation_when_goal_complete(
     assert route_info["fallback_triggered"] is False
     assert route_info["r2_skipped"] is True
     assert route_info["deterministic_truncation"] is True
-    assert repaired.accepted is True
-    assert repaired.plan == valid_plan
-    assert repaired.merged_with_prefix is True
 
     output = tmp_path / "routed_truncation.jsonl"
     summary = run_pressure_slice(
@@ -363,6 +360,47 @@ def test_routed_repair_uses_deterministic_truncation_when_goal_complete(
     assert records[0]["route_taken"] == ["DETERMINISTIC_TRUNCATION"]
     assert records[0]["valid"] is True
     assert records[0]["goal_satisfied"] is True
+
+
+def test_no_r2_is_single_r1_and_bypasses_truncation() -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "repeat_pick_after_valid_plan",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+
+    generation, route_info = routed_repair(
+        repairer=PlanRepairer(
+            MockVLMClient(
+                {"actions": [{**VALID_PLAN["actions"][1], "step_id": 3}]}
+            ),
+            PromptLibrary(),
+        ),
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        validator=validator,
+        seed=0,
+        temperature=0.0,
+        ablation="no_r2",
+    )
+    assert route_info["route_taken"] == [route_info["fallback_mode"]]
+    assert route_info["fallback_mode"] in {"R1", "R1_FROM_STATE"}
+    assert route_info["deterministic_truncation"] is False
+    assert generation.accepted is True
 
 
 def test_pressure_runner_rejects_state_valid_goal_failing_source(

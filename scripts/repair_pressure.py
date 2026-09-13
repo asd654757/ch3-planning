@@ -384,7 +384,7 @@ def routed_repair(
         raise ValueError(f"Unknown ROUTED ablation: {ablation}")
 
     if (
-        ablation != "no_truncation"
+        ablation not in {"no_truncation", "no_r2"}
         and _prefix_completes_goal(task=task, validation=validation)
     ):
         info: dict[str, Any] = {

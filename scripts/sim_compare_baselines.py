@@ -265,6 +265,14 @@ def main() -> None:
         default=Path("data/collections/external_baseline_formal_20260911_173240.jsonl"),
     )
     parser.add_argument(
+        "--multiskill-external-source",
+        type=Path,
+        default=Path(
+            "data/collections/external_baseline_multiskill_formal_v1_20260913_145938.jsonl"
+        ),
+        help="MultiSkill external baseline source for SELF_REFINE and CHECKER_LOOP",
+    )
+    parser.add_argument(
         "--benchmark-mode",
         choices=("legacy_pick_place", "multiskill"),
         default="legacy_pick_place",
@@ -308,8 +316,21 @@ def main() -> None:
         if missing_tasks:
             raise RuntimeError(f"missing MultiSkill task definitions: {missing_tasks}")
         active_pressures = MULTISKILL_PRESSURES
-        common = {key(r) for r in routed_rows}
-        arms = ["NO_REPAIR", "ROUTED"]
+        external_rows = [
+            r
+            for r in load_jsonl(args.multiskill_external_source)
+            if r.get("record_type") == "repair_pressure"
+        ]
+        self_refine_rows = [
+            r for r in external_rows if r.get("repair_mode") == "self_refine"
+        ]
+        checker_rows = [
+            r for r in external_rows if r.get("repair_mode") == "checker_loop"
+        ]
+        self_refine = {key(r): r for r in self_refine_rows}
+        checker = {key(r): r for r in checker_rows}
+        common = set(routed) & set(self_refine) & set(checker)
+        arms = ["NO_REPAIR", "SELF_REFINE", "CHECKER_LOOP", "ROUTED"]
     else:
         tasks = {}
         active_pressures = PRESSURES
@@ -378,10 +399,10 @@ def main() -> None:
                 source_row = r2_row
                 plan_data = source_row.get("model_plan")
             elif arm == "SELF_REFINE":
-                source_row = self_refine_row
+                source_row = self_refine[point_key]
                 plan_data = source_row.get("model_plan")
             elif arm == "CHECKER_LOOP":
-                source_row = checker_row
+                source_row = checker[point_key]
                 plan_data = source_row.get("model_plan")
             else:
                 source_row = routed_row
@@ -510,7 +531,14 @@ def main() -> None:
         "source_routed": str(args.routed_source),
         "source_tasks": str(args.tasks_source) if multiskill else None,
         "source_r2_only": None if multiskill else str(args.r2_source),
-        "source_checker_loop": None if multiskill else str(args.checker_source),
+        "source_self_refine": (
+            str(args.multiskill_external_source) if multiskill
+            else str(args.self_refine_source)
+        ),
+        "source_checker_loop": (
+            str(args.multiskill_external_source) if multiskill
+            else str(args.checker_source)
+        ),
         "points_per_pressure": args.points_per_pressure,
         "pressures": active_pressures,
         "points": len(points),

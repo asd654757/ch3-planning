@@ -349,3 +349,47 @@ ROUTED 与 CHECKER_LOOP 的配对差异为
 
 两者均不调用 VLM，均 3/3 成功，且 symbolic validation 与 symbolic
 goal 均通过。
+
+## MultiSkill-IF-v1：321 点仿真执行对照
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_compare_baselines_multiskill_20260913_065107.json` | 321 个配对点上 NO_REPAIR / ROUTED 的冻结计划仿真对照 |
+| `data/reports/multiskill_sim_if_v1_analysis_20260913.json` | 派生分析：总表、技能族、压力类型和失败样本 |
+| `logs/sim_compare_multiskill_formal_20260913_144500.log` | 对应仿真运行日志 |
+
+符号层来源为
+`repair_pressure_multiskill_formal_v1_20260913_140057.jsonl`。该 formal
+集合包含 321 个有效 repair-pressure 记录：pick/place 108 点、push 108
+点、press 105 点。press 少于 108 是因为有一个 baseline 在符号层被
+Validator 正确拒绝，因此没有进入压力修复评测。
+
+执行协议为：
+
+- pick/place：一个 pick/place pair 在一个 fresh MetaWorld episode 中执行；
+- push：一个 push 动作在 `metaworld-push-v3` 的 fresh episode 中执行；
+- press：一个 press 动作在 `metaworld-button-press-v3` 的 fresh episode
+  中执行。
+
+全程不调用 VLM。`NO_REPAIR` 使用受污染 stress plan；因为其符号层全部
+非法，所以不进入仿真执行，最终成功率为 0。这不是一个可执行的
+real-world baseline，而是压力注入下的安全对照。
+
+终层汇总：
+
+| 臂 | 符号有效 | 目标满足 | 仿真尝试 | 仿真成功 | 最终成功 |
+|---|---:|---:|---:|---:|---:|
+| NO_REPAIR | 0/321 | 0/321 | 0/321 | 0/321 | 0/321 |
+| ROUTED | 321/321 | 321/321 | 321/321 | 315/321 | 315/321 |
+
+按技能族分解：
+
+| 技能族 | ROUTED 最终成功 |
+|---|---:|
+| pick/place | 102/108 |
+| push | 108/108 |
+| press | 105/105 |
+
+6 个失败全部位于 pick/place 的第一个 pick/place pair，且都在第一
+grasp primitive 失败；没有失败来自符号校验、目标检查或路由回退。
+因此这些是接口级仿真执行失败，不应解释为 MultiSkill 修复路由失败。

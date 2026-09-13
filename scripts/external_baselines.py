@@ -330,6 +330,7 @@ def baseline_record(
             "schema_version": SCHEMA_VERSION,
             "record_type": "repair_pressure",
             "repair_mode": repair_mode,
+            "benchmark": source_record.get("benchmark", "unspecified"),
             "pressure_type": pressure_type,
             "pressure_source_plan": source_record.get("pressure_source_plan"),
             "pressure_source_valid": source_record.get("pressure_source_valid", True),

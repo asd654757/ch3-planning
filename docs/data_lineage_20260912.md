@@ -293,3 +293,40 @@ ROUTED 与 CHECKER_LOOP 的配对差异为
 数据边界：仍是冻结修复计划的接口级仿真对照，不是在线 VLM
 仿真 benchmark，不能与 formal v11 的 240 点符号层结果合并，
 也不能外推为真机结论。
+
+## Sim-IF-240：240 点五臂配对仿真执行对照
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_compare_baselines_20260912_163449.json` | 240 个配对点上 NO_REPAIR / R2_ONLY / SELF_REFINE / CHECKER_LOOP / ROUTED 的冻结计划仿真对照 |
+| `data/reports/sim_if_240_analysis_20260913.json` | 派生分析：终层汇总、按压力结果、精确 McNemar 和失败模式 |
+
+抽样规则为 5 类压力 × 48 个冻结压力点，共 240 个
+`task_id / seed / pressure_type` 配对点。五臂来源如下：
+
+- ROUTED：
+  `repair_pressure_formal_v11_routed_20260912_200252.jsonl`；
+- R2-only：
+  `repair_pressure_formal_v8_no_oracle_20260911_153655.jsonl`；
+- Self-Refine 与 Checker-loop：
+  `external_baseline_formal_20260911_173240.jsonl`；
+- NO_REPAIR：同一配对键下的受压力污染初始计划。
+
+执行协议保持为
+`one_pick_place_pair_per_fresh_meta_world_episode`，全程不调用 VLM。
+该结果是接口级仿真执行验证；不能与 formal v11 的 240 点符号层结果
+合并为同一指标，也不能外推为真机闭环结论。
+
+终层汇总：
+
+| 臂 | 最终成功 |
+|---|---:|
+| NO_REPAIR | 0/240 |
+| R2_ONLY | 97/240 |
+| SELF_REFINE | 101/240 |
+| CHECKER_LOOP | 151/240 |
+| ROUTED | 200/240 |
+
+ROUTED 与 CHECKER_LOOP 的配对差异为
+`(125 both success, 14 both failure, 75 ROUTED-only, 26 CHECKER_LOOP-only)`，
+精确 McNemar `p=1.1154954264353206e-06`。

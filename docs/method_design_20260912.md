@@ -866,3 +866,147 @@ MetaWorld 用作“修复计划可编译、可执行”的接口级验证。
    不能声称连续视觉感知、真实运动控制或真机泛化能力；
 4. 可以报告“ROUTED 在 50 个配对仿真点上达到 90%，显著高于
    Checker-loop 的 68%”，但应同时说明执行协议。
+
+## 16. Sim-IF-240：全量配对仿真执行验证
+
+### 16.1 目的与协议
+
+第 15 章的 50 点仿真对照用于确认 ROUTED 与 Checker-loop 的差异
+方向。为了给出更稳定的终层执行证据，本章把同一配对协议扩展为
+Sim-IF-240：5 类压力 × 48 个冻结压力点，共 240 个
+`task_id / seed / pressure_type` 配对点。
+
+五臂定义如下：
+
+| 臂 | 含义 |
+|---|---|
+| `NO_REPAIR` | 使用受压力污染的初始计划，不修复 |
+| `R2_ONLY` | 只使用状态感知前缀保护后缀修复 |
+| `SELF_REFINE` | 协议级 Self-Refine 外部基线 |
+| `CHECKER_LOOP` | 协议级 checker-loop 外部基线 |
+| `ROUTED` | 错误类型感知分层修复：确定性截断、状态感知 R2、R1/R1_FROM_STATE 回退 |
+
+执行协议仍是
+`one_pick_place_pair_per_fresh_meta_world_episode`：修复后计划中的
+每个 `pick/place` 对映射到一个新的桌面 pick-and-place episode。
+该过程复用冻结修复结果，全程 `vlm_calls=0`，因此隔离了符号层修复
+质量与底层 primitive 执行质量的贡献。
+
+### 16.2 终层汇总
+
+| 臂 | 符号有效 | 仿真尝试 | 仿真成功 | 最终成功 | 最终成功率 | 95% Wilson CI |
+|---|---:|---:|---:|---:|---:|---|
+| `NO_REPAIR` | 0/240 | 0/240 | 0/240 | 0/240 | **0.00%** | [0.00%, 1.58%] |
+| `R2_ONLY` | 134/240 | 133/240 | 97/240 | 97/240 | **40.42%** | [34.41%, 46.73%] |
+| `SELF_REFINE` | 137/240 | 134/240 | 101/240 | 101/240 | **42.08%** | [36.01%, 48.41%] |
+| `CHECKER_LOOP` | 191/240 | 191/240 | 151/240 | 151/240 | **62.92%** | [56.65%, 68.78%] |
+| `ROUTED` | 233/240 | 233/240 | 200/240 | 200/240 | **83.33%** | [78.10%, 87.52%] |
+
+对级 primitive 执行结果为：
+
+| 臂 | `pick/place` 对成功率 |
+|---|---:|
+| `R2_ONLY` | 390/428 = 91.12% |
+| `SELF_REFINE` | 429/470 = 91.28% |
+| `CHECKER_LOOP` | 589/632 = 93.20% |
+| `ROUTED` | 708/744 = 95.16% |
+
+这说明 ROUTED 的优势既来自更高比例的计划进入可执行状态，也来自
+修复后计划与 primitive 接口映射后的更高对级执行成功率。
+
+### 16.3 终层配对检验
+
+对 240 个配对点使用精确 McNemar 检验。以终层
+`final_success` 为指标：
+
+| 比较 | 第一臂-only | 第二臂-only | 双成功 | 双失败 | 精确 p |
+|---|---:|---:|---:|---:|---:|
+| `ROUTED` vs `CHECKER_LOOP` | 75 | 26 | 125 | 14 | **1.12e-6** |
+| `ROUTED` vs `SELF_REFINE` | 115 | 16 | 85 | 24 | **1.18e-19** |
+| `ROUTED` vs `R2_ONLY` | 118 | 15 | 82 | 25 | **5.09e-21** |
+| `ROUTED` vs `NO_REPAIR` | 200 | 0 | 0 | 40 | **1.24e-60** |
+| `CHECKER_LOOP` vs `SELF_REFINE` | 86 | 36 | 65 | 53 | **6.91e-6** |
+| `CHECKER_LOOP` vs `R2_ONLY` | 90 | 36 | 61 | 53 | **1.64e-6** |
+| `SELF_REFINE` vs `R2_ONLY` | 61 | 57 | 40 | 82 | 0.783 |
+
+主要结论有三点。第一，ROUTED 在终层显著高于 Checker-loop、
+Self-Refine、R2-only 和不修复。第二，Checker-loop 显著高于
+Self-Refine 和 R2-only。第三，Self-Refine 与 R2-only 在该执行
+协议下无显著差异；因此不能把二者合并成一个“基线”，而应分别报告。
+
+### 16.4 按压力类型的终层结果
+
+每个压力类型各有 48 个配对点：
+
+| 压力类型 | `NO_REPAIR` | `R2_ONLY` | `SELF_REFINE` | `CHECKER_LOOP` | `ROUTED` |
+|---|---:|---:|---:|---:|---:|
+| `duplicate_pick_after_prefix` | 0 | 21 | 22 | 25 | **41** |
+| `unknown_object_after_prefix` | 0 | 0 | 20 | 25 | **42** |
+| `invalid_target_after_prefix` | 0 | 32 | 36 | 36 | **43** |
+| `place_before_pick` | 0 | 22 | 17 | 38 | 33 |
+| `repeat_pick_after_valid_plan` | 0 | 22 | 6 | 27 | **41** |
+
+这个表有两个值得在论文中明确讨论的边界。
+
+第一，R2-only 在 `unknown_object_after_prefix` 上是 0/48，而
+Self-Refine 是 20/48。原因是未知对象替换需要重写对象引用，超出固定
+前缀锁定协议下“只补后缀”的修改边界；这不是说明 VLM 没有能力，而是
+说明该错误类型需要完整重规划或更大修改范围。
+
+第二，`place_before_pick` 是 ROUTED 唯一低于 Checker-loop 的压力
+类型：33/48 对 38/48。失败中包含 7 例符号层
+`SCHEMA_ERROR` 拒绝，其余多为底层 grasp primitive 执行失败。论文应
+将其作为当前路由规则和完整重规划提示的失败模式，而不是只报告总分。
+
+### 16.5 失败模式
+
+按终层失败阶段统计：
+
+| 臂 | 主要失败模式 |
+|---|---|
+| `NO_REPAIR` | 240 个点全部在重校验阶段被拒绝 |
+| `R2_ONLY` | 101 个重校验拒绝、36 个 grasp primitive 失败、5 个模型计划解析或校验异常、1 个目标未满足 |
+| `SELF_REFINE` | 103 个模型计划解析或校验异常、33 个 grasp primitive 失败、3 个目标未满足 |
+| `CHECKER_LOOP` | 49 个模型计划解析或校验异常、40 个 grasp primitive 失败 |
+| `ROUTED` | 33 个 grasp primitive 失败、7 个重校验拒绝 |
+
+ROUTED 的 40 个失败点中有 33 个发生在底层 grasp primitive 阶段，
+只有 7 个停留在符号层重校验。因此，本章支持的主张应当是：
+
+> ROUTED 的主要贡献是显著提高修复计划进入合法、目标一致且可执行
+> 状态的比例；剩余失败主要暴露当前桌面 pick/place expert primitive
+> 的执行脆弱性，而不是符号层修复器继续输出非法计划。
+
+### 16.6 结果文件与数据血缘
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_compare_baselines_20260912_163449.json` | 240 点五臂仿真对照原始汇总 |
+| `logs/sim_if_240_*.log` | 对应运行日志 |
+| `data/reports/sim_if_240_analysis_20260913.json` | 派生分析：终层汇总、按压力汇总、McNemar 检验和失败模式 |
+
+Sim-IF-240 的配对来源包括：
+
+1. formal v11 ROUTED 修复计划：
+   `data/collections/repair_pressure_formal_v11_routed_20260912_200252.jsonl`；
+2. formal v8 no-oracle R2-only 修复计划：
+   `data/collections/repair_pressure_formal_v8_no_oracle_20260911_153655.jsonl`；
+3. 外部基线 Self-Refine 与 Checker-loop 计划：
+   `data/collections/external_baseline_formal_20260911_173240.jsonl`。
+
+### 16.7 论文写作边界
+
+1. 论文方法名不应绑定 MetaWorld。MetaWorld 只是“桌面机器人操作
+   仿真执行”的证据载体；方法贡献是结构化接口、确定性校验、状态
+   感知修复和错误类型路由。
+2. Sim-IF-240 是冻结修复计划的接口级仿真对照，不是在线 VLM 规划
+   benchmark，也不是真机闭环。
+3. 当前仿真环境是单 puck/goal 桌面 pick-and-place；符号计划中的每个
+   `pick/place` 对映射到独立 episode。不能声称连续场景状态迁移、
+   连续视觉感知或真实运动控制。
+4. 20 点 pilot 的反向差异只作为小样本诊断记录；正式引用应使用 50
+   点扩展或 240 点全量结果。
+5. `place_before_pick` 中 ROUTED 低于 Checker-loop 必须报告，并作为
+   后续改进路由与 R1_FROM_STATE 提示的依据。
+6. 任务类型扩展（如 push、drawer、button、stack、pour）应作为独立
+   后续阶段，不应与本章 240 点结果混合报告。

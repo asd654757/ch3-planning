@@ -1,0 +1,49 @@
+{
+  "completed_at_utc": "2026-09-13T09:02:04.273271+00:00",
+  "record_type": "sim_closed_loop_summary",
+  "benchmark": "sim_closed_loop_pilot_v1",
+  "episodes": 1,
+  "successes": 0,
+  "success_rate": 0.0,
+  "vlm_calls": 1,
+  "replan_rounds": 0,
+  "summary_by_family": {
+    "pick_place": {
+      "episodes": 1,
+      "successes": 0,
+      "success_rate": 0.0,
+      "vlm_calls": 1,
+      "replan_rounds": 0
+    }
+  },
+  "execution_protocol": "VLM task plan -> deterministic validator -> homogeneous MetaWorld segment -> low-dim state feedback -> R1/R1_FROM_STATE repair",
+  "limitation": "State-feedback closed loop, not visual closed loop; homogeneous segments use fresh episodes under the current MetaWorld adapter.",
+  "elapsed_s": 0.001,
+  "output": "data/collections/sim_closed_loop_mock_smoke_20260913_170203.json",
+  "episode_detail": [
+    {
+      "record_type": "sim_closed_loop_episode",
+      "task_id": "multiskill_pick_place_000",
+      "task_family": "pick_place",
+      "seed": 0,
+      "final_success": false,
+      "final_reject_reason": "ModelPlan schema validation failed: 1 validation error for ModelPlan\nactions\n  Input should be a valid list [type=list_type, input_value={'step_id': 1, 'skill': '...al_pad', 'arm': 'right'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/list_type",
+      "vlm_calls": 1,
+      "replan_rounds": 0,
+      "attempts": [
+        {
+          "round": 0,
+          "label": "INITIAL",
+          "parse_error": "ModelPlan schema validation failed: 1 validation error for ModelPlan\nactions\n  Input should be a valid list [type=list_type, input_value={'step_id': 1, 'skill': '...al_pad', 'arm': 'right'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/list_type",
+          "infeasible_reason": null,
+          "repair_mode": null,
+          "accepted": null,
+          "reject_reason": null,
+          "vlm_calls": 1,
+          "failure_stage": "model_plan"
+        }
+      ],
+      "episode_index": 1
+    }
+  ]
+}

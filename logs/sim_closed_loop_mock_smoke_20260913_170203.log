@@ -1,0 +1,6 @@
+[sim-closed-loop] episode=1/1 task=multiskill_pick_place_000 family=pick_place seed=0 start
+[sim-closed-loop] episode=1/1 success=False vlm_calls=1 replans=0 reason=ModelPlan schema validation failed: 1 validation error for ModelPlan
+actions
+  Input should be a valid list [type=list_type, input_value={'step_id': 1, 'skill': '...al_pad', 'arm': 'right'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/list_type
+{"completed_at_utc": "2026-09-13T09:02:04.273271+00:00", "record_type": "sim_closed_loop_summary", "benchmark": "sim_closed_loop_pilot_v1", "episodes": 1, "successes": 0, "success_rate": 0.0, "vlm_calls": 1, "replan_rounds": 0, "summary_by_family": {"pick_place": {"episodes": 1, "successes": 0, "success_rate": 0.0, "vlm_calls": 1, "replan_rounds": 0}}, "execution_protocol": "VLM task plan -> deterministic validator -> homogeneous MetaWorld segment -> low-dim state feedback -> R1/R1_FROM_STATE repair", "limitation": "State-feedback closed loop, not visual closed loop; homogeneous segments use fresh episodes under the current MetaWorld adapter.", "elapsed_s": 0.001, "output": "data/collections/sim_closed_loop_mock_smoke_20260913_170203.json"}

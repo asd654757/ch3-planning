@@ -1,0 +1,185 @@
+{
+  "completed_at_utc": "2026-09-13T09:04:10.455566+00:00",
+  "record_type": "sim_closed_loop_summary",
+  "benchmark": "sim_closed_loop_pilot_v1",
+  "episodes": 1,
+  "successes": 1,
+  "success_rate": 1.0,
+  "vlm_calls": 1,
+  "replan_rounds": 0,
+  "summary_by_family": {
+    "pick_place": {
+      "episodes": 1,
+      "successes": 1,
+      "success_rate": 1.0,
+      "vlm_calls": 1,
+      "replan_rounds": 0
+    }
+  },
+  "execution_protocol": "VLM task plan -> deterministic validator -> homogeneous MetaWorld segment -> low-dim state feedback -> R1/R1_FROM_STATE repair",
+  "limitation": "State-feedback closed loop, not visual closed loop; homogeneous segments use fresh episodes under the current MetaWorld adapter.",
+  "elapsed_s": 7.165,
+  "output": "data/collections/sim_closed_loop_mock_smoke_20260913_170402.json",
+  "episode_detail": [
+    {
+      "record_type": "sim_closed_loop_episode",
+      "task_id": "multiskill_pick_place_000",
+      "task_family": "pick_place",
+      "seed": 0,
+      "final_success": true,
+      "final_reject_reason": null,
+      "vlm_calls": 1,
+      "replan_rounds": 0,
+      "attempts": [
+        {
+          "round": 0,
+          "label": "INITIAL",
+          "parse_error": null,
+          "infeasible_reason": null,
+          "repair_mode": null,
+          "accepted": null,
+          "reject_reason": null,
+          "vlm_calls": 1,
+          "symbolic_valid": true,
+          "error_code": null,
+          "error_layer": null,
+          "error_message": "",
+          "segments": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true,
+                true
+              ],
+              "final_puck_target_distance": 0.07734646894776732,
+              "elapsed_s": 0.1446685791015625,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "adflow_grasp",
+                    "primitive": "grasp",
+                    "args": {
+                      "object_id": "blue_tray_1",
+                      "arm": "right"
+                    },
+                    "success": true,
+                    "steps": 39,
+                    "elapsed_s": 0.09766006469726562,
+                    "final_puck_pos": [
+                      0.060255156784652875,
+                      0.7215976956471206,
+                      0.04480676986500113
+                    ],
+                    "final_hand_pos": [
+                      0.061162950064701946,
+                      0.7205497870575188,
+                      0.0833442489558231
+                    ],
+                    "target_pos": [
+                      0.02271777412654634,
+                      0.8673621210647996,
+                      0.2824866704761664
+                    ],
+                    "final_puck_target_distance": 0.3240795282168775,
+                    "min_puck_target_distance": 0.2813326464680212,
+                    "gripper_distance": 0.4773227619823684,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  },
+                  {
+                    "step_id": 2,
+                    "policy_id": "adflow_place",
+                    "primitive": "place",
+                    "args": {
+                      "object_id": "blue_tray_1",
+                      "arm": "right",
+                      "target_id": "red_cube_0"
+                    },
+                    "success": true,
+                    "steps": 18,
+                    "elapsed_s": 0.04631519317626953,
+                    "final_puck_pos": [
+                      0.020355833137265786,
+                      0.8378983941357222,
+                      0.21101089633625342
+                    ],
+                    "final_hand_pos": [
+                      0.02299915289401961,
+                      0.8332975122874813,
+                      0.2503810757423656
+                    ],
+                    "target_pos": [
+                      0.02271777412654634,
+                      0.8673621210647996,
+                      0.2824866704761664
+                    ],
+                    "final_puck_target_distance": 0.2813326464680212,
+                    "min_puck_target_distance": 0.07734646894776732,
+                    "gripper_distance": 0.5142818851203846,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  0.020355833137265786,
+                  0.8378983941357222,
+                  0.21101089633625342
+                ],
+                "target_pos": [
+                  0.02271777412654634,
+                  0.8673621210647996,
+                  0.2824866704761664
+                ],
+                "final_puck_target_distance": 0.07734646894776732,
+                "elapsed_s": 0.1446685791015625,
+                "task": "metaworld-pick-place-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "sim_tasks": [
+            "metaworld-pick-place-v3"
+          ],
+          "sim_success": true,
+          "symbolic_state": {
+            "at": {
+              "blue_tray_1": "red_cube_0",
+              "red_cube_0": "table"
+            },
+            "holding": {},
+            "pushed": [],
+            "pressed": [],
+            "facts": [
+              "hand_empty(left)",
+              "hand_empty(right)",
+              "on(blue_tray_1, red_cube_0)",
+              "on(red_cube_0, table)"
+            ]
+          },
+          "completed_prefix_actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "blue_tray_1",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "blue_tray_1",
+              "target_id": "red_cube_0",
+              "arm": "right"
+            }
+          ]
+        }
+      ],
+      "episode_index": 1
+    }
+  ]
+}

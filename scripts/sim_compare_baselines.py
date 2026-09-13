@@ -17,16 +17,18 @@ import os
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 os.environ.setdefault("MUJOCO_GL", "egl")
 
 from ch3.capability.registry import load_registry
 from ch3.compiler.executable_plan import compile_plan
 from ch3.execution.metaworld_executor import MetaWorldPlanExecutor
-from ch3.schema.model_plan import ModelPlan, ModelPlanAction, Skill
+from ch3.goal.goal_checker import goal_satisfied
+from ch3.schema.model_plan import GoalSpec, ModelPlan, ModelPlanAction, Skill
 from ch3.state.world_state import WorldState
 from ch3.validator.pipeline import Validator
+from ch3.vlm.collector import world_state_from_task
 
 PRESSURES = [
     "duplicate_pick_after_prefix",
@@ -35,6 +37,18 @@ PRESSURES = [
     "place_before_pick",
     "repeat_pick_after_valid_plan",
 ]
+
+MULTISKILL_PRESSURES = [
+    "duplicate_skill_after_prefix",
+    "unknown_object_after_generic_prefix",
+    "invalid_action_after_prefix",
+]
+
+SIM_TASK_BY_FAMILY = {
+    "pick_place": "metaworld-pick-place-v3",
+    "push": "metaworld-push-v3",
+    "press": "metaworld-button-press-v3",
+}
 
 
 def key(row: dict[str, Any]) -> tuple[str, int, str]:
@@ -67,20 +81,25 @@ def pairwise(actions: list[ModelPlanAction]) -> bool:
     return True
 
 
-def scene_from_plan(plan: ModelPlan) -> set[str]:
+def scene_from_plan(plan: ModelPlan, registry) -> set[str]:
     objects: set[str] = set()
     for action in plan.actions:
         objects.add(action.object_id)
-        if action.skill == Skill.PLACE and action.target_id and action.target_id != "table":
-            objects.add(action.target_id)
+        target = action.target_id
+        if target and target not in registry.special_targets:
+            objects.add(target)
     return objects
 
 
-def validate_plan(plan: ModelPlan, registry) -> tuple[bool, str | None, str | None]:
-    scene = scene_from_plan(plan)
+def validate_plan(
+    plan: ModelPlan,
+    registry,
+    task: dict[str, Any] | None = None,
+):
+    scene = scene_from_plan(plan, registry)
     validator = Validator(scene_objects=scene, registry=registry)
-    result = validator.validate(plan, WorldState.table_scene(scene))
-    return result.valid, result.error_code, result.layer
+    initial_state = world_state_from_task(task) if task else WorldState.table_scene(scene)
+    return validator.validate(plan, initial_state)
 
 
 def select_points(
@@ -88,12 +107,13 @@ def select_points(
     per_pressure: int,
     *,
     all_slices: bool = False,
+    pressures: Sequence[str] = PRESSURES,
 ) -> list[tuple[str, int, str]]:
     by_pressure: dict[str, list[tuple[str, int, str]]] = defaultdict(list)
     for row in rows:
         by_pressure[row["pressure_type"]].append(key(row))
     selected: list[tuple[str, int, str]] = []
-    for pressure in PRESSURES:
+    for pressure in pressures:
         if all_slices:
             # Sim-IF-240 uses every frozen task x seed slice for each pressure.
             if len(by_pressure[pressure]) < per_pressure:
@@ -111,6 +131,80 @@ def select_points(
                 raise RuntimeError(f"only {len(tasks)} distinct tasks for {pressure}")
             selected.extend(sorted(tasks.values())[:per_pressure])
     return selected
+
+
+def is_executable_multiskill(actions: list[ModelPlanAction]) -> bool:
+    """Check whether a homogeneous single-object MultiSkill plan is executable.
+
+    The current simulator aliases each task family to one physical object:
+    pick/place uses paired grasp/place primitives, while push and press are
+    self-contained single-step skills.  Mixed-family plans are not executed
+    because a fresh episode cannot carry symbolic state between families.
+    """
+    if not actions:
+        return False
+    if all(a.skill in {Skill.PICK, Skill.PLACE} for a in actions):
+        return pairwise(actions)
+    if len(actions) == 1 and actions[0].skill == Skill.PUSH:
+        return True
+    if len(actions) == 1 and actions[0].skill == Skill.PRESS:
+        return True
+    return False
+
+
+def multiskill_task_for_plan(plan: ModelPlan) -> str:
+    if all(a.skill in {Skill.PICK, Skill.PLACE} for a in plan.actions):
+        return SIM_TASK_BY_FAMILY["pick_place"]
+    if len(plan.actions) == 1 and plan.actions[0].skill == Skill.PUSH:
+        return SIM_TASK_BY_FAMILY["push"]
+    if len(plan.actions) == 1 and plan.actions[0].skill == Skill.PRESS:
+        return SIM_TASK_BY_FAMILY["press"]
+    raise ValueError("plan is not executable as one single-object MetaWorld task family")
+
+
+def execute_multiskill_plan(
+    plan: ModelPlan,
+    registry,
+    point_key: tuple[str, int, str],
+    arm: str,
+    *,
+    max_steps: int,
+    observation_size: int,
+) -> tuple[bool, list[dict[str, Any]], list[str]]:
+    family = multiskill_task_for_plan(plan)
+    if family == SIM_TASK_BY_FAMILY["pick_place"]:
+        segments = [(i, i + 2) for i in range(0, len(plan.actions), 2)]
+    else:
+        segments = [(0, 1)]
+
+    primitive_results: list[dict[str, Any]] = []
+    sim_tasks: list[str] = []
+    for segment_index, (start, end) in enumerate(segments):
+        segment_plan = ModelPlan(actions=plan.actions[start:end])
+        executable = compile_plan(segment_plan, registry)
+        sim_task = multiskill_task_for_plan(segment_plan)
+        sim_tasks.append(sim_task)
+        executor = MetaWorldPlanExecutor(
+            task=sim_task,
+            observation_size=observation_size,
+            seed=stable_seed(point_key, arm, segment_index),
+        )
+        try:
+            executor.reset()
+            result = executor.execute_plan(executable, max_steps_per_primitive=max_steps)
+            primitive_results.append(
+                {
+                    "segment_index": segment_index,
+                    "success": result.success,
+                    "step_results": [step.success for step in result.steps],
+                    "final_puck_target_distance": result.final_puck_target_distance,
+                    "elapsed_s": result.elapsed_s,
+                    "sim_result": executor.result_to_dict(result),
+                }
+            )
+        finally:
+            executor.close()
+    return all(item["success"] for item in primitive_results), primitive_results, sim_tasks
 
 
 def execute_symbolic_plan(
@@ -170,6 +264,21 @@ def main() -> None:
         type=Path,
         default=Path("data/collections/external_baseline_formal_20260911_173240.jsonl"),
     )
+    parser.add_argument(
+        "--benchmark-mode",
+        choices=("legacy_pick_place", "multiskill"),
+        default="legacy_pick_place",
+        help=(
+            "legacy keeps the original frozen five-arm pick/place comparison; "
+            "multiskill compares the stress plan against the frozen ROUTED result"
+        ),
+    )
+    parser.add_argument(
+        "--tasks-source",
+        type=Path,
+        default=Path("data/scenarios/multiskill_tasks_v1.jsonl"),
+        help="MultiSkill scenario JSONL used for task-specific symbolic validation",
+    )
     parser.add_argument("--points-per-pressure", type=int, default=4)
     parser.add_argument(
         "--selection-mode",
@@ -190,45 +299,58 @@ def main() -> None:
         for r in load_jsonl(args.routed_source)
         if r.get("record_type") == "repair_pressure"
     ]
-    r2_rows = [
-        r
-        for r in load_jsonl(args.r2_source)
-        if r.get("record_type") == "repair_pressure" and r.get("repair_mode") == "R2"
-    ]
-    checker_rows = [
-        r
-        for r in load_jsonl(args.checker_source)
-        if r.get("repair_mode") == "checker_loop"
-    ]
-    self_refine_rows = [
-        r
-        for r in load_jsonl(args.self_refine_source)
-        if r.get("repair_mode") == "self_refine"
-    ]
-
     routed = {key(r): r for r in routed_rows}
-    r2 = {key(r): r for r in r2_rows}
-    checker = {key(r): r for r in checker_rows}
-    self_refine = {key(r): r for r in self_refine_rows}
-    common = set(routed) & set(r2) & set(checker) & set(self_refine)
+    multiskill = args.benchmark_mode == "multiskill"
+    if multiskill:
+        task_rows = load_jsonl(args.tasks_source)
+        tasks = {str(task["task_id"]): task for task in task_rows}
+        missing_tasks = sorted({key(r)[0] for r in routed_rows} - set(tasks))
+        if missing_tasks:
+            raise RuntimeError(f"missing MultiSkill task definitions: {missing_tasks}")
+        active_pressures = MULTISKILL_PRESSURES
+        common = {key(r) for r in routed_rows}
+        arms = ["NO_REPAIR", "ROUTED"]
+    else:
+        tasks = {}
+        active_pressures = PRESSURES
+        r2_rows = [
+            r
+            for r in load_jsonl(args.r2_source)
+            if r.get("record_type") == "repair_pressure" and r.get("repair_mode") == "R2"
+        ]
+        checker_rows = [
+            r
+            for r in load_jsonl(args.checker_source)
+            if r.get("repair_mode") == "checker_loop"
+        ]
+        self_refine_rows = [
+            r
+            for r in load_jsonl(args.self_refine_source)
+            if r.get("repair_mode") == "self_refine"
+        ]
+        r2 = {key(r): r for r in r2_rows}
+        checker = {key(r): r for r in checker_rows}
+        self_refine = {key(r): r for r in self_refine_rows}
+        common = set(routed) & set(r2) & set(checker) & set(self_refine)
+        arms = ["NO_REPAIR", "R2_ONLY", "SELF_REFINE", "CHECKER_LOOP", "ROUTED"]
+
     candidates = [r for r in routed_rows if key(r) in common]
     points = select_points(
         candidates,
         args.points_per_pressure,
         all_slices=args.selection_mode == "all_slices",
+        pressures=active_pressures,
     )
-    if len(points) != len(PRESSURES) * args.points_per_pressure:
+    expected_points = len(active_pressures) * args.points_per_pressure
+    if len(points) != expected_points:
         raise RuntimeError("failed to select the expected paired pressure points")
 
     registry = load_registry("config/capability_registry.yaml")
-    arms = ["NO_REPAIR", "R2_ONLY", "SELF_REFINE", "CHECKER_LOOP", "ROUTED"]
     records: list[dict[str, Any]] = []
 
     for point_index, point_key in enumerate(points, 1):
         routed_row = routed[point_key]
-        r2_row = r2[point_key]
-        checker_row = checker[point_key]
-        self_refine_row = self_refine[point_key]
+        task = tasks.get(point_key[0])
         print(
             f"[sim-compare] point={point_index}/{len(points)} "
             f"pressure={point_key[2]} task={point_key[0]} seed={point_key[1]} start",
@@ -241,6 +363,10 @@ def main() -> None:
             "task_id": point_key[0],
             "seed": point_key[1],
             "pressure_type": point_key[2],
+            "benchmark": (
+                "multiskill_if_v1_formal" if multiskill
+                else str(routed_row.get("benchmark") or "legacy_pick_place")
+            ),
             "arms": {},
         }
 
@@ -277,30 +403,52 @@ def main() -> None:
 
             try:
                 plan = ModelPlan.model_validate(plan_data)
-                symbolic_valid, error_code, error_layer = validate_plan(plan, registry)
+                validation = validate_plan(plan, registry, task)
+                symbolic_valid = bool(validation.valid)
+                goal_ok = symbolic_valid and goal_satisfied(
+                    validation.final_state,
+                    GoalSpec.model_validate(task["goal"]) if task else GoalSpec(facts=[]),
+                    arms=registry.arms,
+                )
                 arm_record["symbolic_valid"] = symbolic_valid
-                arm_record["error_code"] = error_code
-                arm_record["error_layer"] = error_layer
+                arm_record["error_code"] = (
+                    validation.error_code.value if validation.error_code else None
+                )
+                arm_record["error_layer"] = validation.layer
                 arm_record["model_plan_hash"] = plan_hash(plan)
-                # For repaired arms, also require the frozen symbolic result.
-                if arm != "NO_REPAIR":
+                if multiskill:
+                    # Re-evaluate the exact frozen plan against the frozen task.
+                    arm_record["symbolic_goal_satisfied"] = goal_ok
+                elif arm != "NO_REPAIR":
+                    # Preserve the legacy frozen source-side goal criterion.
                     arm_record["symbolic_goal_satisfied"] = bool(
                         source_row.get("valid") and source_row.get("goal_satisfied")
                     )
-                if (
-                    symbolic_valid
-                    and arm_record["symbolic_goal_satisfied"]
-                    and pairwise(plan.actions)
-                ):
+                executable = (
+                    is_executable_multiskill(plan.actions)
+                    if multiskill else pairwise(plan.actions)
+                )
+                if symbolic_valid and arm_record["symbolic_goal_satisfied"] and executable:
                     arm_record["sim_attempted"] = True
-                    sim_success, pair_results = execute_symbolic_plan(
-                        plan,
-                        registry,
-                        point_key,
-                        arm,
-                        max_steps=args.max_steps_per_primitive,
-                        observation_size=args.observation_size,
-                    )
+                    if multiskill:
+                        sim_success, pair_results, sim_tasks = execute_multiskill_plan(
+                            plan,
+                            registry,
+                            point_key,
+                            arm,
+                            max_steps=args.max_steps_per_primitive,
+                            observation_size=args.observation_size,
+                        )
+                        arm_record["sim_tasks"] = sim_tasks
+                    else:
+                        sim_success, pair_results = execute_symbolic_plan(
+                            plan,
+                            registry,
+                            point_key,
+                            arm,
+                            max_steps=args.max_steps_per_primitive,
+                            observation_size=args.observation_size,
+                        )
                     arm_record["sim_success"] = sim_success
                     arm_record["pair_results"] = pair_results
             except Exception as exc:
@@ -344,17 +492,30 @@ def main() -> None:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / f"sim_compare_baselines_{stamp}.json"
+    output_name = (
+        f"sim_compare_baselines_multiskill_{stamp}.json"
+        if multiskill else f"sim_compare_baselines_{stamp}.json"
+    )
+    output_path = output_dir / output_name
+    protocol = (
+        "one_homogeneous_symbolic_group_per_fresh_meta_world_episode:"
+        "pick_place_pair/single_push/single_press"
+        if multiskill
+        else "one_pick_place_pair_per_fresh_meta_world_episode"
+    )
     summary = {
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
         "record_type": "sim_compare_baselines_summary",
+        "benchmark_mode": args.benchmark_mode,
         "source_routed": str(args.routed_source),
-        "source_r2_only": str(args.r2_source),
-        "source_checker_loop": str(args.checker_source),
+        "source_tasks": str(args.tasks_source) if multiskill else None,
+        "source_r2_only": None if multiskill else str(args.r2_source),
+        "source_checker_loop": None if multiskill else str(args.checker_source),
         "points_per_pressure": args.points_per_pressure,
+        "pressures": active_pressures,
         "points": len(points),
         "vlm_calls": 0,
-        "execution_protocol": "one_pick_place_pair_per_fresh_meta_world_episode",
+        "execution_protocol": protocol,
         "summary_by_arm": summary_by_arm,
         "output": str(output_path),
     }

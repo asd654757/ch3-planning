@@ -1,4 +1,4 @@
-"""离散世界状态（hand_empty / holding / on_table / on）。
+"""离散世界状态（hand_empty / holding / on_table / on / pushed_to / pressed）。
 
 状态表示刻意精简：
 - holding: arm -> object_id（空手则不记录）
@@ -18,6 +18,8 @@ class WorldState:
     objects: set[str] = field(default_factory=set)
     at: dict[str, str] = field(default_factory=dict)          # obj -> surface id
     holding: dict[str, str] = field(default_factory=dict)      # arm -> obj
+    pushed: set[str] = field(default_factory=set)              # objects moved by push
+    pressed: set[str] = field(default_factory=set)             # buttons/switches pressed
     table_id: str = "table"
 
     @classmethod
@@ -31,6 +33,8 @@ class WorldState:
             objects=set(self.objects),
             at=dict(self.at),
             holding=dict(self.holding),
+            pushed=set(self.pushed),
+            pressed=set(self.pressed),
             table_id=self.table_id,
         )
 
@@ -60,6 +64,10 @@ class WorldState:
             loc = self.at.get(obj)
             if loc is not None:
                 out.add(f"on({obj}, {loc})")
+            if obj in self.pushed and loc is not None:
+                out.add(f"pushed_to({obj}, {loc})")
+        for obj in sorted(self.pressed):
+            out.add(f"pressed({obj})")
         # 空手事实只对注册过的手臂生成；手臂集合需外部传入 arms
         return out
 

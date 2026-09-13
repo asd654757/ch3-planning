@@ -58,9 +58,14 @@ class MetaWorldPlanResult:
 
 
 class MetaWorldPlanExecutor:
-    """Execute a compiled pick/place plan in one-object MetaWorld simulation."""
+    """Execute a compiled task-level plan in one-object MetaWorld simulation."""
 
-    _SUPPORTED_POLICY_IDS = {"adflow_grasp", "adflow_place"}
+    _SUPPORTED_POLICY_IDS = {
+        "adflow_grasp",
+        "adflow_place",
+        "metaworld_push",
+        "metaworld_button_press",
+    }
 
     def __init__(
         self,
@@ -68,6 +73,7 @@ class MetaWorldPlanExecutor:
         task: str = "metaworld-pick-place-v3",
         observation_size: int = 224,
         goal_tolerance: float = 0.08,
+        push_goal_tolerance: float = 0.07,
         gripper_closed_threshold: float = 0.73,
         lifted_height_threshold: float = 0.04,
         seed: int | None = None,
@@ -75,6 +81,7 @@ class MetaWorldPlanExecutor:
         self.task = task
         self.observation_size = observation_size
         self.goal_tolerance = goal_tolerance
+        self.push_goal_tolerance = push_goal_tolerance
         self.gripper_closed_threshold = gripper_closed_threshold
         self.lifted_height_threshold = lifted_height_threshold
         self._held_symbolic_object: str | None = None
@@ -194,6 +201,42 @@ class MetaWorldPlanExecutor:
         result["elapsed_s"] = time.time() - started
         return MetaWorldStepResult(**result)
 
+    def _run_press(self, step: ExecutableStep, max_steps: int) -> MetaWorldStepResult:
+        if self._held_symbolic_object is not None:
+            raise MetaWorldExecutionError(
+                f"cannot execute press for {step.args.get('object_id')!r}: "
+                f"another symbolic object is already held"
+            )
+        result = self._base_result(step)
+        started = time.time()
+        for _ in range(max_steps):
+            state = self._state()
+            action = self._expert_action(state["raw"])
+            _, _, terminated, truncated, info = self._env._env.step(action)
+            result["steps"] += 1
+            result["terminated"] = bool(terminated)
+            result["truncated"] = bool(truncated)
+
+            state = self._state()
+            distance = float(np.linalg.norm(state["puck_pos"] - state["target_pos"]))
+            result["min_puck_target_distance"] = min(
+                result["min_puck_target_distance"], distance
+            )
+            result["final_puck_pos"] = state["puck_pos"].tolist()
+            result["final_hand_pos"] = state["hand_pos"].tolist()
+            result["info_success"] = bool(info.get("success", info.get("is_success", False)))
+            if result["info_success"]:
+                result["success"] = True
+                break
+            if terminated or truncated:
+                result["success"] = False
+                break
+        else:
+            result["success"] = False
+
+        result["elapsed_s"] = time.time() - started
+        return MetaWorldStepResult(**result)
+
     def _run_place(self, step: ExecutableStep, max_steps: int) -> MetaWorldStepResult:
         symbolic_object = str(step.args["object_id"])
         if self._held_symbolic_object != symbolic_object:
@@ -233,6 +276,42 @@ class MetaWorldPlanExecutor:
         result["elapsed_s"] = time.time() - started
         return MetaWorldStepResult(**result)
 
+    def _run_push(self, step: ExecutableStep, max_steps: int) -> MetaWorldStepResult:
+        if self._held_symbolic_object is not None:
+            raise MetaWorldExecutionError(
+                f"cannot execute push for {step.args.get('object_id')!r}: "
+                f"another symbolic object is already held"
+            )
+        result = self._base_result(step)
+        started = time.time()
+        for _ in range(max_steps):
+            state = self._state()
+            action = self._expert_action(state["raw"])
+            _, _, terminated, truncated, info = self._env._env.step(action)
+            result["steps"] += 1
+            result["terminated"] = bool(terminated)
+            result["truncated"] = bool(truncated)
+
+            state = self._state()
+            distance = float(np.linalg.norm(state["puck_pos"] - state["target_pos"]))
+            result["min_puck_target_distance"] = min(
+                result["min_puck_target_distance"], distance
+            )
+            result["final_puck_pos"] = state["puck_pos"].tolist()
+            result["final_hand_pos"] = state["hand_pos"].tolist()
+            result["info_success"] = bool(info.get("success", info.get("is_success", False)))
+            if result["info_success"] or distance <= self.push_goal_tolerance:
+                result["success"] = True
+                break
+            if terminated or truncated:
+                result["success"] = False
+                break
+        else:
+            result["success"] = False
+
+        result["elapsed_s"] = time.time() - started
+        return MetaWorldStepResult(**result)
+
     def execute_step(self, step: ExecutableStep, *, max_steps: int = 300) -> MetaWorldStepResult:
         if step.policy_id not in self._SUPPORTED_POLICY_IDS:
             raise MetaWorldExecutionError(
@@ -242,6 +321,10 @@ class MetaWorldPlanExecutor:
             return self._run_grasp(step, max_steps)
         if step.primitive == "place":
             return self._run_place(step, max_steps)
+        if step.primitive == "push":
+            return self._run_push(step, max_steps)
+        if step.primitive == "press":
+            return self._run_press(step, max_steps)
         raise MetaWorldExecutionError(f"unsupported primitive: {step.primitive!r}")
 
     def execute_plan(self, plan: ExecutablePlan, *, max_steps_per_primitive: int = 300) -> MetaWorldPlanResult:

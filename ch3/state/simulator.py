@@ -35,6 +35,28 @@ def step(
         nxt.holding[arm] = obj
         return nxt, True, None, ""
 
+    if action.skill == Skill.PUSH:
+        if not state.arm_empty(arm):
+            return state.copy(), False, ErrorCode.ARM_NOT_EMPTY, f"{arm} 非空，不能 push {obj}"
+        if not state.is_on_table(obj):
+            return state.copy(), False, ErrorCode.STATE_TRANSITION_ERROR, f"{obj} 不在 table 上，无法 push"
+        tgt = action.target_id
+        if tgt is None or tgt not in targets:
+            return state.copy(), False, ErrorCode.TARGET_NOT_FOUND, f"push 目标 {tgt} 不可用"
+        nxt = state.copy()
+        nxt.at[obj] = tgt
+        nxt.pushed.add(obj)
+        return nxt, True, None, ""
+
+    if action.skill == Skill.PRESS:
+        if not state.arm_empty(arm):
+            return state.copy(), False, ErrorCode.ARM_NOT_EMPTY, f"{arm} 非空，不能 press {obj}"
+        if obj not in state.objects:
+            return state.copy(), False, ErrorCode.STATE_TRANSITION_ERROR, f"{obj} 不在场景中，无法 press"
+        nxt = state.copy()
+        nxt.pressed.add(obj)
+        return nxt, True, None, ""
+
     # PLACE
     if state.held_object(arm) != obj:
         return state.copy(), False, ErrorCode.OBJECT_NOT_HELD, f"{arm} 未持有 {obj}，无法 place"

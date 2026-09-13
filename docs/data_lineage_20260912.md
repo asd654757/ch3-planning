@@ -330,3 +330,22 @@ ROUTED 与 CHECKER_LOOP 的配对差异为
 ROUTED 与 CHECKER_LOOP 的配对差异为
 `(125 both success, 14 both failure, 75 ROUTED-only, 26 CHECKER_LOOP-only)`，
 精确 McNemar `p=1.1154954264353206e-06`。
+
+## MultiSkill 接口扩展 smoke（push / press）
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_push_skill_smoke_20260913_130436.json` | `push` 符号计划经 Validator/Compiler 后在 `metaworld-push-v3` 中执行 3 次 |
+| `data/collections/sim_button_press_skill_smoke_20260913_130700.json` | `press` 符号计划经 Validator/Compiler 后在 `metaworld-button-press-v3` 中执行 3 次 |
+| `logs/sim_push_skill_smoke_20260913_130436.log` | 对应 push 运行日志 |
+| `logs/sim_button_press_skill_smoke_20260913_130700.log` | 对应 press 运行日志 |
+
+这两个文件属于接口级 smoke，不是 formal benchmark。它们验证：
+
+- `Skill.PUSH` 与 `Skill.PRESS` 已进入 ModelPlan 闭集；
+- 能力注册表可映射到 `metaworld_push` 与 `metaworld_button_press`；
+- 状态事实支持 `pushed_to(...)` 与 `pressed(...)`；
+- Validator、Goal Checker、Compiler 和 MetaWorld executor 全链路可用。
+
+两者均不调用 VLM，均 3/3 成功，且 symbolic validation 与 symbolic
+goal 均通过。

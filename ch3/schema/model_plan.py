@@ -18,6 +18,8 @@ class Skill(str, Enum):
 
     PICK = "pick"
     PLACE = "place"
+    PUSH = "push"
+    PRESS = "press"
 
 
 class Arm(str, Enum):

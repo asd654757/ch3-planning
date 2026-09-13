@@ -1010,3 +1010,105 @@ Sim-IF-240 的配对来源包括：
    后续改进路由与 R1_FROM_STATE 提示的依据。
 6. 任务类型扩展（如 push、drawer、button、stack、pour）应作为独立
    后续阶段，不应与本章 240 点结果混合报告。
+
+## 17. MultiSkill 接口扩展 smoke：push 与 press
+
+### 17.1 目的
+
+Sim-IF-240 只验证了 `pick/place` 任务级计划的符号修复与仿真执行。
+为了检查“可靠接口”不绑定单一技能，本章先接入两个新的操作技能：
+
+1. `push`：将物体推到目标位置；
+2. `press`：执行按钮按压类非抓取交互。
+
+该阶段只做接口级 smoke，不修改 formal v11 与 Sim-IF-240 的正式结果，
+也不声称已经完成 multi-skill benchmark。
+
+### 17.2 符号层扩展
+
+`ModelPlan` 的技能闭集由：
+
+```text
+pick / place
+```
+
+扩展为：
+
+```text
+pick / place / push / press
+```
+
+新增状态事实：
+
+```text
+pushed_to(object_id, target_id)
+pressed(object_id)
+```
+
+能力注册表新增两类映射：
+
+| Skill | Primitive | Policy | 目标参数 | 目标事实 |
+|---|---|---|---|---|
+| `push` | `push` | `metaworld_push` | 必须有 `target_id` | `pushed_to(object_id, target_id)` |
+| `press` | `press` | `metaworld_button_press` | 不允许 `target_id` | `pressed(object_id)` |
+
+四层校验、首错定位、状态模拟和 Goal Checker 均继续使用同一接口。
+当前 `push` 的前置条件包括手空且物体在 table 上；`press` 的前置条件
+包括手空。
+
+### 17.3 仿真执行 smoke
+
+两个 skill 都按同一流程验证：
+
+```text
+ModelPlan
+→ Validator
+→ Compiler
+→ ExecutablePlan
+→ MetaWorldPlanExecutor
+→ MetaWorld expert policy
+```
+
+`push` 使用 `metaworld-push-v3`，`press` 使用
+`metaworld-button-press-v3`。每个 skill 运行 3 个 episode，不调用
+VLM。结果如下：
+
+| Skill | 仿真任务 | 成功 | 成功率 | 符号校验 | 符号目标 |
+|---|---|---:|---:|---|---|
+| `push` | `metaworld-push-v3` | 3/3 | 100% | 通过 | 通过 |
+| `press` | `metaworld-button-press-v3` | 3/3 | 100% | 通过 | 通过 |
+
+结果文件：
+
+- `data/collections/sim_push_skill_smoke_20260913_130436.json`
+- `data/collections/sim_button_press_skill_smoke_20260913_130700.json`
+
+日志：
+
+- `logs/sim_push_skill_smoke_20260913_130436.log`
+- `logs/sim_button_press_skill_smoke_20260913_130700.log`
+
+### 17.4 测试与边界
+
+新增测试覆盖：
+
+1. `push` 和 `press` 的能力注册；
+2. `ModelPlan → ExecutablePlan` 编译；
+3. 状态事实生成；
+4. 目标满足判定；
+5. 未知对象/目标与手非空等非法状态拒绝。
+
+当前测试结果：
+
+```text
+88 passed
+```
+
+论文写作边界：
+
+1. 这是 multi-skill 接口扩展 smoke，不是正式 benchmark；
+2. 两个 skill 的仿真 expert policy 都是可用性验证，不能说明高层
+   VLM 的多任务规划性能；
+3. 正式任务生成、修复压力和 benchmark 仍需后续冻结协议；
+4. 方法名和论文标题仍不应绑定 MetaWorld；MetaWorld 只是桌面操作
+   仿真执行载体。

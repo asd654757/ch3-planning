@@ -1,0 +1,220 @@
+{
+  "completed_at_utc": "2026-09-13T05:04:46.474455+00:00",
+  "record_type": "sim_push_skill_smoke_summary",
+  "simulation_task": "metaworld-push-v3",
+  "skill": "push",
+  "symbolic_validation_valid": true,
+  "symbolic_goal_satisfied": true,
+  "episodes": 3,
+  "max_steps_per_primitive": 500,
+  "successes": 3,
+  "success_rate": 1.0,
+  "results": [
+    {
+      "episode": 1,
+      "success": true,
+      "steps": [
+        {
+          "step_id": 1,
+          "policy_id": "metaworld_push",
+          "primitive": "push",
+          "args": {
+            "object_id": "blue_block_0",
+            "arm": "right",
+            "target_id": "goal_pad"
+          },
+          "success": true,
+          "steps": 59,
+          "elapsed_s": 0.15228796005249023,
+          "final_puck_pos": [
+            -0.01993024482304357,
+            0.8155413068938424,
+            0.03168816750648078
+          ],
+          "final_hand_pos": [
+            -0.020721862656671537,
+            0.8118867149636783,
+            0.06723308494893702
+          ],
+          "target_pos": [
+            -0.023311696234844456,
+            0.8791725038082665,
+            0.019973283961679866
+          ],
+          "final_puck_target_distance": 0.19030356717835156,
+          "min_puck_target_distance": 0.06478890283745227,
+          "gripper_distance": 1.0,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        }
+      ],
+      "final_puck_pos": [
+        -0.01993024482304357,
+        0.8155413068938424,
+        0.03168816750648078
+      ],
+      "target_pos": [
+        -0.023311696234844456,
+        0.8791725038082665,
+        0.019973283961679866
+      ],
+      "final_distance": 0.06478890283745227,
+      "sim_initial_state": {
+        "initial_puck_pos": [
+          -0.0124825577474615,
+          0.689177300078208,
+          0.019973283961679866
+        ],
+        "initial_hand_pos": [
+          0.0047398237114848725,
+          0.6013941554408069,
+          0.1951077138533845
+        ],
+        "target_pos": [
+          -0.023311696234844456,
+          0.8791725038082665,
+          0.019973283961679866
+        ]
+      }
+    },
+    {
+      "episode": 2,
+      "success": true,
+      "steps": [
+        {
+          "step_id": 1,
+          "policy_id": "metaworld_push",
+          "primitive": "push",
+          "args": {
+            "object_id": "blue_block_0",
+            "arm": "right",
+            "target_id": "goal_pad"
+          },
+          "success": true,
+          "steps": 55,
+          "elapsed_s": 0.13552474975585938,
+          "final_puck_pos": [
+            0.014635570293001825,
+            0.7814131557322909,
+            0.02552648948914451
+          ],
+          "final_hand_pos": [
+            0.019299531979182154,
+            0.7788651413570379,
+            0.06060620532980428
+          ],
+          "target_pos": [
+            0.034093502035680456,
+            0.8417304802367127,
+            0.019973283961679866
+          ],
+          "final_puck_target_distance": 0.17993828496065561,
+          "min_puck_target_distance": 0.06362097794520871,
+          "gripper_distance": 1.0,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        }
+      ],
+      "final_puck_pos": [
+        0.014635570293001825,
+        0.7814131557322909,
+        0.02552648948914451
+      ],
+      "target_pos": [
+        0.034093502035680456,
+        0.8417304802367127,
+        0.019973283961679866
+      ],
+      "final_distance": 0.06362097794520871,
+      "sim_initial_state": {
+        "initial_puck_pos": [
+          -0.059109550053696516,
+          0.6878117436390945,
+          0.019973283961679866
+        ],
+        "initial_hand_pos": [
+          0.0047398237114848725,
+          0.6013941554408069,
+          0.1951077138533845
+        ],
+        "target_pos": [
+          0.034093502035680456,
+          0.8417304802367127,
+          0.019973283961679866
+        ]
+      }
+    },
+    {
+      "episode": 3,
+      "success": true,
+      "steps": [
+        {
+          "step_id": 1,
+          "policy_id": "metaworld_push",
+          "primitive": "push",
+          "args": {
+            "object_id": "blue_block_0",
+            "arm": "right",
+            "target_id": "goal_pad"
+          },
+          "success": true,
+          "steps": 58,
+          "elapsed_s": 0.14374327659606934,
+          "final_puck_pos": [
+            -0.045052096753901594,
+            0.7947163771714737,
+            0.028356729842277557
+          ],
+          "final_hand_pos": [
+            -0.04421431332338806,
+            0.7918571020341731,
+            0.06325829665103028
+          ],
+          "target_pos": [
+            -0.04663454497942668,
+            0.8621133832769295,
+            0.019973283961679866
+          ],
+          "final_puck_target_distance": 0.20057217328344915,
+          "min_puck_target_distance": 0.06793484186482096,
+          "gripper_distance": 1.0,
+          "terminated": false,
+          "truncated": false,
+          "info_success": false
+        }
+      ],
+      "final_puck_pos": [
+        -0.045052096753901594,
+        0.7947163771714737,
+        0.028356729842277557
+      ],
+      "target_pos": [
+        -0.04663454497942668,
+        0.8621133832769295,
+        0.019973283961679866
+      ],
+      "final_distance": 0.06793484186482096,
+      "sim_initial_state": {
+        "initial_puck_pos": [
+          -0.0590702731924315,
+          0.6619270966350663,
+          0.019973283961679866
+        ],
+        "initial_hand_pos": [
+          0.0047398237114848725,
+          0.6013941554408069,
+          0.1951077138533845
+        ],
+        "target_pos": [
+          -0.04663454497942668,
+          0.8621133832769295,
+          0.019973283961679866
+        ]
+      }
+    }
+  ],
+  "elapsed_s": 9.955590963363647,
+  "output": "data/collections/sim_push_skill_smoke_20260913_130436.json"
+}

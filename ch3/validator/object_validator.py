@@ -16,7 +16,7 @@ def check_action(
     """对象存在性 + 放置目标存在性。合法返回 (None, "")。"""
     if action.object_id not in scene_objects:
         return ErrorCode.UNKNOWN_OBJECT, f"对象 {action.object_id} 不在闭世界场景中"
-    if action.skill == Skill.PLACE:
+    if action.skill in {Skill.PLACE, Skill.PUSH}:
         tgt = action.target_id
         if tgt is None:
             return None, ""  # 缺失参数由 capability 层报 E04

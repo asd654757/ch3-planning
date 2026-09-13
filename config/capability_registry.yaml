@@ -27,7 +27,26 @@ capabilities:
     effects:
       - "on(object_id, target_id)"
       - "-holding(arm, object_id)"
+  push:
+    primitive: push
+    args: [object_id, target_id, arm]
+    policy: metaworld_push
+    preconditions:
+      - "hand_empty(arm)"
+      - "on_table(object_id)"
+    effects:
+      - "pushed_to(object_id, target_id)"
+      - "on(object_id, target_id)"
+  press:
+    primitive: press
+    args: [object_id, arm]
+    policy: metaworld_button_press
+    preconditions:
+      - "hand_empty(arm)"
+    effects:
+      - "pressed(object_id)"
 
 # 目标位（target）合法性：table 固定存在；其余须是场景对象
 special_targets:
   table: {kind: surface}
+  goal_pad: {kind: push_surface}

@@ -23,4 +23,8 @@ def check_action(
         return ErrorCode.MISSING_PARAMETER, "place 缺少 target_id"
     if action.skill == Skill.PICK and action.target_id is not None:
         return ErrorCode.MISSING_PARAMETER, "pick 不应携带 target_id"
+    if action.skill == Skill.PUSH and action.target_id is None:
+        return ErrorCode.MISSING_PARAMETER, "push 缺少 target_id"
+    if action.skill == Skill.PRESS and action.target_id is not None:
+        return ErrorCode.MISSING_PARAMETER, "press 不应携带 target_id"
     return None, ""

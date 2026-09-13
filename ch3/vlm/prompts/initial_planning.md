@@ -37,12 +37,13 @@ Do not substitute another object and do not return the refusal object when every
 required ID is visible.
 
 Hard constraints:
-1. Only use skill "pick" or "place".
+1. Only use skills from the registered closed set: "pick", "place", "push", or "press".
 2. Only use object IDs from the closed-world list.
 3. Use arm "left" or "right".
 4. step_id starts at 1 and strictly increases by 1.
-5. A pick action must have target_id=null. A place action must include target_id (an object ID or "table").
-6. Each pick must be immediately followed by the corresponding place for the same object and arm.
-7. Do not pick a new object while an arm is holding one.
-8. Each object may be picked at most once. If several objects match the same color/shape phrase, choose distinct object IDs so that every goal fact is satisfied exactly once.
-9. Return the complete plan, never a partial prefix: every pick must be paired with its corresponding place in the same response.
+5. Action parameters are: a pick action must have target_id=null; a place action must include target_id (an object ID or "table"); a push action must include the destination target_id; a press action must have target_id=null.
+6. Interpret goal facts as: on(object, target) means place; pushed_to(object, target) means push; pressed(object) means press.
+7. A pick must be followed by its corresponding place for the same object and arm. Interleaved actions on two arms are allowed.
+8. Do not pick or push while an arm is holding an object; do not press while an arm is holding an object.
+9. Do not repeat a pick of the same object. If several objects match the same color/shape phrase, choose distinct object IDs so that every goal fact is satisfied exactly once.
+10. Return the complete plan, never a partial prefix.

@@ -587,6 +587,117 @@ class TaskGenerator:
             },
         }
 
+    def _generate_multiskill_task(
+        self,
+        family: str,
+        rules: dict[str, Any],
+        task_index: int,
+    ) -> dict[str, Any]:
+        """Generate a single-goal closed-world task for one skill family.
+
+        MultiSkill benchmark tasks deliberately keep one movable object so the
+        execution adapter maps each symbolic primitive to a fresh single-object
+        MetaWorld episode without relying on cross-episode object persistence.
+        """
+        families = rules.get("families", ["pick_place", "push", "press"])
+        if family not in families:
+            raise ValueError(f"unknown multiskill family: {family}")
+
+        colors = rules.get("colors", list(COLOR_RGB.keys()))
+        shapes = rules.get("shapes", ["cube", "block"])
+        containers = rules.get("containers", ["tray", "box", "bowl"])
+        color = colors[task_index % len(colors)]
+        arm = "left" if family == "press" else "right"
+
+        if family == "pick_place":
+            shape = shapes[task_index % len(shapes)]
+            container_shape = containers[task_index % len(containers)]
+            obj = self._fresh_name(color, shape)
+            target = self._fresh_name(
+                colors[(task_index + 1) % len(colors)], container_shape
+            )
+            objects = [obj, target]
+            goal_facts = [f"on({obj}, {target})"]
+            instruction = (
+                f"Use the {arm} arm to put the {color} {shape} into the "
+                f"{colors[(task_index + 1) % len(colors)]} {container_shape}."
+            )
+            skills = ["pick", "place"]
+        elif family == "push":
+            shape = shapes[task_index % len(shapes)]
+            obj = self._fresh_name(color, shape)
+            target = "goal_pad"
+            objects = [obj, target]
+            goal_facts = [f"pushed_to({obj}, {target})"]
+            instruction = (
+                f"Use the {arm} arm to push the {color} {shape} to the goal pad."
+            )
+            skills = ["push"]
+        else:
+            obj = self._fresh_name(color, "button")
+            objects = [obj]
+            goal_facts = [f"pressed({obj})"]
+            instruction = f"Use the {arm} arm to press the {color} button."
+            skills = ["press"]
+
+        at = {name: "table" for name in objects}
+        return {
+            "task_id": f"multiskill_{family}_{task_index:03d}",
+            "difficulty": f"multiskill_{family}",
+            "task_family": family,
+            "instruction": instruction,
+            "objects": objects,
+            "initial_state": {"at": at, "holding": {}},
+            "goal": {"facts": goal_facts},
+            "solvable": self._verify_multiskill_solvability(
+                objects, at, goal_facts, family, arm
+            ),
+            "hard_factors": {
+                "skill_family": family,
+                "required_skills": skills,
+                "closed_world": True,
+            },
+        }
+
+    def _verify_multiskill_solvability(
+        self,
+        objects: list[str],
+        at: dict[str, str],
+        goal_facts: list[str],
+        family: str,
+        arm: str,
+    ) -> bool:
+        state = WorldState(objects=set(objects), at=dict(at))
+        if family == "pick_place":
+            fact = goal_facts[0]
+            obj, target = [part.strip() for part in fact[3:-1].split(",", 1)]
+            action_pairs = [
+                (Skill.PICK, obj, None),
+                (Skill.PLACE, obj, target),
+            ]
+        elif family == "push":
+            fact = goal_facts[0]
+            obj, target = [part.strip() for part in fact[10:-1].split(",", 1)]
+            action_pairs = [(Skill.PUSH, obj, target)]
+        else:
+            obj = goal_facts[0][8:-1]
+            action_pairs = [(Skill.PRESS, obj, None)]
+
+        for step_id, (skill, obj, target) in enumerate(action_pairs, 1):
+            state, ok, _, _ = step(
+                state,
+                ModelPlanAction(
+                    step_id=step_id,
+                    skill=skill,
+                    object_id=obj,
+                    target_id=target,
+                    arm=Arm(arm),
+                ),
+            )
+            if not ok:
+                return False
+        return True
+
     def _verify_solvability(
         self,
         objects: list[str],
@@ -679,6 +790,20 @@ class TaskGenerator:
     def generate_all(self) -> list[dict[str, Any]]:
         tasks = []
         idx = 0
+        if "multiskill" in self.rules:
+            multiskill = self.rules["multiskill"]
+            count = int(multiskill.get("count_per_family", 0))
+            for family in multiskill.get(
+                "families", ["pick_place", "push", "press"]
+            ):
+                for i in range(count):
+                    tasks.append(
+                        self._generate_multiskill_task(
+                            family, {**self.rules, **multiskill}, idx
+                        )
+                    )
+                    idx += 1
+            return tasks
         for diff in ["easy", "medium", "hard"]:
             if diff not in self.rules:
                 continue

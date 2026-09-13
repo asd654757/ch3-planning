@@ -466,12 +466,16 @@ def test_required_transports_are_derived_from_goal_and_prefix_state() -> None:
     )
     assert required_transports(task, state) == [
         {
+            "kind": "transport",
+            "skill": "place",
             "object_id": "blue_cube_2",
             "target_id": "table",
             "currently_held": True,
             "current_location": None,
         },
         {
+            "kind": "transport",
+            "skill": "place",
             "object_id": "red_cube_0",
             "target_id": "tray_1",
             "currently_held": False,

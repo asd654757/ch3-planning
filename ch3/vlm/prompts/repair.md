@@ -38,11 +38,11 @@ required ID is visible.
 For R2, return only the replacement suffix requested by the output requirement.
 
 Hard constraints:
-1. Only use skill "pick" or "place".
+1. Only use skills from the registered closed set: "pick", "place", "push", or "press".
 2. Only use object IDs from the closed-world list.
 3. Use arm "left" or "right".
-4. A pick action must have target_id=null. A place action must include target_id.
-5. Each pick must be immediately followed by the corresponding place for the same object and arm.
-6. Do not pick a new object while an arm is holding one.
-7. Each object may be picked at most once. Do not repeat a pick of the same object.
+4. Action parameters are: a pick action must have target_id=null; a place action must include target_id (an object ID or "table"); a push action must include the destination target_id; a press action must have target_id=null.
+5. Interpret goal facts as: on(object, target) means place; pushed_to(object, target) means push; pressed(object) means press.
+6. Do not pick, push, or press while an arm is holding an object.
+7. Do not repeat a pick of the same object.
 8. For R0/R1, return the complete plan, never a partial prefix. For R2 and R1_FROM_STATE, return only the requested suffix. For R1_FROM_STATE, if `remaining_goal_facts` is empty, return exactly `{"actions": []}`.

@@ -5,9 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Optional
 
-from ch3.goal.infeasibility import logical_conflict_infeasibility
 from ch3.schema.model_plan import ModelPlan
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
+from ch3.vlm.closure import closed_world_infeasibility
 from ch3.vlm.parser import (
     PlanParseError,
     parse_direct_plan_or_infeasible,
@@ -55,32 +55,8 @@ class InitialPlanner:
         *,
         plan: Optional[ModelPlan],
     ) -> Optional[str]:
-        """Enforce referential closure against instruction IDs and goal facts.
-
-        This is deliberately deterministic.  The prompt asks the VLM to check
-        closure, but a valid-looking substitution plan must not bypass the
-        closed-world goal facts on infeasible tasks.
-        """
-        visible = set(map(str, task["objects"]))
-        conflict_reason = logical_conflict_infeasibility(task)
-        if conflict_reason is not None:
-            return conflict_reason
-        if plan is not None:
-            for action in plan.actions:
-                for value in (action.object_id, action.target_id):
-                    if value and value != "table" and value not in visible:
-                        return f"object {value} is not in the visible list"
-
-        for fact in task.get("goal", {}).get("facts", []):
-            if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
-                continue
-            inner = fact[3:-1]
-            parts = [part.strip() for part in inner.split(",", 1)]
-            if len(parts) == 2:
-                for object_id in parts:
-                    if object_id != "table" and object_id not in visible:
-                        return f"goal object {object_id} is not in the visible list"
-        return None
+        """Apply the shared deterministic closed-world rule."""
+        return closed_world_infeasibility(task, plan=plan)
 
     def plan(
         self,
@@ -156,29 +132,8 @@ class DirectPlanner:
         plan: Optional[ModelPlan],
         reason: Optional[str] = None,
     ) -> Optional[str]:
-        """Apply the same closure rule to B0 free-text refusals and plans."""
-        visible = set(map(str, task["objects"]))
-        conflict_reason = logical_conflict_infeasibility(task)
-        if conflict_reason is not None:
-            return conflict_reason
-        if plan is not None:
-            for action in plan.actions:
-                for value in (action.object_id, action.target_id):
-                    if value and value != "table" and value not in visible:
-                        return f"object {value} is not in the visible list"
-        if reason is not None:
-            return reason
-
-        for fact in task.get("goal", {}).get("facts", []):
-            if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
-                continue
-            inner = fact[3:-1]
-            parts = [part.strip() for part in inner.split(",", 1)]
-            if len(parts) == 2:
-                for object_id in parts:
-                    if object_id != "table" and object_id not in visible:
-                        return f"goal object {object_id} is not in the visible list"
-        return None
+        """Apply the shared deterministic closed-world rule."""
+        return closed_world_infeasibility(task, plan=plan, reason=reason)
 
     def plan(
         self,

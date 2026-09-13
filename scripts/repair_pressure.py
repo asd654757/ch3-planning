@@ -50,9 +50,15 @@ PRESSURE_TYPES = (
     "invalid_target_after_prefix",
     "place_before_pick",
     "repeat_pick_after_valid_plan",
+    # Skill-family-agnostic pressures used by MultiSkill-IF.  The legacy
+    # names above remain frozen for old collections and regression tests.
+    "duplicate_skill_after_prefix",
+    "unknown_object_after_generic_prefix",
+    "invalid_action_after_prefix",
 )
 
 SCHEMA_VERSION = "2026-09-11-repair-pressure-v1"
+DEFAULT_BENCHMARK = "legacy_pick_place"
 
 
 def _renumber(actions: Iterable[ModelPlanAction]) -> ModelPlan:
@@ -74,6 +80,11 @@ def _with_unknown_object(action: ModelPlanAction) -> ModelPlanAction:
 
 def _with_unknown_target(action: ModelPlanAction) -> ModelPlanAction:
     return action.model_copy(update={"target_id": "__unknown_target__"})
+
+
+def _first_skill_action(plan: ModelPlan) -> ModelPlanAction:
+    """Return the first executable action of any registered skill family."""
+    return plan.actions[0]
 
 
 def build_stress_plan(
@@ -128,6 +139,44 @@ def build_stress_plan(
         # Keep the whole valid sequence, then violate the final state.
         return _renumber([*actions, first_pick.model_copy()])
 
+    if pressure_type == "duplicate_skill_after_prefix":
+        first = _first_skill_action(valid_plan)
+        # For non-prehensile skills, repeating push/press is legal or idempotent
+        # under the state simulator.  An unheld place after the valid prefix is
+        # a skill-family-agnostic state error with the same repair difficulty.
+        second = (
+            first.model_copy()
+            if first.skill == Skill.PICK
+            else first.model_copy(update={"skill": Skill.PLACE, "target_id": "table"})
+        )
+        return _renumber([first.model_copy(), second, *actions[1:]])
+
+    if pressure_type == "unknown_object_after_generic_prefix":
+        first = _first_skill_action(valid_plan)
+        return _renumber(
+            [first.model_copy(), _with_unknown_object(first.model_copy()), *actions[1:]]
+        )
+
+    if pressure_type == "invalid_action_after_prefix":
+        first = _first_skill_action(valid_plan)
+        if first.skill == Skill.PRESS:
+            # Press requires an empty arm and leaves it empty, so a following
+            # place deterministically fails in the state layer (OBJECT_NOT_HELD).
+            illegal = first.model_copy(
+                update={"skill": Skill.PLACE, "target_id": "table"}
+            )
+        elif first.skill in {Skill.PUSH, Skill.PLACE}:
+            # Preserve the family while corrupting the target ID.
+            illegal = _with_unknown_target(first.model_copy())
+        else:
+            # A pick/place baseline starts with a pick; request a place to an
+            # unknown target after that pick.  This preserves the usual
+            # invalid_target semantics while remaining schema-valid.
+            illegal = first.model_copy(
+                update={"skill": Skill.PLACE, "target_id": "__unknown_target__"}
+            )
+        return _renumber([first.model_copy(), illegal, *actions[1:]])
+
     raise ValueError(f"Unknown pressure type: {pressure_type}")
 
 
@@ -159,6 +208,7 @@ def repair_pressure_record(
     repaired_validation: Any,
     repaired_goal_ok: bool,
     repaired_pbw: bool,
+    benchmark: str = DEFAULT_BENCHMARK,
 ) -> dict[str, Any]:
     # make_record preserves raw output, prompt, tokens, latency and refusal fields.
     record = make_record(
@@ -175,6 +225,7 @@ def repair_pressure_record(
     record.update(
         {
             "schema_version": SCHEMA_VERSION,
+            "benchmark": benchmark,
             "record_type": "repair_pressure",
             "pressure_type": pressure_type,
             "pressure_source_plan": plan_to_dict(source_generation.plan),
@@ -194,6 +245,7 @@ def pressure_source_record(
     validation: Any,
     goal_ok: bool,
     pbw: bool,
+    benchmark: str = DEFAULT_BENCHMARK,
 ) -> dict[str, Any]:
     record = make_record(
         task=task,
@@ -207,6 +259,7 @@ def pressure_source_record(
         pass_but_wrong=pbw,
     )
     record["schema_version"] = SCHEMA_VERSION
+    record["benchmark"] = benchmark
     record["record_type"] = "pressure_source"
     record["pressure_source_valid"] = bool(validation and validation.valid)
     record["pressure_source_goal_satisfied"] = bool(goal_ok)
@@ -393,6 +446,7 @@ def run_pressure_slice(
     logger: EpisodeLogger,
     pressure_types: Iterable[str] = PRESSURE_TYPES,
     repair_groups: Iterable[str] = ("R0", "R1", "R2"),
+    benchmark: str = DEFAULT_BENCHMARK,
     initial_temperature: float = 0.7,
     repair_temperature: float = 0.3,
     source_plan: Optional[ModelPlan] = None,
@@ -438,6 +492,7 @@ def run_pressure_slice(
             validation=source_validation,
             goal_ok=source_goal,
             pbw=source_pbw,
+            benchmark=benchmark,
         )
         logger.append(source_record)
         return {
@@ -445,6 +500,7 @@ def run_pressure_slice(
             "seed": seed,
             "baseline_valid": False,
             "pressure_calls": 0,
+            "benchmark": benchmark,
             "repairs": {},
         }
 
@@ -509,6 +565,7 @@ def run_pressure_slice(
                 repaired_validation=repaired_validation,
                 repaired_goal_ok=repaired_goal,
                 repaired_pbw=repaired_pbw,
+                benchmark=benchmark,
             )
             if repair_mode == ROUTED_GROUP:
                 record["repair_mode"] = ROUTED_GROUP
@@ -529,6 +586,7 @@ def run_pressure_slice(
         "seed": seed,
         "baseline_valid": True,
         "pressure_calls": len(requested_pressure) * len(requested_repairs),
+        "benchmark": benchmark,
         "repairs": repairs,
     }
 
@@ -546,6 +604,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Pressure collection JSONL output on the data disk",
     )
     parser.add_argument("--registry", default="config/capability_registry.yaml")
+    parser.add_argument(
+        "--benchmark",
+        default=DEFAULT_BENCHMARK,
+        help="Lineage marker stored in every pressure record and summary.",
+    )
     parser.add_argument("--model", default="qwen3-vl-flash")
     parser.add_argument(
         "--base-url",
@@ -660,6 +723,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 initial_temperature=args.temperature,
                 repair_temperature=args.repair_temperature,
                 source_plan=frozen_sources.get((task["task_id"], seed)),
+                benchmark=args.benchmark,
             )
             summaries.append(summary)
             print(json.dumps(summary, ensure_ascii=False), flush=True)

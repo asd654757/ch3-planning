@@ -5,12 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Optional
 
-from ch3.goal.infeasibility import logical_conflict_infeasibility
 from ch3.repair.prefix_guard import merge_locked_prefix
 from ch3.schema.model_plan import ModelPlan
 from ch3.state.world_state import WorldState
 from ch3.validator.result import ValidationResult
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
+from ch3.vlm.closure import closed_world_infeasibility
 from ch3.vlm.parser import (
     PlanParseError,
     parse_json_object,
@@ -46,38 +46,74 @@ def required_transports(
     task: Mapping[str, Any],
     state: WorldState,
 ) -> list[dict[str, Any]]:
-    """Derive unfinished ``on(object, target)`` transports deterministically.
+    """Derive unfinished goal actions for pick/place, push and press tasks.
 
     This is a prompt-support field, not an oracle: it is computed only from the
     declared task goal and the already-validated prefix state.  For a held
     object, ``current_location`` is ``null`` because the object is in the hand.
+    ``pushed_to`` is the canonical transport fact for push tasks; an equivalent
+    ``on`` fact is not emitted again.  Press goals emit a press entry.
     """
-    transports: list[dict[str, Any]] = []
+    actions: list[dict[str, Any]] = []
     held = set(state.holding.values())
+    seen_transports: set[tuple[str, str]] = set()
+
+    def add_transport(object_id: str, target_id: str, skill: str) -> None:
+        key = (object_id, target_id)
+        if key in seen_transports:
+            return
+        seen_transports.add(key)
+        actions.append(
+            {
+                "kind": "transport",
+                "skill": skill,
+                "object_id": object_id,
+                "target_id": target_id,
+                "currently_held": object_id in held,
+                "current_location": (
+                    None if object_id in held else state.at.get(object_id)
+                ),
+            }
+        )
+
     for fact in task.get("goal", {}).get("facts", []):
-        if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
+        if not isinstance(fact, str) or not fact.endswith(")"):
             continue
-        inner = fact[3:-1]
-        parts = [part.strip() for part in inner.split(",", 1)]
-        if len(parts) != 2:
-            continue
-        object_id, target_id = parts
-        if object_id == "table" or object_id not in state.objects:
-            continue
-        if state.location_of(object_id) != target_id:
-            transports.append(
-                {
-                    "object_id": object_id,
-                    "target_id": target_id,
-                    "currently_held": object_id in held,
-                    "current_location": (
-                        None if object_id in held else state.at.get(object_id)
-                    ),
-                }
-            )
+        if fact.startswith("pushed_to("):
+            inner = fact[len("pushed_to("):-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2:
+                object_id, target_id = parts
+                if object_id in state.objects and state.location_of(object_id) != target_id:
+                    add_transport(object_id, target_id, "push")
+        elif fact.startswith("on("):
+            inner = fact[3:-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2:
+                object_id, target_id = parts
+                if (
+                    object_id != "table"
+                    and object_id in state.objects
+                    and state.location_of(object_id) != target_id
+                ):
+                    add_transport(object_id, target_id, "place")
+        elif fact.startswith("pressed("):
+            object_id = fact[len("pressed("):-1]
+            if object_id in state.objects and object_id not in state.pressed:
+                actions.append(
+                    {
+                        "kind": "press",
+                        "skill": "press",
+                        "object_id": object_id,
+                    }
+                )
     return sorted(
-        transports,
-        key=lambda item: (item["object_id"], item["target_id"]),
+        actions,
+        key=lambda item: (
+            item["kind"],
+            item["object_id"],
+            item.get("target_id", ""),
+        ),
     )
 
 
@@ -104,29 +140,8 @@ class PlanRepairer:
         plan: Optional[ModelPlan],
         reason: Optional[str] = None,
     ) -> Optional[str]:
-        """Apply the same deterministic closure rule to repair responses."""
-        visible = set(map(str, task["objects"]))
-        conflict_reason = logical_conflict_infeasibility(task)
-        if conflict_reason is not None:
-            return conflict_reason
-        if plan is not None:
-            for action in plan.actions:
-                for value in (action.object_id, action.target_id):
-                    if value and value != "table" and value not in visible:
-                        return f"object {value} is not in the visible list"
-        if reason is not None:
-            return reason
-
-        for fact in task.get("goal", {}).get("facts", []):
-            if not isinstance(fact, str) or not fact.startswith("on(") or not fact.endswith(")"):
-                continue
-            inner = fact[3:-1]
-            parts = [part.strip() for part in inner.split(",", 1)]
-            if len(parts) == 2:
-                for object_id in parts:
-                    if object_id != "table" and object_id not in visible:
-                        return f"goal object {object_id} is not in the visible list"
-        return None
+        """Apply the shared deterministic closed-world rule."""
+        return closed_world_infeasibility(task, plan=plan, reason=reason)
 
     def repair(
         self,
@@ -226,10 +241,9 @@ class PlanRepairer:
                     f"replacement suffix. Its first step_id must be {suffix_start}. "
                     'If the error is caused solely by actions after the locked prefix, '
                     'return exactly {"actions": []}. '
-                    "If the locked prefix ends with a pick, you may complete its "
-                    "pairing with a place as the first suffix action; this "
-                    "cross-prefix pick/place pairing is allowed even though "
-                    "constraint 5 applies inside a complete plan. "
+                    "If the locked prefix ends with a partial pick/place pair, "
+                    "you may complete that pairing as the first suffix action; "
+                    "this cross-prefix completion is allowed. "
                     "Use prefix_final_state and held_objects to check what each "
                     "arm is currently holding; an arm holding an object must "
                     "place it before picking a new one. "
@@ -237,9 +251,10 @@ class PlanRepairer:
                     "remaining_goal_facts. If required_transports is not "
                     "empty, the replacement suffix must complete every listed "
                     "transport; do not return an empty suffix in that case. "
-                    "For an entry whose object is already held, use only its "
-                    "place action; otherwise use pick immediately followed by "
-                    "place."
+                    "For a place transport whose object is already held, use "
+                    "only its place action; otherwise use pick immediately "
+                    "followed by place. For a push transport use one push "
+                    "action, and for a press entry use one press action."
                 )
             else:
                 output_requirement = (
@@ -271,13 +286,15 @@ class PlanRepairer:
                         "place for an object already held by the prefix is "
                         "insufficient unless remaining_goal_facts becomes "
                         "empty after that suffix. Plan any additional "
-                        "pick/place actions needed to finish the whole "
+                        "actions needed to finish the whole "
                         "remaining goal. The program has computed "
-                        "required_transports. Complete every listed transport "
-                        "in one returned suffix: if an entry's object is "
-                        "already held, place it on target_id; otherwise pick "
-                        "it and then place it on target_id. Do not return "
-                        "only the first transport unless it is the only "
+                        "required_transports. Complete every listed entry in "
+                        "one returned suffix. For a place transport whose "
+                        "object is already held, place it on target_id; "
+                        "otherwise pick it and then place it on target_id. "
+                        "For a push transport use one push action, and for a "
+                        "press entry use one press action. Do not return "
+                        "only the first required entry unless it is the only "
                         "entry."
                     ),
                 }

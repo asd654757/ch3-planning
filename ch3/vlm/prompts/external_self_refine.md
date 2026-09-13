@@ -19,7 +19,9 @@ Review the current plan yourself against the instruction, goal, visible object I
 state transitions, and action schema. If the task is infeasible, return exactly:
 {"status": "infeasible", "reason": "<short reason>"}
 
-Otherwise return the complete corrected plan as one ModelPlan JSON object:
+Otherwise return the complete corrected plan as one ModelPlan JSON object.
+Use only skills "pick", "place", "push", or "press". A pick or press has
+target_id=null; a place or push has target_id.
 {"actions": [{"step_id": 1, "skill": "pick", "object_id": "<object_id>", "target_id": null, "arm": "left"}]}
 
 Output only one JSON object. Do not add commentary or Markdown.

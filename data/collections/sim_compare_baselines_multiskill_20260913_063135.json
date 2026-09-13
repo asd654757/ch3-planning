@@ -1,0 +1,467 @@
+{
+  "completed_at_utc": "2026-09-13T06:31:35.929300+00:00",
+  "record_type": "sim_compare_baselines_summary",
+  "benchmark_mode": "multiskill",
+  "source_routed": "data/collections/repair_pressure_multiskill_formal_v1_20260913_140057.jsonl",
+  "source_tasks": "data/scenarios/multiskill_tasks_v1.jsonl",
+  "source_r2_only": null,
+  "source_checker_loop": null,
+  "points_per_pressure": 1,
+  "pressures": [
+    "duplicate_skill_after_prefix",
+    "unknown_object_after_generic_prefix",
+    "invalid_action_after_prefix"
+  ],
+  "points": 3,
+  "vlm_calls": 0,
+  "execution_protocol": "one_homogeneous_symbolic_group_per_fresh_meta_world_episode:pick_place_pair/single_push/single_press",
+  "summary_by_arm": {
+    "NO_REPAIR": {
+      "points": 3,
+      "symbolic_valid": 0,
+      "symbolic_goal_satisfied": 0,
+      "sim_attempted": 0,
+      "sim_success": 0,
+      "final_success": 0,
+      "final_success_rate": 0.0,
+      "pair_total": 0,
+      "pair_success": 0,
+      "pair_success_rate": null
+    },
+    "ROUTED": {
+      "points": 3,
+      "symbolic_valid": 3,
+      "symbolic_goal_satisfied": 3,
+      "sim_attempted": 3,
+      "sim_success": 3,
+      "final_success": 3,
+      "final_success_rate": 1.0,
+      "pair_total": 3,
+      "pair_success": 3,
+      "pair_success_rate": 1.0
+    }
+  },
+  "output": "data/collections/sim_compare_baselines_multiskill_20260913_063135.json",
+  "point_detail": [
+    {
+      "record_type": "sim_compare_baseline_point",
+      "point_index": 1,
+      "task_id": "multiskill_pick_place_000",
+      "seed": 0,
+      "pressure_type": "duplicate_skill_after_prefix",
+      "benchmark": "multiskill_if_v1_formal",
+      "arms": {
+        "NO_REPAIR": {
+          "arm": "NO_REPAIR",
+          "source": "",
+          "source_record_type": "repair_pressure",
+          "repair_mode": "ROUTED",
+          "symbolic_valid": false,
+          "symbolic_goal_satisfied": false,
+          "sim_attempted": false,
+          "sim_success": null,
+          "pair_results": [],
+          "error_code": "ARM_NOT_EMPTY",
+          "error_layer": "state",
+          "model_plan_hash": "090d51dc0db079a005ffecb7c849cf09275138404ab3316a18011b9dbb80f127",
+          "final_success": false
+        },
+        "ROUTED": {
+          "arm": "ROUTED",
+          "source": "",
+          "source_record_type": "repair_pressure",
+          "repair_mode": "ROUTED",
+          "symbolic_valid": true,
+          "symbolic_goal_satisfied": true,
+          "sim_attempted": true,
+          "sim_success": true,
+          "pair_results": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true,
+                true
+              ],
+              "final_puck_target_distance": 0.07629368362872674,
+              "elapsed_s": 0.156585693359375,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "adflow_grasp",
+                    "primitive": "grasp",
+                    "args": {
+                      "object_id": "red_cube_0",
+                      "arm": "right"
+                    },
+                    "success": true,
+                    "steps": 35,
+                    "elapsed_s": 0.10296964645385742,
+                    "final_puck_pos": [
+                      -0.053535504342208384,
+                      0.6723216316011253,
+                      0.04288498974119617
+                    ],
+                    "final_hand_pos": [
+                      -0.05336501653160704,
+                      0.6711739315089792,
+                      0.07829676601981793
+                    ],
+                    "target_pos": [
+                      -0.08468646408983821,
+                      0.8950074931675697,
+                      0.10470563554212133
+                    ],
+                    "final_puck_target_distance": 0.3003404619524373,
+                    "min_puck_target_distance": 0.23319770042183416,
+                    "gripper_distance": 0.5178676168462284,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  },
+                  {
+                    "step_id": 2,
+                    "policy_id": "adflow_place",
+                    "primitive": "place",
+                    "args": {
+                      "object_id": "red_cube_0",
+                      "arm": "right",
+                      "target_id": "blue_tray_1"
+                    },
+                    "success": true,
+                    "steps": 20,
+                    "elapsed_s": 0.052916526794433594,
+                    "final_puck_pos": [
+                      -0.0820559672530943,
+                      0.8240723277354851,
+                      0.07674121255227721
+                    ],
+                    "final_hand_pos": [
+                      -0.08036791624485996,
+                      0.8193380054314785,
+                      0.11421308852105809
+                    ],
+                    "target_pos": [
+                      -0.08468646408983821,
+                      0.8950074931675697,
+                      0.10470563554212133
+                    ],
+                    "final_puck_target_distance": 0.23319770042183416,
+                    "min_puck_target_distance": 0.07629368362872674,
+                    "gripper_distance": 0.5139376070175925,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  -0.0820559672530943,
+                  0.8240723277354851,
+                  0.07674121255227721
+                ],
+                "target_pos": [
+                  -0.08468646408983821,
+                  0.8950074931675697,
+                  0.10470563554212133
+                ],
+                "final_puck_target_distance": 0.07629368362872674,
+                "elapsed_s": 0.156585693359375,
+                "task": "metaworld-pick-place-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "error_code": null,
+          "error_layer": null,
+          "model_plan_hash": "daef5d241b64e7ae1886876aa36fd1639dc3c85b3d0f98140696ffa5df1fba97",
+          "sim_tasks": [
+            "metaworld-pick-place-v3"
+          ],
+          "final_success": true
+        }
+      }
+    },
+    {
+      "record_type": "sim_compare_baseline_point",
+      "point_index": 2,
+      "task_id": "multiskill_pick_place_000",
+      "seed": 0,
+      "pressure_type": "unknown_object_after_generic_prefix",
+      "benchmark": "multiskill_if_v1_formal",
+      "arms": {
+        "NO_REPAIR": {
+          "arm": "NO_REPAIR",
+          "source": "",
+          "source_record_type": "repair_pressure",
+          "repair_mode": "ROUTED",
+          "symbolic_valid": false,
+          "symbolic_goal_satisfied": false,
+          "sim_attempted": false,
+          "sim_success": null,
+          "pair_results": [],
+          "error_code": "ARM_NOT_EMPTY",
+          "error_layer": "state",
+          "model_plan_hash": "23e266a8cb3cd588b3442a21586be99631870add1e8b0cc75e436d5ece008195",
+          "final_success": false
+        },
+        "ROUTED": {
+          "arm": "ROUTED",
+          "source": "",
+          "source_record_type": "repair_pressure",
+          "repair_mode": "ROUTED",
+          "symbolic_valid": true,
+          "symbolic_goal_satisfied": true,
+          "sim_attempted": true,
+          "sim_success": true,
+          "pair_results": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true,
+                true
+              ],
+              "final_puck_target_distance": 0.07562031603253223,
+              "elapsed_s": 0.1417851448059082,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "adflow_grasp",
+                    "primitive": "grasp",
+                    "args": {
+                      "object_id": "red_cube_0",
+                      "arm": "right"
+                    },
+                    "success": true,
+                    "steps": 31,
+                    "elapsed_s": 0.08451128005981445,
+                    "final_puck_pos": [
+                      -0.008076560483374884,
+                      0.6369802774964474,
+                      0.044897718825147884
+                    ],
+                    "final_hand_pos": [
+                      -0.004612702340434539,
+                      0.6368540078067708,
+                      0.08032316793594248
+                    ],
+                    "target_pos": [
+                      0.016636575660163785,
+                      0.8039126486649942,
+                      0.2913060043767898
+                    ],
+                    "final_puck_target_distance": 0.33878473501717615,
+                    "min_puck_target_distance": 0.2986539784273802,
+                    "gripper_distance": 0.4654136531027131,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  },
+                  {
+                    "step_id": 2,
+                    "policy_id": "adflow_place",
+                    "primitive": "place",
+                    "args": {
+                      "object_id": "red_cube_0",
+                      "arm": "right",
+                      "target_id": "blue_tray_1"
+                    },
+                    "success": true,
+                    "steps": 19,
+                    "elapsed_s": 0.05652308464050293,
+                    "final_puck_pos": [
+                      0.009456964777666384,
+                      0.77819532455096,
+                      0.22055641338963503
+                    ],
+                    "final_hand_pos": [
+                      0.016032910667252636,
+                      0.7753622170196354,
+                      0.2566662139261655
+                    ],
+                    "target_pos": [
+                      0.016636575660163785,
+                      0.8039126486649942,
+                      0.2913060043767898
+                    ],
+                    "final_puck_target_distance": 0.2986539784273802,
+                    "min_puck_target_distance": 0.07562031603253223,
+                    "gripper_distance": 0.5131170365844945,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  0.009456964777666384,
+                  0.77819532455096,
+                  0.22055641338963503
+                ],
+                "target_pos": [
+                  0.016636575660163785,
+                  0.8039126486649942,
+                  0.2913060043767898
+                ],
+                "final_puck_target_distance": 0.07562031603253223,
+                "elapsed_s": 0.1417851448059082,
+                "task": "metaworld-pick-place-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "error_code": null,
+          "error_layer": null,
+          "model_plan_hash": "daef5d241b64e7ae1886876aa36fd1639dc3c85b3d0f98140696ffa5df1fba97",
+          "sim_tasks": [
+            "metaworld-pick-place-v3"
+          ],
+          "final_success": true
+        }
+      }
+    },
+    {
+      "record_type": "sim_compare_baseline_point",
+      "point_index": 3,
+      "task_id": "multiskill_pick_place_000",
+      "seed": 0,
+      "pressure_type": "invalid_action_after_prefix",
+      "benchmark": "multiskill_if_v1_formal",
+      "arms": {
+        "NO_REPAIR": {
+          "arm": "NO_REPAIR",
+          "source": "",
+          "source_record_type": "repair_pressure",
+          "repair_mode": "ROUTED",
+          "symbolic_valid": false,
+          "symbolic_goal_satisfied": false,
+          "sim_attempted": false,
+          "sim_success": null,
+          "pair_results": [],
+          "error_code": "OBJECT_NOT_HELD",
+          "error_layer": "state",
+          "model_plan_hash": "71ed6b3baa626c1310abb957dc474cdce9f1ecfa9add6380a874335ffd6abc81",
+          "final_success": false
+        },
+        "ROUTED": {
+          "arm": "ROUTED",
+          "source": "",
+          "source_record_type": "repair_pressure",
+          "repair_mode": "ROUTED",
+          "symbolic_valid": true,
+          "symbolic_goal_satisfied": true,
+          "sim_attempted": true,
+          "sim_success": true,
+          "pair_results": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true,
+                true
+              ],
+              "final_puck_target_distance": 0.07809074495771709,
+              "elapsed_s": 0.12842059135437012,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "adflow_grasp",
+                    "primitive": "grasp",
+                    "args": {
+                      "object_id": "red_cube_0",
+                      "arm": "right"
+                    },
+                    "success": true,
+                    "steps": 39,
+                    "elapsed_s": 0.10571932792663574,
+                    "final_puck_pos": [
+                      -0.0253660538688864,
+                      0.725332906166431,
+                      0.047239113820678365
+                    ],
+                    "final_hand_pos": [
+                      -0.022771539201131584,
+                      0.7239698002149973,
+                      0.08589487678620163
+                    ],
+                    "target_pos": [
+                      0.057701299490241026,
+                      0.8070277639819229,
+                      0.16840106124421889
+                    ],
+                    "final_puck_target_distance": 0.21822281984685754,
+                    "min_puck_target_distance": 0.16809060797988798,
+                    "gripper_distance": 0.45940187854620673,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  },
+                  {
+                    "step_id": 2,
+                    "policy_id": "adflow_place",
+                    "primitive": "place",
+                    "args": {
+                      "object_id": "red_cube_0",
+                      "arm": "right",
+                      "target_id": "blue_tray_1"
+                    },
+                    "success": true,
+                    "steps": 8,
+                    "elapsed_s": 0.021987438201904297,
+                    "final_puck_pos": [
+                      0.028333184697403646,
+                      0.7749382387984683,
+                      0.10354783730688188
+                    ],
+                    "final_hand_pos": [
+                      0.03223859890855211,
+                      0.7720948561189275,
+                      0.1425707668311455
+                    ],
+                    "target_pos": [
+                      0.057701299490241026,
+                      0.8070277639819229,
+                      0.16840106124421889
+                    ],
+                    "final_puck_target_distance": 0.16809060797988798,
+                    "min_puck_target_distance": 0.07809074495771709,
+                    "gripper_distance": 0.515555169181201,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  0.028333184697403646,
+                  0.7749382387984683,
+                  0.10354783730688188
+                ],
+                "target_pos": [
+                  0.057701299490241026,
+                  0.8070277639819229,
+                  0.16840106124421889
+                ],
+                "final_puck_target_distance": 0.07809074495771709,
+                "elapsed_s": 0.12842059135437012,
+                "task": "metaworld-pick-place-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "error_code": null,
+          "error_layer": null,
+          "model_plan_hash": "daef5d241b64e7ae1886876aa36fd1639dc3c85b3d0f98140696ffa5df1fba97",
+          "sim_tasks": [
+            "metaworld-pick-place-v3"
+          ],
+          "final_success": true
+        }
+      }
+    }
+  ]
+}

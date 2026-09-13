@@ -450,3 +450,61 @@ checker 反馈调用；Self-Refine 与 ROUTED 两种字段一致。
 与 `sim_compare_baselines_multiskill_20260913_065107.json` 的仿真
 终层结果直接相加或平均。论文中应分别报告符号层 CRR/GSR 和仿真层
 final success。
+
+## MultiSkill-IF-v1：321 点四臂仿真执行对照
+
+| 文件 | 说明 |
+|---|---|
+| `data/collections/sim_compare_baselines_multiskill_20260913_074334.json` | 321 个配对点上 NO_REPAIR / SELF_REFINE / CHECKER_LOOP / ROUTED 的冻结计划仿真对照 |
+| `data/reports/multiskill_sim_fourarm_analysis_20260913_075732.json` | 派生分析：终层汇总、进入仿真后的条件成功率、技能族分解、压力类型分解和 McNemar 检验 |
+| `logs/sim_compare_multiskill_external_formal_20260913_073304.log` | 对应仿真运行日志 |
+
+符号层来源有两个：ROUTED 来自
+`repair_pressure_multiskill_formal_v1_20260913_140057.jsonl`；
+SELF_REFINE 与 CHECKER_LOOP 来自
+`external_baseline_multiskill_formal_v1_20260913_145938.jsonl`。
+配对键仍为 `task_id / seed / pressure_type`，共 321 点。全程不调用
+VLM；执行协议与 MultiSkill-IF-v1 一致，即 pick/place pair、单步 push
+和单步 press 分别在 fresh MetaWorld episode 中执行。
+
+终层汇总：
+
+| 臂 | 符号有效 | 目标满足 | 仿真尝试 | 仿真成功 | final success |
+|---|---:|---:|---:|---:|---:|
+| NO_REPAIR | 0/321 | 0/321 | 0/321 | 0/321 | 0/321 = 0.0% |
+| SELF_REFINE | 106/321 | 106/321 | 106/321 | 99/106 | 99/321 = 30.8% |
+| CHECKER_LOOP | 242/321 | 148/321 | 148/321 | 138/148 | 138/321 = 43.0% |
+| ROUTED | 321/321 | 321/321 | 321/321 | 315/321 | 315/321 = 98.1% |
+
+进入仿真后的条件成功率：
+
+| 臂 | sim success / attempted |
+|---|---:|
+| SELF_REFINE | 99/106 = 93.4% |
+| CHECKER_LOOP | 138/148 = 93.2% |
+| ROUTED | 315/321 = 98.1% |
+
+这个条件成功率说明：外部基线与 ROUTED 的主要差距发生在符号修复层，
+而不是 MetaWorld 底层执行层。Checker-loop 的 94 个 pass-but-wrong
+计划没有进入仿真；Self-Refine 的 215 个非法计划也没有进入仿真。
+
+按技能族的 final success：
+
+| 技能族 | NO_REPAIR | SELF_REFINE | CHECKER_LOOP | ROUTED |
+|---|---:|---:|---:|---:|
+| pick/place | 0/108 | 98/108 | 98/108 | 102/108 |
+| push | 0/108 | 0/108 | 11/108 | 108/108 |
+| press | 0/105 | 1/105 | 29/105 | 105/105 |
+
+终层精确 McNemar：
+
+| 对比 | only 基线成功 | only ROUTED 成功 | p 值 |
+|---|---:|---:|---:|
+| SELF_REFINE vs ROUTED | 6 | 222 | 8.70e-58 |
+| CHECKER_LOOP vs ROUTED | 6 | 183 | 1.54e-46 |
+
+23 个仿真失败全部发生在 pick/place 的第一个 grasp primitive；
+SELF_REFINE 有 7 个，CHECKER_LOOP 有 10 个，ROUTED 有 6 个。没有
+push 或 press 仿真失败，也没有失败来自符号校验或目标检查。因此
+ROUTED 的 6 个失败应解释为接口级执行容差或场景随机性问题，不应解释
+为修复路由失败。

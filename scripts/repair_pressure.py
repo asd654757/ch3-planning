@@ -63,6 +63,7 @@ ROUTED_ABLATIONS = (
     "none",
     "no_truncation",
     "no_r2",
+    "no_state_r2",
     "no_fallback",
 )
 
@@ -373,7 +374,9 @@ def routed_repair(
     deterministic truncation removes the invalid tail without a model call.
     ``ablation`` disables one component for controlled ablation.  Modes:
     ``no_truncation`` always enters model repair; ``no_r2`` goes directly to
-    state-aware R1; ``no_fallback`` accepts an R2 failure as final result.
+    state-aware R1; ``no_state_r2`` calls R2 with the locked prefix but
+    without the prefix-final-state feedback and without fallback;
+    ``no_fallback`` accepts an R2 failure as final result.
     Returns ``(final_generation, route_info)``; the caller records both
     attempts' outcome for system-level analysis.
     """
@@ -425,7 +428,11 @@ def routed_repair(
         repair_mode="R2",
         task=task,
         initial_generation=initial_generation,
-        validation=validation,
+        validation=(
+            dataclasses.replace(validation, final_state=None)
+            if ablation == "no_state_r2"
+            else validation
+        ),
         initial_state=initial_state,
         seed=seed,
         temperature=temperature,
@@ -442,7 +449,7 @@ def routed_repair(
         "r2_pbw": bool(r2_pbw),
         "deterministic_truncation": False,
     }
-    if r2_ok or ablation == "no_fallback":
+    if r2_ok or ablation in {"no_fallback", "no_state_r2"}:
         return r2, info
 
     # A plan-time fallback may return a full replacement plan.  But when the

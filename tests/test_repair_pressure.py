@@ -252,6 +252,56 @@ def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
     assert metrics[ROUTED_GROUP]["VGF"] == 0.0
 
 
+def test_no_state_r2_omits_state_feedback_and_fallback() -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=SCENARIO["initial_state"]["holding"],
+    )
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "unknown_object_after_prefix",
+    )
+    stress_validation = validator.validate(stress_plan, state)
+
+    r2_prompts: list[str] = []
+
+    def r2_without_state(payload):
+        prompt = payload["messages"][1]["content"]
+        if "Repair mode: R2" in prompt:
+            r2_prompts.append(prompt)
+            return {"actions": []}
+        return VALID_PLAN
+
+    generation, route_info = routed_repair(
+        repairer=PlanRepairer(MockVLMClient(r2_without_state), PromptLibrary()),
+        task=SCENARIO,
+        initial_generation=source,
+        validation=stress_validation,
+        initial_state=state,
+        validator=validator,
+        seed=0,
+        temperature=0.0,
+        ablation="no_state_r2",
+    )
+    assert len(r2_prompts) == 1
+    assert "prefix_final_state" not in r2_prompts[0]
+    assert "held_objects" not in r2_prompts[0]
+    assert "required_transports" not in r2_prompts[0]
+    assert route_info["route_taken"] == ["R2"]
+    assert route_info["fallback_triggered"] is False
+    assert route_info["r2_valid"] is False
+    assert route_info["r2_goal_ok"] is False
+    assert generation.accepted is True
+
+
 def test_routed_repair_uses_deterministic_truncation_when_goal_complete(
     tmp_path: Path,
 ) -> None:
@@ -514,6 +564,7 @@ def test_cli_accepts_routed_ablation_modes() -> None:
         "none",
         "no_truncation",
         "no_r2",
+        "no_state_r2",
         "no_fallback",
     }
 

@@ -236,6 +236,7 @@ class PlanRepairer:
         }
         if repair_mode == "R2":
             if validation.validated_prefix:
+                state_aware = "prefix_final_state" in prompt_input
                 output_requirement = (
                     f"The first {suffix_start - 1} steps are locked. Return only the "
                     f"replacement suffix. Its first step_id must be {suffix_start}. "
@@ -244,18 +245,21 @@ class PlanRepairer:
                     "If the locked prefix ends with a partial pick/place pair, "
                     "you may complete that pairing as the first suffix action; "
                     "this cross-prefix completion is allowed. "
-                    "Use prefix_final_state and held_objects to check what each "
-                    "arm is currently holding; an arm holding an object must "
-                    "place it before picking a new one. "
-                    "The program has computed required_transports from "
-                    "remaining_goal_facts. If required_transports is not "
-                    "empty, the replacement suffix must complete every listed "
-                    "transport; do not return an empty suffix in that case. "
-                    "For a place transport whose object is already held, use "
-                    "only its place action; otherwise use pick immediately "
-                    "followed by place. For a push transport use one push "
-                    "action, and for a press entry use one press action."
                 )
+                if state_aware:
+                    output_requirement += (
+                        "Use prefix_final_state and held_objects to check what each "
+                        "arm is currently holding; an arm holding an object must "
+                        "place it before picking a new one. "
+                        "The program has computed required_transports from "
+                        "remaining_goal_facts. If required_transports is not "
+                        "empty, the replacement suffix must complete every listed "
+                        "transport; do not return an empty suffix in that case. "
+                        "For a place transport whose object is already held, use "
+                        "only its place action; otherwise use pick immediately "
+                        "followed by place. For a push transport use one push "
+                        "action, and for a press entry use one press action."
+                    )
             else:
                 output_requirement = (
                     "No steps are locked because the invalid plan has no validated "

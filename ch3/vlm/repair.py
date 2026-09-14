@@ -286,7 +286,10 @@ class PlanRepairer:
                         "For a place transport whose object is already held, use "
                         "only its place action; otherwise use pick immediately "
                         "followed by place. For a push transport use one push "
-                        "action, and for a press entry use one press action."
+                        "action, and for a press entry use one press action. "
+                        "Push and press are direct hand-empty skills: do not "
+                        "pick the target before pushing or pressing it. After "
+                        "any release action, execute the push or press directly."
                     )
                     if "release_actions" in prompt_input:
                         output_requirement += (
@@ -340,7 +343,10 @@ class PlanRepairer:
                         "object is already held, place it on target_id; "
                         "otherwise pick it and then place it on target_id. "
                         "For a push transport use one push action, and for a "
-                        "press entry use one press action. Do not return "
+                        "press entry use one press action. Push and press are "
+                        "direct hand-empty skills: do not pick the target "
+                        "before pushing or pressing it. After any release "
+                        "action, execute the push or press directly. Do not return "
                         "only the first required entry unless it is the only "
                         "entry."
                     ),

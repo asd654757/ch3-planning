@@ -459,6 +459,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--temperature", type=float, default=0.3)
     parser.add_argument("--max-tokens", type=int, default=1024)
     parser.add_argument("--task-ids", nargs="*")
+    parser.add_argument(
+        "--case-ids",
+        nargs="*",
+        help="Run only task_id:seed pairs (for example, task__wrong_held_object:1).",
+    )
     parser.add_argument("--limit", type=int)
     parser.add_argument("--no-image", action="store_true")
     return parser
@@ -475,6 +480,15 @@ def main(argv: Optional[list[str]] = None) -> int:
     if args.task_ids:
         wanted = set(args.task_ids)
         scenarios = [t for t in scenarios if t["task_id"] in wanted]
+    requested_cases = None
+    if args.case_ids:
+        requested_cases = set()
+        for case_id in args.case_ids:
+            try:
+                task_id, seed_text = case_id.rsplit(":", 1)
+                requested_cases.add((task_id, int(seed_text)))
+            except (ValueError, TypeError):
+                raise ValueError(f"Invalid case_id: {case_id}") from None
     if args.limit is not None:
         scenarios = scenarios[: args.limit]
     if args.no_image:
@@ -505,6 +519,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     for task in scenarios:
         validator.scene_objects = set(task["objects"])
         for seed in range(args.seed_offset, args.seed_offset + args.seeds):
+            if requested_cases is not None and (task["task_id"], seed) not in requested_cases:
+                continue
             source_plan = frozen.get((task["source_task_id"], seed))
             if source_plan is None:
                 print(f"[state-recovery] missing source {task['source_task_id']} seed={seed}", flush=True)

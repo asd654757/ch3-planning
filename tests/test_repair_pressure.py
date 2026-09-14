@@ -252,6 +252,72 @@ def test_routed_repair_falls_back_to_r1_on_r2_failure(tmp_path: Path) -> None:
     assert metrics[ROUTED_GROUP]["VGF"] == 0.0
 
 
+def test_state_recovery_routed_fallback_uses_observed_state() -> None:
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from repair_pressure_state_recovery import (  # noqa: E402
+        _observed_validation,
+        _routed_state_repair,
+    )
+
+    validator = _validator()
+    valid_plan = ModelPlan.model_validate(VALID_PLAN)
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    stress_plan = build_stress_plan(
+        valid_plan,
+        SCENARIO,
+        "unknown_object_after_prefix",
+    )
+    prefix = stress_plan.actions[:1]
+    observed_state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding={"right": "red_cube_0"},
+    )
+    validation = _observed_validation(
+        source_plan=stress_plan,
+        prefix=prefix,
+        state=observed_state,
+        task=SCENARIO,
+    )
+
+    def r2_fails_then_r1_recovers(payload: dict) -> dict:
+        prompt = payload["messages"][1]["content"]
+        if "Repair mode: R2" in prompt:
+            return {
+                "actions": [{
+                    "step_id": 2,
+                    "skill": "place",
+                    "object_id": "__unknown__",
+                    "target_id": "blue_tray_1",
+                    "arm": "right",
+                }]
+            }
+        assert "Repair mode: R1_FROM_STATE" in prompt
+        assert "holding(right, red_cube_0)" in prompt
+        return {"actions": [VALID_PLAN["actions"][1]]}
+
+    repaired, route_info = _routed_state_repair(
+        repairer=PlanRepairer(
+            MockVLMClient(r2_fails_then_r1_recovers), PromptLibrary()
+        ),
+        task=SCENARIO,
+        stress_generation=source,
+        validation=validation,
+        validator=validator,
+        observed_state=observed_state,
+        seed=0,
+        temperature=0.0,
+    )
+    assert route_info["route_taken"] == ["R2", "R1_FROM_STATE"]
+    assert route_info["fallback_triggered"] is True
+    assert repaired.plan == valid_plan
+
+
 def test_no_state_r2_omits_state_feedback_and_fallback() -> None:
     validator = _validator()
     state = WorldState(
@@ -528,6 +594,8 @@ def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
     assert "Repair mode: R1_FROM_STATE" in prompt
     assert "holding(right, red_cube_0)" in prompt
     assert "executed_prefix" in prompt
+    assert "If held_objects is nonempty" in prompt
+    assert "must first place it before any pick, push, or press" in prompt
     assert "satisfy every fact in" in prompt
     assert "remaining_goal_facts" in prompt
     assert (

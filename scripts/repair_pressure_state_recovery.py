@@ -267,7 +267,7 @@ def _routed_state_repair(
         task=task,
         initial_generation=stress_generation,
         validation=validation,
-        initial_state=world_state_from_task(task),
+        initial_state=observed_state,
         seed=seed,
         temperature=temperature,
     )

@@ -182,9 +182,9 @@ class PlanRepairer:
                 }
             )
         if repair_mode == "R1_FROM_STATE":
-            if validation.final_state is None or not validation.validated_prefix:
+            if validation.final_state is None:
                 raise ValueError(
-                    "R1_FROM_STATE requires an executed prefix and final state"
+                    "R1_FROM_STATE requires an observed prefix-final state"
                 )
             # Execution-time fallback semantics: the prefix has already run,
             # so the model must not see the initial state as current and must

@@ -117,6 +117,8 @@ def run_closed_loop_episode(
     observation_size: int,
     temperature: float,
     repair_temperature: float,
+    visual_feedback: bool = False,
+    feedback_frames_dir=None,
 ) -> dict[str, Any]:
     task_id = str(task["task_id"])
     vlm_calls = 0
@@ -150,9 +152,20 @@ def run_closed_loop_episode(
                 if feedback.final_state is not None and feedback.validated_prefix
                 else "R1"
             )
+            # A live execution frame is passed through the existing image
+            # interface.  The repairer still receives deterministic state
+            # facts, so this is visual-state feedback rather than vision-only
+            # state estimation.
+            repair_task = task
+            if visual_feedback and prev.get("failure_frame"):
+                repair_task = {
+                    **task,
+                    "image_path": prev["failure_frame"],
+                    "visual_feedback": True,
+                }
             generation = repairer.repair(
                 repair_mode=repair_mode,
-                task=task,
+                task=repair_task,
                 initial_generation=prev["generation"],
                 validation=feedback,
                 initial_state=world_state_from_task(task),
@@ -166,6 +179,8 @@ def run_closed_loop_episode(
         attempt: dict[str, Any] = {
             "round": round_index,
             "label": label,
+            "plan": plan,
+            "generation": generation,
             "parse_error": getattr(generation, "parse_error", None),
             "infeasible_reason": getattr(generation, "infeasible_reason", None),
             "repair_mode": getattr(generation, "repair_mode", None),
@@ -209,10 +224,20 @@ def run_closed_loop_episode(
             "ROUTED_CLOSED_LOOP",
             max_steps=max_steps,
             observation_size=observation_size,
+            capture_failure_frame_dir=feedback_frames_dir if visual_feedback else None,
         )
         attempt["segments"] = segment_results
         attempt["sim_tasks"] = sim_tasks
         attempt["sim_success"] = sim_success
+        failure_frame = next(
+            (
+                item.get("failure_frame")
+                for item in reversed(segment_results)
+                if item.get("failure_frame")
+            ),
+            None,
+        )
+        attempt["failure_frame"] = failure_frame
 
         symbolic_state = world_state_from_task(task)
         completed_prefix: list[ModelPlanAction] = []
@@ -242,6 +267,28 @@ def run_closed_loop_episode(
     # ModelPlanAction objects are needed across replan rounds but must be
     # serialized in the episode record.  Convert them only after the loop.
     for attempt in attempts:
+        if "generation" in attempt:
+            generation = attempt["generation"]
+            response = getattr(generation, "response", None)
+            attempt["generation"] = {
+                "repair_mode": getattr(generation, "repair_mode", None),
+                "accepted": getattr(generation, "accepted", None),
+                "reject_reason": getattr(generation, "reject_reason", None),
+                "parse_error": getattr(generation, "parse_error", None),
+                "infeasible_reason": getattr(generation, "infeasible_reason", None),
+                "prompt_id": getattr(generation, "prompt_id", ""),
+                "prompt_hash": getattr(generation, "prompt_hash", ""),
+                "response": {
+                    "model": getattr(response, "model", None),
+                    "latency_ms": getattr(response, "latency_ms", None),
+                    "prompt_tokens": getattr(response, "prompt_tokens", 0),
+                    "completion_tokens": getattr(response, "completion_tokens", 0),
+                    "total_tokens": getattr(response, "total_tokens", 0),
+                    "finish_reason": getattr(response, "finish_reason", None),
+                },
+            }
+        if "plan" in attempt:
+            attempt["plan"] = attempt["plan"].model_dump(mode="json")
         if "completed_prefix_actions" in attempt:
             attempt["completed_prefix_actions"] = [
                 action.model_dump(mode="json")
@@ -290,6 +337,17 @@ def main() -> None:
     parser.add_argument("--max-replan-rounds", type=int, default=1)
     parser.add_argument("--max-steps-per-primitive", type=int, default=300)
     parser.add_argument("--observation-size", type=int, default=224)
+    parser.add_argument(
+        "--visual-feedback",
+        action="store_true",
+        help="Send the failed segment's rendered frame to the repair VLM.",
+    )
+    parser.add_argument(
+        "--feedback-frames-dir",
+        type=Path,
+        default=None,
+        help="Directory for failed-segment feedback frames.",
+    )
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--repair-temperature", type=float, default=0.3)
     parser.add_argument("--max-tokens", type=int, default=1024)
@@ -301,6 +359,10 @@ def main() -> None:
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite output: {args.output}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    if args.visual_feedback:
+        if args.feedback_frames_dir is None:
+            args.feedback_frames_dir = args.output.with_suffix(".frames")
+        args.feedback_frames_dir.mkdir(parents=True, exist_ok=True)
 
     tasks = load_jsonl(args.tasks)
     selected: list[tuple[dict[str, Any], int]] = []
@@ -384,6 +446,8 @@ def main() -> None:
             max_replan_rounds=args.max_replan_rounds,
             max_steps=args.max_steps_per_primitive,
             observation_size=args.observation_size,
+            visual_feedback=args.visual_feedback,
+            feedback_frames_dir=args.feedback_frames_dir,
             temperature=args.temperature,
             repair_temperature=args.repair_temperature,
         )
@@ -417,13 +481,26 @@ def main() -> None:
         "vlm_calls": sum(r["vlm_calls"] for r in episodes),
         "replan_rounds": sum(r["replan_rounds"] for r in episodes),
         "summary_by_family": family_summary,
+        "visual_feedback": args.visual_feedback,
         "execution_protocol": (
             "VLM task plan -> deterministic validator -> homogeneous MetaWorld "
-            "segment -> low-dim state feedback -> R1/R1_FROM_STATE repair"
+            "segment -> state feedback"
+            + (" + current rendered frame -> " if args.visual_feedback else " -> ")
+            + "R1/R1_FROM_STATE repair"
         ),
         "limitation": (
-            "State-feedback closed loop, not visual closed loop; homogeneous "
-            "segments use fresh episodes under the current MetaWorld adapter."
+            (
+                "Online visual-state feedback closed loop; symbolic state is "
+                "still provided by the simulator adapter, so this is not a "
+                "vision-only state-estimation benchmark. Homogeneous segments "
+                "use fresh episodes under the current MetaWorld adapter."
+            )
+            if args.visual_feedback
+            else (
+                "State-feedback closed loop, not visual closed loop; "
+                "homogeneous segments use fresh episodes under the current "
+                "MetaWorld adapter."
+            )
         ),
         "elapsed_s": round(time.time() - started, 3),
         "output": str(args.output),

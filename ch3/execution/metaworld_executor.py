@@ -114,6 +114,32 @@ class MetaWorldPlanExecutor:
             "target_pos": state["target_pos"].tolist(),
         }
 
+    def render_frame(self) -> np.ndarray:
+        """Render the current camera frame using the same orientation as obs."""
+        if self._env is None:
+            raise MetaWorldExecutionError("MetaWorld executor has not been reset")
+        frame = np.asarray(self._env._env.render(), dtype=np.uint8).copy()
+        # The lerobot adapter flips corner2 when building pixel observations;
+        # use the same convention so saved feedback frames match the visual
+        # observations used by pixel-based policies.
+        if getattr(self._env, "camera_name", None) == "corner2":
+            frame = np.flip(frame, (0, 1))
+        return frame
+
+    def save_frame(self, path: str | Any) -> None:
+        """Save the current camera frame to a PNG without overwriting."""
+        from pathlib import Path
+
+        frame_path = Path(path)
+        if frame_path.exists():
+            raise FileExistsError(f"refusing to overwrite frame: {frame_path}")
+        frame_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            from PIL import Image
+        except ImportError as exc:  # pragma: no cover - simulation-only path
+            raise RuntimeError("Pillow is required to save visual feedback") from exc
+        Image.fromarray(self.render_frame()).save(frame_path, format="PNG")
+
     def _read_state(self, raw: np.ndarray) -> dict[str, Any]:
         if self._env is None:
             raise MetaWorldExecutionError("MetaWorld executor has not been reset")

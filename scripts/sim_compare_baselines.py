@@ -170,6 +170,7 @@ def execute_multiskill_plan(
     *,
     max_steps: int,
     observation_size: int,
+    capture_failure_frame_dir=None,
 ) -> tuple[bool, list[dict[str, Any]], list[str]]:
     family = multiskill_task_for_plan(plan)
     if family == SIM_TASK_BY_FAMILY["pick_place"]:
@@ -202,6 +203,16 @@ def execute_multiskill_plan(
                     "sim_result": executor.result_to_dict(result),
                 }
             )
+            if capture_failure_frame_dir is not None and not result.success:
+                failure_frame = (
+                    capture_failure_frame_dir
+                    / (
+                        f"{point_key[0]}_seed{point_key[1]}_"
+                        f"{point_key[2]}_segment{segment_index}_failure.png"
+                    )
+                )
+                executor.save_frame(failure_frame)
+                primitive_results[-1]["failure_frame"] = str(failure_frame)
         finally:
             executor.close()
     return all(item["success"] for item in primitive_results), primitive_results, sim_tasks

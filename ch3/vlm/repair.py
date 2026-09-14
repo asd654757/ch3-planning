@@ -169,6 +169,12 @@ class PlanRepairer:
             ),
             "original_plan": initial_generation.plan.model_dump() if initial_generation.plan else None,
         }
+        if task.get("visual_feedback"):
+            prompt_input["image_context"] = (
+                "The attached image is the latest execution observation; use it "
+                "together with the structured state, not as a replacement for "
+                "deterministic validation."
+            )
         if repair_mode in {"R1", "R1_FROM_STATE", "R2"}:
             prompt_input.update(
                 {

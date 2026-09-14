@@ -1,0 +1,371 @@
+#!/usr/bin/env python3
+"""Rerun the perturbed closed-loop repair points with repair prompt v2.
+
+Each source episode is a frozen initial execution failure.  For every point we
+call the repaired prompt twice (state feedback and visual-state feedback),
+validate the returned plan, and execute a valid goal-satisfying plan in
+MetaWorld.  No initial planner calls are made.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import time
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+os.environ.setdefault("MUJOCO_GL", "egl")
+
+from ch3.capability.registry import CapabilityRegistry
+from ch3.execution.metaworld_executor import MetaWorldPlanExecutor
+from ch3.goal.goal_checker import goal_satisfied
+from ch3.schema.model_plan import GoalSpec, ModelPlan
+from ch3.state.world_state import WorldState
+from ch3.validator.pipeline import Validator
+from ch3.validator.result import ValidationResult
+from ch3.vlm.client import DashScopeVLMClient
+from ch3.vlm.collector import world_state_from_task
+from ch3.vlm.planner import PlanGeneration
+from ch3.vlm.repair import PlanRepairer
+from ch3.logger.episode_logger import EpisodeLogger
+from scripts.sim_compare_baselines import execute_multiskill_plan, is_executable_multiskill
+
+
+ARMS = ("STATE_PROMPT_V2", "VISUAL_PROMPT_V2")
+
+
+def state_from_record(task: dict[str, Any], record: dict[str, Any]) -> WorldState:
+    state = WorldState.table_scene(task["objects"])
+    state.at.update(record.get("at", {}))
+    state.holding.update(record.get("holding", {}))
+    state.pushed = set(record.get("pushed", []))
+    state.pressed = set(record.get("pressed", []))
+    return state
+
+
+def build_validation(source_task: dict[str, Any], episode: dict[str, Any]) -> ValidationResult:
+    previous = episode["attempts"][0]
+    current_state = state_from_record(source_task, previous["symbolic_state"])
+    return ValidationResult(
+        valid=False,
+        first_invalid_step=1,
+        error_code=None,
+        message="metaworld_execution_failure",
+        layer="execution",
+        validated_prefix=[],
+        final_state=current_state,
+    )
+
+
+def repair_point(
+    *,
+    repairer: PlanRepairer,
+    validator: Validator,
+    registry: CapabilityRegistry,
+    source_task: dict[str, Any],
+    episode: dict[str, Any],
+    arm: str,
+    temperature: float,
+    max_steps: int,
+    observation_size: int,
+) -> dict[str, Any]:
+    task_id = str(episode["task_id"])
+    seed = int(episode["seed"])
+    previous = episode["attempts"][0]
+    failed_plan = ModelPlan.model_validate(previous["plan"])
+    validation_input = build_validation(source_task, episode)
+
+    generation = PlanGeneration(
+        failed_plan,
+        None,
+        previous.get("generation", {}).get("parse_error"),
+        "",
+        "frozen_initial_generation",
+        str(previous.get("generation", {}).get("prompt_hash", "")),
+        previous.get("generation", {}).get("infeasible_reason"),
+    )
+
+    repair_task = dict(source_task)
+    if arm == "VISUAL_PROMPT_V2":
+        failure_frame = previous.get("failure_frame")
+        if not failure_frame or not Path(failure_frame).is_file():
+            raise RuntimeError(f"missing failure frame for {task_id} seed={seed}")
+        repair_task["image_path"] = failure_frame
+        repair_task["visual_feedback"] = True
+    elif arm != "STATE_PROMPT_V2":
+        raise ValueError(f"unsupported arm: {arm}")
+
+    started = time.time()
+    repair = repairer.repair(
+        repair_mode="R1_FROM_STATE",
+        task=repair_task,
+        initial_generation=generation,
+        validation=validation_input,
+        initial_state=world_state_from_task(source_task),
+        seed=seed,
+        temperature=temperature,
+    )
+    repair_elapsed = time.time() - started
+
+    validator.scene_objects = set(source_task["objects"])
+    initial_state = world_state_from_task(source_task)
+    validation_result = (
+        validator.validate(repair.plan, initial_state)
+        if repair.plan is not None
+        else None
+    )
+    symbolic_valid = bool(validation_result.valid) if validation_result is not None else False
+    goal_satisfied_result = (
+        bool(
+            goal_satisfied(
+                validation_result.final_state,
+                GoalSpec.model_validate(source_task["goal"]),
+                {"left", "right"},
+            )
+        )
+        if validation_result is not None and validation_result.valid
+        else False
+    )
+
+    sim_attempted = False
+    sim_success = False
+    sim_tasks: list[str] = []
+    primitive_results: list[dict[str, Any]] = []
+    if repair.plan is not None and symbolic_valid and goal_satisfied_result and is_executable_multiskill(repair.plan.actions):
+        sim_attempted = True
+        sim_started = time.time()
+        sim_success, primitive_results, sim_tasks = execute_multiskill_plan(
+            repair.plan,
+            registry,
+            (task_id, seed, arm),
+            arm,
+            max_steps=max_steps,
+            observation_size=observation_size,
+        )
+        sim_elapsed = time.time() - sim_started
+    else:
+        sim_elapsed = 0.0
+
+    compact_primitives = [
+        {
+            "segment_index": item.get("segment_index"),
+            "success": bool(item.get("success")),
+            "step_results": item.get("step_results", []),
+            "final_puck_target_distance": item.get("final_puck_target_distance"),
+            "elapsed_s": item.get("elapsed_s"),
+        }
+        for item in primitive_results
+    ]
+
+    return {
+        "record_type": "visual_prompt_v2_repair_rerun_case",
+        "task_id": task_id,
+        "task_family": source_task.get("task_family"),
+        "seed": seed,
+        "arm": arm,
+        "source_arm": "VISUAL_PROMPT_V1",
+        "source_final_success": bool(episode.get("final_success")),
+        "repair_mode": "R1_FROM_STATE",
+        "prompt_version": "repair_prompt_v2_dynamic_example",
+        "accepted": repair.accepted,
+        "reject_reason": repair.reject_reason,
+        "parse_error": repair.parse_error,
+        "symbolic_valid": symbolic_valid,
+        "goal_satisfied": goal_satisfied_result,
+        "error_code": (
+            validation_result.error_code.name
+            if validation_result is not None and validation_result.error_code is not None
+            else None
+        ),
+        "error_layer": validation_result.layer if validation_result is not None else None,
+        "error_message": validation_result.message if validation_result is not None else "parse_error",
+        "plan": repair.plan.model_dump(mode="json") if repair.plan is not None else None,
+        "sim_attempted": sim_attempted,
+        "sim_success": bool(sim_success),
+        "final_success": bool(symbolic_valid and goal_satisfied_result and sim_success),
+        "sim_tasks": sim_tasks,
+        "primitive_results": compact_primitives,
+        "repair_elapsed_s": repair_elapsed,
+        "sim_elapsed_s": sim_elapsed,
+        "response": {
+            "model": repair.response.model,
+            "prompt_tokens": repair.response.prompt_tokens,
+            "completion_tokens": repair.response.completion_tokens,
+            "total_tokens": repair.response.total_tokens,
+            "finish_reason": repair.response.finish_reason,
+        },
+    }
+
+
+def summarize(records: list[dict[str, Any]]) -> dict[str, Any]:
+    by_arm: dict[str, dict[str, Any]] = {}
+    by_arm_family: dict[tuple[str, str], Counter[str]] = defaultdict(Counter)
+    paired: Counter[str] = Counter()
+    records_by_point = {(r["task_id"], r["seed"], r["arm"]): r for r in records}
+    for arm in ARMS:
+        rows = [r for r in records if r["arm"] == arm]
+        stats: dict[str, Any] = {
+            "points": len(rows),
+            "symbolic_valid": sum(r["symbolic_valid"] for r in rows),
+            "goal_satisfied": sum(r["goal_satisfied"] for r in rows),
+            "sim_attempted": sum(r["sim_attempted"] for r in rows),
+            "sim_success": sum(r["sim_success"] for r in rows),
+            "final_success": sum(r["final_success"] for r in rows),
+            "parse_error": sum(r["parse_error"] is not None for r in rows),
+            "schema_error": sum((r.get("error_code") or "") == "SCHEMA_ERROR" for r in rows),
+            "prompt_tokens": sum(r["response"]["prompt_tokens"] for r in rows),
+            "completion_tokens": sum(r["response"]["completion_tokens"] for r in rows),
+            "total_tokens": sum(r["response"]["total_tokens"] for r in rows),
+        }
+        stats["final_success_rate"] = stats["final_success"] / stats["points"] if stats["points"] else None
+        by_arm[arm] = stats
+        for row in rows:
+            by_arm_family[(arm, row["task_family"])]["points"] += 1
+            by_arm_family[(arm, row["task_family"])]["final_success"] += int(row["final_success"])
+    by_family: dict[str, dict[str, Any]] = {}
+    for (arm, family), counts in sorted(by_arm_family.items()):
+        by_family.setdefault(family, {})[arm] = {
+            "points": counts["points"],
+            "final_success": counts["final_success"],
+            "final_success_rate": counts["final_success"] / counts["points"] if counts["points"] else None,
+        }
+    task_ids = sorted({r["task_id"] for r in records})
+    seeds = sorted({r["seed"] for r in records})
+    for task_id in task_ids:
+        for seed in seeds:
+            state_row = records_by_point.get((task_id, seed, "STATE_PROMPT_V2"))
+            visual_row = records_by_point.get((task_id, seed, "VISUAL_PROMPT_V2"))
+            if state_row is None or visual_row is None:
+                continue
+            key = (
+                ("both_success" if state_row["final_success"] and visual_row["final_success"] else "")
+                + ("state_only" if state_row["final_success"] and not visual_row["final_success"] else "")
+                + ("visual_only" if not state_row["final_success"] and visual_row["final_success"] else "")
+                + ("both_fail" if not state_row["final_success"] and not visual_row["final_success"] else "")
+            )
+            paired[key] += 1
+    return {"by_arm": by_arm, "by_family": by_family, "paired_final_success": dict(paired)}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--model", default="qwen3-vl-flash")
+    parser.add_argument(
+        "--env-file",
+        default="/root/autodl-tmp/metaworld-smolvla/qwen-dialogue-control/.env",
+    )
+    parser.add_argument(
+        "--source",
+        default="data/collections/sim_closed_loop_visualstate_perturbed100_20260914_115417.json",
+    )
+    parser.add_argument("--tasks", default="data/scenarios/multiskill_tasks_v1.jsonl")
+    parser.add_argument("--registry", default="config/capability_registry.yaml")
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--limit", type=int, default=0, help="0 means all source episodes")
+    parser.add_argument("--temperature", type=float, default=0.3)
+    parser.add_argument("--max-tokens", type=int, default=512)
+    parser.add_argument("--max-steps-per-primitive", type=int, default=300)
+    parser.add_argument("--observation-size", type=int, default=224)
+    args = parser.parse_args()
+
+    source_tasks = {
+        task["task_id"]: task
+        for task in map(json.loads, Path(args.tasks).open(encoding="utf-8"))
+    }
+    source = json.load(Path(args.source).open(encoding="utf-8"))
+    episodes = source["episode_detail"]
+    if args.limit > 0:
+        episodes = episodes[: args.limit]
+    if not episodes:
+        raise RuntimeError("no source episodes selected")
+    missing_frames = []
+    for episode in episodes:
+        frame = episode["attempts"][0].get("failure_frame")
+        if not frame or not Path(frame).is_file():
+            missing_frames.append((episode.get("task_id"), episode.get("seed"), frame))
+    if missing_frames:
+        raise RuntimeError(f"missing visual failure frames: {missing_frames[:3]}")
+
+    registry = CapabilityRegistry.from_yaml(args.registry)
+    validator = Validator(scene_objects=set(), registry=registry)
+    client = DashScopeVLMClient(model=args.model, env_path=args.env_file)
+    repairer = PlanRepairer(client, max_tokens=args.max_tokens, json_mode=True)
+    logger = EpisodeLogger(args.output)
+    started = time.time()
+
+    print(
+        json.dumps(
+            {
+                "record_type": "visual_prompt_v2_repair_rerun_start",
+                "source": args.source,
+                "points": len(episodes),
+                "arms": list(ARMS),
+                "expected_vlm_calls": len(episodes) * len(ARMS),
+            },
+            ensure_ascii=False,
+        ),
+        flush=True,
+    )
+
+    for index, episode in enumerate(episodes, 1):
+        source_task = source_tasks[episode["task_id"]]
+        for arm in ARMS:
+            print(
+                f"[visual-v2-rerun] point={index}/{len(episodes)} arm={arm} "
+                f"task={episode['task_id']} seed={episode['seed']} start",
+                flush=True,
+            )
+            record = repair_point(
+                repairer=repairer,
+                validator=validator,
+                registry=registry,
+                source_task=source_task,
+                episode=episode,
+                arm=arm,
+                temperature=args.temperature,
+                max_steps=args.max_steps_per_primitive,
+                observation_size=args.observation_size,
+            )
+            logger.append(record)
+            print(
+                json.dumps(
+                    {
+                        "task_id": record["task_id"],
+                        "seed": record["seed"],
+                        "arm": record["arm"],
+                        "symbolic_valid": record["symbolic_valid"],
+                        "goal_satisfied": record["goal_satisfied"],
+                        "sim_success": record["sim_success"],
+                        "final_success": record["final_success"],
+                        "error_code": record["error_code"],
+                    },
+                    ensure_ascii=False,
+                ),
+                flush=True,
+            )
+
+    records = logger.read_all()
+    summary = {
+        "record_type": "visual_prompt_v2_repair_rerun_summary",
+        "completed_at_utc": datetime.now(timezone.utc).isoformat(),
+        "source": args.source,
+        "points": len(episodes),
+        "arms": list(ARMS),
+        "vlm_calls": len(records),
+        "prompt_version": "repair_prompt_v2_dynamic_example",
+        "repair_mode": "R1_FROM_STATE",
+        "execution_protocol": "frozen_initial_failure_repair_then_metaworld_execution",
+        "elapsed_s": time.time() - started,
+        **summarize(records),
+        "output": args.output,
+    }
+    logger.append(summary)
+    print(json.dumps(summary, ensure_ascii=False), flush=True)
+
+
+if __name__ == "__main__":
+    main()

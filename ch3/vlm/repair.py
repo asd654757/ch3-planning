@@ -222,6 +222,32 @@ class PlanRepairer:
             prompt_input["required_transports"] = required_transports(
                 task, validation.final_state
             )
+            release_actions: list[dict[str, Any]] = []
+            for arm, held_object in sorted(validation.final_state.holding.items()):
+                first_transport = next(
+                    (
+                        transport
+                        for transport in prompt_input["required_transports"]
+                        if transport.get("object_id") == held_object
+                    ),
+                    None,
+                )
+                if first_transport is not None:
+                    continue
+                release_actions.append(
+                    {
+                        "skill": "place",
+                        "object_id": held_object,
+                        "target_id": "table",
+                        "arm": arm,
+                        "reason": (
+                            f"arm {arm} is holding {held_object}, which is not "
+                            "required by any remaining transport"
+                        ),
+                    }
+                )
+            if release_actions:
+                prompt_input["release_actions"] = release_actions
             prompt_input["next_step_id"] = len(validation.validated_prefix) + 1
         if repair_mode == "R0":
             # Frozen: no error localization and no validated prefix leakage.
@@ -262,11 +288,23 @@ class PlanRepairer:
                         "followed by place. For a push transport use one push "
                         "action, and for a press entry use one press action."
                     )
+                    if "release_actions" in prompt_input:
+                        output_requirement += (
+                            " The suffix MUST begin with exactly the actions "
+                            "listed in release_actions, in order, before any "
+                            "required_transports. Do not skip or reorder them."
+                        )
             else:
                 output_requirement = (
                     "No steps are locked because the invalid plan has no validated "
                     "prefix. Return the complete corrected plan."
                 )
+                if "release_actions" in prompt_input:
+                    output_requirement += (
+                        " The corrected plan MUST begin with exactly the actions "
+                        "listed in release_actions, in order, before any "
+                        "required_transports. Do not skip or reorder them."
+                    )
             render_values.update(
                 {
                     "mode": "R2",
@@ -308,6 +346,12 @@ class PlanRepairer:
                     ),
                 }
             )
+            if "release_actions" in prompt_input:
+                render_values["output_requirement"] += (
+                    " The returned suffix MUST begin with exactly the actions "
+                    "listed in release_actions, in order, before any "
+                    "required_transports. Do not skip or reorder them."
+                )
         else:
             render_values.update(
                 {

@@ -2,11 +2,13 @@ import json
 from pathlib import Path
 
 from ch3.capability.registry import CapabilityRegistry
+from ch3.errors import ErrorCode
 from ch3.logger.episode_logger import EpisodeLogger
 from ch3.metrics.repair_pressure_metrics import compute_pressure_metrics
 from ch3.schema.model_plan import ModelPlan
 from ch3.state.world_state import WorldState
 from ch3.validator.pipeline import Validator
+from ch3.validator.result import ValidationResult
 from ch3.vlm.mock import MockVLMClient
 from ch3.vlm.planner import InitialPlanner
 from ch3.vlm.prompts import PromptLibrary
@@ -38,7 +40,7 @@ def test_stress_plans_cover_deterministic_invalid_layers() -> None:
     state = WorldState(
         objects=set(SCENARIO["objects"]),
         at=SCENARIO["initial_state"]["at"],
-        holding=SCENARIO["initial_state"]["holding"],
+        holding=dict(SCENARIO["initial_state"]["holding"]),
     )
     valid_plan = ModelPlan.model_validate(VALID_PLAN)
     results = {}
@@ -605,6 +607,68 @@ def test_r1_from_state_replans_suffix_from_prefix_final_state() -> None:
     assert '"original_plan":' not in prompt
     assert '"required_transports"' in prompt
     assert '"object_id": "red_cube_0"' in prompt
+
+
+def test_state_repair_prompt_contains_programmatic_release_actions() -> None:
+    validator = _validator()
+    state = WorldState(
+        objects=set(SCENARIO["objects"]),
+        at=SCENARIO["initial_state"]["at"],
+        holding=dict(SCENARIO["initial_state"]["holding"]),
+    )
+    state.holding["right"] = "tray_1"
+    source = InitialPlanner(MockVLMClient(VALID_PLAN), PromptLibrary()).plan(
+        SCENARIO,
+        seed=0,
+    )
+    observed_validation = ValidationResult(
+        valid=False,
+        first_invalid_step=1,
+        error_code=ErrorCode.ARM_NOT_EMPTY,
+        message="execution-state mismatch before step 1",
+        layer="execution_state",
+        validated_prefix=[],
+        final_state=state.copy(),
+    )
+    response = {
+        "actions": [
+            {
+                "step_id": 1,
+                "skill": "place",
+                "object_id": "tray_1",
+                "target_id": "table",
+                "arm": "right",
+            },
+            {
+                "step_id": 2,
+                "skill": "pick",
+                "object_id": "red_cube_0",
+                "target_id": None,
+                "arm": "right",
+            },
+            {
+                "step_id": 3,
+                "skill": "place",
+                "object_id": "red_cube_0",
+                "target_id": "tray_1",
+                "arm": "right",
+            },
+        ]
+    }
+    repaired = PlanRepairer(MockVLMClient(response), PromptLibrary()).repair(
+        repair_mode="R1_FROM_STATE",
+        task=SCENARIO,
+        initial_generation=source,
+        validation=observed_validation,
+        initial_state=state,
+        seed=0,
+    )
+
+    assert repaired.accepted is True
+    assert '"release_actions"' in repaired.prompt
+    assert '"object_id": "tray_1"' in repaired.prompt
+    assert '"target_id": "table"' in repaired.prompt
+    assert "The returned suffix MUST begin with exactly the actions" in repaired.prompt
 
 
 def test_required_transports_are_derived_from_goal_and_prefix_state() -> None:

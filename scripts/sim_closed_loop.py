@@ -333,6 +333,15 @@ def main() -> None:
         default=4,
         help="Fresh task x seed episodes selected per family.",
     )
+    parser.add_argument(
+        "--episodes-per-arm",
+        type=int,
+        default=None,
+        help=(
+            "Total task x seed episodes for one method arm. Overrides "
+            "--episodes-per-family and cycles tasks with fresh seeds if needed."
+        ),
+    )
     parser.add_argument("--seed-offset", type=int, default=0)
     parser.add_argument("--max-replan-rounds", type=int, default=1)
     parser.add_argument("--max-steps-per-primitive", type=int, default=300)
@@ -354,6 +363,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.episodes_per_family < 1:
         raise ValueError("--episodes-per-family must be >= 1")
+    if args.episodes_per_arm is not None and args.episodes_per_arm < 1:
+        raise ValueError("--episodes-per-arm must be >= 1")
     if args.max_replan_rounds < 0:
         raise ValueError("--max-replan-rounds must be >= 0")
     if args.output.exists():
@@ -366,15 +377,30 @@ def main() -> None:
 
     tasks = load_jsonl(args.tasks)
     selected: list[tuple[dict[str, Any], int]] = []
-    for family in args.task_families:
-        family_tasks = [t for t in tasks if t.get("task_family") == family]
-        if len(family_tasks) < args.episodes_per_family:
-            raise RuntimeError(
-                f"family {family} has only {len(family_tasks)} tasks, "
-                f"want {args.episodes_per_family}"
-            )
-        for offset, task in enumerate(family_tasks[: args.episodes_per_family]):
-            selected.append((task, args.seed_offset + offset))
+    if args.episodes_per_arm is not None:
+        # Round-robin across requested families, then cycle the frozen task
+        # pool with a fresh seed for each reuse.  The same episode list is
+        # reproduced across arms, so comparisons remain paired.
+        family_counts = dict.fromkeys(args.task_families, 0)
+        for episode_index in range(args.episodes_per_arm):
+            family = args.task_families[episode_index % len(args.task_families)]
+            family_tasks = [t for t in tasks if t.get("task_family") == family]
+            if not family_tasks:
+                raise RuntimeError(f"family {family} has no tasks")
+            family_offset = family_counts[family]
+            task = family_tasks[family_offset % len(family_tasks)]
+            selected.append((task, args.seed_offset + family_offset))
+            family_counts[family] = family_offset + 1
+    else:
+        for family in args.task_families:
+            family_tasks = [t for t in tasks if t.get("task_family") == family]
+            if len(family_tasks) < args.episodes_per_family:
+                raise RuntimeError(
+                    f"family {family} has only {len(family_tasks)} tasks, "
+                    f"want {args.episodes_per_family}"
+                )
+            for offset, task in enumerate(family_tasks[: args.episodes_per_family]):
+                selected.append((task, args.seed_offset + offset))
 
     registry = CapabilityRegistry.from_yaml(args.registry)
     validator = Validator(scene_objects=set(), registry=registry)

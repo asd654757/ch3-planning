@@ -114,6 +114,7 @@ def run_closed_loop_episode(
     registry: CapabilityRegistry,
     max_replan_rounds: int,
     max_steps: int,
+    initial_max_steps: int | None = None,
     observation_size: int,
     temperature: float,
     repair_temperature: float,
@@ -217,15 +218,24 @@ def run_closed_loop_episode(
             break
 
         segments = segment_boundaries(plan)
+        # Controlled execution perturbation: only the first attempt runs with a
+        # reduced action budget. Repairs use the normal budget, so recovery can
+        # be measured separately from symbolic-plan validity.
+        execution_max_steps = (
+            max_steps
+            if initial_max_steps is None or round_index > 0
+            else initial_max_steps
+        )
         sim_success, segment_results, sim_tasks = execute_multiskill_plan(
             plan,
             registry,
             (task_id, seed, f"round_{round_index}"),
             "ROUTED_CLOSED_LOOP",
-            max_steps=max_steps,
+            max_steps=execution_max_steps,
             observation_size=observation_size,
             capture_failure_frame_dir=feedback_frames_dir if visual_feedback else None,
         )
+        attempt["execution_max_steps"] = execution_max_steps
         attempt["segments"] = segment_results
         attempt["sim_tasks"] = sim_tasks
         attempt["sim_success"] = sim_success
@@ -345,6 +355,15 @@ def main() -> None:
     parser.add_argument("--seed-offset", type=int, default=0)
     parser.add_argument("--max-replan-rounds", type=int, default=1)
     parser.add_argument("--max-steps-per-primitive", type=int, default=300)
+    parser.add_argument(
+        "--initial-max-steps-per-primitive",
+        type=int,
+        default=None,
+        help=(
+            "Reduce the action budget for the first execution attempt to inject "
+            "an execution-time perturbation; repair attempts use the normal budget."
+        ),
+    )
     parser.add_argument("--observation-size", type=int, default=224)
     parser.add_argument(
         "--visual-feedback",
@@ -367,6 +386,14 @@ def main() -> None:
         raise ValueError("--episodes-per-arm must be >= 1")
     if args.max_replan_rounds < 0:
         raise ValueError("--max-replan-rounds must be >= 0")
+    if args.initial_max_steps_per_primitive is not None and (
+        args.initial_max_steps_per_primitive < 1
+        or args.initial_max_steps_per_primitive > args.max_steps_per_primitive
+    ):
+        raise ValueError(
+            "--initial-max-steps-per-primitive must be between 1 and "
+            "--max-steps-per-primitive"
+        )
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite output: {args.output}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -471,6 +498,7 @@ def main() -> None:
             registry=registry,
             max_replan_rounds=args.max_replan_rounds,
             max_steps=args.max_steps_per_primitive,
+            initial_max_steps=args.initial_max_steps_per_primitive,
             observation_size=args.observation_size,
             visual_feedback=args.visual_feedback,
             feedback_frames_dir=args.feedback_frames_dir,
@@ -508,6 +536,11 @@ def main() -> None:
         "replan_rounds": sum(r["replan_rounds"] for r in episodes),
         "summary_by_family": family_summary,
         "visual_feedback": args.visual_feedback,
+        "execution_perturbation": {
+            "enabled": args.initial_max_steps_per_primitive is not None,
+            "initial_max_steps_per_primitive": args.initial_max_steps_per_primitive,
+            "repair_max_steps_per_primitive": args.max_steps_per_primitive,
+        },
         "execution_protocol": (
             "VLM task plan -> deterministic validator -> homogeneous MetaWorld "
             "segment -> state feedback"

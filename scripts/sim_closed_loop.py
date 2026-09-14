@@ -148,9 +148,12 @@ def run_closed_loop_episode(
                 current_state=current_state,
                 message="metaworld_execution_failure",
             )
+            # Even when no primitive completed, execution feedback still gives
+            # the current simulator-derived state.  Use the state-aware full
+            # suffix mode so push/press goals cannot be biased back into pick.
             repair_mode = (
                 "R1_FROM_STATE"
-                if feedback.final_state is not None and feedback.validated_prefix
+                if feedback.final_state is not None
                 else "R1"
             )
             # A live execution frame is passed through the existing image

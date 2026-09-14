@@ -13,18 +13,10 @@ Current task data:
 
 {{output_requirement}}
 
+{{visual_guidance}}
+
 Return one ModelPlan JSON object only:
-{
-  "actions": [
-    {
-      "step_id": 1,
-      "skill": "pick",
-      "object_id": "<object_id>",
-      "target_id": null,
-      "arm": "left"
-    }
-  ]
-}
+{{output_example}}
 
 Before planning, first extract every object ID in the instruction and Goal facts.
 Then compare those IDs with the visible/closed-world list.  If any required

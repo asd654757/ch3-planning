@@ -171,9 +171,16 @@ class PlanRepairer:
         }
         if task.get("visual_feedback"):
             prompt_input["image_context"] = (
-                "The attached image is the latest execution observation; use it "
-                "together with the structured state, not as a replacement for "
-                "deterministic validation."
+                {
+                    "role": "auxiliary execution observation",
+                    "policy": [
+                        "Use the image only to confirm that execution failed.",
+                        "Do not infer object IDs from the image.",
+                        "Do not add, remove, or replace any object.",
+                        "The closed-world objects, remaining_goal_facts, and "
+                        "required_transports are authoritative.",
+                    ],
+                }
             )
         if repair_mode in {"R1", "R1_FROM_STATE", "R2"}:
             prompt_input.update(
@@ -261,11 +268,83 @@ class PlanRepairer:
             prompt_input.pop("current_state", None)
 
         suffix_start = len(validation.validated_prefix) + 1
+        output_example: dict[str, Any] | None = None
+        if prompt_input.get("required_transports"):
+            instruction_text = str(task.get("instruction", "")).lower()
+            if "left arm" in instruction_text:
+                example_arm = "left"
+            elif "right arm" in instruction_text:
+                example_arm = "right"
+            else:
+                example_arm = "right"
+            example_actions: list[dict[str, Any]] = []
+            for transport in prompt_input["required_transports"]:
+                skill = transport["skill"]
+                if skill == "place":
+                    if transport.get("currently_held"):
+                        example_actions.append(
+                            {
+                                "skill": "place",
+                                "object_id": transport["object_id"],
+                                "target_id": transport["target_id"],
+                                "arm": example_arm,
+                            }
+                        )
+                    else:
+                        example_actions.extend(
+                            [
+                                {
+                                    "skill": "pick",
+                                    "object_id": transport["object_id"],
+                                    "target_id": None,
+                                    "arm": example_arm,
+                                },
+                                {
+                                    "skill": "place",
+                                    "object_id": transport["object_id"],
+                                    "target_id": transport["target_id"],
+                                    "arm": example_arm,
+                                },
+                            ]
+                        )
+                elif skill == "push":
+                    example_actions.append(
+                        {
+                            "skill": "push",
+                            "object_id": transport["object_id"],
+                            "target_id": transport["target_id"],
+                            "arm": example_arm,
+                        }
+                    )
+                elif skill == "press":
+                    example_actions.append(
+                        {
+                            "skill": "press",
+                            "object_id": transport["object_id"],
+                            "target_id": None,
+                            "arm": example_arm,
+                        }
+                    )
+            if example_actions:
+                for offset, action in enumerate(example_actions):
+                    action["step_id"] = prompt_input.get("next_step_id", suffix_start) + offset
+                output_example = {"actions": example_actions}
+
         render_values: dict[str, Any] = {
             "instruction": task["instruction"],
             "objects": sorted(task["objects"]),
             "goal": task["goal"],
+            "visual_guidance": "",
+            "output_example": output_example
+            if output_example is not None
+            else {"actions": [{"step_id": suffix_start, "skill": "<required_skill>", "object_id": "<object_id>", "target_id": "<target_or_null>", "arm": "<left_or_right>"}]},
         }
+        if task.get("visual_feedback"):
+            render_values["visual_guidance"] = (
+                "Image policy: the attached frame only confirms the latest "
+                "execution failure. It cannot introduce object IDs, replace the "
+                "closed-world object list, or override required_transports."
+            )
         if repair_mode == "R2":
             if validation.validated_prefix:
                 state_aware = "prefix_final_state" in prompt_input

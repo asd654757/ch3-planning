@@ -58,23 +58,35 @@ def _stale_replay(row: dict[str, Any]) -> bool:
 
 
 def _state_conflicting_action(row: dict[str, Any]) -> bool:
-    """Detect suffix actions that violate the observed arm/object state."""
+    """Detect suffix actions that violate the observed or evolving state."""
     facts = set(row.get("observed_state_facts") or [])
     for action in _suffix_actions(row):
         skill = action.get("skill")
         arm = action.get("arm")
         object_id = action.get("object_id")
         target_id = action.get("target_id")
-        arm_holding = any(fact.startswith(f"holding({arm}, ") for fact in facts)
+        held_fact = next(
+            (fact for fact in facts if fact.startswith(f"holding({arm}, ")),
+            None,
+        )
         holds_this_object = f"holding({arm}, {object_id})" in facts
-        if skill in {"pick", "push", "press"} and arm_holding:
+        if skill in {"pick", "push", "press"} and held_fact is not None:
             return True
         if skill == "place" and not holds_this_object:
             return True
-        if skill == "press" and f"pressed({object_id})" in facts:
-            return True
-        if skill == "push" and f"pushed_to({object_id}, {target_id})" in facts:
-            return True
+
+        # Advance the local state so that a valid pick is allowed to provide
+        # the holding precondition for its corresponding place.
+        if skill == "pick":
+            facts.discard(held_fact)
+            facts.add(f"holding({arm}, {object_id})")
+        elif skill == "place":
+            facts.discard(f"holding({arm}, {object_id})")
+            facts.add(f"on({object_id}, {target_id})")
+        elif skill == "push":
+            facts.add(f"pushed_to({object_id}, {target_id})")
+        elif skill == "press":
+            facts.add(f"pressed({object_id})")
     return False
 
 

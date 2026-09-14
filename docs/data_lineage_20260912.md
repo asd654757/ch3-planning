@@ -508,3 +508,65 @@ SELF_REFINE 有 7 个，CHECKER_LOOP 有 10 个，ROUTED 有 6 个。没有
 push 或 press 仿真失败，也没有失败来自符号校验或目标检查。因此
 ROUTED 的 6 个失败应解释为接口级执行容差或场景随机性问题，不应解释
 为修复路由失败。
+
+## State Recovery formal v1：执行状态恢复基准
+
+| 文件 | 说明 |
+|---|---|
+| `data/scenarios/state_recovery_tasks_v1.jsonl` | 144 个状态扰动任务切片，覆盖 pick/place、push、press 与 nominal/grasp-failure/displacement/wrong-held 四类状态 |
+| `data/collections/state_recovery_formal_v1_20260914_101157.jsonl` | formal 主集合，共 428 个配对评估点、2,140 条五臂记录 |
+| `data/reports/state_recovery_formal_v1_analysis_v2_20260914_125048.json` | 权威 analyzer v2 报告 |
+| `data/reports/20260914_state_recovery_formal_v1_v2_20260914_125048_paper_tables.md` | 论文主表、分扰动表、技能族表和 wrong-held 失败签名表 |
+| `data/reports/20260914_state_recovery_formal_v1_v2_20260914_125048_paper_tables.json` | 上述表格的机器可读版本 |
+| `logs/state_recovery_formal_v1_20260914_101157.log` | 对应运行日志 |
+
+来源集合为 `repair_pressure_multiskill_formal_v1_20260913_140057.jsonl`
+中的冻结源计划；任务集合由 36 个 MultiSkill 源任务派生，每个扰动子集
+保留 107 个有效切片。四类状态为 nominal_state、grasp_failure、
+object_displacement 和 wrong_held_object。五臂定义如下：
+
+1. `OPEN_LOOP`：不修复，直接重放扰动前冻结计划，不调用 VLM。
+2. `R2_NO_STATE`：接收 typed validation error，但不接收观测状态；
+   这是 typed-error no-state 消融，不是完全零信息协议。
+3. `R2_STATE`：接收观测状态、首错定位与剩余目标的状态感知 R2。
+4. `R1_FROM_STATE`：从观测状态进行完整剩余任务重规划。
+5. `ROUTED`：先执行状态感知 R2；若后缀不可执行、目标不满足或前缀被
+   修改，则回退到 `R1_FROM_STATE`。
+
+实际消耗 1,839 次 VLM 调用。analyzer v2 新增 SCER、后缀动作开销、
+stale replay 和 suffix-local state-conflicting-action 口径。conflict
+指标会在后缀内部推进 pick/place 状态，避免把合法 pick→place 对误判为
+状态冲突。
+
+五臂整体结果：
+
+| 臂 | RSR | Non-nominal RSR | PBW | 平均调用 |
+|---|---:|---:|---:|---:|
+| OPEN_LOOP | 25.0% | 0.0% | 41.6% | 0.000 |
+| R2_NO_STATE | 25.0% | 0.0% | 41.6% | 1.000 |
+| R2_STATE | 69.9% | 59.8% | 0.2% | 1.000 |
+| R1_FROM_STATE | 68.5% | 57.9% | 0.0% | 1.000 |
+| ROUTED | 72.0% | 62.6% | 0.2% | 1.297 |
+
+按扰动分解时，状态反馈的作用非常明显：non-nominal 下
+`R2_NO_STATE` 与 `OPEN_LOOP` 均为 0%，而 `R2_STATE` 为 59.8%；
+`R1_FROM_STATE` 为 57.9%；`ROUTED` 为 62.6%。`ROUTED` 相对
+`R2_STATE` 的主要收益是 fallback 鲁棒性，而不是更低成本。它平均调用
+1.297 次，token 总量与两个单模型状态感知臂接近。
+
+wrong-held-object 是当前最困难的状态恢复场景：`R2_STATE` 为 2.8%，
+`R1_FROM_STATE` 为 5.6%，`ROUTED` 为 8.4%。失败签名主要是模型没有
+先放下错误持物，或 fallback 后仍缺少当前状态下的目标动作。commit
+`bafa93e` 已经加入 held-object prompt 规则，并让 ROUTED fallback 显式
+使用 observed state；这是 post-fix 修复，不回写 formal v1。
+
+论文使用边界：
+
+1. formal v1 的 `R2_NO_STATE` 含 typed error code，只能证明“状态
+   反馈+错误类型信息”优于 typed error-only，不能写成完全 clean
+   no-state 证明；clean no-state pilot 需另行冻结。
+2. `R2_NO_STATE` 的 25.0% 全集成功率来自 nominal_state 子集；
+   non-nominal 为 0%。
+3. formal v1 早于 `repair_suffix_executable` 字段，因此 analyzer v2
+   对该冻结集合使用 goal-or-PBW 回溯推导 SCER；新集合应使用直接字段。
+4. wrong-held 8.4% 是如实报告的边界，不是 ROUTED 的主要成功证据。

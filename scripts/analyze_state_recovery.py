@@ -9,6 +9,75 @@ from pathlib import Path
 from typing import Any
 
 
+def _suffix_actions(row: dict[str, Any]) -> list[dict[str, Any]]:
+    plan = row.get("model_plan") or {}
+    actions = plan.get("actions") or []
+    prefix_len = len(row.get("executed_prefix_step_ids") or [])
+    return list(actions[prefix_len:])
+
+
+def _state_conditioned_executable(row: dict[str, Any]) -> bool:
+    """Whether the repaired suffix validates from the observed state."""
+    if "repair_suffix_executable" in row:
+        return bool(row["repair_suffix_executable"])
+    return bool(row.get("goal_satisfied") or row.get("pass_but_wrong"))
+
+
+def _semantic_action_key(action: dict[str, Any]) -> tuple[Any, ...]:
+    return (
+        action.get("skill"),
+        action.get("object_id"),
+        action.get("target_id"),
+        action.get("arm"),
+    )
+
+
+def _stale_replay(row: dict[str, Any]) -> bool:
+    """Detect semantic replay whose planned effect is already in S_t."""
+    facts = set(row.get("observed_state_facts") or [])
+    plan = row.get("model_plan") or {}
+    actions = plan.get("actions") or []
+    prefix_len = len(row.get("executed_prefix_step_ids") or [])
+    prefix_keys = {_semantic_action_key(a) for a in actions[:prefix_len]}
+    for action in _suffix_actions(row):
+        if _semantic_action_key(action) not in prefix_keys:
+            continue
+        skill = action.get("skill")
+        arm = action.get("arm")
+        object_id = action.get("object_id")
+        target_id = action.get("target_id")
+        if skill == "pick" and f"holding({arm}, {object_id})" in facts:
+            return True
+        if skill == "place" and f"on({object_id}, {target_id})" in facts:
+            return True
+        if skill == "push" and f"pushed_to({object_id}, {target_id})" in facts:
+            return True
+        if skill == "press" and f"pressed({object_id})" in facts:
+            return True
+    return False
+
+
+def _state_conflicting_action(row: dict[str, Any]) -> bool:
+    """Detect suffix actions that violate the observed arm/object state."""
+    facts = set(row.get("observed_state_facts") or [])
+    for action in _suffix_actions(row):
+        skill = action.get("skill")
+        arm = action.get("arm")
+        object_id = action.get("object_id")
+        target_id = action.get("target_id")
+        arm_holding = any(fact.startswith(f"holding({arm}, ") for fact in facts)
+        holds_this_object = f"holding({arm}, {object_id})" in facts
+        if skill in {"pick", "push", "press"} and arm_holding:
+            return True
+        if skill == "place" and not holds_this_object:
+            return True
+        if skill == "press" and f"pressed({object_id})" in facts:
+            return True
+        if skill == "push" and f"pushed_to({object_id}, {target_id})" in facts:
+            return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input")
@@ -28,7 +97,7 @@ def main() -> int:
         groups[(row["baseline"], row["perturbation_type"], family)].append(row)
 
     summary: dict[str, Any] = {
-        "schema_version": "2026-09-14-state-recovery-analysis-v1",
+        "schema_version": "2026-09-14-state-recovery-analysis-v2",
         "input": args.input,
         "points": len([r for r in rows if r.get("record_type") == "state_recovery"]),
         "summary_by_arm": {},
@@ -72,6 +141,49 @@ def main() -> int:
             "unnecessary_action_count": sum(int(r.get("unnecessary_action_count") or 0) for r in group),
             "avg_suffix_actions": sum(int(r.get("suffix_action_count") or 0) for r in group) / len(group),
         }
+        executable = [r for r in group if _state_conditioned_executable(r)]
+        if executable:
+            overheads = [
+                max(0, int(r.get("suffix_action_count") or 0) - int(r.get("minimal_suffix_action_count") or 0))
+                for r in executable
+            ]
+            normalized = [
+                overhead / max(1, int(r.get("minimal_suffix_action_count") or 0))
+                for r, overhead in zip(executable, overheads)
+            ]
+            item.update({
+                "state_conditioned_executable_points": len(executable),
+                "state_conditioned_executable_rate": len(executable) / len(group),
+                "avg_suffix_actions_on_executable": sum(
+                    int(r.get("suffix_action_count") or 0) for r in executable
+                ) / len(executable),
+                "avg_minimal_suffix_actions": sum(
+                    int(r.get("minimal_suffix_action_count") or 0) for r in executable
+                ) / len(executable),
+                "action_overhead_total_on_executable": sum(overheads),
+                "avg_action_overhead_on_executable": sum(overheads) / len(executable),
+                "avg_normalized_action_overhead_on_executable": sum(normalized) / len(normalized),
+            })
+        else:
+            item.update({
+                "state_conditioned_executable_points": 0,
+                "state_conditioned_executable_rate": 0.0,
+                "avg_suffix_actions_on_executable": None,
+                "avg_minimal_suffix_actions": None,
+                "action_overhead_total_on_executable": None,
+                "avg_action_overhead_on_executable": None,
+                "avg_normalized_action_overhead_on_executable": None,
+            })
+        stale = [r for r in group if _stale_replay(r)]
+        item.update({
+            "stale_replay_points": len(stale),
+            "stale_replay_rate": len(stale) / len(group),
+        })
+        conflicting = [r for r in group if _state_conflicting_action(r)]
+        item.update({
+            "state_conflicting_action_points": len(conflicting),
+            "state_conflicting_action_rate": len(conflicting) / len(group),
+        })
         return item
 
     for (arm, perturbation, family), group in sorted(groups.items()):

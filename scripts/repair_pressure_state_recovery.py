@@ -356,7 +356,7 @@ def run_state_slice(
                 task=task,
                 initial_generation=stress_generation,
                 validation=observed_validation,
-                initial_state=initial_state,
+                initial_state=observed_state,
                 seed=seed,
                 temperature=temperature,
             )
@@ -395,6 +395,7 @@ def run_state_slice(
             "benchmark": DEFAULT_BENCHMARK,
             "perturbation_type": task["perturbation_type"],
             "source_task_id": task["source_task_id"],
+            "repair_suffix_executable": valid,
             "executed_prefix_step_ids": [a.step_id for a in prefix],
             "observed_state_facts": sorted(
                 observed_state.facts() | observed_state.empty_hand_facts({"left", "right"})

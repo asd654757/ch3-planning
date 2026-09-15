@@ -10,6 +10,7 @@ mkdir -p "$(dirname "$OUT")" "$(dirname "$LOG")"
 setsid /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python scripts/state_visibility_pilot.py \
   --manifest data/collections/state_visibility_pilot_manifest_20260915.json \
   --output "$OUT" \
+  --prompt-version state_visibility_pilot_sparse_v2_goal_skeleton \
   >"$LOG" 2>&1 </dev/null &
 PID=$!
 echo "$PID" > /tmp/state_visibility_pilot_pid

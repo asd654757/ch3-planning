@@ -63,6 +63,7 @@ def repair_point(
     source_task: dict[str, Any],
     episode: dict[str, Any],
     arm: str,
+    prompt_version: str,
     temperature: float,
     max_steps: int,
     observation_size: int,
@@ -166,7 +167,7 @@ def repair_point(
         "repair_mode": "R1_FROM_STATE",
         "state_visibility": "sparse",
         "visual_frame": arm == "SPARSE_STATE_VISUAL",
-        "prompt_version": "state_visibility_pilot_sparse_v1",
+        "prompt_version": prompt_version,
         "accepted": repair.accepted,
         "reject_reason": repair.reject_reason,
         "parse_error": repair.parse_error,
@@ -271,6 +272,10 @@ def main() -> None:
     parser.add_argument("--registry", default="config/capability_registry.yaml")
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument(
+        "--prompt-version",
+        default="state_visibility_pilot_sparse_v1",
+    )
     parser.add_argument("--temperature", type=float, default=0.3)
     parser.add_argument("--max-tokens", type=int, default=512)
     parser.add_argument("--max-steps-per-primitive", type=int, default=300)
@@ -353,6 +358,7 @@ def main() -> None:
                 source_task=source_task,
                 episode=episode,
                 arm=arm,
+                prompt_version=args.prompt_version,
                 temperature=args.temperature,
                 max_steps=args.max_steps_per_primitive,
                 observation_size=args.observation_size,
@@ -396,7 +402,7 @@ def main() -> None:
         "points": len(episodes),
         "arms": list(ALL_ARMS),
         "vlm_calls": len(sparse_records),
-        "prompt_version": "state_visibility_pilot_sparse_v1",
+        "prompt_version": args.prompt_version,
         "repair_mode": "R1_FROM_STATE",
         "execution_protocol": "frozen_initial_failure_repair_then_metaworld_execution",
         "state_visibility_definition": {

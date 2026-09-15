@@ -117,6 +117,51 @@ def required_transports(
     )
 
 
+def goal_action_skeleton(task: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Derive a goal-only action skeleton without using execution state.
+
+    This is used by the sparse-state protocol.  Unlike ``required_transports``,
+    it deliberately contains no current-location or held-object information.
+    It only turns the declared goal facts into the corresponding closed-set
+    action pattern.
+    """
+    objects = set(task.get("objects", []))
+    instruction_text = str(task.get("instruction", "")).lower()
+    if "left arm" in instruction_text:
+        arm = "left"
+    elif "right arm" in instruction_text:
+        arm = "right"
+    else:
+        arm = "right"
+
+    actions: list[dict[str, Any]] = []
+    for fact in task.get("goal", {}).get("facts", []):
+        if not isinstance(fact, str) or not fact.endswith(")"):
+            continue
+        if fact.startswith("on("):
+            inner = fact[len("on("):-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2 and parts[0] in objects and (parts[1] == "table" or parts[1] in objects):
+                actions.extend(
+                    [
+                        {"skill": "pick", "object_id": parts[0], "target_id": None, "arm": arm},
+                        {"skill": "place", "object_id": parts[0], "target_id": parts[1], "arm": arm},
+                    ]
+                )
+        elif fact.startswith("pushed_to("):
+            inner = fact[len("pushed_to("):-1]
+            parts = [part.strip() for part in inner.split(",", 1)]
+            if len(parts) == 2 and parts[0] in objects and (parts[1] == "table" or parts[1] in objects):
+                actions.append(
+                    {"skill": "push", "object_id": parts[0], "target_id": parts[1], "arm": arm}
+                )
+        elif fact.startswith("pressed("):
+            object_id = fact[len("pressed("):-1]
+            if object_id in objects:
+                actions.append({"skill": "press", "object_id": object_id, "target_id": None, "arm": arm})
+    return actions
+
+
 class PlanRepairer:
     """Implements the frozen one-call repair protocol."""
 
@@ -287,6 +332,7 @@ class PlanRepairer:
                 f for f in task.get("goal", {}).get("facts", [])
                 if isinstance(f, str)
             ]
+            prompt_input["goal_action_skeleton"] = goal_action_skeleton(task)
         if repair_mode == "R0":
             # Frozen: no error localization and no validated prefix leakage.
             prompt_input.pop("original_plan", None)
@@ -354,6 +400,13 @@ class PlanRepairer:
                 for offset, action in enumerate(example_actions):
                     action["step_id"] = prompt_input.get("next_step_id", suffix_start) + offset
                 output_example = {"actions": example_actions}
+        elif prompt_input.get("goal_action_skeleton"):
+            example_actions = []
+            for offset, action in enumerate(prompt_input["goal_action_skeleton"]):
+                item = dict(action)
+                item["step_id"] = suffix_start + offset
+                example_actions.append(item)
+            output_example = {"actions": example_actions}
 
         render_values: dict[str, Any] = {
             "instruction": task["instruction"],
@@ -371,7 +424,7 @@ class PlanRepairer:
                     "execution failure. It cannot introduce object IDs, replace "
                     "the closed-world object list, or create post-execution "
                     "state. Use only the instruction, object IDs, goal facts, "
-                    "and remaining_goal_facts."
+                    "remaining_goal_facts, and goal_action_skeleton."
                 )
             else:
                 render_values["visual_guidance"] = (
@@ -442,8 +495,12 @@ class PlanRepairer:
                     "state, prefix_final_state, held_objects, or "
                     "required_transports is available. Use the instruction, "
                     "closed-world objects, goal facts, and remaining_goal_facts "
-                    "to return only a new remaining-task suffix; its first "
-                    f"step_id must be {suffix_start}. Never repeat any action "
+                    "and goal_action_skeleton. The goal_action_skeleton is "
+                    "goal-derived only and contains no current-state "
+                    "information. Complete every pattern listed in "
+                    "goal_action_skeleton. Return only a new remaining-task "
+                    f"suffix; its first step_id must be {suffix_start}. "
+                    "Never repeat any action "
                     "from executed_prefix and never return the complete "
                     "original plan. The returned suffix must satisfy every "
                     "fact in remaining_goal_facts."

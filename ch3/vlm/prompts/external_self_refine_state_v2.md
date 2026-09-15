@@ -26,6 +26,6 @@ listed in goal_action_skeleton. If the task is infeasible, return exactly:
 Otherwise return the complete corrected plan as one ModelPlan JSON object.
 Use only skills "pick", "place", "push", or "press". A pick or press has
 target_id=null; a place or push has target_id.
-{"actions": [{"step_id": 1, "skill": "pick", "object_id": "<object_id>", "target_id": null, "arm": "left"}]}
+{{output_example}}
 
 Output only one JSON object. Do not add commentary or Markdown.

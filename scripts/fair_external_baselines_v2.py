@@ -50,8 +50,8 @@ from scripts.sim_compare_baselines import execute_multiskill_plan, is_executable
 
 
 BASELINES = ("SELF_REFINE_STATE_V2", "CHECKER_LOOP_STATE_V2")
-SCHEMA_VERSION = "2026-09-15-fair-external-baseline-state-v2"
-PROMPT_VERSION = "fair_external_state_v2_goal_skeleton"
+SCHEMA_VERSION = "2026-09-15-fair-external-baseline-state-v2b"
+PROMPT_VERSION = "fair_external_state_v2b_goal_skeleton_dynamic_example"
 
 
 def state_from_record(task: dict[str, Any], record: dict[str, Any]) -> WorldState:
@@ -141,6 +141,9 @@ def common_prompt_values(
     state: WorldState,
     plan: ModelPlan,
 ) -> dict[str, Any]:
+    output_actions: list[dict[str, Any]] = []
+    for step_id, action in enumerate(goal_action_skeleton(task), start=1):
+        output_actions.append({**action, "step_id": step_id})
     return {
         "instruction": task["instruction"],
         "objects": sorted(task["objects"]),
@@ -149,6 +152,7 @@ def common_prompt_values(
         "goal_action_skeleton": goal_action_skeleton(task),
         "current_plan": plan.model_dump(),
         "failed_plan": plan.model_dump(),
+        "output_example": {"actions": output_actions},
     }
 
 

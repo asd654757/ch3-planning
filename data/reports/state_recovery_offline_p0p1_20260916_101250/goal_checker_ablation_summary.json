@@ -1,0 +1,96 @@
+{
+  "ROUTED_full": {
+    "fallback": 127,
+    "pbw": 1,
+    "points": 428,
+    "success": 308,
+    "success_rate": 0.719626168224299
+  },
+  "ROUTED_without_GC": {
+    "fallback": 0,
+    "pbw": 1,
+    "points": 428,
+    "success": 301,
+    "success_rate": 0.7032710280373832
+  },
+  "by_perturbation": {
+    "grasp_failure": {
+      "ROUTED_full": {
+        "fallback": 22,
+        "pbw": 0,
+        "points": 107,
+        "success": 85,
+        "success_rate": 0.794392523364486
+      },
+      "ROUTED_without_GC": {
+        "fallback": 0,
+        "pbw": 0,
+        "points": 107,
+        "success": 85,
+        "success_rate": 0.794392523364486
+      }
+    },
+    "nominal_state": {
+      "ROUTED_full": {
+        "fallback": 0,
+        "pbw": 0,
+        "points": 107,
+        "success": 107,
+        "success_rate": 1.0
+      },
+      "ROUTED_without_GC": {
+        "fallback": 0,
+        "pbw": 0,
+        "points": 107,
+        "success": 107,
+        "success_rate": 1.0
+      }
+    },
+    "object_displacement": {
+      "ROUTED_full": {
+        "fallback": 2,
+        "pbw": 0,
+        "points": 107,
+        "success": 107,
+        "success_rate": 1.0
+      },
+      "ROUTED_without_GC": {
+        "fallback": 0,
+        "pbw": 0,
+        "points": 107,
+        "success": 105,
+        "success_rate": 0.9813084112149533
+      }
+    },
+    "wrong_held_object": {
+      "ROUTED_full": {
+        "fallback": 103,
+        "pbw": 1,
+        "points": 107,
+        "success": 9,
+        "success_rate": 0.08411214953271028
+      },
+      "ROUTED_without_GC": {
+        "fallback": 0,
+        "pbw": 1,
+        "points": 107,
+        "success": 4,
+        "success_rate": 0.037383177570093455
+      }
+    }
+  },
+  "mcnemar_full_vs_without_gc": {
+    "discordant": 7,
+    "only_full_success": 7,
+    "only_without_gc_success": 0,
+    "p_value": 0.015625
+  },
+  "paired_success_counts": {
+    "both_fail": 120,
+    "both_success": 301,
+    "full_only_success": 7
+  },
+  "points": 428,
+  "record_type": "state_recovery_goal_checker_ablation_summary",
+  "schema_version": "state-recovery-gc-ablation-v1"
+}

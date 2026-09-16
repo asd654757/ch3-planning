@@ -551,6 +551,8 @@ def action_overhead_analysis(
                 source["action_overhead"].append(overhead)
                 source["normalized_action_overhead"].append(normalized)
                 source["model_calls"].append(float(record["model_calls"]))
+                source["input_tokens"].append(float(record["input_tokens"]))
+                source["output_tokens"].append(float(record["output_tokens"]))
                 source["total_tokens"].append(float(record["total_tokens"]))
 
     def summarize(values: Mapping[str, list[float]]) -> dict[str, Any]:
@@ -572,8 +574,8 @@ def action_overhead_analysis(
                 values["normalized_action_overhead"]
             ),
             "mean_model_calls": mean_or_none(values["model_calls"]),
-            "total_input_tokens": int(sum(values["total_tokens"])),
-            "total_output_tokens": int(sum(values["total_tokens"])),
+            "total_input_tokens": int(sum(values["input_tokens"])),
+            "total_output_tokens": int(sum(values["output_tokens"])),
             "total_tokens": int(sum(values["total_tokens"])),
         }
 
@@ -674,7 +676,7 @@ def render_report(
             "",
             "- RSR is Recovery Success Rate on the original 428-point denominator.",
             "- Oracle length is the shortest legal symbolic recovery plan.",
-            "- A negative overhead means the method produced a shorter suffix than the program-side minimal-action approximation recorded in the formal runner.",
+            "- Feasibility search allows the task-family skills, plus `place` as the registered safe-release capability for a held object. It does not allow cross-family skill substitution.",
             "- This report uses zero VLM calls and does not modify the frozen formal dataset.",
             "",
         ]

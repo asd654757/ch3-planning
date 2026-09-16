@@ -1,0 +1,212 @@
+{
+  "by_method": {
+    "R1_FROM_STATE": {
+      "mean_action_overhead": -0.10981308411214953,
+      "mean_model_calls": 1.0,
+      "mean_normalized_action_overhead": -0.029205607476635514,
+      "mean_repair_suffix_actions": 0.8925233644859814,
+      "median_repair_suffix_actions": 1.0,
+      "points": 428,
+      "recovery_success": 293,
+      "recovery_success_rate": 0.6845794392523364,
+      "total_input_tokens": 456741,
+      "total_output_tokens": 21919,
+      "total_tokens": 478660
+    },
+    "R2_STATE": {
+      "mean_action_overhead": -0.0514018691588785,
+      "mean_model_calls": 1.0,
+      "mean_normalized_action_overhead": -0.02219626168224299,
+      "mean_repair_suffix_actions": 0.9509345794392523,
+      "median_repair_suffix_actions": 1.0,
+      "points": 428,
+      "recovery_success": 299,
+      "recovery_success_rate": 0.6985981308411215,
+      "total_input_tokens": 453165,
+      "total_output_tokens": 22988,
+      "total_tokens": 476153
+    },
+    "ROUTED": {
+      "mean_action_overhead": -0.08644859813084112,
+      "mean_model_calls": 1.2967289719626167,
+      "mean_normalized_action_overhead": -0.02102803738317757,
+      "mean_repair_suffix_actions": 0.9158878504672897,
+      "median_repair_suffix_actions": 1.0,
+      "points": 428,
+      "recovery_success": 308,
+      "recovery_success_rate": 0.719626168224299,
+      "total_input_tokens": 457861,
+      "total_output_tokens": 22372,
+      "total_tokens": 480233
+    }
+  },
+  "by_perturbation_by_method": {
+    "grasp_failure": {
+      "R1_FROM_STATE": {
+        "mean_action_overhead": -0.308411214953271,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": -0.1542056074766355,
+        "mean_repair_suffix_actions": 1.02803738317757,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 74,
+        "recovery_success_rate": 0.6915887850467289,
+        "total_input_tokens": 114759,
+        "total_output_tokens": 6266,
+        "total_tokens": 121025
+      },
+      "R2_STATE": {
+        "mean_action_overhead": -0.2336448598130841,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": -0.11682242990654206,
+        "mean_repair_suffix_actions": 1.102803738317757,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 82,
+        "recovery_success_rate": 0.7663551401869159,
+        "total_input_tokens": 116874,
+        "total_output_tokens": 6605,
+        "total_tokens": 123479
+      },
+      "ROUTED": {
+        "mean_action_overhead": -0.205607476635514,
+        "mean_model_calls": 1.205607476635514,
+        "mean_normalized_action_overhead": -0.102803738317757,
+        "mean_repair_suffix_actions": 1.1308411214953271,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 85,
+        "recovery_success_rate": 0.794392523364486,
+        "total_input_tokens": 115703,
+        "total_output_tokens": 6753,
+        "total_tokens": 122456
+      }
+    },
+    "nominal_state": {
+      "R1_FROM_STATE": {
+        "mean_action_overhead": 0.0,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": 0.0,
+        "mean_repair_suffix_actions": 0.0,
+        "median_repair_suffix_actions": 0.0,
+        "points": 107,
+        "recovery_success": 107,
+        "recovery_success_rate": 1.0,
+        "total_input_tokens": 111752,
+        "total_output_tokens": 820,
+        "total_tokens": 112572
+      },
+      "R2_STATE": {
+        "mean_action_overhead": 0.0,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": 0.0,
+        "mean_repair_suffix_actions": 0.0,
+        "median_repair_suffix_actions": 0.0,
+        "points": 107,
+        "recovery_success": 107,
+        "recovery_success_rate": 1.0,
+        "total_input_tokens": 112073,
+        "total_output_tokens": 838,
+        "total_tokens": 112911
+      },
+      "ROUTED": {
+        "mean_action_overhead": 0.0,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": 0.0,
+        "mean_repair_suffix_actions": 0.0,
+        "median_repair_suffix_actions": 0.0,
+        "points": 107,
+        "recovery_success": 107,
+        "recovery_success_rate": 1.0,
+        "total_input_tokens": 112073,
+        "total_output_tokens": 834,
+        "total_tokens": 112907
+      }
+    },
+    "object_displacement": {
+      "R1_FROM_STATE": {
+        "mean_action_overhead": -0.009345794392523364,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": -0.004672897196261682,
+        "mean_repair_suffix_actions": 1.3271028037383177,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 106,
+        "recovery_success_rate": 0.9906542056074766,
+        "total_input_tokens": 118419,
+        "total_output_tokens": 7692,
+        "total_tokens": 126111
+      },
+      "R2_STATE": {
+        "mean_action_overhead": 0.0,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": 0.0,
+        "mean_repair_suffix_actions": 1.3364485981308412,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 107,
+        "recovery_success_rate": 1.0,
+        "total_input_tokens": 118740,
+        "total_output_tokens": 7736,
+        "total_tokens": 126476
+      },
+      "ROUTED": {
+        "mean_action_overhead": 0.0,
+        "mean_model_calls": 1.0186915887850467,
+        "mean_normalized_action_overhead": 0.0,
+        "mean_repair_suffix_actions": 1.3364485981308412,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 107,
+        "recovery_success_rate": 1.0,
+        "total_input_tokens": 118734,
+        "total_output_tokens": 7736,
+        "total_tokens": 126470
+      }
+    },
+    "wrong_held_object": {
+      "R1_FROM_STATE": {
+        "mean_action_overhead": -0.12149532710280374,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": 0.04205607476635514,
+        "mean_repair_suffix_actions": 1.2149532710280373,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 6,
+        "recovery_success_rate": 0.056074766355140186,
+        "total_input_tokens": 111811,
+        "total_output_tokens": 7141,
+        "total_tokens": 118952
+      },
+      "R2_STATE": {
+        "mean_action_overhead": 0.028037383177570093,
+        "mean_model_calls": 1.0,
+        "mean_normalized_action_overhead": 0.028037383177570093,
+        "mean_repair_suffix_actions": 1.3644859813084111,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 3,
+        "recovery_success_rate": 0.028037383177570093,
+        "total_input_tokens": 105478,
+        "total_output_tokens": 7809,
+        "total_tokens": 113287
+      },
+      "ROUTED": {
+        "mean_action_overhead": -0.14018691588785046,
+        "mean_model_calls": 1.9626168224299065,
+        "mean_normalized_action_overhead": 0.018691588785046728,
+        "mean_repair_suffix_actions": 1.1962616822429906,
+        "median_repair_suffix_actions": 1.0,
+        "points": 107,
+        "recovery_success": 9,
+        "recovery_success_rate": 0.08411214953271028,
+        "total_input_tokens": 111351,
+        "total_output_tokens": 7049,
+        "total_tokens": 118400
+      }
+    }
+  },
+  "points": 428,
+  "record_type": "state_recovery_action_overhead_summary",
+  "schema_version": "state-recovery-action-overhead-v1"
+}

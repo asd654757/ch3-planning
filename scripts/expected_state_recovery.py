@@ -60,7 +60,8 @@ from scripts.symbolic_planner_baseline import (
     search_suffix,
 )
 
-from scripts.corrupted_state_recovery_pilot import physical, score
+from scripts.corrupted_state_recovery_pilot import physical as physical_result
+from scripts.corrupted_state_recovery_pilot import score
 
 RECORD = "expected_state_case"
 SCHEMA = "2026-09-26-expected-state-v1"
@@ -111,6 +112,141 @@ def fact_diff(*, expected: WorldState, observed: WorldState) -> dict[str, list[s
         "expected_only": sorted(exp - obs),
         "observed_only": sorted(obs - exp),
     }
+
+
+def nominal_rerun(
+    contexts: list[dict[str, Any]],
+    *,
+    validator: Validator,
+) -> dict[str, Any]:
+    """The five-line deterministic fallback: re-run the whole nominal plan, ignore the state.
+
+    Kept separate from the ceiling because it is a *rival method*, not an bound: it is
+    what a stack with no trust in its own state tracker would emit, and it costs no
+    model calls.  If it already reaches near the ceiling, the success-rate headroom
+    that an LLM could claim is gone.
+    """
+    frozen = phys = 0
+    per_perturbation: dict[str, dict[str, int]] = {}
+    for context in contexts:
+        actions = [
+            ModelPlanAction.model_validate(item) for item in context["nominal_plan"]
+        ]
+        validator.scene_objects = set(context["objects"])
+        own = score(
+            actions=actions,
+            validator=validator,
+            state=context["observed_state"],
+            goal=context["goal"],
+        )
+        result = physical_result(
+            actions=actions,
+            state=context["observed_state"],
+            goal=context["goal"],
+            valid_targets=validator.valid_targets,
+        )
+        hit_frozen = bool(own["valid"] and own["goal_satisfied"])
+        hit_phys = bool(result["goal_satisfied"])
+        frozen += hit_frozen
+        phys += hit_phys
+        cell = per_perturbation.setdefault(
+            context["perturbation_type"], {"points": 0, "frozen": 0, "physical": 0}
+        )
+        cell["points"] += 1
+        cell["frozen"] += hit_frozen
+        cell["physical"] += hit_phys
+    return {
+        "points": len(contexts),
+        "frozen_success": frozen,
+        "physical_goal": phys,
+        "by_perturbation": per_perturbation,
+    }
+
+
+def perception_free_ceiling(
+    contexts: list[dict[str, Any]],
+    *,
+    validator: Validator,
+) -> dict[str, Any]:
+    """Best achievable score for any policy that only sees the belief.
+
+    Two points with the same expected fact set are indistinguishable to a policy
+    that gets no perception back, so such a policy must commit to one plan for the
+    whole class.  The candidates tried per class are every plan that is right for
+    *some* member of the class (search on its observation, search on its
+    expectation, and full nominal-plan replay), plus doing nothing -- a superset
+    of what a state-only policy could plausibly emit.  Taking the best plan per
+    class therefore upper-bounds every repair policy that does not look at the
+    scene, regardless of whether the planner inside it is symbolic or learned.
+    """
+    groups: dict[tuple[str, ...], list[dict[str, Any]]] = {}
+    for context in contexts:
+        groups.setdefault(context["expected_signature"], []).append(context)
+
+    frozen_total = 0
+    physical_total = 0
+    class_sizes: Counter[int] = Counter()
+    best_examples: list[dict[str, Any]] = []
+    for signature, group in sorted(groups.items(), key=lambda item: (-len(item[1]), item[0])):
+        candidates: dict[tuple[str, ...], list[dict[str, Any]]] = {}
+        for context in group:
+            for plan in context["candidate_plans"]:
+                candidates[plan_key(plan)] = plan
+        best: tuple[int, int, tuple[str, ...]] | None = None
+        for key, plan in candidates.items():
+            actions = [ModelPlanAction.model_validate(item) for item in plan]
+            frozen = physical = 0
+            for context in group:
+                validator.scene_objects = set(context["objects"])
+                own = score(
+                    actions=actions,
+                    validator=validator,
+                    state=context["observed_state"],
+                    goal=context["goal"],
+                )
+                phys = physical_result(
+                    actions=actions,
+                    state=context["observed_state"],
+                    goal=context["goal"],
+                    valid_targets=validator.valid_targets,
+                )
+                frozen += bool(own["valid"] and own["goal_satisfied"])
+                physical += bool(phys["goal_satisfied"])
+            if best is None or (frozen, physical) > (best[0], best[1]):
+                best = (frozen, physical, key)
+        assert best is not None
+        frozen_total += best[0]
+        physical_total += best[1]
+        class_sizes[len(group)] += 1
+        if len(group) > 1 and len(best_examples) < 8:
+            best_examples.append(
+                {
+                    "expected_facts": list(signature),
+                    "points": len(group),
+                    "perturbations": sorted({c["perturbation_type"] for c in group}),
+                    "best_frozen_success": best[0],
+                    "best_physical_success": best[1],
+                    "best_plan": list(best[2]),
+                }
+            )
+    return {
+        "ambiguity_classes": len(groups),
+        "largest_classes": dict(sorted(class_sizes.items(), reverse=True)[:6]),
+        "points_in_ambiguous_classes": sum(
+            size for size in class_sizes.elements() if size > 1
+        ),
+        "ceiling_frozen_success": frozen_total,
+        "ceiling_physical_goal": physical_total,
+        "points": len(contexts),
+        "top_classes": best_examples,
+    }
+
+
+def plan_key(plan: list[dict[str, Any]]) -> tuple[str, ...]:
+    return tuple(
+        f"{action.get('skill')}|{action.get('object_id')}|{action.get('target_id')}|{action.get('arm')}"
+        for action in plan
+    )
 
 
 def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
@@ -179,6 +315,11 @@ def render(summary: dict[str, Any]) -> str:
     def fmt(value: Optional[float]) -> str:
         return "-" if value is None else f"{value:.4f}"
 
+    def fpct(value: Optional[float]) -> str:
+        if value is None:
+            return "-"
+        return f"{value:.4f}" if value >= 1e-4 else f"{value:.3e}"
+
     lines = [
         "# 自然状态错误：动作历史预期 vs 实际观测（C2 / P3）",
         "",
@@ -216,7 +357,46 @@ def render(summary: dict[str, Any]) -> str:
         f"全量配对（喂观测状态 vs 喂预期状态，冻结口径 success）："
         f"only_observed={paired['only_observed_state_success']}, "
         f"only_expected={paired['only_expected_state_success']}, "
-        f"精确 McNemar p={fmt(paired['mcnemar_exact_p_value'])}",
+        f"精确 McNemar p={fpct(paired['mcnemar_exact_p_value'])}",
+        "",
+        "## 不看场景的修复策略上界（信息论证）",
+        "",
+        "- 同一预期状态签名 ⇒ 对任何只吃状态的策略不可区分，策略必须整类共用一个计划",
+        "- 每类候选 = 类内各点在其真实状态下的最优计划（观测态搜索 / 预期态搜索 / 整条标称计划重放 / 空操作）的并集；",
+        "  逐类取 max 再求和 ⇒ 任何『不回看场景』的修复策略（符号或大模型，含未来更强的）都不超过这个数",
+    ]
+    ceiling = summary["perception_free_ceiling"]
+    fallback = summary["nominal_rerun_fallback"]
+    lines += [
+        "",
+        f"- 歧义类 {ceiling['ambiguity_classes']} 个；落在多义类里的点 "
+        f"{ceiling['points_in_ambiguous_classes']}/{ceiling['points']}",
+        f"- 上界（冻结口径 success）：{ceiling['ceiling_frozen_success']}/{ceiling['points']} = "
+        f"{ceiling['ceiling_frozen_success'] / ceiling['points']:.4f}",
+        f"- 上界（真实世界达成目标）：{ceiling['ceiling_physical_goal']}/{ceiling['points']} = "
+        f"{ceiling['ceiling_physical_goal'] / ceiling['points']:.4f}",
+        f"- 类大小分布（size→count，前 6）：`{json.dumps(ceiling['largest_classes'])}`",
+        "",
+        "最大的几个歧义类（同类里扰动类型不同）：",
+        "",
+        "| Points | Perturbations in class | best success | best physical | best plan |",
+        "|---:|---|---:|---:|---|",
+    ]
+    for example in ceiling["top_classes"]:
+        lines.append(
+            f"| {example['points']} | {', '.join(example['perturbations'])} | "
+            f"{example['best_frozen_success']} | {example['best_physical_success']} | "
+            f"`{(' + '.join(example['best_plan'])) or 'empty plan'}` |"
+        )
+    lines += [
+        "",
+        "### 对照：确定性兜底策略『忽略状态、重放整条标称计划』",
+        "",
+        f"- 冻结口径 success：{fallback['frozen_success']}/{fallback['points']} = "
+        f"{fallback['frozen_success'] / fallback['points']:.4f}",
+        f"- 真实世界达成目标：{fallback['physical_goal']}/{fallback['points']} = "
+        f"{fallback['physical_goal'] / fallback['points']:.4f}",
+        f"- 分类：`{json.dumps(fallback['by_perturbation'], ensure_ascii=False)}`",
         "",
         "## 各扰动的真实侧首错码",
         "",
@@ -272,6 +452,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         selected = selected[: args.limit]
 
     rows: list[dict[str, Any]] = []
+    contexts: list[dict[str, Any]] = []
     started = time.time()
     for (source_task_id, seed, perturbation), record in selected:
         scenario = scenarios[f"{source_task_id}__{perturbation}"]
@@ -309,7 +490,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             )
             actions = [ModelPlanAction.model_validate(item) for item in suffix]
             own = score(actions=actions, validator=validator, state=state, goal=goal)
-            phys = physical(
+            phys = physical_result(
                 actions=actions, state=observed_state, goal=goal, valid_targets=valid_targets
             )
             results[tag] = {
@@ -347,6 +528,25 @@ def main(argv: Optional[list[str]] = None) -> int:
                 )
 
         diff = fact_diff(expected=expected_state, observed=observed_state)
+        contexts.append(
+            {
+                "point_key": f"{source_task_id}|{seed}|{perturbation}",
+                "perturbation_type": perturbation,
+                "expected_signature": tuple(
+                    sorted(expected_state.facts() | expected_state.empty_hand_facts(ARMS))
+                ),
+                "objects": objects,
+                "goal": goal,
+                "observed_state": observed_state,
+                "nominal_plan": [action.model_dump() for action in plan_actions],
+                "candidate_plans": [
+                    [],
+                    results["belief"]["plan"],
+                    results["observed"]["plan"],
+                    [action.model_dump() for action in plan_actions],
+                ],
+            }
+        )
         rows.append(
             {
                 "record_type": RECORD,
@@ -391,6 +591,11 @@ def main(argv: Optional[list[str]] = None) -> int:
             }
         )
 
+    ceiling_started = time.time()
+    ceiling = perception_free_ceiling(contexts, validator=validator)
+    ceiling_elapsed = time.time() - ceiling_started
+    fallback = nominal_rerun(contexts, validator=validator)
+
     summary = {
         "record_type": "expected_state_summary",
         "schema_version": SCHEMA,
@@ -402,6 +607,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         "prefix_replay_errors": sum(
             1 for row in rows if row["prefix_replay_error"] is not None
         ),
+        "perception_free_ceiling": ceiling,
+        "nominal_rerun_fallback": fallback,
+        "ceiling_elapsed_s": ceiling_elapsed,
         "by_perturbation": summarize(rows),
         "elapsed_s": time.time() - started,
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -423,6 +631,12 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "truth_success_frozen": all_cell["truth_success_rate"],
                 "truth_goal_physical": all_cell["truth_goal_physical_rate"],
                 "silent_failure": all_cell["silent_failure_rate"],
+                "perception_free_ceiling_frozen": ceiling["ceiling_frozen_success"],
+                "perception_free_ceiling_physical": ceiling["ceiling_physical_goal"],
+                "ambiguity_classes": ceiling["ambiguity_classes"],
+                "nominal_rerun_frozen": fallback["frozen_success"],
+                "nominal_rerun_physical": fallback["physical_goal"],
+                "ceiling_elapsed_s": round(ceiling_elapsed, 2),
                 "planner_on_observed_state": all_cell["planner_on_observed_state_rate"],
                 "by_perturbation_silent_failure": {
                     key: value["silent_failure_rate"]

@@ -1,0 +1,166 @@
+{
+  "record_type": "p1_determinism_evidence",
+  "comparisons": {
+    "pre_fix_vs_deterministic_formal428": {
+      "a": "data/reports/symbolic_planner_formal428_20260926_045106/symbolic_planner_cases.jsonl",
+      "b": "data/reports/symbolic_planner_formal428_20260926_det163525/symbolic_planner_cases.jsonl",
+      "keys_shared": 1284,
+      "only_in_a": 0,
+      "only_in_b": 0,
+      "identical_all_fields": 1284,
+      "differ_by_field": {
+        "suffix_actions": 0,
+        "search_success": 0,
+        "search_reason": 0,
+        "symbolic_valid": 0,
+        "goal_satisfied": 0,
+        "sim_success": 0,
+        "final_success": 0,
+        "observed_state_facts": 0,
+        "goal_holds_in_observed_state": 0
+      },
+      "differ_by_mode": {}
+    },
+    "pre_fix_vs_deterministic_fair100": {
+      "a": "data/reports/symbolic_planner_fair100_20260926_045545/symbolic_planner_cases.jsonl",
+      "b": "data/reports/symbolic_planner_fair100_20260926_det1640/symbolic_planner_cases.jsonl",
+      "keys_shared": 300,
+      "only_in_a": 0,
+      "only_in_b": 0,
+      "identical_all_fields": 0,
+      "differ_by_field": {
+        "suffix_actions": 300,
+        "search_success": 0,
+        "search_reason": 0,
+        "symbolic_valid": 0,
+        "goal_satisfied": 0,
+        "sim_success": 0,
+        "final_success": 0,
+        "observed_state_facts": 0,
+        "goal_holds_in_observed_state": 0
+      },
+      "differ_by_mode": {
+        "BFS_EXEC": 100,
+        "BFS_SHORT": 100,
+        "BFS_VALID": 100
+      }
+    },
+    "guard_on_vs_off_formal428": {
+      "a": "data/reports/ablation/formal428_guardon/symbolic_planner_cases.jsonl",
+      "b": "data/reports/ablation/formal428_guardoff/symbolic_planner_cases.jsonl",
+      "keys_shared": 1284,
+      "only_in_a": 0,
+      "only_in_b": 0,
+      "identical_all_fields": 1284,
+      "differ_by_field": {
+        "suffix_actions": 0,
+        "search_success": 0,
+        "search_reason": 0,
+        "symbolic_valid": 0,
+        "goal_satisfied": 0,
+        "sim_success": 0,
+        "final_success": 0,
+        "observed_state_facts": 0,
+        "goal_holds_in_observed_state": 0
+      },
+      "differ_by_mode": {}
+    },
+    "guard_on_vs_off_fair100": {
+      "a": "data/reports/ablation/fair100_guardon/symbolic_planner_cases.jsonl",
+      "b": "data/reports/ablation/fair100_guardoff/symbolic_planner_cases.jsonl",
+      "keys_shared": 300,
+      "only_in_a": 0,
+      "only_in_b": 0,
+      "identical_all_fields": 300,
+      "differ_by_field": {
+        "suffix_actions": 0,
+        "search_success": 0,
+        "search_reason": 0,
+        "symbolic_valid": 0,
+        "goal_satisfied": 0,
+        "sim_success": 0,
+        "final_success": 0,
+        "observed_state_facts": 0,
+        "goal_holds_in_observed_state": 0
+      },
+      "differ_by_mode": {}
+    }
+  },
+  "plan_identity_fair100": {
+    "symbolic": "data/reports/symbolic_planner_fair100_20260926_det1640/symbolic_planner_cases.jsonl",
+    "reference": "data/collections/fair_routed_v2_20260916_102135.jsonl",
+    "mode": "BFS_EXEC",
+    "triple_projection": {
+      "points": 100,
+      "fields": [
+        "skill",
+        "object_id",
+        "target_id"
+      ],
+      "identical_action_count_rate": 1.0,
+      "mean_actions_symbolic": 1.34,
+      "mean_actions_reference": 1.34,
+      "length_equal_points": 100,
+      "fully_identical_points": 100,
+      "arm_only_points": 0,
+      "arm_only_first_skill": {},
+      "other_differences": [],
+      "action_count_histogram_symbolic": {
+        "1": 66,
+        "2": 34
+      },
+      "action_count_histogram_reference": {
+        "1": 66,
+        "2": 34
+      }
+    },
+    "quadruple_projection": {
+      "points": 100,
+      "fields": [
+        "skill",
+        "object_id",
+        "target_id",
+        "arm"
+      ],
+      "identical_action_count_rate": 1.0,
+      "mean_actions_symbolic": 1.34,
+      "mean_actions_reference": 1.34,
+      "length_equal_points": 100,
+      "fully_identical_points": 33,
+      "arm_only_points": 67,
+      "arm_only_first_skill": {
+        "pick": 34,
+        "push": 33
+      },
+      "other_differences": [],
+      "action_count_histogram_symbolic": {
+        "1": 66,
+        "2": 34
+      },
+      "action_count_histogram_reference": {
+        "1": 66,
+        "2": 34
+      }
+    },
+    "arm_admissibility": {
+      "arm_only_points": 67,
+      "resolved": 67,
+      "missing_source_records": [],
+      "counts": {
+        "both_ok": 67,
+        "only_symbolic_arm_ok": 0,
+        "only_reference_arm_ok": 0,
+        "neither_ok": 0
+      },
+      "exceptions": {},
+      "arm_pairs": {
+        "left->right": 67
+      },
+      "first_skills": {
+        "pick": 34,
+        "push": 33
+      },
+      "rejected": []
+    }
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "by_perturbation": {
+    "ALL": {
+      "belief_success_rate": 1.0,
+      "mean_observed_state_actions": 1.2523364485981308,
+      "mean_plan_actions": 0.3341121495327103,
+      "paired_observed_vs_expected": {
+        "mcnemar_exact_p_value": 4.6816763546921983e-97,
+        "only_expected_state_success": 0,
+        "only_observed_state_success": 321
+      },
+      "planner_on_observed_state_rate": 1.0,
+      "points": 428,
+      "silent_failure_rate": 0.6658878504672897,
+      "truth_goal_physical_rate": 0.3341121495327103,
+      "truth_success_rate": 0.25
+    },
+    "grasp_failure": {
+      "belief_expected_equals_observed": 0,
+      "belief_success_rate": 1.0,
+      "mean_plan_actions": 0.3364485981308411,
+      "planner_on_observed_state_rate": 1.0,
+      "points": 107,
+      "rejected_in_truth_rate": 0.3364485981308411,
+      "search_success_rate": 1.0,
+      "silent_failure_rate": 1.0,
+      "truth_error_codes": {
+        "OBJECT_NOT_HELD": 36
+      },
+      "truth_goal_physical_rate": 0.0,
+      "truth_state_errors": {
+        "OBJECT_NOT_HELD": 36
+      },
+      "truth_success_rate": 0.0
+    },
+    "nominal_state": {
+      "belief_expected_equals_observed": 107,
+      "belief_success_rate": 1.0,
+      "mean_plan_actions": 0,
+      "planner_on_observed_state_rate": 1.0,
+      "points": 107,
+      "rejected_in_truth_rate": 0.0,
+      "search_success_rate": 1.0,
+      "silent_failure_rate": 0.0,
+      "truth_error_codes": {},
+      "truth_goal_physical_rate": 1.0,
+      "truth_state_errors": {},
+      "truth_success_rate": 1.0
+    },
+    "object_displacement": {
+      "belief_expected_equals_observed": 0,
+      "belief_success_rate": 1.0,
+      "mean_plan_actions": 0,
+      "planner_on_observed_state_rate": 1.0,
+      "points": 107,
+      "rejected_in_truth_rate": 0.0,
+      "search_success_rate": 1.0,
+      "silent_failure_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_goal_physical_rate": 0.0,
+      "truth_state_errors": {},
+      "truth_success_rate": 0.0
+    },
+    "wrong_held_object": {
+      "belief_expected_equals_observed": 0,
+      "belief_success_rate": 1.0,
+      "mean_plan_actions": 1,
+      "planner_on_observed_state_rate": 1.0,
+      "points": 107,
+      "rejected_in_truth_rate": 1.0,
+      "search_success_rate": 1.0,
+      "silent_failure_rate": 0.6635514018691588,
+      "truth_error_codes": {
+        "ARM_NOT_EMPTY": 35,
+        "OBJECT_NOT_HELD": 36,
+        "SCHEMA_ERROR": 36
+      },
+      "truth_goal_physical_rate": 0.3364485981308411,
+      "truth_state_errors": {
+        "ARM_NOT_EMPTY": 35,
+        "OBJECT_NOT_HELD": 36
+      },
+      "truth_success_rate": 0.0
+    }
+  },
+  "ceiling_elapsed_s": 0.07404971122741699,
+  "completed_at_utc": "2026-09-26T08:49:03.428769+00:00",
+  "elapsed_s": 0.30294203758239746,
+  "formal": "data/collections/state_recovery_formal_v1_20260914_101157.jsonl",
+  "max_actions": 8,
+  "nominal_rerun_fallback": {
+    "by_perturbation": {
+      "grasp_failure": {
+        "frozen": 107,
+        "physical": 107,
+        "points": 107
+      },
+      "nominal_state": {
+        "frozen": 35,
+        "physical": 107,
+        "points": 107
+      },
+      "object_displacement": {
+        "frozen": 107,
+        "physical": 107,
+        "points": 107
+      },
+      "wrong_held_object": {
+        "frozen": 0,
+        "physical": 0,
+        "points": 107
+      }
+    },
+    "frozen_success": 249,
+    "physical_goal": 321,
+    "points": 428
+  },
+  "perception_free_ceiling": {
+    "ambiguity_classes": 84,
+    "ceiling_frozen_success": 356,
+    "ceiling_physical_goal": 428,
+    "largest_classes": {
+      "2": 1,
+      "3": 47,
+      "6": 13,
+      "9": 23
+    },
+    "points": 428,
+    "points_in_ambiguous_classes": 428,
+    "top_classes": [
+      {
+        "best_frozen_success": 9,
+        "best_physical_success": 9,
+        "best_plan": [
+          "press|black_button_46|None|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(black_button_46, table)",
+          "pressed(black_button_46)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 6,
+        "best_physical_success": 9,
+        "best_plan": [
+          "push|black_cube_34|goal_pad|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(black_cube_34, goal_pad)",
+          "on(goal_pad, table)",
+          "pushed_to(black_cube_34, goal_pad)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 6,
+        "best_physical_success": 9,
+        "best_plan": [
+          "push|blue_block_25|goal_pad|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(blue_block_25, goal_pad)",
+          "on(goal_pad, table)",
+          "pushed_to(blue_block_25, goal_pad)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 9,
+        "best_physical_success": 9,
+        "best_plan": [
+          "press|blue_button_37|None|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(blue_button_37, table)",
+          "pressed(blue_button_37)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 6,
+        "best_physical_success": 9,
+        "best_plan": [
+          "push|brown_block_33|goal_pad|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(brown_block_33, goal_pad)",
+          "on(goal_pad, table)",
+          "pushed_to(brown_block_33, goal_pad)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 9,
+        "best_physical_success": 9,
+        "best_plan": [
+          "press|brown_button_45|None|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(brown_button_45, table)",
+          "pressed(brown_button_45)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 9,
+        "best_physical_success": 9,
+        "best_plan": [
+          "press|cyan_button_42|None|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(cyan_button_42, table)",
+          "pressed(cyan_button_42)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      },
+      {
+        "best_frozen_success": 6,
+        "best_physical_success": 9,
+        "best_plan": [
+          "push|cyan_cube_30|goal_pad|left"
+        ],
+        "expected_facts": [
+          "hand_empty(left)",
+          "hand_empty(right)",
+          "on(cyan_cube_30, goal_pad)",
+          "on(goal_pad, table)",
+          "pushed_to(cyan_cube_30, goal_pad)"
+        ],
+        "perturbations": [
+          "grasp_failure",
+          "nominal_state",
+          "object_displacement"
+        ],
+        "points": 9
+      }
+    ]
+  },
+  "planner_mode": "BFS_VALID",
+  "points": 428,
+  "prefix_replay_errors": 0,
+  "protocol": "state_recovery_428",
+  "record_type": "expected_state_summary",
+  "rows": 428,
+  "scenarios": "data/scenarios/state_recovery_tasks_v1.jsonl",
+  "schema_version": "2026-09-26-expected-state-v1"
+}

@@ -1,0 +1,84 @@
+{
+  "both_arms_cell_success": 488,
+  "completed_at_utc": "2026-09-26T09:07:51.422620+00:00",
+  "elapsed_s": 1078.4383597373962,
+  "matched_cells": 500,
+  "mcnemar_exact_p_value": 1.0,
+  "neither_cell_success": 12,
+  "only_ROUTED_cell_success": 0,
+  "only_SYMBOLIC_cell_success": 0,
+  "per_arm": {
+    "ROUTED": {
+      "cell_success_rate": 0.976,
+      "cells": 500,
+      "points_always_fail": 0,
+      "points_always_succeed": 88,
+      "points_mixed": 12,
+      "points_with_full_salt_sweep": 100,
+      "success_spectrum": {
+        "4/5": 12,
+        "5/5": 88
+      }
+    },
+    "SYMBOLIC": {
+      "cell_success_rate": 0.976,
+      "cells": 500,
+      "points_always_fail": 0,
+      "points_always_succeed": 88,
+      "points_mixed": 12,
+      "points_with_full_salt_sweep": 100,
+      "success_spectrum": {
+        "4/5": 12,
+        "5/5": 88
+      }
+    }
+  },
+  "plan_identity_split": {
+    "differing_plan": {
+      "discordant_cells": 0,
+      "points": 67,
+      "scene_fragile_by_family": {
+        "pick_place": 12
+      },
+      "scene_fragile_list": [
+        "multiskill_pick_place_001/13",
+        "multiskill_pick_place_001/25",
+        "multiskill_pick_place_003/15",
+        "multiskill_pick_place_004/28",
+        "multiskill_pick_place_004/4",
+        "multiskill_pick_place_005/17",
+        "multiskill_pick_place_005/29",
+        "multiskill_pick_place_006/6",
+        "multiskill_pick_place_007/19",
+        "multiskill_pick_place_008/20",
+        "multiskill_pick_place_009/9",
+        "multiskill_pick_place_010/10"
+      ],
+      "scene_fragile_points": 12,
+      "symbolic_cell_success_rate": 0.9641791044776119,
+      "symbolic_cell_successes": 323,
+      "symbolic_cells": 335
+    },
+    "identical_plan": {
+      "discordant_cells": 0,
+      "points": 33,
+      "scene_fragile_by_family": {},
+      "scene_fragile_list": [],
+      "scene_fragile_points": 0,
+      "symbolic_cell_success_rate": 1.0,
+      "symbolic_cell_successes": 165,
+      "symbolic_cells": 165
+    }
+  },
+  "point_level_majority": {
+    "both_reliable": 100
+  },
+  "points_in_scope": 100,
+  "record_type": "reseed_stability_summary",
+  "routed": "data/collections/fair_routed_v2_20260916_102135.jsonl",
+  "routed_only_reliable_points": [],
+  "salts": 5,
+  "schema_version": "2026-09-26-reseed-stability-v1",
+  "symbolic_cases": "data/reports/symbolic_planner_fair100_20260926_det1640/symbolic_planner_cases.jsonl",
+  "symbolic_only_reliable_points": []
+}

@@ -1,14 +1,19 @@
 # P1 符号规划器基线结果（2026-09-26）
 
 对应审稿条目 C5。脚本 `scripts/symbolic_planner_baseline.py`，零 VLM 调用、零 token，
-未改动 `data/collections/` 任何冻结数据。原始产物（本轮最终版）：
+未改动 `data/collections/` 任何冻结数据。**本文引用的产物全部是修复平手规则（1.5 节）之后的确定性重跑**：
 
-- `data/reports/symbolic_planner_formal428_20260926_045106/`（428 点 × 3 模式，符号层，0.53 s）
-- `data/reports/symbolic_planner_fair100_20260926_045545/`（100 点 × 3 模式，端到端，346.75 s，含 300 次仿真回合）
-- `data/reports/reseed_stability_20260926_050608/`（场景重盐稳定性研究，见第三节 3.2）
+- `data/reports/symbolic_planner_formal428_20260926_det163525/`（428 点 × 3 模式，符号层，0.57 s）
+- `data/reports/symbolic_planner_fair100_20260926_det1640/`（100 点 × 3 模式，端到端，380.4 s，含 300 次仿真回合）
+- `data/reports/reseed_stability_20260926_det/`（场景重盐稳定性研究，见 3.2 节）
+- `data/reports/plan_identity_fair100_det1640.json`（符号计划 vs ROUTED 计划的逐字段对照，见第三节）
+- `data/reports/p1_determinism_evidence_20260926.json`（平手规则修复前后对照 ＋ 手持守卫消融，见 1.5 节与第一节末）
 
+修复前的中间产物 `symbolic_planner_formal428_20260926_045106/` 与
+`symbolic_planner_fair100_20260926_045545/` 只作过程记录：428 侧与确定性重跑**逐字段全同**
+（1284/1284），Fair-100 侧 300/300 条只有臂名不同、成功率与各层判定不变，因此本文不引用其数字。
 `data/reports/symbolic_planner_fair100_20260926_044237/` 是改用共享场景盐之前的中间产物
-（三种模式各自当盐，得到 98/99/98），保留仅作过程记录，不引用其数字。
+（三种模式各自当盐，得到 98/99/98），同样保留但不引用。
 
 ## 一、设定
 
@@ -21,13 +26,39 @@
 | `BFS_VALID` | goal + 不得以持物结尾（即本文验证器的完整性规则） | 428 符号层头条基线 |
 | `BFS_EXEC` | `BFS_VALID` 再限制在冻结执行协议能单回合跑的形态（pick/place 成对、单个 push、单个 press，且非空） | 端到端基线 |
 
-深度上限 8 步，与 P0 证书一致。搜索耗时：428 均值 0.146 ms/点、最大 1.326 ms；
-Fair-100 均值 0.225 ms、最大 0.467 ms；428 全流程（1284 次搜索）合计 0.53 s。
+深度上限 8 步，与 P0 证书一致。搜索耗时（确定性重跑产物）：428 1284 次搜索均值 0.149 ms、最大 1.361 ms，
+全流程合计 0.57 s；Fair-100 300 次搜索均值 0.293 ms、最大 1.220 ms。
 另外加了一条比评测器更严的守卫：手持物体不可再被另一条手臂 pick/push/press
 （冻结模拟器在被持有物体的 `at` 字段上是陈旧的）。这条守卫在这两个协议上是惰性的：
-把 `single_step_expansions` / `pair_expansions` 里的 `held` 置空后原地重跑，
-428 的 1284 次搜索与 Fair-100 的 300 次搜索给出的后缀**逐字段全同**（1584/1584），
+把 `single_step_expansions` / `pair_expansions` 里的 `held` 置空后原地重跑
+（`data/reports/ablation/planner_guard_off.py`，仅改这一处，其余代码与冻结规划器逐行相同），
+428 的 1284 次搜索与 Fair-100 的 300 次搜索给出的后缀**逐字段全同**（1284/1284、300/300，
+`search_reason`/`symbolic_valid`/`goal_satisfied`/`final_success` 也全部相同），
 三个模式的每一列统计也逐位相同——即符号搜索没有靠这个漏洞得分，也没有被它削弱。
+逐字段对照见 `data/reports/p1_determinism_evidence_20260926.json` 的
+`guard_on_vs_off_formal428` / `guard_on_vs_off_fair100`。
+
+### 1.5 一个真实的可复现性缺陷：平手由哈希决定（本轮已修）
+
+这不是推测出来的洁癖，而是本轮改动过产物数字的唯一一处。原来的 `search_suffix` 直接把
+`arms=ARMS`（一个 `set`）传给扩展函数，而等代价计划由出队顺序（平手规则）决定，
+`set[str]` 的迭代顺序又随 `PYTHONHASHSEED` 变——于是**左右臂可互换的点，同一份输入在不同进程里
+会给出不同臂的计划**，即基线自身不可复现。修复是把臂顺序固定为 `tuple(sorted(arms))`
+（`scripts/symbolic_planner_baseline.py` 的 `search_suffix` docstring 记录了原因），
+并在 `PYTHONHASHSEED=1/7` 下两次跑完 428 验证输出全同。
+
+影响范围（`data/reports/p1_determinism_evidence_20260926.json` 的
+`pre_fix_vs_deterministic_*`）：
+
+| 对照 | 条数 | 后缀有差异 | 差异内容 | 任何一层判定/成功率变化 |
+|---|---:|---:|---|---|
+| State Recovery-428（3 模式 × 428） | 1284 | 0 | — | 无（428/428、321/428 等全部不变） |
+| Fair-100（3 模式 × 100） | 300 | 300 | **只有 `arm` 字段**（左↔右），技能/物体/目标/步数全同 | 无（三模式均 100/100，`symbolic_valid`/`goal_satisfied`/`sim_success` 逐条不变） |
+
+结论必须写实：本文第二节、第三节的所有成功率与 McNemar 数字在修复前后**完全相同**，
+所以本文的论证不依赖这次修复；被修复推翻的是"两侧计划是否逐字段相同"这句话的口径——
+旧产物里 Fair-100 的四元组对照里有 67/100 点是哈希运气（第三节已按确定性产物改写）。
+平手规则本身是人为约定（选字典序较小的臂），不改变任何可行性或成功率主张。
 
 ## 二、State Recovery-428（符号层）
 
@@ -96,17 +127,24 @@ R2_STATE、R1_FROM_STATE 的不一致点（129、135）呈同样形态（错误�
 所以后面只报 `BFS_EXEC`。
 
 先给一个比成功率更硬的对照：**符号规划器与 ROUTED 在 100 个点上生成的计划一一对齐**。
+这张表由 `scripts/plan_identity_check.py` 在确定性产物上算出
+（`data/reports/plan_identity_fair100_det1640.json`），不是人工比对：
 
 | 对照项（`BFS_EXEC` vs ROUTED，同一 100 点） | 数值 |
 |---|---|
-| 动作数逐点相等 | 100/100（两侧均值都 1.340；66 点 1 动作、34 点 2 动作） |
-| `(skill, object, target, arm)` 四元组逐点完全相同 | 67/100 |
-| 其余 33 点的差异 | 全部是 press 族，且**只差 `arm` 字段**（left/right），技能、物体、目标、步数全同 |
+| 动作数逐点相等 | 100/100（两侧均值都 1.340；66 点 1 动作、34 点 2 动作，动作数直方图逐项相同） |
+| `(skill, object_id, target_id)` 三元组逐点相同 | **100/100**（`other_differences` 为空） |
+| 再加 `arm` 的四元组逐点相同 | 33/100（全部是 press 族） |
+| 其余 67 点的差异 | **只差 `arm` 一个字段**，方向单调：符号侧左臂 67/67、ROUTED 右臂 67/67；技能、物体、目标、步数全同。子集构成 34 pick_place ＋ 33 push |
+| 这 67 点上两个臂各自过冻结评测器 | **67/67 两个计划都 valid 且达成目标**（`arm_admissibility.counts.both_ok=67`，`rejected` 空列表） |
 
-即在统一条件的 Fair-100 上，大模型给出的修复计划在功能上与 8 步 BFS 输出同一个计划。
-那 33 点的臂选择差异不是设计出来的偏好：搜索侧的臂来自集合迭代顺序（未写平手规则），
-ROUTED 侧给了左臂，而注册表里 `press` 的前置条件只有 `hand_empty(arm)`、这两臂当时都为空，
-所以它是可互换选项；3.2 在逐盐配对照下确认左右臂物理结果同步（165/165）。
+即在统一条件的 Fair-100 上，大模型给出的修复计划在功能上与 8 步 BFS 输出同一个计划：
+"做什么动作、对哪个物体、放到哪里、几步"逐点一致，唯一分歧是可互换的执行手臂。
+臂之所以是平手而不是偏好：注册表里这些技能的前置只有 `hand_empty(arm)`，两点上两臂都为空，
+所以左右都合法（最后一行就是这件事的直接验证，用冻结的四层 Validator ＋ Goal Checker 打分，
+不是我的自定义判据）。修复后符号侧按 1.5 节的字典序一律取左臂，ROUTED 的冻结计划在 pick/push 上一律取右臂、
+在 press 上一律取左臂，因此四元组重合恰好落在 press 的 33 点上。
+**旧版笔记里"四元组逐点完全相同 67/100、其余 33 点全是 press 只差臂"是把哈希平手当成了方法属性，方向正好反了，已按确定性口径替换。**
 任何"LLM 计划更简洁/更贴合任务"的写法在这份数据上都拿不到支持。
 
 配对（单抽签口径，`BFS_EXEC` 100 vs 各冻结臂；**这张表受 3.1 的混杂污染，只能当描述统计**）：
@@ -119,7 +157,7 @@ ROUTED 侧给了左臂，而注册表里 `press` 的前置条件只有 `hand_emp
 | CHECKER_LOOP_STATE_V2 | 71 | 29 | 0 | 3.73e-09 |
 
 ROUTED 这一轮实际花费 104,131 token、100 次模型调用、累计 122.6 s 模型延迟
-（1.23 s/点，冻结产物 `cost` 字段）；`BFS_EXEC` 是 0 次调用、0 token、搜索 0.23 ms/点。
+（1.23 s/点，冻结产物 `cost` 字段）；`BFS_EXEC` 是 0 次调用、0 token、搜索 0.293 ms/点。
 2/0 的不一致在 100 点、单抽签口径下仍不显著（p=0.5）。
 428 侧同框：ROUTED 480,233 token / 428 点。
 
@@ -133,10 +171,12 @@ ROUTED 这一轮实际花费 104,131 token、100 次模型调用、累计 122.6 
   （428 只在符号层计分，不含仿真执行，不受此项影响）。
 
 第二条不是推测，而是这 2 个不一致点的直接证据：ROUTED 失在
-`pick_place_008/seed8` 与 `pick_place_007/seed31`，而符号规划器在这两点给出的计划是
-**逐字段相同的** `pick(white_cube_16,right) → place(white_cube_16 → brown_bowl_17,right)` 与
-`pick(pink_block_14,right) → place(pink_block_14 → white_box_15,right)`，并且执行成功。
-同一条计划，一次成一次败 ⇒ 差异全部来自初始摆放抽签，不来自计划。
+`pick_place_008/seed8` 与 `pick_place_007/seed31`，而符号规划器在这两点给出的计划在
+`(skill, object, target)` 上与 ROUTED **逐字段相同**
+（`pick(white_cube_16) → place(white_cube_16 → brown_bowl_17)`、
+`pick(pink_block_14) → place(pink_block_14 → white_box_15)`），只差臂：符号侧左臂、ROUTED 右臂，
+而左臂版本执行成功。臂名进种子 ⇒ 功能上相同的两次计划跑在两个不同的初始摆放里，
+一次成一次败 ⇒ 差异来自场景抽签，不来自计划本身（同一批点在 3.2 的共享盐配对下两臂 5/5 同步）。
 换句话说，把 2/0 当作"符号搜索端到端优于 ROUTED"的证据是错的。
 
 第一轮实现里三种模式各自用了不同的 `mode` 字符串当盐，得到 98/99/98 且失败点互不重叠，
@@ -148,7 +188,10 @@ ROUTED 这一轮实际花费 104,131 token、100 次模型调用、累计 122.6 
 
 `scripts/reseed_stability_study.py`：对全部 100 个点取符号规划器的 `BFS_EXEC` 计划与
 ROUTED 的冻结计划，在同样的 5 个场景盐下各执行一次（两臂同盐 ⇒ 同一初始摆放），
-共 1000 次执行、1120.2 s、零 VLM 调用。产物 `data/reports/reseed_stability_20260926_050608/`。
+共 1000 次执行、1078.4 s、零 VLM 调用。产物
+`data/reports/reseed_stability_20260926_det/`（输入是 1.5 节修复后的确定性符号计划）。
+旧产物 `reseed_stability_20260926_050608/` 用修复前的计划，总量数字与本轮相同、
+计划同一性拆分的两个子集正好互换，保留作过程记录，不引用其拆分。
 
 配对结果（500 个 cell 对 = 100 点 × 5 盐）：
 
@@ -161,31 +204,38 @@ ROUTED 的冻结计划，在同样的 5 个场景盐下各执行一次（两臂�
 
 - 不一致 cell：`only_SYMBOLIC` **0**、`only_ROUTED` **0**、两者同成 488、两者同败 12，
   精确 McNemar **p=1.0**。点级多数判据下 100/100 点都是 `both_reliable`，
+  `symbolic_only_reliable_points` 与 `routed_only_reliable_points` 都是空列表，
   没有任何一个点其中一臂可靠更好。
 - 按"两臂计划是否逐字段相同"拆开看（这一步必须做，否则 p=1 会被高估）：
 
-| 子集 | 点数 | cell 对 | 不一致 cell | 场景脆弱点 |
-|---|---:|---:|---:|---:|
-| 计划完全相同 | 67 | 335 | 0 | 12（全部 pick_place） |
-| 计划只差 press 的 `arm` 字段 | 33 | 165 | 0 | 0（165/165 全成） |
+| 子集 | 点数 | cell 对 | 逐 cell 不一致 | 场景脆弱点 |
+|---|---:|---:|---:|---|
+| 计划四元组完全相同（press） | 33 | 165 | 0 | 0（165/165 全成） |
+| 计划只差 `arm` 字段（34 pick_place ＋ 33 push） | 67 | 335 | **0** | 12（全部 pick_place，两臂在**同一个盐**上一起翻） |
 
   第一行的 0 不一致是**评测台自身的确定性自检**（同计划同种子必然同结果），不是跨臂证据；
-  真正的跨臂证据在第二行：press 换左臂/右臂在完全相同场景下 165/165 与 ROUTED 同步，
-  即注册表意义下两臂可互换这一点在物理执行层也成立。
+  真正的跨臂证据全部在第二行：67 个点上两臂跑的是完全相同的物体与目标、只有左右臂不同，
+  335 个配对 cell 里 `discordant_cells=0`，连那 12 个"换场景会翻"的 pick_place 点也是
+  在同一个盐上同时翻（脆弱点清单见 summary 的 `scene_fragile_list`）。
+  即注册表意义下两臂可互换这一点，在接触执行层同样成立，且这次覆盖到了会翻的点，
+  不再像修复前那轮只压到 165 个必然全成的 press cell 上。
 
 - **单次抽签的分辨率**：每个 cell 的失败率 12/500 = 2.4%，且失败全部集中在 12 个
   "4/5"点上。这就是说 Fair-100 的单抽签口径下，任何一臂的 2 点损失（98/100）
   正好是这个抽样噪声的预期个数（100 × 2.4% = 2.4）。
   进一步坐实：ROUTED 冻结记录里失的那两点（`pick_place_008/seed8`、`pick_place_007/seed31`）
-  与符号规划器的计划**逐字段相同**，而该计划在本次 5 个共享盐下两臂都 5/5 全成——
-  即那 2 点是同一计划在未被采样的那个场景里运气不好。
+  属于"只差臂"子集，物体/目标/步数与符号计划完全相同，而两臂在本次 5 个共享盐下
+  都是 5/5 全成（该点不在 12 个脆弱点里）——
+  即那 2 点是同一（功能）计划在未被采样的那个场景里运气不好。
   结论：100 点 × 1 抽签的端到端协议分辨不了这两个方法，"100 vs 98"两边都不能当结论写。
+  顺带保留 3.1 的口径：把冻结协议自己的单抽签结果按 5 个盐摊开看是
+  SYMBOLIC 500/500、ROUTED 490/500（`single_draw_protocol_success` 字段，只是把冻结的单抽签重复计数，
+  不是新测量），与 3.1 的 100 vs 98 一致。
 
-产物：`cells.jsonl`（1000 行 cell 记录）、`reseed_stability_summary.json`（含上面的
-plan-identity 拆分）、运行日志 `logs/reseed_stability_20260926_050608.log`。
-该 summary 在跑完后用 `--summary-only` 重算过一次（加了计划同一性拆分），
-所以里面带 `summarize_only: true`，而 `elapsed_s`=1120.2 与 `cells_completed_at_utc`
-是从执行那一轮的 sidecar 继承的。
+产物：`cells.jsonl`（1000 行 cell 记录，含每 cell 实际执行的动作与臂）、
+`reseed_stability_summary.json`（含上面的 plan-identity 拆分与脆弱点清单）、
+运行日志 `data/reports/logs/reseed_det.log`。本轮是一次全新执行（日志从 point=1/100 开始，
+未用 `--resume`、未用 `--summary-only`），summary 里 `elapsed_s`=1078.4 即执行 wall time。
 
 ## 四、能直接写进正文的结论
 
@@ -197,9 +247,11 @@ plan-identity 拆分）、运行日志 `logs/reseed_stability_20260926_050608.lo
    点级多数判据 100/100 都是"两臂同样可靠"。符号侧 0 调用 0 token；
    ROUTED 侧 104,131 token、100 次调用、122.6 s 模型延迟。
 3. 更强的是等价性而非优越性：Fair-100 上两侧计划在 100/100 点上动作数相同，
-   67 点四元组逐字段相同，剩下 33 点只差 press 的左右臂——而这 33 点在逐盐配对照下
-   165/165 与 ROUTED 同步成功，说明注册表里两臂可互换这一点在物理执行层同样成立。
-   ROUTED 的 2 个失败点上符号规划器给出的是**完全相同的计划**并 5/5 执行成功（3.2）。
+   `(skill, object, target)` 三元组 100/100 逐字段相同，67 点只差可互换的臂字段（符号左臂 vs ROUTED 右臂），
+   而这 67 点用冻结评测器分别打分是 67/67 两臂都合法且达成目标；在逐盐配对的物理执行下
+   这 67 点的 335 个 cell 对**逐 cell 一致**（`discordant_cells=0`），连其中 12 个换场景会翻的
+   pick_place 点也是同一个盐上一起翻（3.2）。
+   ROUTED 的 2 个失败点上符号规划器给出的是**除臂外相同的计划**并 5/5 执行成功（3.1、3.2）。
    即在该协议覆盖的任务族内，大模型没有产生符号搜索给不出的计划。
 4. 符号搜索自身暴露的缺口是验证器补上的：只按 goal 接受时，`BFS_SHORT` 在全部 107 个错误持物点上
    产出"以持物结尾"的后缀而被验证器判不可执行（0/107）；加入验证器的完整性规则后
@@ -214,8 +266,13 @@ plan-identity 拆分）、运行日志 `logs/reseed_stability_20260926_050608.lo
 清单里预写的风险成立，而且比预期更强：符号基线在两个协议上都不劣于 ROUTED，而且端到端
 在配对场景控制下与 ROUTED **逐 cell 一致**（428 符号层 428 vs 308，p=1.5e-36；
 Fair-100 端到端 500 个配对 cell 里不一致 0 个，p=1.0，两侧计划本身在 100/100 点上同长、
-在 67 点上逐字段相同）。因此"LLM 带来更高恢复成功率"这一句在现有两个协议上不能写，
+`(skill, object, target)` 全同，67 点的差异只在可互换的臂上）。因此"LLM 带来更高恢复成功率"这一句在现有两个协议上不能写，
 "LLM 计划更贴合任务"也拿不到支持；4.3 的卖点必须改写为"可解释性与接口成本"。
+
+再加一条本轮新增的、必须一起交代的可复现性事实（1.5 节）：修复前基线自身的左右臂由哈希平手决定，
+所以任何形如"两侧计划有 N/100 点逐字段相同"的对照在原口径下是**不可复现的**，
+不能作为证据写进正文；可写的版本是修复后的确定性口径（三元组 100/100、四元组 33/100、
+67 点只差臂且两臂均合法）。这不改变本文任何成功率或 p 值，但改变了"计划同一性"这句话的成立方式。
 可写的正面主张收缩为三条，且都需要显式前提：
 
 - 大模型的作用是**接口**：把自然语言指令与感知输出编译成符号搜索所需的闭世界目标事实与状态。
@@ -236,17 +293,45 @@ cd /root/autodl-tmp/ch3-planning
 export PYTHONPATH=. MUJOCO_GL=egl
 PY=/root/autodl-tmp/.venvs/metaworld-lerobot/bin/python
 
-# 符号层，秒级
+# 符号层，秒级（本文引用 ..._det163525）
 $PY scripts/symbolic_planner_baseline.py --protocol formal428 \
     --output-dir data/reports/symbolic_planner_formal428_<TS>
 
-# 端到端，约 6 分钟（300 次仿真回合）
+# 端到端，约 6.3 分钟（300 次仿真回合；本文引用 ..._det1640，380.4 s）
 $PY scripts/symbolic_planner_baseline.py --protocol fair100 \
     --output-dir data/reports/symbolic_planner_fair100_<TS>
 
-# 场景重盐稳定性研究，19 分钟（1000 次仿真回合，1120.2 s），支持 --resume
+# 平手规则可复现性自检：换哈希种子跑两次 428，逐字段 diff 必须为 0
+PYTHONHASHSEED=1 $PY scripts/symbolic_planner_baseline.py --protocol formal428 \
+    --output-dir data/reports/ablation/formal428_hseed1
+PYTHONHASHSEED=7 $PY scripts/symbolic_planner_baseline.py --protocol formal428 \
+    --output-dir data/reports/ablation/formal428_hseed7
+$PY data/reports/ablation/diff_cases.py \
+    --a data/reports/ablation/formal428_hseed1/symbolic_planner_cases.jsonl \
+    --b data/reports/ablation/formal428_hseed7/symbolic_planner_cases.jsonl
+
+# 手持守卫消融（guard-off 是冻结规划器只改 held 一行的副本；产物在 ..._guardoff）
+$PY data/reports/ablation/planner_guard_off.py --protocol formal428 --no-sim \
+    --output-dir data/reports/ablation/formal428_guardoff
+$PY data/reports/ablation/planner_guard_off.py --protocol fair100 --no-sim \
+    --output-dir data/reports/ablation/fair100_guardoff
+$PY scripts/symbolic_planner_baseline.py --protocol formal428 \
+    --output-dir data/reports/ablation/formal428_guardon
+$PY scripts/symbolic_planner_baseline.py --protocol fair100 --no-sim \
+    --output-dir data/reports/ablation/fair100_guardon
+
+# 计划同一性对照（第三节表；--check-arm-admissible 用冻结评测器给两个臂各自打分）
+$PY scripts/plan_identity_check.py \
+    --symbolic data/reports/symbolic_planner_fair100_20260926_det1640/symbolic_planner_cases.jsonl \
+    --check-arm-admissible > data/reports/plan_identity_fair100_det1640.json
+
+# 上面几步的逐字段汇总，一次写出 p1_determinism_evidence_20260926.json
+$PY data/reports/ablation/collect_evidence.py \
+    --output data/reports/p1_determinism_evidence_20260926.json
+
+# 场景重盐稳定性研究，约 18 分钟（1000 次仿真回合，1078.4 s），支持 --resume
 # 事后换统计口径用 --summary-only（不重跑仿真，只重写 reseed_stability_summary.json）
 $PY scripts/reseed_stability_study.py \
-    --symbolic-cases data/reports/symbolic_planner_fair100_<TS>/symbolic_planner_cases.jsonl \
-    --salts 5 --output data/reports/reseed_stability_<TS>/cells.jsonl
+    --symbolic-cases data/reports/symbolic_planner_fair100_20260926_det1640/symbolic_planner_cases.jsonl \
+    --salts 5 --output data/reports/reseed_stability_20260926_det/cells.jsonl
 ```

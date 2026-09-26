@@ -247,8 +247,15 @@ def search_suffix(
     max_actions: int,
     arms: Iterable[str] = ARMS,
 ) -> tuple[bool, list[dict[str, Any]], str]:
-    """Uniform-cost search for a suffix whose post-state satisfies the goal."""
-    arm_set = set(arms)
+    """Uniform-cost search for a suffix whose post-state satisfies the goal.
+
+    ``arms`` is put in a sorted tuple before expansion: equal-cost plans are
+    tie-broken by expansion order, and ``set(str)`` iteration order varies across
+    processes, which would otherwise pick the acting arm of an interchangeable
+    left/right plan by hash seed.
+    """
+    arm_order: tuple[str, ...] = tuple(sorted(arms))
+    arm_set = set(arm_order)
     # An empty suffix is scored as valid by the frozen evaluator regardless of a
     # dangling hold, so both symbol-layer modes may return it.
     if mode != BFS_EXEC and goal_satisfied(state, goal, arm_set):
@@ -281,7 +288,7 @@ def search_suffix(
             expansions = [
                 (renumber([*plan, *actions]), nxt)
                 for actions, nxt in pair_expansions(
-                    current, valid_targets=valid_targets, arms=arm_set
+                    current, valid_targets=valid_targets, arms=arm_order
                 )
             ]
         else:
@@ -290,7 +297,7 @@ def search_suffix(
                 for actions, nxt in single_step_expansions(
                     current,
                     valid_targets=valid_targets,
-                    arms=arm_set,
+                    arms=arm_order,
                     allowed_skills=expansion_skills,
                 )
             ]

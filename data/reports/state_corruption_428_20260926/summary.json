@@ -1,0 +1,381 @@
+{
+  "by_corruption": {
+    "goal_fact_added": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 1.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 0.0,
+          "truth_success_rate": 0.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 1.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 0.0,
+          "truth_success_rate": 0.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 1.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 0.0,
+          "truth_success_rate": 0.0
+        }
+      },
+      "confidently_wrong_points": [
+        "multiskill_pick_place_000|0|grasp_failure",
+        "multiskill_pick_place_000|0|object_displacement",
+        "multiskill_pick_place_000|0|wrong_held_object",
+        "multiskill_pick_place_000|1|grasp_failure",
+        "multiskill_pick_place_000|1|object_displacement",
+        "multiskill_pick_place_000|1|wrong_held_object",
+        "multiskill_pick_place_000|2|grasp_failure",
+        "multiskill_pick_place_000|2|object_displacement",
+        "multiskill_pick_place_000|2|wrong_held_object",
+        "multiskill_pick_place_001|0|grasp_failure",
+        "multiskill_pick_place_001|0|object_displacement",
+        "multiskill_pick_place_001|0|wrong_held_object",
+        "multiskill_pick_place_001|1|grasp_failure",
+        "multiskill_pick_place_001|1|object_displacement",
+        "multiskill_pick_place_001|1|wrong_held_object",
+        "multiskill_pick_place_001|2|grasp_failure",
+        "multiskill_pick_place_001|2|object_displacement",
+        "multiskill_pick_place_001|2|wrong_held_object",
+        "multiskill_pick_place_002|0|grasp_failure",
+        "multiskill_pick_place_002|0|object_displacement"
+      ],
+      "confidently_wrong_rate": 1.0,
+      "corruption_applied": 321,
+      "empty_plan_rate": 1.0,
+      "false_alarm_rate": 0.0,
+      "mean_plan_actions": 0,
+      "mean_search_ms": 0.008836342166888752,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 4.6816763546921983e-97,
+        "only_control_success": 321,
+        "only_corrupted_success": 0
+      },
+      "points": 428,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_goal_physical_rate": 0.0,
+      "truth_state_errors": {},
+      "truth_success_rate": 0.0,
+      "truth_valid_rate": 1.0,
+      "validator_refused_rate": 0.0
+    },
+    "holding_hidden": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.32710280373831774,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 0.6728971962616822,
+          "truth_success_rate": 0.0
+        }
+      },
+      "confidently_wrong_points": [
+        "multiskill_press_024|0|wrong_held_object",
+        "multiskill_press_024|1|wrong_held_object",
+        "multiskill_press_024|2|wrong_held_object",
+        "multiskill_press_025|0|wrong_held_object",
+        "multiskill_press_025|1|wrong_held_object",
+        "multiskill_press_025|2|wrong_held_object",
+        "multiskill_press_026|0|wrong_held_object",
+        "multiskill_press_026|1|wrong_held_object",
+        "multiskill_press_027|0|wrong_held_object",
+        "multiskill_press_027|1|wrong_held_object",
+        "multiskill_press_027|2|wrong_held_object",
+        "multiskill_press_028|0|wrong_held_object",
+        "multiskill_press_028|1|wrong_held_object",
+        "multiskill_press_028|2|wrong_held_object",
+        "multiskill_press_029|0|wrong_held_object",
+        "multiskill_press_029|1|wrong_held_object",
+        "multiskill_press_029|2|wrong_held_object",
+        "multiskill_press_030|0|wrong_held_object",
+        "multiskill_press_030|1|wrong_held_object",
+        "multiskill_press_030|2|wrong_held_object"
+      ],
+      "confidently_wrong_rate": 0.32710280373831774,
+      "corruption_applied": 107,
+      "empty_plan_rate": 0.0,
+      "false_alarm_rate": 0.0,
+      "mean_plan_actions": 1.3364485981308412,
+      "mean_search_ms": 0.20771383125091267,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.232595164407831e-32,
+        "only_control_success": 107,
+        "only_corrupted_success": 0
+      },
+      "points": 428,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {
+        "ARM_NOT_EMPTY": 35,
+        "SCHEMA_ERROR": 72
+      },
+      "truth_goal_physical_rate": 0.6728971962616822,
+      "truth_state_errors": {
+        "ARM_NOT_EMPTY": 35
+      },
+      "truth_success_rate": 0.0,
+      "truth_valid_rate": 0.0,
+      "validator_refused_rate": 1.0
+    },
+    "identity_swap": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 0,
+      "empty_plan_rate": 0.25,
+      "false_alarm_rate": 0.0,
+      "mean_plan_actions": 1.2523364485981308,
+      "mean_search_ms": 0.17505160001950842,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.0,
+        "only_control_success": 0,
+        "only_corrupted_success": 0
+      },
+      "points": 428,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_goal_physical_rate": 1.0,
+      "truth_state_errors": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0,
+      "validator_refused_rate": 0.0
+    },
+    "none": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 0,
+      "empty_plan_rate": 0.25,
+      "false_alarm_rate": 0.0,
+      "mean_plan_actions": 1.2523364485981308,
+      "mean_search_ms": 0.1750933789761267,
+      "paired_vs_none": null,
+      "points": 428,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_goal_physical_rate": 1.0,
+      "truth_state_errors": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0,
+      "validator_refused_rate": 0.0
+    },
+    "object_loc_wrong": {
+      "belief_success_rate": 0.7706093189964157,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.2777777777777778,
+          "false_alarm_rate": 0.0,
+          "points": 72,
+          "truth_goal_physical_rate": 0.5,
+          "truth_success_rate": 0.5
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 28,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 0.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.2222222222222222,
+          "false_alarm_rate": 0.0,
+          "points": 72,
+          "truth_goal_physical_rate": 0.4861111111111111,
+          "truth_success_rate": 0.4861111111111111
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.08411214953271028,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 0.6635514018691588,
+          "truth_success_rate": 0.6635514018691588
+        }
+      },
+      "confidently_wrong_points": [
+        "multiskill_pick_place_000|0|object_displacement",
+        "multiskill_pick_place_000|1|object_displacement",
+        "multiskill_pick_place_000|1|wrong_held_object",
+        "multiskill_pick_place_000|2|grasp_failure",
+        "multiskill_pick_place_000|2|wrong_held_object",
+        "multiskill_pick_place_001|1|grasp_failure",
+        "multiskill_pick_place_001|1|object_displacement",
+        "multiskill_pick_place_001|2|grasp_failure",
+        "multiskill_pick_place_001|2|object_displacement",
+        "multiskill_pick_place_002|0|grasp_failure",
+        "multiskill_pick_place_002|0|wrong_held_object",
+        "multiskill_pick_place_002|1|object_displacement",
+        "multiskill_pick_place_003|0|object_displacement",
+        "multiskill_pick_place_003|1|grasp_failure",
+        "multiskill_pick_place_003|2|wrong_held_object",
+        "multiskill_pick_place_004|0|grasp_failure",
+        "multiskill_pick_place_004|1|wrong_held_object",
+        "multiskill_pick_place_004|2|grasp_failure",
+        "multiskill_pick_place_005|0|wrong_held_object",
+        "multiskill_pick_place_005|2|grasp_failure"
+      ],
+      "confidently_wrong_rate": 0.16129032258064516,
+      "corruption_applied": 279,
+      "empty_plan_rate": 0.3906810035842294,
+      "false_alarm_rate": 0.0,
+      "mean_plan_actions": 1.1111111111111112,
+      "mean_search_ms": 0.7786246610798716,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.1479437019748901e-41,
+        "only_control_success": 137,
+        "only_corrupted_success": 0
+      },
+      "points": 428,
+      "search_success_rate": 0.7706093189964157,
+      "truth_error_codes": {
+        "STATE_TRANSITION_ERROR": 28
+      },
+      "truth_goal_physical_rate": 0.6093189964157706,
+      "truth_state_errors": {
+        "STATE_TRANSITION_ERROR": 28
+      },
+      "truth_success_rate": 0.5089605734767025,
+      "truth_valid_rate": 0.899641577060932,
+      "validator_refused_rate": 0.1003584229390681
+    },
+    "phantom_object": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "false_alarm_rate": 0.0,
+          "points": 107,
+          "truth_goal_physical_rate": 1.0,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 428,
+      "empty_plan_rate": 0.25,
+      "false_alarm_rate": 0.0,
+      "mean_plan_actions": 1.2523364485981308,
+      "mean_search_ms": 0.29439012580942886,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.0,
+        "only_control_success": 0,
+        "only_corrupted_success": 0
+      },
+      "points": 428,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_goal_physical_rate": 1.0,
+      "truth_state_errors": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0,
+      "validator_refused_rate": 0.0
+    }
+  },
+  "completed_at_utc": "2026-09-26T08:36:24.547263+00:00",
+  "corruptions": [
+    "none",
+    "holding_hidden",
+    "object_loc_wrong",
+    "identity_swap",
+    "goal_fact_added",
+    "phantom_object"
+  ],
+  "elapsed_s": 1.0028626918792725,
+  "formal": "data/collections/state_recovery_formal_v1_20260914_101157.jsonl",
+  "max_actions": 8,
+  "planner_mode": "BFS_VALID",
+  "points": 428,
+  "protocol": "state_recovery_428",
+  "record_type": "state_corruption_summary",
+  "rows": 2568,
+  "scenarios": "data/scenarios/state_recovery_tasks_v1.jsonl",
+  "schema_version": "2026-09-26-state-corruption-v1"
+}

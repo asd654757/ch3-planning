@@ -1,0 +1,259 @@
+{
+  "by_corruption": {
+    "goal_fact_added": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 15,
+      "empty_plan_rate": 0.0,
+      "mean_plan_actions": 2.3333333333333335,
+      "mean_search_ms": 0.3731250762939453,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.0,
+        "only_control_success": 0,
+        "only_corrupted_success": 0
+      },
+      "points": 20,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0
+    },
+    "holding_hidden": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "wrong_held_object": {
+          "confidently_wrong_rate": 1.0,
+          "points": 5,
+          "truth_success_rate": 0.0
+        }
+      },
+      "confidently_wrong_points": [
+        "multiskill_pick_place_000|0|wrong_held_object",
+        "multiskill_pick_place_000|1|wrong_held_object",
+        "multiskill_pick_place_000|2|wrong_held_object",
+        "multiskill_pick_place_001|0|wrong_held_object",
+        "multiskill_pick_place_001|1|wrong_held_object"
+      ],
+      "confidently_wrong_rate": 1.0,
+      "corruption_applied": 5,
+      "empty_plan_rate": 0.0,
+      "mean_plan_actions": 2,
+      "mean_search_ms": 0.29664039611816406,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 0.0625,
+        "only_control_success": 5,
+        "only_corrupted_success": 0
+      },
+      "points": 20,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {
+        "ARM_NOT_EMPTY": 5
+      },
+      "truth_success_rate": 0.0,
+      "truth_valid_rate": 0.0
+    },
+    "location_swap": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 0,
+      "empty_plan_rate": 0.25,
+      "mean_plan_actions": 1.75,
+      "mean_search_ms": 0.28214454650878906,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.0,
+        "only_control_success": 0,
+        "only_corrupted_success": 0
+      },
+      "points": 20,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0
+    },
+    "none": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 0,
+      "empty_plan_rate": 0.25,
+      "mean_plan_actions": 1.75,
+      "mean_search_ms": 0.28870105743408203,
+      "paired_vs_none": null,
+      "points": 20,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0
+    },
+    "object_loc_wrong": {
+      "belief_success_rate": 0.6,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 0.6
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.6,
+          "points": 5,
+          "truth_success_rate": 0.4
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 0.4
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 0.4
+        }
+      },
+      "confidently_wrong_points": [
+        "multiskill_pick_place_000|2|nominal_state",
+        "multiskill_pick_place_001|0|nominal_state",
+        "multiskill_pick_place_001|1|nominal_state"
+      ],
+      "confidently_wrong_rate": 0.15,
+      "corruption_applied": 20,
+      "empty_plan_rate": 0.5,
+      "mean_plan_actions": 1.1,
+      "mean_search_ms": 0.5332827568054199,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 0.0009765625,
+        "only_control_success": 11,
+        "only_corrupted_success": 0
+      },
+      "points": 20,
+      "search_success_rate": 0.6,
+      "truth_error_codes": {
+        "STATE_TRANSITION_ERROR": 3
+      },
+      "truth_success_rate": 0.45,
+      "truth_valid_rate": 0.85
+    },
+    "phantom_object": {
+      "belief_success_rate": 1.0,
+      "by_perturbation": {
+        "grasp_failure": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "nominal_state": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "object_displacement": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        },
+        "wrong_held_object": {
+          "confidently_wrong_rate": 0.0,
+          "points": 5,
+          "truth_success_rate": 1.0
+        }
+      },
+      "confidently_wrong_points": [],
+      "confidently_wrong_rate": 0.0,
+      "corruption_applied": 20,
+      "empty_plan_rate": 0.25,
+      "mean_plan_actions": 1.75,
+      "mean_search_ms": 0.5021333694458008,
+      "paired_vs_none": {
+        "mcnemar_exact_p_value": 1.0,
+        "only_control_success": 0,
+        "only_corrupted_success": 0
+      },
+      "points": 20,
+      "search_success_rate": 1.0,
+      "truth_error_codes": {},
+      "truth_success_rate": 1.0,
+      "truth_valid_rate": 1.0
+    }
+  },
+  "completed_at_utc": "2026-09-26T08:21:10.918491+00:00",
+  "corruptions": [
+    "none",
+    "holding_hidden",
+    "object_loc_wrong",
+    "location_swap",
+    "goal_fact_added",
+    "phantom_object"
+  ],
+  "elapsed_s": 0.06136608123779297,
+  "formal": "data/collections/state_recovery_formal_v1_20260914_101157.jsonl",
+  "max_actions": 8,
+  "planner_mode": "BFS_VALID",
+  "points": 20,
+  "protocol": "state_recovery_428",
+  "record_type": "state_corruption_summary",
+  "rows": 120,
+  "scenarios": "data/scenarios/state_recovery_tasks_v1.jsonl",
+  "schema_version": "2026-09-26-state-corruption-v1"
+}

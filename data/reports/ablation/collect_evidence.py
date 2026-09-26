@@ -23,12 +23,17 @@ FIELDS = (
     "goal_satisfied",
     "sim_success",
     "final_success",
+    "single_draw_success",
     "observed_state_facts",
     "goal_holds_in_observed_state",
 )
 DIFF = "data/reports/ablation/diff_cases.py"
 
 COMPARISONS = {
+    "hash_seed_1_vs_7_formal428": (
+        "data/reports/ablation/formal428_hseed1/symbolic_planner_cases.jsonl",
+        "data/reports/ablation/formal428_hseed7/symbolic_planner_cases.jsonl",
+    ),
     "pre_fix_vs_deterministic_formal428": (
         "data/reports/symbolic_planner_formal428_20260926_045106/symbolic_planner_cases.jsonl",
         "data/reports/symbolic_planner_formal428_20260926_det163525/symbolic_planner_cases.jsonl",

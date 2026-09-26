@@ -1,0 +1,56 @@
+{
+  "symbolic": "data/reports/symbolic_planner_fair100_20260926_045545/symbolic_planner_cases.jsonl",
+  "reference": "data/collections/fair_routed_v2_20260916_102135.jsonl",
+  "mode": "BFS_EXEC",
+  "triple_projection": {
+    "points": 100,
+    "fields": [
+      "skill",
+      "object_id",
+      "target_id"
+    ],
+    "identical_action_count_rate": 1.0,
+    "mean_actions_symbolic": 1.34,
+    "mean_actions_reference": 1.34,
+    "length_equal_points": 100,
+    "fully_identical_points": 100,
+    "arm_only_points": 0,
+    "arm_only_first_skill": {},
+    "other_differences": [],
+    "action_count_histogram_symbolic": {
+      "1": 66,
+      "2": 34
+    },
+    "action_count_histogram_reference": {
+      "1": 66,
+      "2": 34
+    }
+  },
+  "quadruple_projection": {
+    "points": 100,
+    "fields": [
+      "skill",
+      "object_id",
+      "target_id",
+      "arm"
+    ],
+    "identical_action_count_rate": 1.0,
+    "mean_actions_symbolic": 1.34,
+    "mean_actions_reference": 1.34,
+    "length_equal_points": 100,
+    "fully_identical_points": 67,
+    "arm_only_points": 33,
+    "arm_only_first_skill": {
+      "press": 33
+    },
+    "other_differences": [],
+    "action_count_histogram_symbolic": {
+      "1": 66,
+      "2": 34
+    },
+    "action_count_histogram_reference": {
+      "1": 66,
+      "2": 34
+    }
+  }
+}

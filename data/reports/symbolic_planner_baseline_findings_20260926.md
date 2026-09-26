@@ -6,7 +6,8 @@
 - `data/reports/symbolic_planner_formal428_20260926_det163525/`（428 点 × 3 模式，符号层，0.57 s）
 - `data/reports/symbolic_planner_fair100_20260926_det1640/`（100 点 × 3 模式，端到端，380.4 s，含 300 次仿真回合）
 - `data/reports/reseed_stability_20260926_det/`（场景重盐稳定性研究，见 3.2 节）
-- `data/reports/plan_identity_fair100_det1640.json`（符号计划 vs ROUTED 计划的逐字段对照，见第三节）
+- `data/reports/plan_identity_fair100_det1640.json`（符号计划 vs ROUTED 计划的逐字段对照，见第三节；
+  同一脚本跑修复前产物得到 `plan_identity_fair100_prefix_045545.json`，两份对照见 1.5 节）
 - `data/reports/p1_determinism_evidence_20260926.json`（平手规则修复前后对照 ＋ 手持守卫消融，见 1.5 节与第一节末）
 
 修复前的中间产物 `symbolic_planner_formal428_20260926_045106/` 与
@@ -40,12 +41,13 @@
 
 ### 1.5 一个真实的可复现性缺陷：平手由哈希决定（本轮已修）
 
-这不是推测出来的洁癖，而是本轮改动过产物数字的唯一一处。原来的 `search_suffix` 直接把
-`arms=ARMS`（一个 `set`）传给扩展函数，而等代价计划由出队顺序（平手规则）决定，
+这不是推测出来的洁癖，而是本轮改动过产物数字的唯一一处。原来的 `search_suffix` 把
+`arm_set = set(arms)` 传给扩展函数，而等代价计划的平局由出队顺序决定，
 `set[str]` 的迭代顺序又随 `PYTHONHASHSEED` 变——于是**左右臂可互换的点，同一份输入在不同进程里
 会给出不同臂的计划**，即基线自身不可复现。修复是把臂顺序固定为 `tuple(sorted(arms))`
 （`scripts/symbolic_planner_baseline.py` 的 `search_suffix` docstring 记录了原因），
-并在 `PYTHONHASHSEED=1/7` 下两次跑完 428 验证输出全同。
+并在 `PYTHONHASHSEED=1/7` 下各跑一遍 428：1284 条记录逐字段全同
+（同一 JSON 的 `hash_seed_1_vs_7_formal428`）。
 
 影响范围（`data/reports/p1_determinism_evidence_20260926.json` 的
 `pre_fix_vs_deterministic_*`）：
@@ -56,8 +58,17 @@
 | Fair-100（3 模式 × 100） | 300 | 300 | **只有 `arm` 字段**（左↔右），技能/物体/目标/步数全同 | 无（三模式均 100/100，`symbolic_valid`/`goal_satisfied`/`sim_success` 逐条不变） |
 
 结论必须写实：本文第二节、第三节的所有成功率与 McNemar 数字在修复前后**完全相同**，
-所以本文的论证不依赖这次修复；被修复推翻的是"两侧计划是否逐字段相同"这句话的口径——
-旧产物里 Fair-100 的四元组对照里有 67/100 点是哈希运气（第三节已按确定性产物改写）。
+所以本文的论证不依赖这次修复；被修复推翻的是"两侧计划是否逐字段相同"这句话的口径。
+同一份对照脚本（`scripts/plan_identity_check.py`）跑在两个产物上：
+
+| Fair-100 的 `BFS_EXEC` vs ROUTED 四元组对照 | 修复前产物（`..._045545`） | 确定性产物（`..._det1640`） |
+|---|---|---|
+| 三元组 `(skill, object, target)` 逐点相同 | 100/100 | 100/100 |
+| 四元组（再加 `arm`）逐点相同 | 67/100 | **33/100** |
+| 只差臂的点数与构成 | 33 点，全是 press | 67 点，34 pick_place ＋ 33 push |
+
+两个产物的三元组都是 100/100、`other_differences` 都是空，也就是说"计划相同"这件事本身是稳的；
+**变的只有平手方向**，所以旧版那句"四元组逐点完全相同 67/100"是哈希运气给的（第三节已按确定性产物改写）。
 平手规则本身是人为约定（选字典序较小的臂），不改变任何可行性或成功率主张。
 
 ## 二、State Recovery-428（符号层）
@@ -140,9 +151,11 @@ R2_STATE、R1_FROM_STATE 的不一致点（129、135）呈同样形态（错误�
 
 即在统一条件的 Fair-100 上，大模型给出的修复计划在功能上与 8 步 BFS 输出同一个计划：
 "做什么动作、对哪个物体、放到哪里、几步"逐点一致，唯一分歧是可互换的执行手臂。
-臂之所以是平手而不是偏好：注册表里这些技能的前置只有 `hand_empty(arm)`，两点上两臂都为空，
-所以左右都合法（最后一行就是这件事的直接验证，用冻结的四层 Validator ＋ Goal Checker 打分，
-不是我的自定义判据）。修复后符号侧按 1.5 节的字典序一律取左臂，ROUTED 的冻结计划在 pick/push 上一律取右臂、
+臂之所以是平手而不是偏好：注册表里 `pick`/`push`/`press` 的前置只有 `hand_empty(arm)`
+（`config/capability_registry.yaml`，`place` 则跟着同一条臂的 `holding(arm, object)`），
+而这些点上两条手臂都是空的，所以左右都合法（最后一行就是这件事的直接验证，
+用冻结的四层 Validator ＋ Goal Checker 打分，不是我的自定义判据）。
+修复后符号侧按 1.5 节的字典序一律取左臂，ROUTED 的冻结计划在 pick/push 上一律取右臂、
 在 press 上一律取左臂，因此四元组重合恰好落在 press 的 33 点上。
 **旧版笔记里"四元组逐点完全相同 67/100、其余 33 点全是 press 只差臂"是把哈希平手当成了方法属性，方向正好反了，已按确定性口径替换。**
 任何"LLM 计划更简洁/更贴合任务"的写法在这份数据上都拿不到支持。

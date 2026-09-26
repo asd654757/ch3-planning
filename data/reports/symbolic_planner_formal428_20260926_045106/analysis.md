@@ -76,3 +76,4 @@
 - `BFS_EXEC` additionally requires a suffix shape the frozen execution protocol can run as one fresh episode (pick/place pairs, or a single push, or a single press).
 - A returned empty suffix is scored as valid with zero repair actions under the frozen evaluator, which bypasses the held-object completeness rule.
 - Search cost is reported in milliseconds; model calls and tokens are zero by construction.
+- Headline arm per protocol: `formal428` -> `BFS_VALID` (symbolic-layer scoring); `fair100` -> `BFS_EXEC` (end-to-end scoring with MetaWorld execution).

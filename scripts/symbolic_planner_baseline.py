@@ -58,6 +58,7 @@ BFS_SHORT = "BFS_SHORT"
 BFS_VALID = "BFS_VALID"
 BFS_EXEC = "BFS_EXEC"
 MODES = (BFS_SHORT, BFS_VALID, BFS_EXEC)
+SIM_ARM = "SYMBOLIC_BFS"
 SIM_SCHEMA = "2026-09-26-symbolic-planner-case-v1"
 
 
@@ -113,21 +114,29 @@ def single_step_expansions(
     arms: Iterable[str],
     allowed_skills: set[str],
 ) -> list[tuple[list[dict[str, Any]], WorldState]]:
-    """All legal one-action transitions, in deterministic order."""
+    """All legal one-action transitions, in deterministic order.
+
+    The frozen simulator leaves ``at[obj]`` stale while an object is held, so
+    ``is_on_table`` alone would let a second arm pick, push or press an object
+    that is already in a hand.  This planner is deliberately stricter than that
+    evaluator: an object in a hand is not a table object.  It can only make the
+    baseline weaker, never stronger.
+    """
     out: list[tuple[list[dict[str, Any]], WorldState]] = []
+    held = set(state.holding.values())
     objects = sorted(state.objects)
     targets = sorted(state.objects | valid_targets)
     arm_set = tuple(arms)
 
     if "place" in allowed_skills:
         for arm in arm_set:
-            held = state.holding.get(arm)
-            if held is None:
+            obj = state.holding.get(arm)
+            if obj is None:
                 continue
             for target in targets:
-                if target in state.holding.values():
+                if target in held:
                     continue
-                spec = action_spec("place", held, target, arm, 1)
+                spec = action_spec("place", obj, target, arm, 1)
                 nxt, ok = _apply(state, spec, valid_targets)
                 if ok:
                     out.append(([spec], nxt))
@@ -136,6 +145,8 @@ def single_step_expansions(
             if not state.arm_empty(arm):
                 continue
             for obj in objects:
+                if obj in held:
+                    continue
                 spec = action_spec("pick", obj, None, arm, 1)
                 nxt, ok = _apply(state, spec, valid_targets)
                 if ok:
@@ -145,8 +156,10 @@ def single_step_expansions(
             if not state.arm_empty(arm):
                 continue
             for obj in objects:
+                if obj in held:
+                    continue
                 for target in targets:
-                    if target in state.holding.values():
+                    if target in held:
                         continue
                     spec = action_spec("push", obj, target, arm, 1)
                     nxt, ok = _apply(state, spec, valid_targets)
@@ -157,6 +170,8 @@ def single_step_expansions(
             if not state.arm_empty(arm):
                 continue
             for obj in objects:
+                if obj in held:
+                    continue
                 spec = action_spec("press", obj, None, arm, 1)
                 nxt, ok = _apply(state, spec, valid_targets)
                 if ok:
@@ -172,17 +187,20 @@ def pair_expansions(
 ) -> list[tuple[list[dict[str, Any]], WorldState]]:
     """Legal pick+place pairs on one empty arm -- the executable transport."""
     out: list[tuple[list[dict[str, Any]], WorldState]] = []
+    held = set(state.holding.values())
     for arm in tuple(arms):
         if not state.arm_empty(arm):
             continue
         for obj in sorted(state.objects):
+            if obj in held:
+                continue
             picked, ok = _apply(
                 state, action_spec("pick", obj, None, arm, 1), valid_targets
             )
             if not ok:
                 continue
             for target in sorted(state.objects | valid_targets):
-                if target in state.holding.values():
+                if target in set(picked.holding.values()):
                     continue
                 placed, ok = _apply(
                     picked, action_spec("place", obj, target, arm, 2), valid_targets
@@ -598,11 +616,15 @@ def run_fair100(args: argparse.Namespace) -> tuple[list[dict[str, Any]], dict[st
             executable = sim is not None and bool(plan and symbolic_valid and goal_ok and shape_ok)
             sim_success = False
             if executable and plan is not None:
+                # The frozen executor mixes the arm name into ``stable_seed``, so a
+                # per-mode arm name would execute identical plans in different
+                # initial scenes.  One shared salt keeps cross-mode differences
+                # plan-driven; see data/reports/... for the re-seeded stability study.
                 sim_success, _prims, _tasks = sim[0](
                     plan,
                     registry,
-                    (str(episode["task_id"]), int(episode["seed"]), f"SYMBOLIC_{mode}"),
-                    f"SYMBOLIC_{mode}",
+                    (str(episode["task_id"]), int(episode["seed"]), SIM_ARM),
+                    SIM_ARM,
                     max_steps=args.max_steps_per_primitive,
                     observation_size=args.observation_size,
                 )
@@ -638,6 +660,26 @@ def run_fair100(args: argparse.Namespace) -> tuple[list[dict[str, Any]], dict[st
                     ),
                     "search_ms": elapsed_ms,
                 }
+            )
+            print(
+                json.dumps(
+                    {
+                        "mode": mode,
+                        "task_id": episode["task_id"],
+                        "family": episode["task_family"],
+                        "n": len(actions),
+                        "valid": symbolic_valid,
+                        "goal": bool(goal_ok),
+                        "shape": shape_ok,
+                        "sim_attempted": bool(executable),
+                        "sim_success": bool(sim_success),
+                        "final": bool(
+                            symbolic_valid and goal_ok and shape_ok and sim_success
+                        ),
+                    },
+                    ensure_ascii=False,
+                ),
+                flush=True,
             )
 
     references = _load_fair100_references(args, cases)
@@ -798,6 +840,8 @@ def render_report(summary: dict[str, Any]) -> str:
             "evaluator, which bypasses the held-object completeness rule.",
             "- Search cost is reported in milliseconds; model calls and tokens are zero by "
             "construction.",
+            "- Headline arm per protocol: `formal428` -> `BFS_VALID` (symbolic-layer scoring); "
+            "`fair100` -> `BFS_EXEC` (end-to-end scoring with MetaWorld execution).",
             "",
         ]
     )

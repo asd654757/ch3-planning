@@ -179,8 +179,62 @@ def summarize(path: Path, points: int, salts: int) -> dict[str, Any]:
         else:
             point_level["neither_reliable"] += 1
 
+    plans: dict[tuple[str, int], dict[str, tuple[Any, ...]]] = defaultdict(dict)
+    outcomes: dict[tuple[str, int], dict[str, list[Optional[bool]]]] = defaultdict(
+        lambda: {arm: [None] * salts for arm in ARMS}
+    )
+    families: dict[tuple[str, int], str] = {}
+    for row in rows:
+        key = (str(row["task_id"]), int(row["seed"]))
+        salt = int(row["salt"])
+        arm = str(row["arm"])
+        if salt >= salts:
+            continue
+        outcomes[key][arm][salt] = bool(row["sim_success"])
+        plans[key][arm] = tuple(tuple(a) for a in row["actions"])
+        families[key] = str(row["task_family"])
+
+    identical = {
+        k for k, v in plans.items() if len(v) == len(ARMS) and v[ARMS[0]] == v[ARMS[1]]
+    }
+    plan_identity_split: dict[str, Any] = {}
+    for name, keys in (
+        ("identical_plan", sorted(identical)),
+        ("differing_plan", sorted(set(outcomes) - identical)),
+    ):
+        cells = 0
+        successes = 0
+        discordant = 0
+        fragile: list[str] = []
+        fragile_by_family: dict[str, int] = defaultdict(int)
+        for key in keys:
+            hits = 0
+            for salt in range(salts):
+                sym = outcomes[key]["SYMBOLIC"][salt]
+                routed = outcomes[key]["ROUTED"][salt]
+                if sym is None or routed is None:
+                    continue
+                cells += 1
+                successes += int(sym)
+                discordant += int(sym != routed)
+                hits += int(sym)
+            if 0 < hits < salts:
+                fragile.append(f"{key[0]}/{key[1]}")
+                fragile_by_family[families[key]] += 1
+        plan_identity_split[name] = {
+            "points": len(keys),
+            "symbolic_cells": cells,
+            "symbolic_cell_successes": successes,
+            "symbolic_cell_success_rate": successes / cells if cells else None,
+            "discordant_cells": discordant,
+            "scene_fragile_points": len(fragile),
+            "scene_fragile_by_family": dict(sorted(fragile_by_family.items())),
+            "scene_fragile_list": sorted(fragile),
+        }
+
     return {
         "record_type": "reseed_stability_summary",
+        "plan_identity_split": plan_identity_split,
         "schema_version": SCHEMA,
         "points_in_scope": points,
         "salts": salts,
@@ -216,7 +270,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
 def main(argv: Optional[list[str]] = None) -> int:
     args = build_arg_parser().parse_args(argv)
     output_path = Path(args.output)
-    if output_path.exists() and not args.resume:
+    if output_path.exists() and not (args.resume or args.summary_only):
         raise FileExistsError(f"Refusing to overwrite {output_path}; use --resume.")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -264,8 +318,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         )
 
     started = time.time()
+    pending = [] if args.summary_only else in_scope
     with output_path.open("a", encoding="utf-8") as handle:
-        for index, (task_id, seed) in enumerate(in_scope, 1):
+        for index, (task_id, seed) in enumerate(pending, 1):
             for salt in range(args.salts):
                 for arm in ARMS:
                     if (task_id, seed, arm, salt) in done:
@@ -314,7 +369,14 @@ def main(argv: Optional[list[str]] = None) -> int:
                 )
 
     summary = summarize(output_path, len(in_scope), args.salts)
-    summary["elapsed_s"] = time.time() - started
+    sidecar = output_path.with_name("reseed_stability_summary.json")
+    if args.summary_only:
+        previous = json.loads(sidecar.read_text(encoding="utf-8")) if sidecar.exists() else {}
+        summary["summarize_only"] = True
+        summary["elapsed_s"] = previous.get("elapsed_s")
+        summary["cells_completed_at_utc"] = previous.get("completed_at_utc")
+    else:
+        summary["elapsed_s"] = time.time() - started
     summary["completed_at_utc"] = datetime.now(timezone.utc).isoformat()
     summary["symbolic_cases"] = args.symbolic_cases
     summary["routed"] = args.routed

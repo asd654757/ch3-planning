@@ -23,6 +23,14 @@ Three search modes are reported side by side so the baseline is not a strawman:
   one push, or one press) and never empty.
 
 Zero VLM calls, zero tokens.  Nothing in data/collections is modified.
+
+Reading note for the ``fair100`` numbers: the frozen executor derives
+``stable_seed`` from ``(task_id, seed, arm, pair_index)``, so every arm is scored
+in its own re-randomised initial scene and one episode per arm.  All arms here
+therefore share the single scene salt ``SYMBOLIC_BFS`` -- but that still means
+the reported single-draw success is not a paired comparison with the frozen LLM
+arms, and a plan that passes can fail under another salt.  Use
+``scripts/reseed_stability_study.py`` for the paired, scene-controlled version.
 """
 
 from __future__ import annotations

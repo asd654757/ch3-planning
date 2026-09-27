@@ -1,0 +1,32 @@
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+{"seed": 0, "perturbation": "grasp_timeout", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/metaworld/policies/policy.py:49: UserWarning: Constant(s) may be too high. Environments clip response to [-1, 1]
+  warnings.warn(
+{"seed": 0, "perturbation": "grasp_timeout", "method": "RETRY_SAME_SUFFIX", "success": true, "recovery_reason": "not_requested"}
+{"seed": 0, "perturbation": "grasp_timeout", "method": "OBSERVED_SEARCH", "success": true, "recovery_reason": "observed_goal_satisfied"}
+{"seed": 0, "perturbation": "place_timeout", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 0, "perturbation": "place_timeout", "method": "RETRY_SAME_SUFFIX", "success": true, "recovery_reason": "not_requested"}
+{"seed": 0, "perturbation": "place_timeout", "method": "OBSERVED_SEARCH", "success": true, "recovery_reason": "observed_goal_satisfied"}
+{"seed": 0, "perturbation": "post_grasp_slip", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 0, "perturbation": "post_grasp_slip", "method": "RETRY_SAME_SUFFIX", "success": false, "recovery_reason": "place expects held object 'red_cube_0', but executor holds None"}
+{"seed": 0, "perturbation": "post_grasp_slip", "method": "OBSERVED_SEARCH", "success": true, "recovery_reason": "observed_goal_satisfied"}
+{"seed": 1, "perturbation": "grasp_timeout", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 1, "perturbation": "grasp_timeout", "method": "RETRY_SAME_SUFFIX", "success": true, "recovery_reason": "not_requested"}
+{"seed": 1, "perturbation": "grasp_timeout", "method": "OBSERVED_SEARCH", "success": true, "recovery_reason": "observed_goal_satisfied"}
+{"seed": 1, "perturbation": "place_timeout", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 1, "perturbation": "place_timeout", "method": "RETRY_SAME_SUFFIX", "success": true, "recovery_reason": "not_requested"}
+{"seed": 1, "perturbation": "place_timeout", "method": "OBSERVED_SEARCH", "success": false, "recovery_reason": "goal_already_satisfied"}
+{"seed": 1, "perturbation": "post_grasp_slip", "method": "NO_RECOVERY", "success": false, "recovery_reason": "perturbation_not_realized"}
+{"seed": 1, "perturbation": "post_grasp_slip", "method": "RETRY_SAME_SUFFIX", "success": false, "recovery_reason": "perturbation_not_realized"}
+{"seed": 1, "perturbation": "post_grasp_slip", "method": "OBSERVED_SEARCH", "success": false, "recovery_reason": "perturbation_not_realized"}
+{"seed": 2, "perturbation": "grasp_timeout", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 2, "perturbation": "grasp_timeout", "method": "RETRY_SAME_SUFFIX", "success": true, "recovery_reason": "not_requested"}
+{"seed": 2, "perturbation": "grasp_timeout", "method": "OBSERVED_SEARCH", "success": true, "recovery_reason": "observed_goal_satisfied"}
+{"seed": 2, "perturbation": "place_timeout", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 2, "perturbation": "place_timeout", "method": "RETRY_SAME_SUFFIX", "success": true, "recovery_reason": "not_requested"}
+{"seed": 2, "perturbation": "place_timeout", "method": "OBSERVED_SEARCH", "success": false, "recovery_reason": "goal_already_satisfied"}
+{"seed": 2, "perturbation": "post_grasp_slip", "method": "NO_RECOVERY", "success": false, "recovery_reason": "not_requested"}
+{"seed": 2, "perturbation": "post_grasp_slip", "method": "RETRY_SAME_SUFFIX", "success": false, "recovery_reason": "place expects held object 'red_cube_0', but executor holds None"}
+{"seed": 2, "perturbation": "post_grasp_slip", "method": "OBSERVED_SEARCH", "success": true, "recovery_reason": "observed_goal_satisfied"}
+{"completed_at_utc": "2026-09-27T14:33:33.926973+00:00", "cases": 27, "output": "data/collections/persistent_recovery_phased_20260927_143240.jsonl", "supported_table_goal": true, "phased_grasp_after_failure": true, "protocol": "single_puck_same_episode_simulator_state_feedback"}

@@ -63,7 +63,8 @@ def stable_goal_check(executor, steps=10):
     return bool(stable and completed == steps), completed
 
 
-def run_case(seed, perturbation, method, budget, supported_table_goal=False):
+def run_case(seed, perturbation, method, budget, supported_table_goal=False,
+             phased_grasp=False):
     registry = load_registry()
     # The adapter represents one physical arm, not interchangeable dual arms.
     registry._arms = {"right"}
@@ -115,6 +116,9 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False):
                 failed_index = 1
                 break
         observed, before_distance = observe(executor)
+        # Enable the identical primitive for every method *after* the common
+        # disturbance. This is a control ablation, not a planner improvement.
+        executor.phased_grasp = phased_grasp
         initial_failed = perturbation_applied or not trace[-1]["success"]
         recovery_reason = "not_requested"
         recovery_accepted = False
@@ -169,6 +173,7 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False):
                     supported_table_goal and perturbation == "post_grasp_slip"
                 ),
                 "strict_release": True,
+                "phased_grasp_after_failure": phased_grasp,
                 "final_puck_pos": executor._state()["puck_pos"].tolist(),
                 "final_gripper_distance": executor._state()["gripper_distance"],
                 "total_control_steps": sum(item["steps"] for item in trace) + disturbance_steps + observation_steps,
@@ -184,6 +189,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--supported-table-goal", action="store_true",
                         help="Controlled table placement, not native MetaWorld success protocol.")
+    parser.add_argument("--phased-grasp", action="store_true",
+                        help="Use a fixed approach/descend/close/lift primitive after failure.")
     args = parser.parse_args()
     if args.seeds < 1 or args.budget < 1:
         parser.error("seeds and budget must be positive")
@@ -192,7 +199,8 @@ def main():
         for seed in range(args.seeds):
             for perturbation in ("grasp_timeout", "place_timeout", "post_grasp_slip"):
                 for method in ("NO_RECOVERY", "RETRY_SAME_SUFFIX", "OBSERVED_SEARCH"):
-                    row = run_case(seed, perturbation, method, args.budget, args.supported_table_goal)
+                    row = run_case(seed, perturbation, method, args.budget,
+                                   args.supported_table_goal, args.phased_grasp)
                     output.write(json.dumps(row) + "\n")
                     output.flush()
                     print(json.dumps({k: row[k] for k in
@@ -200,6 +208,7 @@ def main():
     print(json.dumps({"completed_at_utc": datetime.now(timezone.utc).isoformat(),
                       "cases": args.seeds * 9, "output": str(args.output),
                       "supported_table_goal": args.supported_table_goal,
+                      "phased_grasp_after_failure": args.phased_grasp,
                       "protocol": "single_puck_same_episode_simulator_state_feedback"}), flush=True)
 
 

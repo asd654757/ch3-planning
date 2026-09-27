@@ -79,10 +79,12 @@ class MetaWorldPlanExecutor:
         seed: int | None = None,
         strict_release: bool = False,
         supported_table_goal: bool = False,
+        phased_grasp: bool = False,
     ) -> None:
         self.task = task
         self.strict_release = strict_release
         self.supported_table_goal = supported_table_goal
+        self.phased_grasp = phased_grasp
         self.observation_size = observation_size
         self.goal_tolerance = goal_tolerance
         self.push_goal_tolerance = push_goal_tolerance
@@ -214,9 +216,33 @@ class MetaWorldPlanExecutor:
             )
         result = self._base_result(step)
         started = time.time()
+        phase = "approach"
+        phase_steps = 0
         for _ in range(max_steps):
             state = self._state()
-            action = self._expert_action(state["raw"])
+            if self.phased_grasp:
+                # A fixed, observable grasp primitive; unlike the MetaWorld
+                # expert, this lifts after closing even for a tabletop goal.
+                puck, hand = state["puck_pos"], state["hand_pos"]
+                if phase == "approach":
+                    target = puck + np.array([-0.005, 0.0, 0.10])
+                    if np.linalg.norm(target - hand) < 0.015 or phase_steps >= 80:
+                        phase, phase_steps = "descend", 0
+                if phase == "descend":
+                    target = puck + np.array([-0.005, 0.0, 0.015])
+                    if np.linalg.norm(target - hand) < 0.015 or phase_steps >= 80:
+                        phase, phase_steps = "close", 0
+                if phase == "close":
+                    target = puck + np.array([-0.005, 0.0, 0.015])
+                    if state["gripper_distance"] < self.gripper_closed_threshold or phase_steps >= 35:
+                        phase, phase_steps = "lift", 0
+                if phase == "lift":
+                    target = puck + np.array([-0.005, 0.0, 0.14])
+                action = np.r_[np.clip((target - hand) * 10.0, -1.0, 1.0),
+                               1.0 if phase in ("close", "lift") else -1.0]
+                phase_steps += 1
+            else:
+                action = self._expert_action(state["raw"])
             _, _, terminated, truncated, _ = self._env._env.step(action)
             result["steps"] += 1
             result["terminated"] = bool(terminated)

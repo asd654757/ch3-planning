@@ -98,7 +98,9 @@ LLM 三臂同框参照：R2_STATE 299（0.6986）、R1_FROM_STATE 293（0.6846�
 120 点全部 `valid=false` 且 `goal_satisfied=false`；`prefix_mutation` 全为 False（没动锁定的前缀）；
 `unnecessary_action_count` 全为 0（不是动作冗余）。113/120 只发了 **1 个动作**。
 也就是说 ROUTED 的失败形态一致：在需要"先放掉手里那个、再重抓/放置"的点上，
-它按语义直觉得出单个动作，被执行状态层挡下。这与 P2（硬释放前置条件）的动机直接对应。
+它按语义直觉得出单个动作，被执行状态层挡下。这与 P2（硬释放前置条件）的动机直接对应，
+P2 已量化：见 `data/reports/release_precondition_p2_findings_20260926.md`
+（一句规则白拿 ROUTED ＋39／0 回退，p=3.6e-12，只收掉这 120 点差距的 1/3）。
 R2_STATE、R1_FROM_STATE 的不一致点（129、135）呈同样形态（错误码集中在
 `ARM_NOT_EMPTY`/`OBJECT_NOT_HELD`，R1 另有 1 个 `STATE_TRANSITION_ERROR`；
 两者的 `unnecessary_action_count` 与 `prefix_mutation` 在不一致点上同样全为 0/False）。

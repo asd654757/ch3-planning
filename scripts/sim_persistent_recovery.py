@@ -27,9 +27,13 @@ def observe(executor):
     state = WorldState.table_scene({"red_cube_0", "tray_1"})
     distance = float(np.linalg.norm(raw["puck_pos"] - raw["target_pos"]))
     # Single-puck identity is known; this heuristic is not a contact sensor.
-    if executor._is_holding(raw):
+    # Lift height alone misses a grasp that has been brought down to a table
+    # target. Do not report the goal as achieved while the gripper is closed.
+    gripper_open = raw["gripper_distance"] > executor.gripper_closed_threshold
+    near_hand = np.linalg.norm(raw["puck_pos"] - raw["hand_pos"]) < 0.075
+    if executor._is_holding(raw) or (not gripper_open and near_hand):
         state.holding["right"] = "red_cube_0"
-    elif distance <= executor.goal_tolerance:
+    elif gripper_open and distance <= executor.goal_tolerance:
         state.at["red_cube_0"] = "tray_1"
     executor._held_symbolic_object = state.holding.get("right")
     return state, distance
@@ -75,6 +79,9 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
     executor = MetaWorldPlanExecutor(
         seed=seed, strict_release=True,
         supported_table_goal=supported_table_goal and perturbation != "post_grasp_slip",
+        # Ensure place_timeout actually reaches place; otherwise a failed
+        # grasp must not be mislabeled as a place disturbance.
+        phased_grasp=phased_grasp and perturbation == "place_timeout",
     )
     trace = []
     try:
@@ -120,6 +127,7 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
         # disturbance. This is a control ablation, not a planner improvement.
         executor.phased_grasp = phased_grasp
         initial_failed = perturbation_applied or not trace[-1]["success"]
+        actual_failed_step = failed_index + 1 if initial_failed else None
         recovery_reason = "not_requested"
         recovery_accepted = False
         if perturbation == "post_grasp_slip" and not perturbation_applied:
@@ -158,6 +166,7 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
         final, distance = observe(executor)
         return {"seed": seed, "perturbation": perturbation, "method": method,
                 "initial_scene": initial, "initial_failed": initial_failed,
+                "actual_failed_step": actual_failed_step,
                 "observed_facts_after_failure": sorted(observed.facts()),
                 "before_distance": before_distance, "final_distance": distance,
                 "success": stable_success,

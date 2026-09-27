@@ -17,6 +17,7 @@ from typing import Any, Iterable, Mapping, Optional
 
 from ch3.capability.registry import CapabilityRegistry
 from ch3.goal.goal_checker import goal_satisfied
+from ch3.repair.observed_recovery import recover_from_observation
 from ch3.logger.episode_logger import EpisodeLogger
 from ch3.schema.model_plan import GoalSpec, ModelPlan
 from ch3.validator.state_validator import simulate_plan
@@ -44,6 +45,7 @@ STATE_ARMS = (
     "R2_STATE",
     "ROUTED",
     "R1_FROM_STATE",
+    "OBSERVED_SEARCH",
 )
 
 
@@ -314,8 +316,29 @@ def run_state_slice(
     repairs: dict[str, dict[str, Any]] = {}
     model_calls = 0
     for arm in requested:
+        observed_outcome = None
         if arm == "OPEN_LOOP":
             repaired = _open_loop_generation(source_plan)
+        elif arm == "OBSERVED_SEARCH":
+            observed_outcome = recover_from_observation(
+                observed_state=observed_state,
+                goal=GoalSpec.model_validate(task["goal"]),
+                validator=validator,
+                allowed_skills=set(task.get("hard_factors", {}).get("required_skills", [])),
+            )
+            candidate = (
+                ModelPlan(actions=[*prefix, *observed_outcome.actions])
+                if prefix or observed_outcome.actions else None
+            )
+            repaired = RepairGeneration(
+                repair_mode=arm,
+                plan=candidate,
+                response=VLMResponse(content="", model="symbolic-search", latency_ms=0),
+                accepted=observed_outcome.accepted,
+                prompt="",
+                prompt_id="observed_search_symbolic_v1",
+                prompt_hash="observed_search_symbolic_v1",
+            )
         elif arm == "R2_NO_STATE":
             repaired = repairer.repair(
                 repair_mode="R2",
@@ -371,6 +394,11 @@ def run_state_slice(
             validator=validator,
             observed_state=observed_state,
         )
+        if observed_outcome is not None:
+            valid = observed_outcome.accepted
+            goal_ok = observed_outcome.accepted
+            pbw = False
+            final_state = observed_outcome.final_state
         prefix_mutation = (
             repaired.plan is None
             or len(repaired.plan.actions) < prefix_len
@@ -405,7 +433,12 @@ def run_state_slice(
             "suffix_action_count": suffix_len,
             "minimal_suffix_action_count": minimal,
             "unnecessary_action_count": max(0, suffix_len - minimal),
-            "model_calls": 0 if arm == "OPEN_LOOP" else (len(route_info["route_taken"]) if arm == "ROUTED" else 1),
+            "model_calls": 0 if arm in {"OPEN_LOOP", "OBSERVED_SEARCH"} else (len(route_info["route_taken"]) if arm == "ROUTED" else 1),
+            **({} if observed_outcome is None else {
+                "feedback_source": "symbolic_simulator_not_physical_observation",
+                "recovery_reason": observed_outcome.reason,
+                "executed_recovery_actions": len(observed_outcome.actions),
+            }),
             "arm_model_calls": model_calls,
             "stress_validation": {
                 "valid": observed_validation.valid,

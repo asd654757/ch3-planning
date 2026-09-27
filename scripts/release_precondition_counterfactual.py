@@ -28,9 +28,11 @@ from pathlib import Path
 from typing import Any, Optional
 
 from ch3.capability.registry import CapabilityRegistry
-from ch3.schema.model_plan import GoalSpec, ModelPlanAction
+from ch3.goal.goal_checker import goal_satisfied
+from ch3.schema.model_plan import GoalSpec, ModelPlan, ModelPlanAction
 from ch3.state.world_state import WorldState
 from ch3.validator.pipeline import Validator
+from ch3.validator.result import ValidationResult
 from scripts.state_recovery_offline_analysis import (
     mcnemar_exact_p,
     read_jsonl,
@@ -122,23 +124,39 @@ def plan_evaluation(
     state: WorldState,
     goal: GoalSpec,
 ) -> dict[str, Any]:
-    if not actions:
-        return {
-            "action_count": 0,
-            "valid": False,
-            "goal_satisfied": False,
-            "error_code": "EMPTY_PLAN",
-            "error_layer": "schema",
-            "shape_ok": False,
-        }
+    """Score a *suffix* only, mirroring ``repair_pressure_state_recovery._evaluate_suffix``.
+
+    The already-executed prefix is never replayed: an empty suffix is valid and is
+    scored on the observed state, exactly as the frozen 428 protocol does.
+    """
     suffix = [ModelPlanAction.model_validate(item) for item in actions]
-    valid, goal_ok, _holds, _facts = evaluate_suffix(
-        suffix=suffix, validator=validator, state=state, goal=goal
+    if not suffix:
+        result = ValidationResult(valid=True, final_state=state.copy())
+    else:
+        renumbered = [
+            action.model_copy(update={"step_id": index + 1})
+            for index, action in enumerate(suffix)
+        ]
+        result = validator.validate(ModelPlan(actions=renumbered), state)
+    final_state = result.final_state if result.valid else None
+    goal_ok = bool(
+        result.valid
+        and goal_satisfied(final_state or state, goal, validator.registry.arms)
+    )
+    final_facts = (
+        sorted(final_state.facts() | final_state.empty_hand_facts(("left", "right")))
+        if final_state is not None
+        else []
     )
     return {
         "action_count": len(actions),
-        "valid": bool(valid),
-        "goal_satisfied": bool(goal_ok),
+        "valid": bool(result.valid),
+        "goal_satisfied": goal_ok,
+        "error_code": result.error_code.value if result.error_code else None,
+        "error_layer": result.layer,
+        "error_message": result.message,
+        "first_invalid_step": result.first_invalid_step,
+        "final_state_facts": final_facts,
         "shape_ok": bool(is_sim_executable([dict(a) for a in actions])),
     }
 
@@ -162,8 +180,18 @@ def load_points(
         if scenario is None:
             raise RuntimeError(f"missing scenario for {key}")
         plan = row.get("model_plan") or {}
+        merged_actions = [dict(a) for a in plan.get("actions", [])]
+        prefix_len = len(row.get("validated_prefix_step_ids") or [])
+        if prefix_len > len(merged_actions):
+            raise RuntimeError(
+                f"prefix longer than merged plan for {key} / {baseline}: "
+                f"{prefix_len} > {len(merged_actions)}"
+            )
         slot[baseline] = {
-            "actions": [dict(a) for a in plan.get("actions", [])],
+            "actions": merged_actions[prefix_len:],
+            "merged_actions": merged_actions,
+            "prefix_len": prefix_len,
+            "merged_action_count": len(merged_actions),
             "observed_state_facts": sorted(row["observed_state_facts"]),
             "frozen_valid": bool(row["valid"]),
             "frozen_goal": bool(row["goal_satisfied"]),
@@ -203,6 +231,8 @@ def run(args: argparse.Namespace) -> tuple[list[dict[str, Any]], dict[str, Any]]
             after = plan_evaluation(
                 rewritten, validator=validator, state=state, goal=goal
             )
+            before["merged_action_count"] = entry["merged_action_count"]
+            after["merged_action_count"] = entry["prefix_len"] + after["action_count"]
             cases.append(
                 {
                     "record_type": "release_counterfactual_case",
@@ -213,6 +243,8 @@ def run(args: argparse.Namespace) -> tuple[list[dict[str, Any]], dict[str, Any]]
                     "seed": seed,
                     "perturbation_type": perturbation,
                     "task_family": scenario["task_family"],
+                    "prefix_len": entry["prefix_len"],
+                    "suffix_action_count_before": len(entry["actions"]),
                     "observed_holding": holding,
                     "release_inserted": bool(inserted),
                     "inserted_at": [item["position"] for item in inserted],

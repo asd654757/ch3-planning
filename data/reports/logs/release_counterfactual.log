@@ -1,0 +1,125 @@
+{
+  "ROUTED": {
+    "points": 428,
+    "before_success": 308,
+    "before_rate": 0.719626168224299,
+    "after_success": 347,
+    "after_rate": 0.8107476635514018,
+    "releases_inserted_points": 92,
+    "insertions_by_reason": {
+      "arm_needed": 81,
+      "dangling_hold": 11
+    },
+    "fixed_by_reason": {
+      "arm_needed": 39
+    },
+    "mean_inserted_actions": 0.21495327102803738,
+    "mean_actions_before": 0.9158878504672897,
+    "mean_actions_after": 1.1308411214953271,
+    "paired_fixed": 39,
+    "paired_broke": 0,
+    "fixed_by_perturbation": {
+      "wrong_held_object": 39
+    },
+    "broke_by_perturbation": {},
+    "exact_mcnemar_before_vs_after": 3.637978807091713e-12,
+    "shape_ok_before": 231,
+    "shape_ok_after": 192,
+    "recovered_but_shape_rejected": 39,
+    "residual_error_codes": {
+      "OBJECT_NOT_HELD": 56,
+      "SCHEMA_ERROR": 19,
+      "ARM_NOT_EMPTY": 5,
+      "NONE": 1
+    },
+    "residual_by_perturbation": {
+      "wrong_held_object": 59,
+      "grasp_failure": 22
+    },
+    "scorer_matches_frozen_success": 428
+  },
+  "R2_STATE": {
+    "points": 428,
+    "before_success": 299,
+    "before_rate": 0.6985981308411215,
+    "after_success": 335,
+    "after_rate": 0.7827102803738317,
+    "releases_inserted_points": 103,
+    "insertions_by_reason": {
+      "arm_needed": 77,
+      "dangling_hold": 26
+    },
+    "fixed_by_reason": {
+      "arm_needed": 36
+    },
+    "mean_inserted_actions": 0.24065420560747663,
+    "mean_actions_before": 0.9509345794392523,
+    "mean_actions_after": 1.191588785046729,
+    "paired_fixed": 36,
+    "paired_broke": 0,
+    "fixed_by_perturbation": {
+      "wrong_held_object": 36
+    },
+    "broke_by_perturbation": {},
+    "exact_mcnemar_before_vs_after": 2.9103830456733704e-11,
+    "shape_ok_before": 225,
+    "shape_ok_after": 215,
+    "recovered_but_shape_rejected": 36,
+    "residual_error_codes": {
+      "SCHEMA_ERROR": 70,
+      "OBJECT_NOT_HELD": 22,
+      "NONE": 1
+    },
+    "residual_by_perturbation": {
+      "wrong_held_object": 68,
+      "grasp_failure": 25
+    },
+    "scorer_matches_frozen_success": 428
+  },
+  "R1_FROM_STATE": {
+    "points": 428,
+    "before_success": 293,
+    "before_rate": 0.6845794392523364,
+    "after_success": 332,
+    "after_rate": 0.7757009345794392,
+    "releases_inserted_points": 93,
+    "insertions_by_reason": {
+      "arm_needed": 80,
+      "dangling_hold": 13
+    },
+    "fixed_by_reason": {
+      "arm_needed": 39
+    },
+    "mean_inserted_actions": 0.21728971962616822,
+    "mean_actions_before": 0.8925233644859814,
+    "mean_actions_after": 1.1098130841121496,
+    "paired_fixed": 39,
+    "paired_broke": 0,
+    "fixed_by_perturbation": {
+      "wrong_held_object": 39
+    },
+    "broke_by_perturbation": {},
+    "exact_mcnemar_before_vs_after": 3.637978807091713e-12,
+    "shape_ok_before": 219,
+    "shape_ok_after": 180,
+    "recovered_but_shape_rejected": 39,
+    "residual_error_codes": {
+      "OBJECT_NOT_HELD": 69,
+      "SCHEMA_ERROR": 19,
+      "ARM_NOT_EMPTY": 8
+    },
+    "residual_by_perturbation": {
+      "wrong_held_object": 62,
+      "grasp_failure": 33,
+      "object_displacement": 1
+    },
+    "scorer_matches_frozen_success": 428
+  }
+}
+{
+  "cases": 1284,
+  "agree": 1284,
+  "rate": 1.0,
+  "disagreements": []
+}
+{"output_dir": "data/reports/release_counterfactual_428_20260926"}

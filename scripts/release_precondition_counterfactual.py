@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
@@ -40,11 +40,7 @@ from scripts.state_recovery_offline_analysis import (
     write_json,
     write_jsonl,
 )
-from scripts.symbolic_planner_baseline import (
-    ARMS,
-    evaluate_suffix,
-    is_sim_executable,
-)
+from scripts.symbolic_planner_baseline import is_sim_executable
 
 BASELINES = ("ROUTED", "R2_STATE", "R1_FROM_STATE")
 RELEASE_TARGET = "table"
@@ -69,9 +65,10 @@ def insert_releases(
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Return (rewritten plan, inserted steps).
 
-    Insertion is positional: the release for ``arm`` goes before the first remaining
-    action that uses ``arm`` (or at the end if the plan never touches that arm -- a
-    dangling hold that the completeness rule would otherwise reject).
+    Two distinct mechanisms are tagged, because they buy different things:
+    ``arm_needed`` releases the object before the first action that needs that arm free
+    (the missing *precondition*), while ``dangling_hold`` releases an object the plan
+    never puts down (what the frozen completeness rule alone punishes).
     """
     remaining = [dict(action) for action in actions]
     inserted: list[dict[str, Any]] = []
@@ -86,10 +83,14 @@ def insert_releases(
             ),
             None,
         )
+        reason = "arm_needed"
         if index is None:
-            # The plan never acts with this arm again; a release is only needed if the
-            # arm still ends up holding something, which the caller scores anyway.
-            continue
+            if not any(action.get("arm") == arm for action in remaining):
+                reason = "dangling_hold"
+                index = len(remaining)
+            else:
+                # The arm's own held object is already placed by the plan.
+                continue
         already = next(
             (
                 i
@@ -110,7 +111,7 @@ def insert_releases(
             "inserted_by": "release_precondition",
         }
         remaining.insert(index, release)
-        inserted.append(release | {"position": index})
+        inserted.append({**release, "position": index, "reason": reason})
     renumbered = [
         {**action, "step_id": i + 1} for i, action in enumerate(remaining)
     ]
@@ -249,6 +250,7 @@ def run(args: argparse.Namespace) -> tuple[list[dict[str, Any]], dict[str, Any]]
                     "release_inserted": bool(inserted),
                     "inserted_at": [item["position"] for item in inserted],
                     "inserted_objects": [item["object_id"] for item in inserted],
+                    "insertion_reasons": sorted({item["reason"] for item in inserted}),
                     "before": before,
                     "after": after,
                     "before_actions": entry["actions"],
@@ -283,6 +285,18 @@ def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
             "after_success": sum(after_ok),
             "after_rate": sum(after_ok) / len(rows),
             "releases_inserted_points": len(inserted),
+            "insertions_by_reason": dict(
+                Counter(
+                    reason
+                    for c in rows
+                    for reason in c["insertion_reasons"]
+                ).most_common()
+            ),
+            "fixed_by_reason": dict(
+                Counter(
+                    (c["insertion_reasons"] or ["none"])[0] for c in fixed
+                ).most_common()
+            ),
             "mean_inserted_actions": (
                 sum(len(c["inserted_objects"]) for c in rows) / len(rows)
             ),

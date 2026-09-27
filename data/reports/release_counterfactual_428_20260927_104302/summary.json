@@ -1,0 +1,550 @@
+{
+  "by_baseline": {
+    "R1_FROM_STATE": {
+      "after_rate": 0.5070093457943925,
+      "after_success": 217,
+      "before_rate": 0.3364485981308411,
+      "before_success": 144,
+      "broke_by_perturbation": {},
+      "exact_mcnemar_before_vs_after": 2.117582368135751e-22,
+      "fixed_by_perturbation": {
+        "wrong_held_object": 73
+      },
+      "mean_actions_after": 2.0817757009345796,
+      "mean_actions_before": 1.894859813084112,
+      "mean_inserted_actions": 0.18691588785046728,
+      "paired_broke": 0,
+      "paired_fixed": 73,
+      "points": 428,
+      "recovered_but_shape_rejected": 73,
+      "releases_inserted_points": 80,
+      "residual_by_perturbation": {
+        "grasp_failure": 39,
+        "nominal_state": 72,
+        "object_displacement": 72,
+        "wrong_held_object": 28
+      },
+      "residual_error_codes": {
+        "NONE": 211
+      },
+      "scorer_matches_frozen_success": 213,
+      "shape_ok_after": 175,
+      "shape_ok_before": 248
+    },
+    "R2_STATE": {
+      "after_rate": 0.3037383177570093,
+      "after_success": 130,
+      "before_rate": 0.3037383177570093,
+      "before_success": 130,
+      "broke_by_perturbation": {},
+      "exact_mcnemar_before_vs_after": 1.0,
+      "fixed_by_perturbation": {},
+      "mean_actions_after": 2.133177570093458,
+      "mean_actions_before": 1.9532710280373833,
+      "mean_inserted_actions": 0.17990654205607476,
+      "paired_broke": 0,
+      "paired_fixed": 0,
+      "points": 428,
+      "recovered_but_shape_rejected": 0,
+      "releases_inserted_points": 77,
+      "residual_by_perturbation": {
+        "grasp_failure": 50,
+        "nominal_state": 72,
+        "object_displacement": 72,
+        "wrong_held_object": 104
+      },
+      "residual_error_codes": {
+        "NONE": 298
+      },
+      "scorer_matches_frozen_success": 215,
+      "shape_ok_after": 165,
+      "shape_ok_before": 165
+    },
+    "ROUTED": {
+      "after_rate": 0.48364485981308414,
+      "after_success": 207,
+      "before_rate": 0.3177570093457944,
+      "before_success": 136,
+      "broke_by_perturbation": {},
+      "exact_mcnemar_before_vs_after": 8.470329472543003e-22,
+      "fixed_by_perturbation": {
+        "wrong_held_object": 71
+      },
+      "mean_actions_after": 2.107476635514019,
+      "mean_actions_before": 1.9182242990654206,
+      "mean_inserted_actions": 0.18925233644859812,
+      "paired_broke": 0,
+      "paired_fixed": 71,
+      "points": 428,
+      "recovered_but_shape_rejected": 71,
+      "releases_inserted_points": 81,
+      "residual_by_perturbation": {
+        "grasp_failure": 50,
+        "nominal_state": 72,
+        "object_displacement": 72,
+        "wrong_held_object": 27
+      },
+      "residual_error_codes": {
+        "NONE": 221
+      },
+      "scorer_matches_frozen_success": 212,
+      "shape_ok_after": 165,
+      "shape_ok_before": 236
+    }
+  },
+  "completed_at_utc": "2026-09-27T02:43:03.181280+00:00",
+  "inputs": {
+    "formal": "data/collections/state_recovery_formal_v1_20260914_101157.jsonl",
+    "registry": "config/capability_registry.yaml",
+    "scenarios": "data/scenarios/state_recovery_tasks_v1.jsonl"
+  },
+  "points": 1284,
+  "record_type": "release_counterfactual_summary",
+  "scorer_vs_frozen_success_agreement": {
+    "agree": 640,
+    "cases": 1284,
+    "disagreements": [
+      {
+        "baseline": "ROUTED",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          1,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_000",
+          2,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": true,
+        "frozen_error_code": "STATE_TRANSITION_ERROR",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          0,
+          "object_displacement"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          1,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          1,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "R1_FROM_STATE",
+        "frozen": false,
+        "frozen_error_code": "OBJECT_NOT_HELD",
+        "mine": true,
+        "point_key": [
+          "multiskill_pick_place_001",
+          1,
+          "grasp_failure"
+        ]
+      },
+      {
+        "baseline": "ROUTED",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          1,
+          "nominal_state"
+        ]
+      },
+      {
+        "baseline": "R2_STATE",
+        "frozen": true,
+        "frozen_error_code": null,
+        "mine": false,
+        "point_key": [
+          "multiskill_pick_place_001",
+          1,
+          "nominal_state"
+        ]
+      }
+    ],
+    "rate": 0.4984423676012461
+  }
+}

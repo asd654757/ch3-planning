@@ -1,0 +1,192 @@
+{
+  "record_type": "release_counterfactual_residual_taxonomy",
+  "baseline": "ROUTED",
+  "cases": 428,
+  "residual_points": 81,
+  "residual_by_perturbation": {
+    "wrong_held_object": 59,
+    "grasp_failure": 22
+  },
+  "by_defect": {
+    "other_OBJECT_NOT_HELD": {
+      "points": 22,
+      "by_perturbation": {
+        "grasp_failure": 22
+      },
+      "by_task_family": {
+        "pick_place": 22
+      },
+      "by_error_code": {
+        "OBJECT_NOT_HELD": 22
+      },
+      "mean_suffix_actions": 1.0,
+      "example": {
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "grasp_failure"
+        ],
+        "holding": {},
+        "plan": [
+          [
+            "place",
+            "red_cube_0",
+            "right"
+          ]
+        ],
+        "error_code": "OBJECT_NOT_HELD",
+        "error_layer": "state"
+      }
+    },
+    "push_or_press_own_picked_object": {
+      "points": 5,
+      "by_perturbation": {
+        "wrong_held_object": 5
+      },
+      "by_task_family": {
+        "push": 5
+      },
+      "by_error_code": {
+        "ARM_NOT_EMPTY": 5
+      },
+      "mean_suffix_actions": 3.0,
+      "example": {
+        "point_key": [
+          "multiskill_push_019",
+          0,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "right": "brown_block_33"
+        },
+        "plan": [
+          [
+            "place",
+            "brown_block_33",
+            "right"
+          ],
+          [
+            "pick",
+            "pink_block_31",
+            "right"
+          ],
+          [
+            "push",
+            "pink_block_31",
+            "right"
+          ]
+        ],
+        "error_code": "ARM_NOT_EMPTY",
+        "error_layer": "state"
+      }
+    },
+    "release_present_but_plan_still_rejected": {
+      "points": 42,
+      "by_perturbation": {
+        "wrong_held_object": 42
+      },
+      "by_task_family": {
+        "pick_place": 34,
+        "push": 8
+      },
+      "by_error_code": {
+        "OBJECT_NOT_HELD": 34,
+        "SCHEMA_ERROR": 8
+      },
+      "mean_suffix_actions": 2.0,
+      "example": {
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "right": "blue_block_2"
+        },
+        "plan": [
+          [
+            "place",
+            "blue_block_2",
+            "right"
+          ],
+          [
+            "place",
+            "red_cube_0",
+            "right"
+          ]
+        ],
+        "error_code": "OBJECT_NOT_HELD",
+        "error_layer": "state"
+      }
+    },
+    "released_but_task_still_undone": {
+      "points": 1,
+      "by_perturbation": {
+        "wrong_held_object": 1
+      },
+      "by_task_family": {
+        "push": 1
+      },
+      "by_error_code": {
+        "NONE": 1
+      },
+      "mean_suffix_actions": 1.0,
+      "example": {
+        "point_key": [
+          "multiskill_push_013",
+          1,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "right": "yellow_block_27"
+        },
+        "plan": [
+          [
+            "place",
+            "yellow_block_27",
+            "right"
+          ]
+        ],
+        "error_code": null,
+        "error_layer": null
+      }
+    },
+    "wrong_skill_family": {
+      "points": 11,
+      "by_perturbation": {
+        "wrong_held_object": 11
+      },
+      "by_task_family": {
+        "push": 11
+      },
+      "by_error_code": {
+        "SCHEMA_ERROR": 11
+      },
+      "mean_suffix_actions": 2.0,
+      "example": {
+        "point_key": [
+          "multiskill_push_013",
+          0,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "right": "yellow_block_27"
+        },
+        "plan": [
+          [
+            "pick",
+            "blue_block_25",
+            "left"
+          ],
+          [
+            "place",
+            "yellow_block_27",
+            "right"
+          ]
+        ],
+        "error_code": "SCHEMA_ERROR",
+        "error_layer": "syntax"
+      }
+    }
+  }
+}

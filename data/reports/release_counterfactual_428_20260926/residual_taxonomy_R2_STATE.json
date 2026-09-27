@@ -1,0 +1,179 @@
+{
+  "record_type": "release_counterfactual_residual_taxonomy",
+  "baseline": "R2_STATE",
+  "cases": 428,
+  "residual_points": 93,
+  "residual_by_perturbation": {
+    "wrong_held_object": 68,
+    "grasp_failure": 25
+  },
+  "by_defect": {
+    "other_OBJECT_NOT_HELD": {
+      "points": 22,
+      "by_perturbation": {
+        "grasp_failure": 22
+      },
+      "by_task_family": {
+        "pick_place": 22
+      },
+      "by_error_code": {
+        "OBJECT_NOT_HELD": 22
+      },
+      "mean_suffix_actions": 1.0,
+      "example": {
+        "point_key": [
+          "multiskill_pick_place_000",
+          0,
+          "grasp_failure"
+        ],
+        "holding": {},
+        "plan": [
+          [
+            "place",
+            "red_cube_0",
+            "right"
+          ]
+        ],
+        "error_code": "OBJECT_NOT_HELD",
+        "error_layer": "state"
+      }
+    },
+    "other_SCHEMA_ERROR": {
+      "points": 3,
+      "by_perturbation": {
+        "grasp_failure": 3
+      },
+      "by_task_family": {
+        "pick_place": 3
+      },
+      "by_error_code": {
+        "SCHEMA_ERROR": 3
+      },
+      "mean_suffix_actions": 1.0,
+      "example": {
+        "point_key": [
+          "multiskill_pick_place_007",
+          0,
+          "grasp_failure"
+        ],
+        "holding": {},
+        "plan": [
+          [
+            "pick",
+            "pink_block_14",
+            "right"
+          ]
+        ],
+        "error_code": "SCHEMA_ERROR",
+        "error_layer": "syntax"
+      }
+    },
+    "release_present_but_plan_still_rejected": {
+      "points": 41,
+      "by_perturbation": {
+        "wrong_held_object": 41
+      },
+      "by_task_family": {
+        "press": 35,
+        "push": 6
+      },
+      "by_error_code": {
+        "SCHEMA_ERROR": 41
+      },
+      "mean_suffix_actions": 2.0,
+      "example": {
+        "point_key": [
+          "multiskill_press_024",
+          0,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "left": "yellow_button_39"
+        },
+        "plan": [
+          [
+            "place",
+            "yellow_button_39",
+            "left"
+          ],
+          [
+            "pick",
+            "yellow_button_39",
+            "left"
+          ]
+        ],
+        "error_code": "SCHEMA_ERROR",
+        "error_layer": "syntax"
+      }
+    },
+    "released_but_task_still_undone": {
+      "points": 1,
+      "by_perturbation": {
+        "wrong_held_object": 1
+      },
+      "by_task_family": {
+        "push": 1
+      },
+      "by_error_code": {
+        "NONE": 1
+      },
+      "mean_suffix_actions": 1.0,
+      "example": {
+        "point_key": [
+          "multiskill_push_016",
+          1,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "right": "cyan_cube_30"
+        },
+        "plan": [
+          [
+            "place",
+            "cyan_cube_30",
+            "right"
+          ]
+        ],
+        "error_code": null,
+        "error_layer": null
+      }
+    },
+    "wrong_skill_family": {
+      "points": 26,
+      "by_perturbation": {
+        "wrong_held_object": 26
+      },
+      "by_task_family": {
+        "push": 26
+      },
+      "by_error_code": {
+        "SCHEMA_ERROR": 26
+      },
+      "mean_suffix_actions": 2.0,
+      "example": {
+        "point_key": [
+          "multiskill_push_012",
+          0,
+          "wrong_held_object"
+        ],
+        "holding": {
+          "right": "green_cube_26"
+        },
+        "plan": [
+          [
+            "pick",
+            "green_cube_26",
+            "left"
+          ],
+          [
+            "place",
+            "green_cube_26",
+            "right"
+          ]
+        ],
+        "error_code": "SCHEMA_ERROR",
+        "error_layer": "syntax"
+      }
+    }
+  }
+}

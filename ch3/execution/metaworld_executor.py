@@ -78,9 +78,11 @@ class MetaWorldPlanExecutor:
         lifted_height_threshold: float = 0.04,
         seed: int | None = None,
         strict_release: bool = False,
+        supported_table_goal: bool = False,
     ) -> None:
         self.task = task
         self.strict_release = strict_release
+        self.supported_table_goal = supported_table_goal
         self.observation_size = observation_size
         self.goal_tolerance = goal_tolerance
         self.push_goal_tolerance = push_goal_tolerance
@@ -109,8 +111,20 @@ class MetaWorldPlanExecutor:
         self._env.reset()
         self._held_symbolic_object = None
         raw = self._env._env._get_obs()
+        native_target = self._read_state(raw)["target_pos"].copy()
+        if self.supported_table_goal:
+            if self.task != "metaworld-pick-place-v3":
+                raise MetaWorldExecutionError("table goal is only supported for pick-place-v3")
+            # Native goals can float above the table; they are not stable
+            # released placements. This is a separate, controlled protocol.
+            env = self._env._env.unwrapped
+            env._target_pos[2] = float(raw[6])
+            env.model.site("goal").pos[:] = env._target_pos
+            raw = self._env._env._get_obs()
         state = self._read_state(raw)
         return {
+            "native_target_pos": native_target.tolist(),
+            "supported_table_goal": self.supported_table_goal,
             "initial_puck_pos": state["puck_pos"].tolist(),
             "initial_hand_pos": state["hand_pos"].tolist(),
             "target_pos": state["target_pos"].tolist(),

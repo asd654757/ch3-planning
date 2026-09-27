@@ -77,8 +77,10 @@ class MetaWorldPlanExecutor:
         gripper_closed_threshold: float = 0.73,
         lifted_height_threshold: float = 0.04,
         seed: int | None = None,
+        strict_release: bool = False,
     ) -> None:
         self.task = task
+        self.strict_release = strict_release
         self.observation_size = observation_size
         self.goal_tolerance = goal_tolerance
         self.push_goal_tolerance = push_goal_tolerance
@@ -272,9 +274,18 @@ class MetaWorldPlanExecutor:
             )
         result = self._base_result(step)
         started = time.time()
+        releasing = False
+        stable_steps = 0
         for _ in range(max_steps):
             state = self._state()
+            previous_puck = state["puck_pos"].copy()
             action = self._expert_action(state["raw"])
+            if self.strict_release:
+                releasing = releasing or float(np.linalg.norm(
+                    state["puck_pos"] - state["target_pos"]
+                )) <= self.goal_tolerance
+                if releasing:
+                    action = np.array([0.0, 0.0, 0.0, -1.0])
             _, _, terminated, truncated, info = self._env._env.step(action)
             result["steps"] += 1
             result["terminated"] = bool(terminated)
@@ -289,7 +300,14 @@ class MetaWorldPlanExecutor:
             result["final_hand_pos"] = state["hand_pos"].tolist()
             result["gripper_distance"] = state["gripper_distance"]
             result["info_success"] = bool(info.get("success", info.get("is_success", False)))
-            if result["info_success"] or distance <= self.goal_tolerance:
+            stable_steps = stable_steps + 1 if (
+                distance <= self.goal_tolerance
+                and state["gripper_distance"] > self.gripper_closed_threshold
+                and float(np.linalg.norm(state["puck_pos"] - previous_puck)) < 0.001
+            ) else 0
+            success = (stable_steps >= 10 if self.strict_release else
+                       result["info_success"] or distance <= self.goal_tolerance)
+            if success:
                 result["success"] = True
                 self._held_symbolic_object = None
                 break

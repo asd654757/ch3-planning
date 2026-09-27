@@ -41,9 +41,14 @@ def stable_goal_check(executor, steps=10):
     stable = True
     completed = 0
     for _ in range(steps):
-        _, _, terminated, truncated, _ = executor._env._env.step(
-            np.array([0.0, 0.0, 0.0, 0.0])
-        )
+        try:
+            _, _, terminated, truncated, _ = executor._env._env.step(
+                np.array([0.0, 0.0, 0.0, 0.0])
+            )
+        except ValueError as exc:
+            if "reset the env manually" not in str(exc):
+                raise
+            return False, completed
         completed += 1
         raw = executor._state()
         stable = stable and (
@@ -67,7 +72,8 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False):
     plan = build_smoke_plan()
     executable = compile_plan(plan, registry)
     executor = MetaWorldPlanExecutor(
-        seed=seed, strict_release=True, supported_table_goal=supported_table_goal,
+        seed=seed, strict_release=True,
+        supported_table_goal=supported_table_goal and perturbation != "post_grasp_slip",
     )
     trace = []
     try:
@@ -85,23 +91,36 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False):
                 failed_index = index
                 break
             if perturbation == "post_grasp_slip" and index == 0:
+                if supported_table_goal:
+                    env = executor._env._env.unwrapped
+                    env._target_pos[2] = float(initial["initial_puck_pos"][2])
+                    env.model.site("goal").pos[:] = env._target_pos
                 # Release by control, without teleportation or episode reset.
-                for _ in range(25):
+                # Allow the gripper to open and the released puck to settle
+                # before deciding whether the disturbance actually occurred.
+                for _ in range(30):
                     _, _, terminated, truncated, _ = executor._env._env.step(
                         np.array([0.0, 0.0, 0.0, -1.0])
                     )
                     disturbance_steps += 1
                     if terminated or truncated:
                         break
+                    raw = executor._state()
+                    if (raw["gripper_distance"] > executor.gripper_closed_threshold
+                            and raw["puck_pos"][2] < executor.lifted_height_threshold):
+                        break
                 slipped, _ = observe(executor)
-                perturbation_applied = not slipped.holding and slipped.at["red_cube_0"] == "table"
+                perturbation_applied = (not slipped.holding
+                                        and slipped.at["red_cube_0"] == "table")
                 failed_index = 1
                 break
         observed, before_distance = observe(executor)
         initial_failed = perturbation_applied or not trace[-1]["success"]
         recovery_reason = "not_requested"
         recovery_accepted = False
-        if initial_failed and method == "RETRY_SAME_SUFFIX":
+        if perturbation == "post_grasp_slip" and not perturbation_applied:
+            recovery_reason = "perturbation_not_realized"
+        if initial_failed and method == "RETRY_SAME_SUFFIX" and (perturbation != "post_grasp_slip" or perturbation_applied):
             for action in executable.steps[failed_index:]:
                 try:
                     result = executor.execute_step(action, max_steps=budget)
@@ -112,7 +131,7 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False):
                               "success": result.success, "steps": result.steps})
                 if not result.success:
                     break
-        elif initial_failed and method == "OBSERVED_SEARCH":
+        elif initial_failed and method == "OBSERVED_SEARCH" and (perturbation != "post_grasp_slip" or perturbation_applied):
             def execute_and_observe(before, action):
                 # Candidate validation already happened; compile only this action.
                 result = executor.execute_step(
@@ -146,6 +165,9 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False):
                 "recovery_accepted": recovery_accepted if method == "OBSERVED_SEARCH" else None,
                 "recovery_reason": recovery_reason, "trace": trace,
                 "supported_table_goal": supported_table_goal,
+                "target_height_changed_after_grasp": bool(
+                    supported_table_goal and perturbation == "post_grasp_slip"
+                ),
                 "strict_release": True,
                 "final_puck_pos": executor._state()["puck_pos"].tolist(),
                 "final_gripper_distance": executor._state()["gripper_distance"],

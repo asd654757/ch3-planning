@@ -78,14 +78,16 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
     executable = compile_plan(plan, registry)
     executor = MetaWorldPlanExecutor(
         seed=seed, strict_release=True,
-        supported_table_goal=supported_table_goal and perturbation != "post_grasp_slip",
-        # Ensure place_timeout actually reaches place; otherwise a failed
-        # grasp must not be mislabeled as a place disturbance.
-        phased_grasp=phased_grasp and perturbation == "place_timeout",
+        # The target and low-level primitive are fixed before the episode for
+        # every perturbation and recovery method. This keeps the comparison
+        # about recovery, rather than a controller or task-goal change.
+        supported_table_goal=supported_table_goal,
+        phased_grasp=phased_grasp,
     )
     trace = []
     try:
         initial = executor.reset()
+        initial_target_pos = list(initial["target_pos"])
         failed_index = 0 if perturbation == "grasp_timeout" else 1
         disturbance_steps = 0
         perturbation_applied = False
@@ -99,10 +101,6 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
                 failed_index = index
                 break
             if perturbation == "post_grasp_slip" and index == 0:
-                if supported_table_goal:
-                    env = executor._env._env.unwrapped
-                    env._target_pos[2] = float(initial["initial_puck_pos"][2])
-                    env.model.site("goal").pos[:] = env._target_pos
                 # Release by control, without teleportation or episode reset.
                 # Allow the gripper to open and the released puck to settle
                 # before deciding whether the disturbance actually occurred.
@@ -120,12 +118,15 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
                 slipped, _ = observe(executor)
                 perturbation_applied = (not slipped.holding
                                         and slipped.at["red_cube_0"] == "table")
+                post_failure_puck_pos = executor._state()["puck_pos"].tolist()
+                post_failure_gripper_distance = executor._state()["gripper_distance"]
                 failed_index = 1
                 break
+        if perturbation != "post_grasp_slip":
+            current = executor._state()
+            post_failure_puck_pos = current["puck_pos"].tolist()
+            post_failure_gripper_distance = current["gripper_distance"]
         observed, before_distance = observe(executor)
-        # Enable the identical primitive for every method *after* the common
-        # disturbance. This is a control ablation, not a planner improvement.
-        executor.phased_grasp = phased_grasp
         initial_failed = perturbation_applied or not trace[-1]["success"]
         actual_failed_step = failed_index + 1 if initial_failed else None
         recovery_reason = "not_requested"
@@ -174,13 +175,14 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
                 "success_definition": "10_steps_target_distance_open_gripper_and_position_stability",
                 "perturbation_applied": perturbation_applied if perturbation == "post_grasp_slip" else initial_failed,
                 "disturbance_steps": disturbance_steps,
+                "initial_target_pos": initial_target_pos,
+                "post_failure_puck_pos": post_failure_puck_pos,
+                "post_failure_gripper_distance": post_failure_gripper_distance,
                 "terminal_observation_steps": observation_steps,
                 "recovery_accepted": recovery_accepted if method == "OBSERVED_SEARCH" else None,
                 "recovery_reason": recovery_reason, "trace": trace,
                 "supported_table_goal": supported_table_goal,
-                "target_height_changed_after_grasp": bool(
-                    supported_table_goal and perturbation == "post_grasp_slip"
-                ),
+                "target_height_changed_after_grasp": False,
                 "strict_release": True,
                 "phased_grasp_after_failure": phased_grasp,
                 "final_puck_pos": executor._state()["puck_pos"].tolist(),

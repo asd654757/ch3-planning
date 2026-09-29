@@ -218,6 +218,7 @@ class PlanRepairer:
         if state_visibility == "sparse":
             prompt_input.pop("current_state", None)
         if task.get("visual_feedback"):
+            bounded_visual = task.get("visual_feedback_protocol") == "bounded_execution_observation_v1"
             if state_visibility == "sparse":
                 authority_text = (
                     "The closed-world objects and remaining_goal_facts are "
@@ -232,9 +233,15 @@ class PlanRepairer:
                 {
                     "role": "auxiliary execution observation",
                     "policy": [
-                        "Use the image only to confirm that execution failed.",
-                        "Do not infer object IDs from the image.",
-                        "Do not add, remove, or replace any object.",
+                        (
+                            "Use the image to infer only observable execution facts, such as "
+                            "whether the target appears to remain on the table, appears inside "
+                            "the goal region, or whether the latest action appears incomplete."
+                            if bounded_visual else
+                            "Use the image only to confirm that execution failed."
+                        ),
+                        "Do not create new object IDs or replace any closed-world object.",
+                        "Do not treat visual inference as verified truth; deterministic validation remains authoritative.",
                         authority_text,
                     ],
                 }
@@ -419,13 +426,22 @@ class PlanRepairer:
         }
         if task.get("visual_feedback"):
             if state_visibility == "sparse":
-                render_values["visual_guidance"] = (
-                    "Image policy: the attached frame only confirms the latest "
-                    "execution failure. It cannot introduce object IDs, replace "
-                    "the closed-world object list, or create post-execution "
-                    "state. Use only the instruction, object IDs, goal facts, "
-                    "remaining_goal_facts, and goal_action_skeleton."
-                )
+                if task.get("visual_feedback_protocol") == "bounded_execution_observation_v1":
+                    render_values["visual_guidance"] = (
+                        "Image policy: use the attached frame as a bounded execution observation. "
+                        "You may infer whether the target appears to remain on the table, appears "
+                        "inside the goal region, or whether the latest action appears incomplete. "
+                        "Do not invent object IDs, replace closed-world objects, or bypass "
+                        "deterministic validation. Visual evidence is advisory, not verified state."
+                    )
+                else:
+                    render_values["visual_guidance"] = (
+                        "Image policy: the attached frame only confirms the latest "
+                        "execution failure. It cannot introduce object IDs, replace "
+                        "the closed-world object list, or create post-execution "
+                        "state. Use only the instruction, object IDs, goal facts, "
+                        "remaining_goal_facts, and goal_action_skeleton."
+                    )
             else:
                 render_values["visual_guidance"] = (
                     "Image policy: the attached frame only confirms the latest "

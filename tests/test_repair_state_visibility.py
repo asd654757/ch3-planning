@@ -86,3 +86,26 @@ def test_sparse_state_prompt_omits_post_execution_state() -> None:
     assert '"required_transports"' not in prompt
     assert '"remaining_goal_facts"' in prompt
     assert "No structured post-execution state" in prompt
+
+
+def test_bounded_visual_protocol_allows_observation_but_preserves_closed_world() -> None:
+    task = {
+        "instruction": "Use the right arm to push the red cube to the goal pad.",
+        "objects": ["red_cube", "goal_pad"],
+        "goal": {"facts": ["pushed_to(red_cube, goal_pad)"]},
+        "state_visibility": "sparse",
+        "visual_feedback": True,
+        "visual_feedback_protocol": "bounded_execution_observation_v1",
+        "image_path": "/tmp/frozen-failure-frame.png",
+    }
+    plan = ModelPlan.model_validate({"actions": [{"step_id": 1, "skill": "push", "object_id": "red_cube", "target_id": "goal_pad", "arm": "right"}]})
+    state = WorldState.table_scene(task["objects"])
+    validation = ValidationResult(valid=False, first_invalid_step=1, error_code=None, message="metaworld_execution_failure", layer="execution", validated_prefix=[], final_state=state)
+    client = CaptureClient()
+    repairer = PlanRepairer(client, max_tokens=64, json_mode=True)
+    repairer.repair(repair_mode="R1_FROM_STATE", task=task, initial_generation=PlanGeneration(plan=plan, response=VLMResponse(content="mock", model="mock", latency_ms=0)), validation=validation, initial_state=state)
+    prompt = client.user_prompts[0]
+    assert "bounded execution observation" in prompt
+    assert "Do not invent object IDs" in prompt
+    assert "current_state" not in prompt
+    assert client.image_paths == ["/tmp/frozen-failure-frame.png"]

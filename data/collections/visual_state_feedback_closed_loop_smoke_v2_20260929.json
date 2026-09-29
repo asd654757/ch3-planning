@@ -1,0 +1,673 @@
+{
+  "completed_at_utc": "2026-09-29T09:16:01.914011+00:00",
+  "record_type": "sim_closed_loop_summary",
+  "benchmark": "sim_closed_loop_pilot_v1",
+  "episodes": 3,
+  "successes": 3,
+  "success_rate": 1.0,
+  "vlm_calls": 4,
+  "replan_rounds": 1,
+  "summary_by_family": {
+    "pick_place": {
+      "episodes": 1,
+      "successes": 1,
+      "success_rate": 1.0,
+      "vlm_calls": 1,
+      "replan_rounds": 0
+    },
+    "push": {
+      "episodes": 1,
+      "successes": 1,
+      "success_rate": 1.0,
+      "vlm_calls": 2,
+      "replan_rounds": 1
+    },
+    "press": {
+      "episodes": 1,
+      "successes": 1,
+      "success_rate": 1.0,
+      "vlm_calls": 1,
+      "replan_rounds": 0
+    }
+  },
+  "visual_feedback": true,
+  "execution_perturbation": {
+    "enabled": true,
+    "initial_max_steps_per_primitive": 60,
+    "repair_max_steps_per_primitive": 300
+  },
+  "execution_protocol": "VLM task plan -> deterministic validator -> homogeneous MetaWorld segment -> state feedback + current rendered frame -> R1/R1_FROM_STATE repair",
+  "limitation": "Online visual-state feedback closed loop; symbolic state is still provided by the simulator adapter, so this is not a vision-only state-estimation benchmark. Homogeneous segments use fresh episodes under the current MetaWorld adapter.",
+  "elapsed_s": 10.926,
+  "output": "data/collections/visual_state_feedback_closed_loop_smoke_v2_20260929.json",
+  "episode_detail": [
+    {
+      "record_type": "sim_closed_loop_episode",
+      "task_id": "multiskill_pick_place_000",
+      "task_family": "pick_place",
+      "seed": 0,
+      "final_success": true,
+      "final_reject_reason": null,
+      "vlm_calls": 1,
+      "replan_rounds": 0,
+      "attempts": [
+        {
+          "round": 0,
+          "label": "INITIAL",
+          "plan": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "blue_tray_1",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 2,
+                "skill": "place",
+                "object_id": "blue_tray_1",
+                "target_id": "red_cube_0",
+                "arm": "right"
+              }
+            ]
+          },
+          "generation": {
+            "repair_mode": null,
+            "accepted": null,
+            "reject_reason": null,
+            "parse_error": null,
+            "infeasible_reason": null,
+            "prompt_id": "initial_planning",
+            "prompt_hash": "f7fbf05c367d76765f0cb8234ec420005ececa3d9e3ca659bee6a3408d576615",
+            "response": {
+              "model": "mock-vlm",
+              "latency_ms": 1,
+              "prompt_tokens": 10,
+              "completion_tokens": 20,
+              "total_tokens": 30,
+              "finish_reason": "stop"
+            }
+          },
+          "parse_error": null,
+          "infeasible_reason": null,
+          "repair_mode": null,
+          "accepted": null,
+          "reject_reason": null,
+          "vlm_calls": 1,
+          "symbolic_valid": true,
+          "error_code": null,
+          "error_layer": null,
+          "error_message": "",
+          "execution_max_steps": 60,
+          "segments": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true,
+                true
+              ],
+              "final_puck_target_distance": 0.07734646894776732,
+              "elapsed_s": 0.16717123985290527,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "adflow_grasp",
+                    "primitive": "grasp",
+                    "args": {
+                      "object_id": "blue_tray_1",
+                      "arm": "right"
+                    },
+                    "success": true,
+                    "steps": 39,
+                    "elapsed_s": 0.10779190063476562,
+                    "final_puck_pos": [
+                      0.060255156784652875,
+                      0.7215976956471206,
+                      0.04480676986500113
+                    ],
+                    "final_hand_pos": [
+                      0.061162950064701946,
+                      0.7205497870575188,
+                      0.0833442489558231
+                    ],
+                    "target_pos": [
+                      0.02271777412654634,
+                      0.8673621210647996,
+                      0.2824866704761664
+                    ],
+                    "final_puck_target_distance": 0.3240795282168775,
+                    "min_puck_target_distance": 0.2813326464680212,
+                    "gripper_distance": 0.4773227619823684,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  },
+                  {
+                    "step_id": 2,
+                    "policy_id": "adflow_place",
+                    "primitive": "place",
+                    "args": {
+                      "object_id": "blue_tray_1",
+                      "arm": "right",
+                      "target_id": "red_cube_0"
+                    },
+                    "success": true,
+                    "steps": 18,
+                    "elapsed_s": 0.05850577354431152,
+                    "final_puck_pos": [
+                      0.020355833137265786,
+                      0.8378983941357222,
+                      0.21101089633625342
+                    ],
+                    "final_hand_pos": [
+                      0.02299915289401961,
+                      0.8332975122874813,
+                      0.2503810757423656
+                    ],
+                    "target_pos": [
+                      0.02271777412654634,
+                      0.8673621210647996,
+                      0.2824866704761664
+                    ],
+                    "final_puck_target_distance": 0.2813326464680212,
+                    "min_puck_target_distance": 0.07734646894776732,
+                    "gripper_distance": 0.5142818851203846,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  0.020355833137265786,
+                  0.8378983941357222,
+                  0.21101089633625342
+                ],
+                "target_pos": [
+                  0.02271777412654634,
+                  0.8673621210647996,
+                  0.2824866704761664
+                ],
+                "final_puck_target_distance": 0.07734646894776732,
+                "elapsed_s": 0.16717123985290527,
+                "task": "metaworld-pick-place-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "sim_tasks": [
+            "metaworld-pick-place-v3"
+          ],
+          "sim_success": true,
+          "failure_frame": null,
+          "symbolic_state": {
+            "at": {
+              "blue_tray_1": "red_cube_0",
+              "red_cube_0": "table"
+            },
+            "holding": {},
+            "pushed": [],
+            "pressed": [],
+            "facts": [
+              "hand_empty(left)",
+              "hand_empty(right)",
+              "on(blue_tray_1, red_cube_0)",
+              "on(red_cube_0, table)"
+            ]
+          },
+          "completed_prefix_actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "blue_tray_1",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "blue_tray_1",
+              "target_id": "red_cube_0",
+              "arm": "right"
+            }
+          ]
+        }
+      ],
+      "episode_index": 1
+    },
+    {
+      "record_type": "sim_closed_loop_episode",
+      "task_id": "multiskill_push_012",
+      "task_family": "push",
+      "seed": 0,
+      "final_success": true,
+      "final_reject_reason": null,
+      "vlm_calls": 2,
+      "replan_rounds": 1,
+      "attempts": [
+        {
+          "round": 0,
+          "label": "INITIAL",
+          "plan": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "push",
+                "object_id": "goal_pad",
+                "target_id": "goal_pad",
+                "arm": "right"
+              }
+            ]
+          },
+          "generation": {
+            "repair_mode": null,
+            "accepted": null,
+            "reject_reason": null,
+            "parse_error": null,
+            "infeasible_reason": null,
+            "prompt_id": "initial_planning",
+            "prompt_hash": "57bf80af597821571f9f25387a5ba7248787b08321dec92bdd319befa8fbc997",
+            "response": {
+              "model": "mock-vlm",
+              "latency_ms": 1,
+              "prompt_tokens": 10,
+              "completion_tokens": 20,
+              "total_tokens": 30,
+              "finish_reason": "stop"
+            }
+          },
+          "parse_error": null,
+          "infeasible_reason": null,
+          "repair_mode": null,
+          "accepted": null,
+          "reject_reason": null,
+          "vlm_calls": 1,
+          "symbolic_valid": true,
+          "error_code": null,
+          "error_layer": null,
+          "error_message": "",
+          "execution_max_steps": 60,
+          "segments": [
+            {
+              "segment_index": 0,
+              "success": false,
+              "step_results": [
+                false
+              ],
+              "final_puck_target_distance": 0.07217609078489065,
+              "elapsed_s": 0.1496737003326416,
+              "sim_result": {
+                "success": false,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "metaworld_push",
+                    "primitive": "push",
+                    "args": {
+                      "object_id": "goal_pad",
+                      "arm": "right",
+                      "target_id": "goal_pad"
+                    },
+                    "success": false,
+                    "steps": 60,
+                    "elapsed_s": 0.14921045303344727,
+                    "final_puck_pos": [
+                      0.08763759435847053,
+                      0.795028231233145,
+                      0.029643608340925824
+                    ],
+                    "final_hand_pos": [
+                      0.08863261253395803,
+                      0.7918937359653934,
+                      0.06413714577292813
+                    ],
+                    "target_pos": [
+                      0.09013367383064269,
+                      0.8665099946043542,
+                      0.019973283961679866
+                    ],
+                    "final_puck_target_distance": 0.21023118425488216,
+                    "min_puck_target_distance": 0.07217609078489065,
+                    "gripper_distance": 1.0,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  0.08763759435847053,
+                  0.795028231233145,
+                  0.029643608340925824
+                ],
+                "target_pos": [
+                  0.09013367383064269,
+                  0.8665099946043542,
+                  0.019973283961679866
+                ],
+                "final_puck_target_distance": 0.07217609078489065,
+                "elapsed_s": 0.1496737003326416,
+                "task": "metaworld-push-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              },
+              "failure_frame": "data/collections/visual_state_feedback_closed_loop_smoke_v2_frames/multiskill_push_012_seed0_round_0_segment0_failure.png"
+            }
+          ],
+          "sim_tasks": [
+            "metaworld-push-v3"
+          ],
+          "sim_success": false,
+          "failure_frame": "data/collections/visual_state_feedback_closed_loop_smoke_v2_frames/multiskill_push_012_seed0_round_0_segment0_failure.png",
+          "symbolic_state": {
+            "at": {
+              "goal_pad": "table",
+              "red_cube_24": "table"
+            },
+            "holding": {},
+            "pushed": [],
+            "pressed": [],
+            "facts": [
+              "hand_empty(left)",
+              "hand_empty(right)",
+              "on(goal_pad, table)",
+              "on(red_cube_24, table)"
+            ]
+          },
+          "completed_prefix_actions": [],
+          "failure_stage": "metaworld_execution"
+        },
+        {
+          "round": 1,
+          "label": "R1_FROM_STATE",
+          "plan": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "push",
+                "object_id": "goal_pad",
+                "target_id": "goal_pad",
+                "arm": "right"
+              }
+            ]
+          },
+          "generation": {
+            "repair_mode": "R1_FROM_STATE",
+            "accepted": true,
+            "reject_reason": null,
+            "parse_error": null,
+            "infeasible_reason": null,
+            "prompt_id": "repair",
+            "prompt_hash": "29ddd341b3ec28d410c4bebfed97152b4a0083bb5da0104463650dd86eb6aeaf",
+            "response": {
+              "model": "mock-vlm",
+              "latency_ms": 1,
+              "prompt_tokens": 10,
+              "completion_tokens": 20,
+              "total_tokens": 30,
+              "finish_reason": "stop"
+            }
+          },
+          "parse_error": null,
+          "infeasible_reason": null,
+          "repair_mode": "R1_FROM_STATE",
+          "accepted": true,
+          "reject_reason": null,
+          "vlm_calls": 1,
+          "symbolic_valid": true,
+          "error_code": null,
+          "error_layer": null,
+          "error_message": "",
+          "execution_max_steps": 300,
+          "segments": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true
+              ],
+              "final_puck_target_distance": 0.06603591097748143,
+              "elapsed_s": 0.16158771514892578,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "metaworld_push",
+                    "primitive": "push",
+                    "args": {
+                      "object_id": "goal_pad",
+                      "arm": "right",
+                      "target_id": "goal_pad"
+                    },
+                    "success": true,
+                    "steps": 58,
+                    "elapsed_s": 0.1611485481262207,
+                    "final_puck_pos": [
+                      0.024872648652055938,
+                      0.7928832823723588,
+                      0.026721969741461335
+                    ],
+                    "final_hand_pos": [
+                      0.03290392246104406,
+                      0.7900962166323744,
+                      0.06268617665753995
+                    ],
+                    "target_pos": [
+                      0.06880925126265047,
+                      0.8417174070180441,
+                      0.019973283961679866
+                    ],
+                    "final_puck_target_distance": 0.22393285836975743,
+                    "min_puck_target_distance": 0.06603591097748143,
+                    "gripper_distance": 1.0,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": false
+                  }
+                ],
+                "final_puck_pos": [
+                  0.024872648652055938,
+                  0.7928832823723588,
+                  0.026721969741461335
+                ],
+                "target_pos": [
+                  0.06880925126265047,
+                  0.8417174070180441,
+                  0.019973283961679866
+                ],
+                "final_puck_target_distance": 0.06603591097748143,
+                "elapsed_s": 0.16158771514892578,
+                "task": "metaworld-push-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "sim_tasks": [
+            "metaworld-push-v3"
+          ],
+          "sim_success": true,
+          "failure_frame": null,
+          "symbolic_state": {
+            "at": {
+              "goal_pad": "goal_pad",
+              "red_cube_24": "table"
+            },
+            "holding": {},
+            "pushed": [
+              "goal_pad"
+            ],
+            "pressed": [],
+            "facts": [
+              "hand_empty(left)",
+              "hand_empty(right)",
+              "on(goal_pad, goal_pad)",
+              "on(red_cube_24, table)",
+              "pushed_to(goal_pad, goal_pad)"
+            ]
+          },
+          "completed_prefix_actions": [
+            {
+              "step_id": 1,
+              "skill": "push",
+              "object_id": "goal_pad",
+              "target_id": "goal_pad",
+              "arm": "right"
+            }
+          ]
+        }
+      ],
+      "episode_index": 2
+    },
+    {
+      "record_type": "sim_closed_loop_episode",
+      "task_id": "multiskill_press_024",
+      "task_family": "press",
+      "seed": 0,
+      "final_success": true,
+      "final_reject_reason": null,
+      "vlm_calls": 1,
+      "replan_rounds": 0,
+      "attempts": [
+        {
+          "round": 0,
+          "label": "INITIAL",
+          "plan": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "press",
+                "object_id": "red_button_36",
+                "target_id": null,
+                "arm": "right"
+              }
+            ]
+          },
+          "generation": {
+            "repair_mode": null,
+            "accepted": null,
+            "reject_reason": null,
+            "parse_error": null,
+            "infeasible_reason": null,
+            "prompt_id": "initial_planning",
+            "prompt_hash": "cd1911b16c6431142683bf025739610f546ad58fad8b5cecf00d719270935799",
+            "response": {
+              "model": "mock-vlm",
+              "latency_ms": 1,
+              "prompt_tokens": 10,
+              "completion_tokens": 20,
+              "total_tokens": 30,
+              "finish_reason": "stop"
+            }
+          },
+          "parse_error": null,
+          "infeasible_reason": null,
+          "repair_mode": null,
+          "accepted": null,
+          "reject_reason": null,
+          "vlm_calls": 1,
+          "symbolic_valid": true,
+          "error_code": null,
+          "error_layer": null,
+          "error_message": "",
+          "execution_max_steps": 60,
+          "segments": [
+            {
+              "segment_index": 0,
+              "success": true,
+              "step_results": [
+                true
+              ],
+              "final_puck_target_distance": 0.019285491563971635,
+              "elapsed_s": 0.04280495643615723,
+              "sim_result": {
+                "success": true,
+                "steps": [
+                  {
+                    "step_id": 1,
+                    "policy_id": "metaworld_button_press",
+                    "primitive": "press",
+                    "args": {
+                      "object_id": "red_button_36",
+                      "arm": "right"
+                    },
+                    "success": true,
+                    "steps": 59,
+                    "elapsed_s": 0.04256129264831543,
+                    "final_puck_pos": [
+                      -0.020136477965711316,
+                      0.7395026695685705,
+                      0.115
+                    ],
+                    "final_hand_pos": [
+                      -0.019235573965800338,
+                      0.6987095554907562,
+                      0.05190255226081615
+                    ],
+                    "target_pos": [
+                      -0.020136477965711316,
+                      0.7587881611325421,
+                      0.115
+                    ],
+                    "final_puck_target_distance": 0.09300000000000008,
+                    "min_puck_target_distance": 0.019285491563971635,
+                    "gripper_distance": 1.0,
+                    "terminated": false,
+                    "truncated": false,
+                    "info_success": true
+                  }
+                ],
+                "final_puck_pos": [
+                  -0.020136477965711316,
+                  0.7395026695685705,
+                  0.115
+                ],
+                "target_pos": [
+                  -0.020136477965711316,
+                  0.7587881611325421,
+                  0.115
+                ],
+                "final_puck_target_distance": 0.019285491563971635,
+                "elapsed_s": 0.04280495643615723,
+                "task": "metaworld-button-press-v3",
+                "record_type": "sim_metaworld_plan_execution"
+              }
+            }
+          ],
+          "sim_tasks": [
+            "metaworld-button-press-v3"
+          ],
+          "sim_success": true,
+          "failure_frame": null,
+          "symbolic_state": {
+            "at": {
+              "red_button_36": "table"
+            },
+            "holding": {},
+            "pushed": [],
+            "pressed": [
+              "red_button_36"
+            ],
+            "facts": [
+              "hand_empty(left)",
+              "hand_empty(right)",
+              "on(red_button_36, table)",
+              "pressed(red_button_36)"
+            ]
+          },
+          "completed_prefix_actions": [
+            {
+              "step_id": 1,
+              "skill": "press",
+              "object_id": "red_button_36",
+              "target_id": null,
+              "arm": "right"
+            }
+          ]
+        }
+      ],
+      "episode_index": 3
+    }
+  ]
+}

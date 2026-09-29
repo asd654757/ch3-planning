@@ -85,6 +85,16 @@ def symbolic_state_record(state: WorldState) -> dict[str, Any]:
     }
 
 
+def world_state_from_record(task: dict[str, Any], record: dict[str, Any]) -> WorldState:
+    """Restore the typed state used by repair and validation from JSON data."""
+    state = WorldState.table_scene(task["objects"])
+    state.at = dict(record.get("at", {}))
+    state.holding = dict(record.get("holding", {}))
+    state.pushed = set(record.get("pushed", []))
+    state.pressed = set(record.get("pressed", []))
+    return state
+
+
 def execution_feedback_validation(
     *,
     failed_plan: ModelPlan,
@@ -137,7 +147,7 @@ def run_closed_loop_episode(
         else:
             prev = attempts[-1]
             completed_prefix = prev.get("completed_prefix_actions", [])
-            current_state = prev["symbolic_state"].copy()
+            current_state = world_state_from_record(task, prev["symbolic_state"])
             # Execution segments are the atomic interface units in this pilot.
             # A partially completed pick/place pair is treated as failed, so a
             # fresh episode does not silently assume simulator-internal grasp
@@ -203,7 +213,10 @@ def run_closed_loop_episode(
             attempts.append(attempt)
             break
 
-        validation = validator.validate(plan, world_state_from_task(task))
+        validation = validator.validate(
+            plan,
+            current_state if round_index > 0 else world_state_from_task(task),
+        )
         attempt["symbolic_valid"] = validation.valid
         attempt["error_code"] = validation.error_code.value if validation.error_code else None
         attempt["error_layer"] = validation.layer

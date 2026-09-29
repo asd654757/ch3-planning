@@ -1,0 +1,11 @@
+[sim-closed-loop] episode=1/3 task=multiskill_pick_place_000 family=pick_place seed=0 start
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/metaworld/policies/policy.py:49: UserWarning: Constant(s) may be too high. Environments clip response to [-1, 1]
+  warnings.warn(
+[sim-closed-loop] episode=1/3 success=True vlm_calls=1 replans=0 reason=None
+[sim-closed-loop] episode=2/3 task=multiskill_push_012 family=push seed=0 start
+[sim-closed-loop] episode=2/3 success=True vlm_calls=2 replans=1 reason=None
+[sim-closed-loop] episode=3/3 task=multiskill_press_024 family=press seed=0 start
+[sim-closed-loop] episode=3/3 success=True vlm_calls=1 replans=0 reason=None
+{"completed_at_utc": "2026-09-29T09:16:01.914011+00:00", "record_type": "sim_closed_loop_summary", "benchmark": "sim_closed_loop_pilot_v1", "episodes": 3, "successes": 3, "success_rate": 1.0, "vlm_calls": 4, "replan_rounds": 1, "summary_by_family": {"pick_place": {"episodes": 1, "successes": 1, "success_rate": 1.0, "vlm_calls": 1, "replan_rounds": 0}, "push": {"episodes": 1, "successes": 1, "success_rate": 1.0, "vlm_calls": 2, "replan_rounds": 1}, "press": {"episodes": 1, "successes": 1, "success_rate": 1.0, "vlm_calls": 1, "replan_rounds": 0}}, "visual_feedback": true, "execution_perturbation": {"enabled": true, "initial_max_steps_per_primitive": 60, "repair_max_steps_per_primitive": 300}, "execution_protocol": "VLM task plan -> deterministic validator -> homogeneous MetaWorld segment -> state feedback + current rendered frame -> R1/R1_FROM_STATE repair", "limitation": "Online visual-state feedback closed loop; symbolic state is still provided by the simulator adapter, so this is not a vision-only state-estimation benchmark. Homogeneous segments use fresh episodes under the current MetaWorld adapter.", "elapsed_s": 10.926, "output": "data/collections/visual_state_feedback_closed_loop_smoke_v2_20260929.json"}

@@ -1,0 +1,17 @@
+[sim-closed-loop] episode=1/3 task=multiskill_pick_place_000 family=pick_place seed=0 start
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+/root/autodl-tmp/.venvs/metaworld-lerobot/lib/python3.10/site-packages/metaworld/policies/policy.py:49: UserWarning: Constant(s) may be too high. Environments clip response to [-1, 1]
+  warnings.warn(
+[sim-closed-loop] episode=1/3 success=True vlm_calls=1 replans=0 reason=None
+[sim-closed-loop] episode=2/3 task=multiskill_push_012 family=push seed=0 start
+Traceback (most recent call last):
+  File "/root/autodl-tmp/ch3-planning/scripts/sim_closed_loop.py", line 578, in <module>
+    main()
+  File "/root/autodl-tmp/ch3-planning/scripts/sim_closed_loop.py", line 495, in main
+    record = run_closed_loop_episode(
+  File "/root/autodl-tmp/ch3-planning/scripts/sim_closed_loop.py", line 170, in run_closed_loop_episode
+    generation = repairer.repair(
+  File "/root/autodl-tmp/ch3-planning/ch3/vlm/repair.py", line 268, in repair
+    validation.final_state.facts()
+AttributeError: 'dict' object has no attribute 'facts'

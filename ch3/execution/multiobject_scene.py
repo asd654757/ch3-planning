@@ -6,7 +6,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 
-def build_scene_xml(source: Path, destination: Path) -> None:
+def build_scene_xml(source: Path, destination: Path, *, hide_goal_marker: bool = False) -> None:
     tree = ET.parse(source)
     root = tree.getroot()
     def expand(parent, directory):
@@ -33,6 +33,11 @@ def build_scene_xml(source: Path, destination: Path) -> None:
     world = root.find("worldbody")
     if world is None:
         raise ValueError("source scene has no worldbody")
+    if hide_goal_marker:
+        # Keep the named site for native reset code, but exclude it from RGB.
+        for site in world.iter("site"):
+            if site.get("name") == "goal":
+                site.set("rgba", "0 0 0 0")
     for name, rgba, x in (("candidate_blue", "0.05 0.2 0.95 1", -0.12),
                           ("candidate_yellow", "0.95 0.8 0.05 1", 0.12)):
         body = ET.SubElement(world, "body", name=name, pos=f"{x} 0.68 0.025")

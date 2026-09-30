@@ -7,7 +7,8 @@ from pathlib import Path
 
 from ch3.vlm.client import DashScopeVLMClient
 from ch3.vlm.scene_grounding import GroundingParseError
-from ch3.vlm.staged_grounding import StagedGrounder
+from ch3.vlm.staged_grounding import (StagedGrounder, merge_observation,
+                                      missing_observation_requests)
 from scripts.unstructured_grounding_pilot import load_manifest
 
 
@@ -49,6 +50,19 @@ def main():
                 )
                 record["stages"][phase] = provenance(response)
                 record["grounding"] = scene.model_dump(mode="json")
+                requests = missing_observation_requests(scene, arms={"right"})
+                record["observation_requests"] = requests
+                if scene.needs_observation and requests:
+                    phase = "observation"
+                    answer, response = grounder.observe_missing(
+                        localization=located, instruction=row["instruction"],
+                        image_path=semantic_image, requests=requests,
+                        arms=["right"], seed=row["seed"],
+                    )
+                    record["stages"][phase] = provenance(response)
+                    record["observation"] = answer.model_dump(mode="json")
+                    scene = merge_observation(scene, answer)
+                    record["grounding_after_observation"] = scene.model_dump(mode="json")
                 state, goal = scene.to_planning_input(arms={"right"})
                 record.update({"accepted_for_planning": True, "parsed_goal": goal.facts,
                                "estimated_facts": sorted(state.facts() | state.empty_hand_facts({"right"}))})

@@ -1,6 +1,7 @@
 import pytest
 
-from ch3.vlm.staged_grounding import ImageBox, Localization
+from ch3.vlm.staged_grounding import (ImageBox, Localization, ObservationAnswer,
+                                      merge_observation, missing_observation_requests)
 
 
 def test_declared_coordinate_conversion():
@@ -49,3 +50,29 @@ def test_unknown_hand_remains_rejected_without_truth_fill():
     })
     with pytest.raises(ValueError, match="additional observation"):
         scene.to_planning_input(arms={"right"})
+
+
+def test_missing_requests_are_derived_from_observed_facts():
+    from ch3.vlm.scene_grounding import GroundedScene
+    scene = GroundedScene.model_validate({
+        "entities": [
+            {"object_id": "red", "description": "red", "confidence": .95},
+            {"object_id": "blue", "description": "blue", "confidence": .95},
+        ], "observed": [{"predicate": "on", "subject": "red", "target": "table", "confidence": .95}],
+        "goal": [{"predicate": "on", "subject": "red", "target": "blue", "confidence": .95}],
+        "needs_observation": True, "uncertainty": ["missing"],
+    })
+    assert missing_observation_requests(scene, arms={"right"}) == ["location:blue", "hand_state:right"]
+
+
+def test_unresolved_observation_cannot_be_accepted():
+    from ch3.vlm.scene_grounding import GroundedScene
+    scene = GroundedScene.model_validate({
+        "entities": [{"object_id": "red", "description": "red", "confidence": .95}],
+        "observed": [], "goal": [{"predicate": "on", "subject": "red", "target": "table", "confidence": .95}],
+        "needs_observation": True, "uncertainty": ["missing"],
+    })
+    answer = ObservationAnswer(observed=[], resolved=[], unresolved=["hand_state:right"], uncertainty=[])
+    merged = merge_observation(scene, answer)
+    assert merged.needs_observation
+    assert merged.observed == []

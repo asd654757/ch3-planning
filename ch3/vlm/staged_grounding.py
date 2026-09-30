@@ -53,6 +53,15 @@ class Semantics(StrictRecord):
     uncertainty: list[str]
 
 
+class ObservationAnswer(StrictRecord):
+    """A bounded answer to a machine-generated missing-evidence query."""
+
+    observed: list[Relation]
+    resolved: list[str]
+    unresolved: list[str]
+    uncertainty: list[str]
+
+
 class StagedGrounder:
     def __init__(self, client):
         self.client = client
@@ -111,3 +120,56 @@ class StagedGrounder:
                               goal=result.goal, needs_observation=result.needs_observation,
                               uncertainty=localization.uncertainty + result.uncertainty)
         return scene, response
+
+    def observe_missing(self, *, localization, instruction, image_path, requests,
+                        arms, seed):
+        """Ask only for listed missing facts; never let the model rewrite localization."""
+        response = self.client.complete(
+            system_prompt=(
+                "Answer only the listed visual-observation requests for the SAME scene. "
+                "Use only supplied local IDs and exact arm IDs. Do not invent IDs, goals, "
+                "or actions. A request is resolved only when the image provides evidence. "
+                "For an unseen or ambiguous fact, put its exact request string in unresolved "
+                "and explain the missing evidence. Do not guess an empty hand. Each arm is "
+                "either hand_empty or holding one object, never both. Return schema JSON only."
+            ),
+            user_prompt=json.dumps({"instruction": instruction,
+                                    "localization": localization.model_dump(mode="json"),
+                                    "requests": requests, "available_arms": arms,
+                                    "output_schema": ObservationAnswer.model_json_schema()}),
+            image_path=image_path, seed=seed, temperature=0.1, max_tokens=1200, json_mode=True,
+        )
+        try:
+            answer = ObservationAnswer.model_validate_json(response.content)
+            unknown = set(answer.unresolved)
+            if unknown - set(requests) or set(answer.resolved) - set(requests):
+                raise ValueError("observation answer references an undeclared request")
+        except ValueError as exc:
+            raise GroundingParseError(str(exc), response) from exc
+        return answer, response
+
+
+def missing_observation_requests(scene: GroundedScene, *, arms: set[str]) -> list[str]:
+    """Derive bounded queries from returned facts; truth is never consulted."""
+    objects = {entity.object_id for entity in scene.entities}
+    observed = {(item.predicate, item.subject, item.target) for item in scene.observed}
+    requests = [f"location:{object_id}" for object_id in sorted(objects)
+                if not any(p in {"on", "pushed_to", "holding"} and s == object_id
+                           for p, s, _ in observed)]
+    for arm in sorted(arms):
+        if not any((p == "hand_empty" and s == arm) or (p == "holding" and s == arm)
+                   for p, s, _ in observed):
+            requests.append(f"hand_state:{arm}")
+    return requests
+
+
+def merge_observation(scene: GroundedScene, answer: ObservationAnswer) -> GroundedScene:
+    """Merge only returned observations; unresolved evidence keeps the scene unsafe."""
+    # A relation is accepted only when its request was explicitly resolved. The
+    # answer schema currently uses request strings, so unresolved answers are
+    # retained for audit but their extra relations cannot silently complete state.
+    accepted = answer.observed if not answer.unresolved else []
+    return GroundedScene(entities=scene.entities, observed=scene.observed + accepted,
+                         goal=scene.goal,
+                         needs_observation=bool(answer.unresolved or answer.uncertainty),
+                         uncertainty=scene.uncertainty + answer.uncertainty + answer.unresolved)

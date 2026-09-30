@@ -54,3 +54,33 @@ def test_grounder_only_sends_allowlisted_inputs():
         skills=["pick", "place"], arms=["right"], seed=0,
     )
     assert result.entities[0].object_id == "block"
+
+
+@pytest.mark.parametrize("bbox", [None, [0, 0, 0, 1], [-0.1, 0, 1, 1], [0, 0, 1.1, 1]])
+def test_visual_bindings_reject_invalid_regions(bbox):
+    data = scene()
+    data["entities"][0]["bbox"] = bbox
+    with pytest.raises(ValueError):
+        GroundedScene.model_validate(data).visual_bindings()
+
+
+def test_visual_bindings_are_image_regions():
+    data = scene()
+    data["entities"][0]["bbox"] = [0.2, 0.3, 0.4, 0.5]
+    assert GroundedScene.model_validate(data).visual_bindings() == {"block": (0.2, 0.3, 0.4, 0.5)}
+
+
+def test_manifest_rejects_hidden_truth(tmp_path):
+    from scripts.unstructured_grounding_pilot import load_manifest
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps([{"case_id": "one", "instruction": "Pick red", "image_path": "frame.png", "seed": 0, "true_state": {}}]))
+    with pytest.raises(ValueError, match="public fields"):
+        load_manifest(manifest)
+
+
+def test_manifest_resolves_relative_images(tmp_path):
+    from scripts.unstructured_grounding_pilot import load_manifest
+    (tmp_path / "frame.png").write_bytes(b"fixture")
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps([{"case_id": "one", "instruction": "Pick red", "image_path": "frame.png", "seed": 0}]))
+    assert load_manifest(manifest)[0]["image_path"] == str(tmp_path / "frame.png")

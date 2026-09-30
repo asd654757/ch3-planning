@@ -52,3 +52,18 @@ evaluation, not unrestricted open-world robot control.
 Existing symbolic and frozen-plan benchmarks remain unchanged. The 18-point
 visual pilot with fresh execution episodes is only interface feasibility and
 does not demonstrate visual benefit or persistent-scene recovery.
+
+## Front-end pilot runner
+
+`scripts/unstructured_grounding_pilot.py` reads a public JSON list with exactly
+`case_id`, `instruction`, `image_path`, `seed` per case. Relative image paths
+are resolved against the manifest directory. Truth belongs in a separate
+evaluation file that this runner never reads. The runner refuses to overwrite
+an existing output. `--check-only` validates the manifest without model calls.
+
+Every grounded entity must have a normalized image bbox before planning input
+is accepted. These boxes are candidate visual regions, NOT physical handle
+bindings; distinct boxes do not guarantee distinct objects. The runner does
+not execute actions or score perception accuracy. Low-confidence/rejected
+cases remain in the output and denominator. Actual multi-object binding and
+persistent execution remain pending.

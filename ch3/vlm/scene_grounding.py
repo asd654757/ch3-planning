@@ -21,6 +21,7 @@ class Entity(StrictRecord):
     object_id: str = Field(min_length=1)
     description: str = Field(min_length=1)
     confidence: float = Field(ge=0, le=1)
+    bbox: tuple[float, float, float, float] | None = None
 
 
 class Relation(StrictRecord):
@@ -36,6 +37,22 @@ class GroundedScene(StrictRecord):
     goal: list[Relation]
     needs_observation: bool
     uncertainty: list[str]
+
+    def visual_bindings(self) -> dict[str, tuple[float, float, float, float]]:
+        """Return image-space regions, not simulator body handles."""
+        bindings = {}
+        for entity in self.entities:
+            if entity.bbox is None:
+                raise ValueError("missing visual region")
+            x0, y0, x1, y1 = entity.bbox
+            if not (0 <= x0 < x1 <= 1 and 0 <= y0 < y1 <= 1):
+                raise ValueError("invalid normalized visual region")
+            if entity.object_id in bindings:
+                raise ValueError("duplicate visual identifier")
+            if entity.bbox in bindings.values():
+                raise ValueError("ambiguous identical visual regions")
+            bindings[entity.object_id] = entity.bbox
+        return bindings
 
     def to_planning_input(
         self, *, arms: set[str], threshold: float = 0.85,
@@ -122,7 +139,9 @@ class SceneGrounder:
             system_prompt=(
                 "Infer task goals from the instruction and current state ONLY from the image. "
                 "Assign local entity IDs and use them consistently. These IDs are not executor "
-                "bindings. Do not infer that instructed actions already happened. table is the "
+                "bindings. For every entity provide bbox=[x_min,y_min,x_max,y_max], "
+                "normalized to [0,1] with origin at the image top left. "
+                "Do not infer that instructed actions already happened. table is the "
                 "reserved support surface. holding uses arm as subject and object as target; "
                 "hand_empty uses arm as subject; on/pushed_to use object and surface; pressed "
                 "uses object as subject. Report confidence honestly. If hand state, object "

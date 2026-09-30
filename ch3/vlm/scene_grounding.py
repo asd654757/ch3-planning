@@ -21,7 +21,9 @@ class Entity(StrictRecord):
     object_id: str = Field(min_length=1)
     description: str = Field(min_length=1)
     confidence: float = Field(ge=0, le=1)
-    bbox: tuple[float, float, float, float] | None = None
+    bbox: tuple[
+        float, float, float, float
+    ] | None = Field(None, description="Normalized image box; EACH coordinate between 0 and 1, NOT pixels or 0-1000.")
 
 
 class Relation(StrictRecord):
@@ -141,6 +143,10 @@ class SceneGrounder:
                 "Assign local entity IDs and use them consistently. These IDs are not executor "
                 "bindings. For every entity provide bbox=[x_min,y_min,x_max,y_max], "
                 "normalized to [0,1] with origin at the image top left. "
+                "Example bbox: [0.2,0.3,0.4,0.5], never [200,300,400,500]. "
+                "Use EXACT available_arms identifiers as subjects for hand relations. "
+                "Robot arms are not entities. Include all visible manipulable objects and "
+                "target surfaces, including distractors. "
                 "Do not infer that instructed actions already happened. table is the "
                 "reserved support surface. holding uses arm as subject and object as target; "
                 "hand_empty uses arm as subject; on/pushed_to use object and surface; pressed "

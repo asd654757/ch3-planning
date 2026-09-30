@@ -84,3 +84,15 @@ def test_manifest_resolves_relative_images(tmp_path):
     manifest = tmp_path / "manifest.json"
     manifest.write_text(json.dumps([{"case_id": "one", "instruction": "Pick red", "image_path": "frame.png", "seed": 0}]))
     assert load_manifest(manifest)[0]["image_path"] == str(tmp_path / "frame.png")
+
+
+def test_invalid_grounding_keeps_response_provenance():
+    from ch3.vlm.scene_grounding import GroundingParseError
+    class Client:
+        def complete(self, **kwargs):
+            return VLMResponse(content="not json", model="mock", latency_ms=1, total_tokens=7)
+    with pytest.raises(GroundingParseError) as error:
+        SceneGrounder(Client()).ground(instruction="Pick red", image_path="frame.png",
+                                      skills=["pick"], arms=["right"], seed=0)
+    assert error.value.response.content == "not json"
+    assert error.value.response.total_tokens == 7

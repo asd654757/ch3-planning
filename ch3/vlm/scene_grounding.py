@@ -13,6 +13,12 @@ from ch3.state.world_state import WorldState
 from ch3.vlm.client import DashScopeVLMClient, VLMResponse
 
 
+class GroundingParseError(ValueError):
+    def __init__(self, message: str, response: VLMResponse):
+        super().__init__(message)
+        self.response = response
+
+
 class StrictRecord(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -156,4 +162,8 @@ class SceneGrounder:
             ), user_prompt=prompt, image_path=image_path, seed=seed,
             temperature=0.1, max_tokens=2048, json_mode=True,
         )
-        return GroundedScene.model_validate_json(response.content), response
+        try:
+            scene = GroundedScene.model_validate_json(response.content)
+        except ValueError as exc:
+            raise GroundingParseError(str(exc), response) from exc
+        return scene, response

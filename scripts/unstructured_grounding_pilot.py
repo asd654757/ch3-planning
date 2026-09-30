@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from ch3.vlm.client import DashScopeVLMClient
-from ch3.vlm.scene_grounding import SceneGrounder
+from ch3.vlm.scene_grounding import GroundingParseError, SceneGrounder
 
 
 PUBLIC_FIELDS = {"case_id", "instruction", "image_path", "seed"}
@@ -68,6 +68,10 @@ def main() -> None:
                     instruction=row["instruction"], image_path=row["image_path"],
                     skills=["pick", "place", "push", "press"], arms=["right"], seed=row["seed"],
                 )
+            except GroundingParseError as exc:
+                record.update({"error": str(exc), "raw_response": exc.response.content,
+                               "model": exc.response.model, "total_tokens": exc.response.total_tokens,
+                               "latency_ms": exc.response.latency_ms})
             except Exception as exc:
                 record["error"] = str(exc)
             else:

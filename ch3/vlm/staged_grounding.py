@@ -61,6 +61,12 @@ class ObservationAnswer(StrictRecord):
     unresolved: list[str]
     uncertainty: list[str]
 
+    @model_validator(mode="after")
+    def exclusive_resolution(self):
+        if self.resolved and self.unresolved:
+            raise ValueError("a single observation answer cannot be resolved and unresolved")
+        return self
+
 
 class StagedGrounder:
     def __init__(self, client):
@@ -148,6 +154,19 @@ class StagedGrounder:
             raise GroundingParseError(str(exc), response) from exc
         return answer, response
 
+    def observe_one(self, *, localization, instruction, image_path, request,
+                    arms, seed):
+        """Run the same bounded protocol for exactly one missing fact."""
+        answer, response = self.observe_missing(
+            localization=localization, instruction=instruction, image_path=image_path,
+            requests=[request], arms=arms, seed=seed,
+        )
+        if answer.resolved and answer.resolved != [request]:
+            raise GroundingParseError("single observation resolved the wrong request", response)
+        if answer.unresolved and answer.unresolved != [request]:
+            raise GroundingParseError("single observation unresolved the wrong request", response)
+        return answer, response
+
 
 def missing_observation_requests(scene: GroundedScene, *, arms: set[str]) -> list[str]:
     """Derive bounded queries from returned facts; truth is never consulted."""
@@ -173,3 +192,21 @@ def merge_observation(scene: GroundedScene, answer: ObservationAnswer) -> Ground
                          goal=scene.goal,
                          needs_observation=bool(answer.unresolved or answer.uncertainty),
                          uncertainty=scene.uncertainty + answer.uncertainty + answer.unresolved)
+
+
+def validate_observation_relation(answer: ObservationAnswer, request: str) -> None:
+    """Ensure a resolved answer contains a relation matching its declared query."""
+    if answer.unresolved:
+        return
+    if answer.resolved != [request] or not answer.observed:
+        raise ValueError("resolved observation must contain the requested relation")
+    kind, _, identifier = request.partition(":")
+    relation = answer.observed
+    if kind == "location" and not any(item.subject == identifier and
+                                      item.predicate in {"on", "pushed_to", "holding"}
+                                      for item in relation):
+        raise ValueError("location answer does not identify the requested object")
+    if kind == "hand_state" and not any(item.subject == identifier and
+                                        item.predicate in {"hand_empty", "holding"}
+                                        for item in relation):
+        raise ValueError("hand answer does not identify the requested arm")

@@ -8,7 +8,7 @@ from pathlib import Path
 from ch3.vlm.client import DashScopeVLMClient
 from ch3.vlm.scene_grounding import GroundingParseError
 from ch3.vlm.staged_grounding import (StagedGrounder, merge_observation,
-                                      missing_observation_requests)
+                                      missing_observation_requests, validate_observation_relation)
 from scripts.unstructured_grounding_pilot import load_manifest
 
 
@@ -52,16 +52,22 @@ def main():
                 record["grounding"] = scene.model_dump(mode="json")
                 requests = missing_observation_requests(scene, arms={"right"})
                 record["observation_requests"] = requests
-                if scene.needs_observation and requests:
-                    phase = "observation"
-                    answer, response = grounder.observe_missing(
-                        localization=located, instruction=row["instruction"],
-                        image_path=semantic_image, requests=requests,
-                        arms=["right"], seed=row["seed"],
-                    )
-                    record["stages"][phase] = provenance(response)
-                    record["observation"] = answer.model_dump(mode="json")
-                    scene = merge_observation(scene, answer)
+                # Program-derived missing facts take precedence over the model's
+                # boolean flag; a model can incorrectly claim completeness.
+                if requests:
+                    record["observations"] = []
+                    for index, request in enumerate(requests):
+                        phase = f"observation_{index}_{request.replace(':', '_')}"
+                        answer, response = grounder.observe_one(
+                            localization=located, instruction=row["instruction"],
+                            image_path=semantic_image, request=request,
+                            arms=["right"], seed=row["seed"] + index,
+                        )
+                        validate_observation_relation(answer, request)
+                        record["stages"][phase] = provenance(response)
+                        record["observations"].append({"request": request,
+                                                        **answer.model_dump(mode="json")})
+                        scene = merge_observation(scene, answer)
                     record["grounding_after_observation"] = scene.model_dump(mode="json")
                 state, goal = scene.to_planning_input(arms={"right"})
                 record.update({"accepted_for_planning": True, "parsed_goal": goal.facts,

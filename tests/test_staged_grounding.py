@@ -1,7 +1,8 @@
 import pytest
 
 from ch3.vlm.staged_grounding import (ImageBox, Localization, ObservationAnswer,
-                                      merge_observation, missing_observation_requests)
+                                      merge_observation, missing_observation_requests,
+                                      validate_observation_relation)
 
 
 def test_declared_coordinate_conversion():
@@ -65,6 +66,16 @@ def test_missing_requests_are_derived_from_observed_facts():
     assert missing_observation_requests(scene, arms={"right"}) == ["location:blue", "hand_state:right"]
 
 
+def test_program_missing_facts_are_independent_of_model_flag():
+    from ch3.vlm.scene_grounding import GroundedScene
+    scene = GroundedScene.model_validate({
+        "entities": [{"object_id": "red", "description": "red", "confidence": .95}],
+        "observed": [], "goal": [{"predicate": "on", "subject": "red", "target": "table", "confidence": .95}],
+        "needs_observation": False, "uncertainty": [],
+    })
+    assert missing_observation_requests(scene, arms={"right"}) == ["location:red", "hand_state:right"]
+
+
 def test_unresolved_observation_cannot_be_accepted():
     from ch3.vlm.scene_grounding import GroundedScene
     scene = GroundedScene.model_validate({
@@ -76,3 +87,18 @@ def test_unresolved_observation_cannot_be_accepted():
     merged = merge_observation(scene, answer)
     assert merged.needs_observation
     assert merged.observed == []
+
+
+def test_single_observation_requires_matching_relation():
+    answer = ObservationAnswer(
+        observed=[{"predicate": "hand_empty", "subject": "right", "target": None, "confidence": .95}],
+        resolved=["hand_state:right"], unresolved=[], uncertainty=[])
+    validate_observation_relation(answer, "hand_state:right")
+    with pytest.raises(ValueError, match="requested relation"):
+        validate_observation_relation(answer, "location:red")
+
+
+def test_observation_answer_cannot_claim_both_states():
+    with pytest.raises(ValueError, match="resolved and unresolved"):
+        ObservationAnswer(observed=[], resolved=["hand_state:right"],
+                          unresolved=["hand_state:right"], uncertainty=[])

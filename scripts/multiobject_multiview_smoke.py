@@ -62,8 +62,19 @@ def main():
                                      "orientation": "flip_both_axes", "frame_std": float(frame.std())})
                     renderer.enable_segmentation_rendering()
                     renderer.update_scene(env.data, camera=render_camera)
-                    np.save(private / f"{camera}_segmentation.npy",
-                            np.flip(renderer.render(), (0, 1)).copy())
+                    segmentation = np.flip(renderer.render(), (0, 1)).copy()
+                    np.save(private / f"{camera}_segmentation.npy", segmentation)
+                    truth = {}
+                    for body, geom in {"obj": "objGeom", "candidate_blue": "candidate_blue_geom",
+                                       "candidate_yellow": "candidate_yellow_geom",
+                                       "placement_region": "placement_region_geom"}.items():
+                        mask = ((segmentation[:, :, 0] == env.model.geom(geom).id) &
+                                (segmentation[:, :, 1] == int(mujoco.mjtObj.mjOBJ_GEOM)))
+                        y, x = np.nonzero(mask)
+                        truth[body] = {"visible_pixels": int(mask.sum()),
+                                       "bbox": [int(x.min()), int(y.min()), int(x.max()) + 1,
+                                                int(y.max()) + 1] if len(x) else None}
+                    (private / f"{camera}_truth.json").write_text(json.dumps(truth, indent=2), encoding="utf-8")
                     renderer.disable_segmentation_rendering()
             if not np.array_equal(frozen, env.data.qpos) or timestamp != float(env.data.time):
                 raise RuntimeError("state changed while acquiring views")
@@ -71,10 +82,12 @@ def main():
             (public / "manifest.json").write_text(json.dumps([{
                 "case_id": "multiobject_multiview_feasibility_000",
                 "instruction": "Put the red cylinder onto the green rectangular platform.",
-                "image_path": "multiview.png", "seed": args.seed}], indent=2), encoding="utf-8")
+                "image_path": "corner2.png", "seed": args.seed}], indent=2), encoding="utf-8")
             summary = {"record_type": "multiobject_multiview_smoke", "episode_resets": 1,
                        "settle_steps": 30, "views": metadata, "model_calls": 0,
                        "goal_marker_hidden": True, "same_state_verified": True,
+                       "gripper_camera": {"lookat": [0., 0.6, 0.2], "distance": 0.65,
+                                          "azimuth": 135, "elevation": -25},
                        "execution_attempted": False,
                        "scope": "multiview acquisition only; hand visibility requires inspection"}
             (output / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

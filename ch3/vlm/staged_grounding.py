@@ -92,7 +92,11 @@ class StagedGrounder:
                            "Do not emit zero-confidence placeholder relations. If the hand is "
                            "not visible, omit its relation and request observation; do not guess. "
                            "uncertainty must be [] if none; otherwise describe actual missing "
-                           "evidence, not reassuring text. Return only schema JSON."),
+                           "evidence, not reassuring text. If the image contains labeled views, "
+                           "they show the SAME scene: do not count each view as new objects. "
+                           "Local entity boxes refer to the original localization view, not "
+                           "the combined image. Use other views to check the same entities and "
+                           "hand state. Return only schema JSON."),
             user_prompt=json.dumps({"instruction": instruction,
                                     "localization": localization.model_dump(mode="json"),
                                     "available_arms": arms, "available_skills": skills,

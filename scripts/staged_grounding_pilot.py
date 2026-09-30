@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--env-file")
     parser.add_argument("--model", default="qwen3-vl-flash")
+    parser.add_argument("--semantic-image", help="Optional same-state additional views; localization remains on manifest image")
     args = parser.parse_args()
     rows = load_manifest(Path(args.manifest))
     output = Path(args.output)
@@ -32,6 +33,9 @@ def main():
             record = {**row, "record_type": "staged_grounding_case", "stages": {},
                       "image_sha256": hashlib.sha256(Path(row["image_path"]).read_bytes()).hexdigest(),
                       "accepted_for_planning": False, "execution_attempted": False}
+            semantic_image = args.semantic_image or row["image_path"]
+            record["semantic_image_path"] = semantic_image
+            record["semantic_image_sha256"] = hashlib.sha256(Path(semantic_image).read_bytes()).hexdigest()
             phase = "localization"
             print(f"[staged-grounding] case={row['case_id']} start", flush=True)
             try:
@@ -40,7 +44,7 @@ def main():
                 record["localization"] = located.model_dump(mode="json")
                 phase = "semantics"
                 scene, response = grounder.interpret(
-                    localization=located, instruction=row["instruction"], image_path=row["image_path"],
+                    localization=located, instruction=row["instruction"], image_path=semantic_image,
                     arms=["right"], skills=["pick", "place", "push", "press"], seed=row["seed"],
                 )
                 record["stages"][phase] = provenance(response)

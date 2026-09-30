@@ -35,7 +35,8 @@ def build_scene_xml(source: Path, destination: Path, *, hide_goal_marker: bool =
         raise ValueError("source scene has no worldbody")
     if hide_goal_marker:
         # Keep the named site for native reset code, but exclude it from RGB.
-        for site in world.iter("site"):
+        # Expanded includes may contribute multiple worldbody elements.
+        for site in root.iter("site"):
             if site.get("name") == "goal":
                 site.set("rgba", "0 0 0 0")
     for name, rgba, x in (("candidate_blue", "0.05 0.2 0.95 1", -0.12),

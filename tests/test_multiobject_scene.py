@@ -5,10 +5,10 @@ from ch3.execution.multiobject_scene import build_scene_xml
 
 def test_hidden_marker_keeps_native_site(tmp_path):
     source = tmp_path / "source.xml"
-    source.write_text('<mujoco><worldbody><site name="goal" rgba="0 0 1 1"/></worldbody></mujoco>')
+    source.write_text('<mujoco><worldbody/><worldbody><site name="goal" rgba="0 0 1 1"/></worldbody></mujoco>')
     output = tmp_path / "scene.xml"
     build_scene_xml(source, output, hide_goal_marker=True)
-    assert ET.parse(output).find("worldbody/site").get("rgba") == "0 0 0 0"
+    assert next(ET.parse(output).getroot().iter("site")).get("rgba") == "0 0 0 0"
 
 
 def test_scene_uses_free_objects_and_absolute_includes(tmp_path):

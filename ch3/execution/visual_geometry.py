@@ -66,3 +66,48 @@ def visual_binding(calibration: CameraCalibration, *, object_id: str,
         raise ValueError("missing object or observation identity")
     return TargetBinding(object_id, pixel_to_plane(calibration, pixel=pixel, plane_z=plane_z),
                          calibration.coordinate_frame, observation_id, "visual_estimate")
+
+
+def display_to_native_pixel(pixel, *, width: int, height: int, flip_both_axes: bool):
+    u, v = pixel
+    if not np.isfinite([u, v]).all() or not (0 <= u < width and 0 <= v < height):
+        raise ValueError("display pixel outside image")
+    return (width - 1 - u, height - 1 - v) if flip_both_axes else (u, v)
+
+
+def project_point(calibration: CameraCalibration, point):
+    calibration.validate()
+    p = np.asarray(point, dtype=float)
+    if p.shape != (3,) or not np.isfinite(p).all():
+        raise ValueError("invalid projection point")
+    transform = np.asarray(calibration.camera_to_execution)
+    optical = transform[:3, :3].T @ (p - transform[:3, 3])
+    if optical[2] <= 0:
+        raise ValueError("point behind camera")
+    image = calibration.intrinsics @ optical
+    return tuple(float(x) for x in image[:2] / image[2])
+
+
+def fixed_mujoco_calibration(model, data, *, camera: str, width: int, height: int):
+    """Export static camera calibration only, never scene object positions.
+
+    Output frame is MuJoCo world, not robot_base. A separate calibrated rigid
+    transform is required before a robot-base execution backend can consume it.
+    """
+    camera_id = model.camera(camera).id
+    if int(model.cam_mode[camera_id]) != 0 or int(model.cam_bodyid[camera_id]) != 0:
+        raise ValueError("only fixed world cameras are supported")
+    # Older MuJoCo releases only support perspective cameras and do not expose
+    # cam_orthographic; newer releases require the explicit rejection below.
+    orthographic = getattr(model, "cam_orthographic", None)
+    if orthographic is not None and bool(orthographic[camera_id]):
+        raise ValueError("orthographic camera unsupported")
+    focal = .5 * height / np.tan(np.deg2rad(float(model.cam_fovy[camera_id])) / 2)
+    intrinsics = np.array([[focal, 0, (width - 1) / 2],
+                           [0, focal, (height - 1) / 2], [0, 0, 1.]])
+    transform = np.eye(4)
+    transform[:3, :3] = data.cam_xmat[camera_id].reshape(3, 3) @ np.diag([1., -1., -1.])
+    transform[:3, 3] = data.cam_xpos[camera_id]
+    result = CameraCalibration(intrinsics, transform, width, height, "mujoco_world")
+    result.validate()
+    return result

@@ -40,3 +40,18 @@ def test_binding_records_visual_source():
                              pixel=(50, 50), plane_z=0)
     assert binding.source == "visual_estimate"
     assert binding.observation_id == "frame_2"
+
+
+def test_flip_is_involution():
+    from ch3.execution.visual_geometry import display_to_native_pixel
+    original = (20., 30.)
+    converted = display_to_native_pixel(original, width=100, height=80, flip_both_axes=True)
+    assert converted == (79., 49.)
+    assert display_to_native_pixel(converted, width=100, height=80, flip_both_axes=True) == original
+
+
+def test_projection_roundtrip():
+    from ch3.execution.visual_geometry import project_point
+    point = (.1, -.1, 0.)
+    pixel = project_point(camera(), point)
+    assert pixel_to_plane(camera(), pixel=pixel, plane_z=0.) == pytest.approx(point)

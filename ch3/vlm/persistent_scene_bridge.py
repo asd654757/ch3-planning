@@ -48,7 +48,8 @@ def select_goal(client, *, instruction, image_path, log_path):
     return selection
 
 
-def generate_remaining(client, *, evidence, goal, image_path, log_path):
+def generate_remaining(client, *, evidence, goal, image_path, log_path,
+                       repair_on_rejection=False, inject_unknown_target=False):
     if evidence.get("status") != "holding_supported":
         raise ValueError("cannot plan with unknown hand state")
     if (goal.object_id, goal.target_id) != ("blue_candidate", "green_region"):
@@ -66,9 +67,48 @@ def generate_remaining(client, *, evidence, goal, image_path, log_path):
         if not isinstance(action, dict) or set(action) - {"step_id", "skill", "object_id", "target_id", "arm"}:
             raise ValueError("unexpected action fields")
     plan = ModelPlan.model_validate(raw)
+    original_model_plan = plan.model_dump(mode="json")
+    if inject_unknown_target:
+        plan = plan.model_copy(deep=True)
+        plan.actions[0].target_id = "injected_unknown_region"
     state = WorldState(objects={"blue_candidate", "green_region"}, holding={"right": "blue_candidate"}, at={"green_region": "table"})
     registry = fixed_registry()
     result = Validator(state.objects, registry).validate(plan, state)
+    audit = {"original_model_plan": original_model_plan, "evaluated_plan": plan.model_dump(mode="json"),
+             "controlled_unknown_target_injection": inject_unknown_target,
+             "initial_valid": result.valid, "initial_error_code": str(result.error_code),
+             "repair_attempted": False}
+    audit_path = Path(log_path).with_name("remaining_plan_validation.json")
+    audit_path.write_text(json.dumps(audit, indent=2))
+    predicted_goal = f"on({goal.object_id}, {goal.target_id})"
+    if repair_on_rejection and (not result.valid or predicted_goal not in result.final_state.facts()):
+        from dataclasses import replace
+        from ch3.vlm.client import VLMResponse
+        from ch3.vlm.planner import PlanGeneration
+        from ch3.vlm.repair import PlanRepairer
+        # Local remainder starts at CURRENT observed state. Never simulate/replay
+        # a historical prefix to manufacture the execution-time state.
+        current_validation = replace(result, validated_prefix=[], final_state=state.copy())
+        audit.update(repair_attempted=True, repair_mode="R1_FROM_STATE",
+                     repair_start_facts=sorted(state.facts()), executed_prefix_replayed=False)
+        audit_path.write_text(json.dumps(audit, indent=2))
+        repaired = PlanRepairer(client).repair(repair_mode="R1_FROM_STATE",
+            task={"instruction": f"Place {goal.object_id} on {goal.target_id} using right arm only; pick has already executed.",
+                  "objects": sorted(state.objects), "goal": {"facts": [predicted_goal]},
+                  "image_path": str(image_path)},
+            initial_generation=PlanGeneration(plan, VLMResponse(json.dumps(original_model_plan), "previous_call", 0)),
+            validation=current_validation, initial_state=state, seed=0, temperature=.1)
+        Path(log_path).with_name("remaining_repair_call.json").write_text(json.dumps({
+            "raw_response": repaired.response.content, "prompt": repaired.prompt,
+            "model": repaired.response.model, "total_tokens": repaired.response.total_tokens,
+            "latency_ms": repaired.response.latency_ms, "accepted": repaired.accepted,
+            "reject_reason": repaired.reject_reason}, indent=2))
+        if not repaired.accepted or repaired.plan is None:
+            raise ValueError("current-state repair rejected")
+        plan = repaired.plan
+        result = Validator(state.objects, registry).validate(plan, state)
+        audit.update(repaired_plan=plan.model_dump(mode="json"), repaired_valid=result.valid)
+        audit_path.write_text(json.dumps(audit, indent=2))
     if not result.valid or f"on({goal.object_id}, {goal.target_id})" not in result.final_state.facts():
         raise ValueError("generated remainder failed Validator or predicted goal check")
     # This smoke runner can execute one remaining place, not arbitrary plans.

@@ -23,6 +23,8 @@ def main():
     parser.add_argument("--blackout-rounds", type=int, default=0, help="first N observation rounds receive blackout")
     parser.add_argument("--language-instruction", help="enable restricted VLM goal resolution and remaining-plan generation")
     parser.add_argument("--env-file")
+    parser.add_argument("--repair-remainder", action="store_true", help="one existing R1_FROM_STATE fallback after rejection")
+    parser.add_argument("--inject-unknown-target", action="store_true", help="controlled remainder fault, never natural model error")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
@@ -136,12 +138,19 @@ def main():
                         try:
                             place = generate_remaining(client, evidence=holding, goal=language_goal,
                                 image_path=output / f"feedback_round{round_index}_1.png",
-                                log_path=output / "remaining_plan_call.json")
+                                log_path=output / "remaining_plan_call.json",
+                                repair_on_rejection=args.repair_remainder,
+                                inject_unknown_target=args.inject_unknown_target)
                             continuation = dict(continuation, plan_source="vlm_observed_state_remainder")
                         except Exception as exc:
                             language_error = str(exc)
                             place = None
                             continuation = dict(continuation, action="stop", reason="model_remainder_rejected")
+                        audit_file = output / "remaining_plan_validation.json"
+                        if audit_file.exists():
+                            audit = json.loads(audit_file.read_text())
+                            model_calls += int(audit.get("repair_attempted", False))
+                            continuation = dict(continuation, repair_audit=audit)
                 if place is not None:
                     # Refresh destination from current RGB; never from scoring truth.
                     fresh_bindings = {
@@ -188,7 +197,7 @@ def main():
                       "continuation_decision": continuation, "observation_history": observation_history,
                       "reobserve_rounds_budget": args.reobserve_rounds, "blackout_rounds": args.blackout_rounds,
                       "pick_attempts": 0 if args.skip_pick else 1,
-                      "scope": ("restricted language goal and VLM remaining-plan generation with RGB feedback; initial pick scripted, no R1/R2 recovery router"
+                      "scope": ("restricted language goal and VLM remaining-plan generation with optional R1_FROM_STATE fallback; initial pick scripted, no full ROUTED"
                                 if language_goal else "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop")}
             (output / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)

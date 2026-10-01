@@ -16,8 +16,8 @@ from ch3.schema.model_plan import ModelPlan, ModelPlanAction
 @dataclass
 class ExecutableStep:
     step_id: int
-    policy_id: str          # adflow_grasp / adflow_place（注册表映射）
-    primitive: str          # grasp / place（AD-Flow 原语名）
+    policy_id: str          # 注册表路由名称；历史 adflow_* 不证明实际后端
+    primitive: str          # 后端适配器使用的原语名
     args: dict[str, Any]
     source_skill: str       # pick / place
 

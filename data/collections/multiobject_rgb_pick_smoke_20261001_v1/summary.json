@@ -1,0 +1,56 @@
+{
+  "record_type": "multiobject_rgb_pick_smoke",
+  "model_calls": 0,
+  "episode_resets": 1,
+  "target_selection": "fixed blue color heuristic, not language model",
+  "blue_pixel": [
+    235.0,
+    211.0
+  ],
+  "green_pixel": [
+    194.0,
+    208.5
+  ],
+  "color_pixels": [
+    110,
+    368
+  ],
+  "estimated_blue_position": [
+    -0.11695731897267492,
+    0.6852294432158192,
+    0.020000000000000018
+  ],
+  "pick_execution": {
+    "completed": true,
+    "reason": "waypoints_completed_not_grasp_verified",
+    "steps": 95,
+    "trace": [
+      {
+        "phase": 0,
+        "steps": 20,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 1,
+        "steps": 22,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 2,
+        "steps": 35,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 3,
+        "steps": 18,
+        "waypoint_reached": true
+      }
+    ]
+  },
+  "evaluation_only": {
+    "blue_lifted": true
+  },
+  "place_attempted": false,
+  "task_success": false,
+  "scope": "pick feasibility only; no holding confirmation or recovery loop"
+}

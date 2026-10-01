@@ -1,0 +1,70 @@
+{
+  "record_type": "multiobject_rgb_pick_smoke",
+  "model_calls": 0,
+  "episode_resets": 1,
+  "seed": 0,
+  "camera": "corner2",
+  "pixel_frame": "native_render",
+  "assumed_plane_z": {
+    "blue_candidate": 0.02,
+    "green_region": 0.008
+  },
+  "target_selection": "fixed blue color heuristic, not language model",
+  "blue_pixel": [
+    235.0,
+    211.0
+  ],
+  "green_pixel": [
+    194.0,
+    208.5
+  ],
+  "color_pixels": [
+    110,
+    368
+  ],
+  "estimated_blue_position": [
+    -0.11695731897267492,
+    0.6852294432158192,
+    0.020000000000000018
+  ],
+  "pick_execution": {
+    "completed": true,
+    "reason": "waypoints_completed_not_grasp_verified",
+    "steps": 95,
+    "trace": [
+      {
+        "phase": 0,
+        "steps": 20,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 1,
+        "steps": 22,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 2,
+        "steps": 35,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 3,
+        "steps": 18,
+        "waypoint_reached": true
+      }
+    ]
+  },
+  "evaluation_only": {
+    "blue_lifted": true,
+    "blue_lift_height_m": 0.11196134695185703,
+    "lift_threshold_m": 0.06,
+    "body_displacement_m": {
+      "obj": 8.335923172707043e-07,
+      "candidate_blue": 0.11196757498256386,
+      "candidate_yellow": 3.195748610185234e-08
+    }
+  },
+  "place_attempted": false,
+  "task_success": false,
+  "scope": "pick feasibility only; no holding confirmation or recovery loop"
+}

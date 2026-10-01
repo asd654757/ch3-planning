@@ -188,7 +188,8 @@ def main():
                       "continuation_decision": continuation, "observation_history": observation_history,
                       "reobserve_rounds_budget": args.reobserve_rounds, "blackout_rounds": args.blackout_rounds,
                       "pick_attempts": 0 if args.skip_pick else 1,
-                      "scope": "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop"}
+                      "scope": ("restricted language goal and VLM remaining-plan generation with RGB feedback; initial pick scripted, no R1/R2 recovery router"
+                                if language_goal else "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop")}
             (output / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)
         finally:

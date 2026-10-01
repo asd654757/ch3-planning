@@ -25,6 +25,7 @@ def main():
     parser.add_argument("--env-file")
     parser.add_argument("--repair-remainder", action="store_true", help="one existing R1_FROM_STATE fallback after rejection")
     parser.add_argument("--inject-unknown-target", action="store_true", help="controlled remainder fault, never natural model error")
+    parser.add_argument("--frozen-front-end", help="replay two saved calls only if prompt and image match exactly")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
@@ -58,6 +59,9 @@ def main():
                 from ch3.vlm.client import DashScopeVLMClient
                 from ch3.vlm.persistent_scene_bridge import select_goal, generate_remaining
                 client = DashScopeVLMClient(env_path=args.env_file, timeout=60, max_retries=0)
+                if args.frozen_front_end:
+                    from ch3.vlm.frozen_scene_calls import FrozenSceneCalls
+                    client = FrozenSceneCalls(client, args.frozen_front_end)
                 model_calls += 1
                 try:
                     language_goal = select_goal(client, instruction=args.language_instruction,
@@ -199,6 +203,10 @@ def main():
                       "pick_attempts": 0 if args.skip_pick else 1,
                       "scope": ("restricted language goal and VLM remaining-plan generation with optional R1_FROM_STATE fallback; initial pick scripted, no full ROUTED"
                                 if language_goal else "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop")}
+            if args.frozen_front_end:
+                report.update(model_calls=client.live_calls, replay_calls=client.replay_calls,
+                              frozen_front_end=args.frozen_front_end,
+                              diagnostic_protocol="frozen_prompt_image_matched_front_end_v1")
             (output / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)
         finally:

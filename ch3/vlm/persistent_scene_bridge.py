@@ -41,7 +41,7 @@ def select_goal(client, *, instruction, image_path, log_path):
         "request": "Resolve instruction references using the image. Do not substitute an unsupported object. Only a single transport goal is supported. Report any prohibitions, ordering or other constraints in unsupported_constraints and set needs_observation=true; never silently discard them. If ambiguous or unsupported, set needs_observation=true. No hand-state inference requested.",
         "output_fields": {"object_id": "candidate ID string", "target_id": "candidate ID string",
                           "needs_observation": "boolean", "unsupported_constraints": "array of strings"},
-        "output_rule": "Return a populated record, not a JSON schema. Exactly four fields. Do not output properties, required, title or type."}, ensure_ascii=False)
+        "output_rule": "Return a populated record, not a JSON schema. Exactly four fields. object_id and target_id MUST be candidate dictionary KEYS, never descriptive labels: object_id may be blue_candidate, target_id may be green_region. Do not output blue cube or green placement region as IDs. If the instruction cannot be mapped to these keys, set needs_observation=true. Do not output properties, required, title or type."}, ensure_ascii=False)
     selection = GoalSelection.model_validate_json(logged_call(client, prompt=prompt, image_path=image_path, log_path=log_path))
     if selection.needs_observation or selection.unsupported_constraints or (selection.object_id, selection.target_id) != ("blue_candidate", "green_region"):
         raise ValueError("unsupported or uncertain language goal; execution refused")

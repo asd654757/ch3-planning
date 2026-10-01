@@ -33,6 +33,15 @@ def test_goal_rejects_other_objects_and_keeps_raw(tmp_path):
     assert (tmp_path / "call.json").exists()
 
 
+def test_goal_descriptions_are_not_automatically_bound_to_ids(tmp_path):
+    client = Client(dict(object_id="blue cube", target_id="green placement region",
+                         needs_observation=False, unsupported_constraints=[]))
+    with pytest.raises(ValueError):
+        select_goal(client, instruction="move blue", **paths(tmp_path))
+    raw = json.loads((tmp_path / "call.json").read_text())
+    assert json.loads(raw["raw_response"])["object_id"] == "blue cube"
+
+
 def test_remainder_validated_from_actual_holding(tmp_path):
     client = Client({"actions": [dict(step_id=1, skill="place", arm="right", object_id="blue_candidate", target_id="green_region")]})
     step = generate_remaining(client, evidence={"status": "holding_supported"}, goal=goal(), **paths(tmp_path))

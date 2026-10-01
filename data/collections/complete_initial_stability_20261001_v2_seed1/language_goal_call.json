@@ -1,0 +1,8 @@
+{
+  "prompt": "{\"instruction\": \"\u628a\u84dd\u8272\u65b9\u5757\u653e\u5230\u7eff\u8272\u533a\u57df\u3002\", \"candidate_adapter\": \"restricted known-color RGB locator\", \"candidates\": {\"blue_candidate\": \"blue cube\", \"green_region\": \"green placement region\"}, \"request\": \"Resolve instruction references using the image. Do not substitute an unsupported object. Only a single transport goal is supported. Report any prohibitions, ordering or other constraints in unsupported_constraints and set needs_observation=true; never silently discard them. If ambiguous or unsupported, set needs_observation=true. No hand-state inference requested.\", \"output_fields\": {\"object_id\": \"candidate ID string\", \"target_id\": \"candidate ID string\", \"needs_observation\": \"boolean\", \"unsupported_constraints\": \"array of strings\"}, \"output_rule\": \"Return a populated record, not a JSON schema. Exactly four fields. object_id and target_id MUST be candidate dictionary KEYS, never descriptive labels: object_id may be blue_candidate, target_id may be green_region. Do not output blue cube or green placement region as IDs. If the instruction cannot be mapped to these keys, set needs_observation=true. Do not output properties, required, title or type.\"}",
+  "raw_response": "{\n  \"object_id\": \"blue_candidate\",\n  \"target_id\": \"green_region\",\n  \"needs_observation\": false,\n  \"unsupported_constraints\": []\n}",
+  "model": "qwen-vl-plus",
+  "total_tokens": 530,
+  "latency_ms": 723,
+  "image_sha256": "7c223af3891cbc60bc52b05fa8452583039a02aab039026e656d065c76e07768"
+}

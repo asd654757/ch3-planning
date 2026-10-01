@@ -15,6 +15,7 @@ os.environ.setdefault("MUJOCO_GL", "egl")
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--seed", type=int, default=0, help="simulator reset seed; model decoding seed remains fixed")
     parser.add_argument("--visual-follow", action="store_true", help="probe co-motion; place only with RGB evidence")
     parser.add_argument("--skip-pick", action="store_true", help="ungrasped negative control")
     parser.add_argument("--pick-max-steps", type=int, default=260)
@@ -50,7 +51,7 @@ def main():
     with tempfile.TemporaryDirectory() as temp:
         xml = Path(temp) / "scene.xml"
         build_scene_xml(Path(full_V3_path_for("sawyer_xyz/sawyer_pick_place_v3.xml")), xml, hide_goal_marker=True)
-        env = make_scene(xml, seed=0)
+        env = make_scene(xml, seed=args.seed)
         try:
             for _ in range(30):
                 env.step(np.array([0., 0., 0., -1.]))
@@ -201,7 +202,7 @@ def main():
                       "initial_plan_source": "vlm_complete_plan" if initial_executable else "scripted_pick",
                       "initial_state_source": "controlled_scene_precondition" if initial_executable else "not_used_by_initial_planner",
                       "initial_executable_plan": initial_executable.to_list() if initial_executable else None,
-                      "seed": 0, "camera": "corner2", "pixel_frame": "native_render",
+                      "seed": args.seed, "camera": "corner2", "pixel_frame": "native_render",
                       "assumed_plane_z": {"blue_candidate": .02, "green_region": .008},
                       "target_selection": "fixed blue color heuristic, not language model",
                       "blue_pixel": blue, "green_pixel": green, "color_pixels": [blue_count, green_count],

@@ -1,0 +1,8 @@
+{
+  "prompt": "{\"goal\": \"on(blue_candidate, green_region)\", \"observed_facts\": [\"holding(right, blue_candidate)\"], \"fixture_assumptions\": [\"on(green_region, table)\"], \"available_skills\": [\"pick\", \"place\"], \"available_arms\": [\"right\"], \"objects\": [\"blue_candidate\", \"green_region\"], \"request\": \"Generate ONLY the remaining plan from this current observed state. The pick already happened; never execute it again. Local step IDs start at 1. Return {actions:[{step_id,skill,object_id,target_id,arm}]}.\"}",
+  "raw_response": "{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\",\n      \"arm\": \"right\"\n    }\n  ]\n}",
+  "model": "qwen-vl-plus",
+  "total_tokens": 433,
+  "latency_ms": 935,
+  "image_sha256": "ac6072ac6bef563ccedf34ca79de444b9cf2dbb8c3934d980d9bc6b96f5aad29"
+}

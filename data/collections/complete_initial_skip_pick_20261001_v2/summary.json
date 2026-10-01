@@ -1,0 +1,176 @@
+{
+  "record_type": "multiobject_rgb_pick_smoke",
+  "model_calls": 2,
+  "episode_resets": 1,
+  "instruction": "\u628a\u84dd\u8272\u65b9\u5757\u653e\u5230\u7eff\u8272\u533a\u57df\u3002",
+  "language_error": null,
+  "language_goal": {
+    "object_id": "blue_candidate",
+    "target_id": "green_region",
+    "needs_observation": false,
+    "unsupported_constraints": []
+  },
+  "initial_plan_source": "vlm_complete_plan",
+  "initial_state_source": "controlled_scene_precondition",
+  "initial_executable_plan": [
+    {
+      "step_id": 1,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 2,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right",
+        "target_id": "green_region"
+      }
+    }
+  ],
+  "seed": 0,
+  "camera": "corner2",
+  "pixel_frame": "native_render",
+  "assumed_plane_z": {
+    "blue_candidate": 0.02,
+    "green_region": 0.008
+  },
+  "target_selection": "fixed blue color heuristic, not language model",
+  "blue_pixel": [
+    235.0,
+    211.0
+  ],
+  "green_pixel": [
+    194.0,
+    208.5
+  ],
+  "color_pixels": [
+    110,
+    368
+  ],
+  "estimated_blue_position": [
+    -0.11695731897267492,
+    0.6852294432158192,
+    0.020000000000000018
+  ],
+  "pick_execution": {
+    "completed": false,
+    "reason": "skipped_negative_control",
+    "steps": 0
+  },
+  "evaluation_only": {
+    "blue_lifted_after_pick": false,
+    "blue_lift_height_after_pick_m": 0.0,
+    "blue_final_height_change_m": 3.193642592394519e-08,
+    "blue_in_region_after_release": false,
+    "placement_rule": "cube footprint inside region, center z in [0.01,0.055] after opening and settling",
+    "lift_threshold_m": 0.06,
+    "body_displacement_m": {
+      "obj": 1.088200772583593e-07,
+      "candidate_blue": 3.193642592394519e-08,
+      "candidate_yellow": 3.193642592394519e-08
+    }
+  },
+  "visual_holding": {
+    "status": "unknown",
+    "reason": "comotion_or_proximity_not_supported",
+    "displacement_px": 0.0,
+    "hand_motion_px": 5.815134144097981,
+    "target_motion_px": 0.0,
+    "offset_drift_px": 5.815134144097981,
+    "max_target_hand_distance_px": 16.716885344301893
+  },
+  "evidence_frames": [
+    {
+      "target_pixel": [
+        235.0,
+        211.0
+      ],
+      "hand_pixel": [
+        238.21713541739186,
+        227.40439865769844
+      ]
+    },
+    {
+      "target_pixel": [
+        235.0,
+        211.0
+      ],
+      "hand_pixel": [
+        233.52574115183964,
+        223.96832459577865
+      ]
+    }
+  ],
+  "probe_steps": 17,
+  "place_execution": null,
+  "place_attempted": false,
+  "task_success": false,
+  "negative_control": true,
+  "pick_max_steps": 260,
+  "controlled_feedback_blackout": false,
+  "continuation_decision": {
+    "action": "stop",
+    "reason": "observation_budget_exhausted",
+    "observation_id": "after_probe_0",
+    "observed_facts": [],
+    "fixture_assumptions": [],
+    "validator_valid": null,
+    "predicted_goal_satisfied": null,
+    "last_observation_reason": "holding_not_supported"
+  },
+  "observation_history": [
+    {
+      "round": 0,
+      "evidence_frames": [
+        {
+          "target_pixel": [
+            235.0,
+            211.0
+          ],
+          "hand_pixel": [
+            238.21713541739186,
+            227.40439865769844
+          ]
+        },
+        {
+          "target_pixel": [
+            235.0,
+            211.0
+          ],
+          "hand_pixel": [
+            233.52574115183964,
+            223.96832459577865
+          ]
+        }
+      ],
+      "holding": {
+        "status": "unknown",
+        "reason": "comotion_or_proximity_not_supported",
+        "displacement_px": 0.0,
+        "hand_motion_px": 5.815134144097981,
+        "target_motion_px": 0.0,
+        "offset_drift_px": 5.815134144097981,
+        "max_target_hand_distance_px": 16.716885344301893
+      },
+      "decision": {
+        "action": "observe_again",
+        "reason": "holding_not_supported",
+        "observation_id": "after_probe_0",
+        "observed_facts": [],
+        "fixture_assumptions": [],
+        "validator_valid": null,
+        "predicted_goal_satisfied": null
+      }
+    }
+  ],
+  "reobserve_rounds_budget": 0,
+  "blackout_rounds": 0,
+  "pick_attempts": 0,
+  "scope": "restricted language planning with optional R1_FROM_STATE fallback; initial state assumptions and initial_plan_source recorded separately; no full ROUTED"
+}

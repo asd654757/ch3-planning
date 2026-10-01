@@ -108,6 +108,17 @@ def test_initial_place_without_pick_refused(tmp_path):
             initial_state=WorldState.table_scene({"blue_candidate", "green_region"}), **paths(tmp_path))
 
 
+def test_initial_bare_array_refused_and_raw_preserved(tmp_path):
+    actions = [dict(step_id=1, skill="pick", arm="right", object_id="blue_candidate"),
+               dict(step_id=2, skill="place", arm="right", object_id="blue_candidate", target_id="green_region")]
+    call_paths = paths(tmp_path)
+    with pytest.raises(ValueError, match="unexpected initial plan fields"):
+        generate_initial(Client(actions), goal=goal(),
+            initial_state=WorldState.table_scene({"blue_candidate", "green_region"}), **call_paths)
+    audit = json.loads(call_paths["log_path"].read_text())
+    assert json.loads(audit["raw_response"]) == actions
+
+
 def test_initial_wrong_goal_and_extra_fields_refused(tmp_path):
     for target, extra in [("table", {}), ("green_region", {"hidden_command": "execute"})]:
         plan = {"actions": [dict(step_id=1, skill="pick", arm="right", object_id="blue_candidate"),

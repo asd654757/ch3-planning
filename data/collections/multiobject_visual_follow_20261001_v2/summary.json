@@ -1,0 +1,133 @@
+{
+  "record_type": "multiobject_rgb_pick_smoke",
+  "model_calls": 0,
+  "episode_resets": 1,
+  "seed": 0,
+  "camera": "corner2",
+  "pixel_frame": "native_render",
+  "assumed_plane_z": {
+    "blue_candidate": 0.02,
+    "green_region": 0.008
+  },
+  "target_selection": "fixed blue color heuristic, not language model",
+  "blue_pixel": [
+    235.0,
+    211.0
+  ],
+  "green_pixel": [
+    194.0,
+    208.5
+  ],
+  "color_pixels": [
+    110,
+    368
+  ],
+  "estimated_blue_position": [
+    -0.11695731897267492,
+    0.6852294432158192,
+    0.020000000000000018
+  ],
+  "pick_execution": {
+    "completed": true,
+    "reason": "waypoints_completed_not_grasp_verified",
+    "steps": 95,
+    "trace": [
+      {
+        "phase": 0,
+        "steps": 20,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 1,
+        "steps": 22,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 2,
+        "steps": 35,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 3,
+        "steps": 18,
+        "waypoint_reached": true
+      }
+    ]
+  },
+  "evaluation_only": {
+    "blue_lifted_after_pick": true,
+    "blue_lift_height_after_pick_m": 0.11196134695185703,
+    "blue_final_height_change_m": 0.008000031957486092,
+    "blue_in_region_after_release": true,
+    "placement_rule": "cube footprint inside region, center z in [0.01,0.055] after opening and settling",
+    "lift_threshold_m": 0.06,
+    "body_displacement_m": {
+      "obj": 2.3506324950599477e-07,
+      "candidate_blue": 0.20171942296685208,
+      "candidate_yellow": 3.195748610185234e-08
+    }
+  },
+  "visual_holding": {
+    "status": "holding_supported",
+    "reason": "target_displacement_and_hand_comotion",
+    "displacement_px": 21.37755832643195,
+    "hand_motion_px": 4.6959748049352,
+    "target_motion_px": 5.0990195135927845,
+    "offset_drift_px": 0.6793859738967175,
+    "max_target_hand_distance_px": 5.588992102250204
+  },
+  "evidence_frames": [
+    {
+      "target_pixel": [
+        236.0,
+        231.0
+      ],
+      "hand_pixel": [
+        237.72341367440254,
+        236.31664161157187
+      ]
+    },
+    {
+      "target_pixel": [
+        231.0,
+        232.0
+      ],
+      "hand_pixel": [
+        233.0446206736803,
+        236.71798364148998
+      ]
+    }
+  ],
+  "probe_steps": 19,
+  "place_execution": {
+    "completed": true,
+    "reason": "waypoints_completed_not_grasp_verified",
+    "steps": 103,
+    "trace": [
+      {
+        "phase": 0,
+        "steps": 28,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 1,
+        "steps": 21,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 2,
+        "steps": 35,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 3,
+        "steps": 19,
+        "waypoint_reached": true
+      }
+    ]
+  },
+  "place_attempted": true,
+  "task_success": true,
+  "negative_control": false,
+  "scope": "restricted RGB execution feedback; no language planner or recovery loop"
+}

@@ -21,6 +21,8 @@ def main():
     parser.add_argument("--occlude-feedback", action="store_true", help="controlled full-frame observation blackout")
     parser.add_argument("--reobserve-rounds", type=int, default=0, help="bounded extra observation rounds")
     parser.add_argument("--blackout-rounds", type=int, default=0, help="first N observation rounds receive blackout")
+    parser.add_argument("--language-instruction", help="enable restricted VLM goal resolution and remaining-plan generation")
+    parser.add_argument("--env-file")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
@@ -35,6 +37,9 @@ def main():
 
     output = Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=False)
+    language_goal = None
+    language_error = None
+    model_calls = 0
     with tempfile.TemporaryDirectory() as temp:
         xml = Path(temp) / "scene.xml"
         build_scene_xml(Path(full_V3_path_for("sawyer_xyz/sawyer_pick_place_v3.xml")), xml, hide_goal_marker=True)
@@ -47,6 +52,19 @@ def main():
             calibration = fixed_mujoco_calibration(env.model, env.data, camera="corner2", width=480, height=480)
             blue, blue_count = color_pixel(frame, "blue")
             green, green_count = color_pixel(frame, "green")
+            if args.language_instruction:
+                from ch3.vlm.client import DashScopeVLMClient
+                from ch3.vlm.persistent_scene_bridge import select_goal, generate_remaining
+                client = DashScopeVLMClient(env_path=args.env_file, timeout=60, max_retries=0)
+                model_calls += 1
+                try:
+                    language_goal = select_goal(client, instruction=args.language_instruction,
+                        image_path=output / "before.png", log_path=output / "language_goal_call.json")
+                except Exception as exc:
+                    (output / "summary.json").write_text(json.dumps({"execution_attempted": False,
+                        "model_calls": model_calls, "error": str(exc), "stage": "language_goal"}, indent=2))
+                    print("[language-scene] goal rejected; no execution", flush=True)
+                    return
             # Explicit fixed geometry assumptions, not observed body heights.
             bindings = {"blue_candidate": visual_binding(calibration, object_id="blue_candidate", observation_id="initial",
                                                        pixel=blue, plane_z=.02),
@@ -113,6 +131,18 @@ def main():
                     continuation = dict(continuation, action="stop", reason="observation_budget_exhausted",
                                         last_observation_reason=continuation["reason"])
                 if place is not None:
+                    if language_goal is not None:
+                        model_calls += 1
+                        try:
+                            place = generate_remaining(client, evidence=holding, goal=language_goal,
+                                image_path=output / f"feedback_round{round_index}_1.png",
+                                log_path=output / "remaining_plan_call.json")
+                            continuation = dict(continuation, plan_source="vlm_observed_state_remainder")
+                        except Exception as exc:
+                            language_error = str(exc)
+                            place = None
+                            continuation = dict(continuation, action="stop", reason="model_remainder_rejected")
+                if place is not None:
                     # Refresh destination from current RGB; never from scoring truth.
                     fresh_bindings = {
                         # Holding evidence plus proprioception gives an approximate
@@ -134,7 +164,9 @@ def main():
                           # Entire cube footprint inside the known region extent.
                           np.all(np.abs(final_positions["candidate_blue"][:2] - region[:2]) <= [.052, .027]) and
                           .01 <= final_positions["candidate_blue"][2] <= .055)
-            report = {"record_type": "multiobject_rgb_pick_smoke", "model_calls": 0, "episode_resets": 1,
+            report = {"record_type": "multiobject_rgb_pick_smoke", "model_calls": model_calls, "episode_resets": 1,
+                      "instruction": args.language_instruction, "language_error": language_error,
+                      "language_goal": language_goal.model_dump() if language_goal else None,
                       "seed": 0, "camera": "corner2", "pixel_frame": "native_render",
                       "assumed_plane_z": {"blue_candidate": .02, "green_region": .008},
                       "target_selection": "fixed blue color heuristic, not language model",

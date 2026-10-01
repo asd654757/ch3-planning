@@ -1,0 +1,8 @@
+{
+  "prompt": "{\"instruction\": \"\u628a\u84dd\u8272\u65b9\u5757\u653e\u5230\u7eff\u8272\u533a\u57df\uff0c\u4e0d\u8981\u79fb\u52a8\u5176\u4ed6\u7269\u4f53\u3002\", \"candidate_adapter\": \"restricted known-color RGB locator\", \"candidates\": {\"blue_candidate\": \"blue cube\", \"green_region\": \"green placement region\"}, \"request\": \"Resolve instruction references using the image. Do not substitute an unsupported object. If ambiguous or unsupported, set needs_observation=true. No hand-state inference requested.\", \"schema\": {\"additionalProperties\": false, \"properties\": {\"object_id\": {\"title\": \"Object Id\", \"type\": \"string\"}, \"target_id\": {\"title\": \"Target Id\", \"type\": \"string\"}, \"needs_observation\": {\"title\": \"Needs Observation\", \"type\": \"boolean\"}}, \"required\": [\"object_id\", \"target_id\", \"needs_observation\"], \"title\": \"GoalSelection\", \"type\": \"object\"}}",
+  "raw_response": "{\n  \"object_id\": \"blue cube\",\n  \"target_id\": \"green placement region\",\n  \"needs_observation\": false\n}",
+  "model": "qwen-vl-plus",
+  "total_tokens": 464,
+  "latency_ms": 694,
+  "image_sha256": "f6fd7e66650ff733a3b2f5ac602d6879288548b38c26812517b9f1956e39eb31"
+}

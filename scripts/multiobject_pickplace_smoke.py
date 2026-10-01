@@ -26,9 +26,12 @@ def main():
     parser.add_argument("--repair-remainder", action="store_true", help="one existing R1_FROM_STATE fallback after rejection")
     parser.add_argument("--inject-unknown-target", action="store_true", help="controlled remainder fault, never natural model error")
     parser.add_argument("--frozen-front-end", help="replay two saved calls only if prompt and image match exactly")
+    parser.add_argument("--model-initial-plan", action="store_true", help="generate complete initial plan using explicit fixture state")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
+    if args.model_initial_plan and (not args.language_instruction or args.frozen_front_end or not args.visual_follow):
+        parser.error("model-initial-plan requires language-instruction and visual-follow, without frozen-front-end")
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -43,6 +46,7 @@ def main():
     language_goal = None
     language_error = None
     model_calls = 0
+    initial_executable = None
     with tempfile.TemporaryDirectory() as temp:
         xml = Path(temp) / "scene.xml"
         build_scene_xml(Path(full_V3_path_for("sawyer_xyz/sawyer_pick_place_v3.xml")), xml, hide_goal_marker=True)
@@ -80,6 +84,20 @@ def main():
                                        frozenset({"right"}), "mujoco_world")
             controller = FixedPickPlaceController(env)
             pick = ExecutableStep(1, "fixed_pick", "grasp", {"object_id": "blue_candidate", "arm": "right"}, "pick")
+            if args.model_initial_plan:
+                from ch3.state.world_state import WorldState
+                from ch3.vlm.persistent_scene_bridge import generate_initial
+                model_calls += 1
+                try:
+                    initial_executable = generate_initial(client, goal=language_goal,
+                        image_path=output / "before.png", log_path=output / "initial_plan_call.json",
+                        initial_state=WorldState.table_scene({"blue_candidate", "green_region"}))
+                    pick = initial_executable.steps[0]
+                except Exception as exc:
+                    (output / "summary.json").write_text(json.dumps({"execution_attempted": False,
+                        "model_calls": model_calls, "error": str(exc), "stage": "initial_planning"}, indent=2))
+                    print("[language-scene] initial plan rejected; no execution", flush=True)
+                    return
             # Evaluator snapshots kept outside controller, never used for targeting.
             initial_positions = {name: env.data.body(name).xpos.copy() for name in ["obj", "candidate_blue", "candidate_yellow"]}
             pick_result = ({"completed": False, "reason": "skipped_negative_control", "steps": 0}
@@ -180,6 +198,9 @@ def main():
             report = {"record_type": "multiobject_rgb_pick_smoke", "model_calls": model_calls, "episode_resets": 1,
                       "instruction": args.language_instruction, "language_error": language_error,
                       "language_goal": language_goal.model_dump() if language_goal else None,
+                      "initial_plan_source": "vlm_complete_plan" if initial_executable else "scripted_pick",
+                      "initial_state_source": "controlled_scene_precondition" if initial_executable else "not_used_by_initial_planner",
+                      "initial_executable_plan": initial_executable.to_list() if initial_executable else None,
                       "seed": 0, "camera": "corner2", "pixel_frame": "native_render",
                       "assumed_plane_z": {"blue_candidate": .02, "green_region": .008},
                       "target_selection": "fixed blue color heuristic, not language model",
@@ -201,7 +222,7 @@ def main():
                       "continuation_decision": continuation, "observation_history": observation_history,
                       "reobserve_rounds_budget": args.reobserve_rounds, "blackout_rounds": args.blackout_rounds,
                       "pick_attempts": 0 if args.skip_pick else 1,
-                      "scope": ("restricted language goal and VLM remaining-plan generation with optional R1_FROM_STATE fallback; initial pick scripted, no full ROUTED"
+                      "scope": ("restricted language planning with optional R1_FROM_STATE fallback; initial state assumptions and initial_plan_source recorded separately; no full ROUTED"
                                 if language_goal else "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop")}
             if args.frozen_front_end:
                 report.update(model_calls=client.live_calls, replay_calls=client.replay_calls,

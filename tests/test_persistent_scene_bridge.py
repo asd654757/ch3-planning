@@ -2,6 +2,8 @@ import json
 import pytest
 from ch3.vlm.client import VLMResponse
 from ch3.vlm.persistent_scene_bridge import GoalSelection, select_goal, generate_remaining
+from ch3.vlm.persistent_scene_bridge import generate_initial
+from ch3.state.world_state import WorldState
 
 
 class Client:
@@ -86,3 +88,30 @@ def test_current_state_fallback_never_replays_pick(tmp_path, monkeypatch):
     audit = json.loads((tmp_path / "remaining_plan_validation.json").read_text())
     assert audit["repair_attempted"] and audit["repaired_valid"]
     assert not audit["executed_prefix_replayed"]
+
+
+def test_complete_initial_plan_validated_before_compilation(tmp_path):
+    plan = {"actions": [dict(step_id=1, skill="pick", arm="right", object_id="blue_candidate"),
+                        dict(step_id=2, skill="place", arm="right", object_id="blue_candidate", target_id="green_region")]}
+    compiled = generate_initial(Client(plan), goal=goal(),
+        initial_state=WorldState.table_scene({"blue_candidate", "green_region"}), **paths(tmp_path))
+    assert [s.source_skill for s in compiled.steps] == ["pick", "place"]
+    audit = json.loads((tmp_path / "initial_plan_validation.json").read_text())
+    assert audit["validator_valid"] and audit["predicted_goal_satisfied"]
+    assert audit["initial_state_source"] == "controlled_scene_precondition"
+
+
+def test_initial_place_without_pick_refused(tmp_path):
+    with pytest.raises(ValueError):
+        generate_initial(Client({"actions": [dict(step_id=1, skill="place", arm="right",
+            object_id="blue_candidate", target_id="green_region")]}), goal=goal(),
+            initial_state=WorldState.table_scene({"blue_candidate", "green_region"}), **paths(tmp_path))
+
+
+def test_initial_wrong_goal_and_extra_fields_refused(tmp_path):
+    for target, extra in [("table", {}), ("green_region", {"hidden_command": "execute"})]:
+        plan = {"actions": [dict(step_id=1, skill="pick", arm="right", object_id="blue_candidate"),
+                            dict(step_id=2, skill="place", arm="right", object_id="blue_candidate", target_id=target, **extra)]}
+        with pytest.raises(ValueError):
+            generate_initial(Client(plan), goal=goal(),
+                initial_state=WorldState.table_scene({"blue_candidate", "green_region"}), **paths(tmp_path))

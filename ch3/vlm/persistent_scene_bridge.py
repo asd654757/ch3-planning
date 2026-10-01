@@ -48,6 +48,40 @@ def select_goal(client, *, instruction, image_path, log_path):
     return selection
 
 
+def generate_initial(client, *, goal, image_path, log_path, initial_state):
+    """Explicit fixture state is supplied by caller, NOT inferred from RGB."""
+    if (goal.object_id, goal.target_id) != ("blue_candidate", "green_region"):
+        raise ValueError("unsupported goal")
+    expected_objects = {"blue_candidate", "green_region"}
+    if initial_state.objects != expected_objects or initial_state.holding or initial_state.at != {
+        "blue_candidate": "table", "green_region": "table"}:
+        raise ValueError("initial state outside fixture scope")
+    prompt = json.dumps({"goal": f"on({goal.object_id}, {goal.target_id})",
+        "initial_state_source": "explicit controlled-scene precondition, not visual state estimation",
+        "initial_facts": sorted(initial_state.facts() | initial_state.empty_hand_facts({"right"})),
+        "objects": sorted(expected_objects), "available_skills": ["pick", "place"],
+        "available_arms": ["right"],
+        "request": "Generate the complete plan from this initial state. Return exactly one JSON OBJECT with the single top-level key actions, whose value is a populated array of action records. Do NOT return a bare array. Each record has step_id, skill, object_id, target_id (place only), arm. IDs start at 1. No schema, markdown, or commentary."})
+    raw = json.loads(logged_call(client, prompt=prompt, image_path=image_path, log_path=log_path))
+    if not isinstance(raw, dict) or set(raw) != {"actions"} or not isinstance(raw["actions"], list):
+        raise ValueError("unexpected initial plan fields")
+    if any(not isinstance(a, dict) or set(a) - {"step_id", "skill", "object_id", "target_id", "arm"} for a in raw["actions"]):
+        raise ValueError("unexpected initial action fields")
+    plan = ModelPlan.model_validate(raw)
+    registry = fixed_registry()
+    result = Validator(initial_state.objects, registry).validate(plan, initial_state)
+    predicted = bool(result.valid and f"on({goal.object_id}, {goal.target_id})" in result.final_state.facts())
+    audit = {"initial_state_source": "controlled_scene_precondition", "plan": plan.model_dump(mode="json"),
+             "validator_valid": result.valid, "predicted_goal_satisfied": predicted,
+             "error_code": str(result.error_code), "initial_facts": sorted(initial_state.facts())}
+    Path(log_path).with_name("initial_plan_validation.json").write_text(json.dumps(audit, indent=2))
+    if not predicted:
+        raise ValueError("initial plan failed Validator or predicted goal check")
+    if len(plan.actions) != 2 or [a.skill.value for a in plan.actions] != ["pick", "place"]:
+        raise ValueError("initial plan outside two-action smoke scope")
+    return compile_plan(plan, registry)
+
+
 def generate_remaining(client, *, evidence, goal, image_path, log_path,
                        repair_on_rejection=False, inject_unknown_target=False):
     if evidence.get("status") != "holding_supported":

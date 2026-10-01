@@ -7,6 +7,7 @@ import tempfile
 from pathlib import Path
 
 from ch3.execution.visual_holding import color_pixel, holding_evidence
+from ch3.execution.observed_continuation import checked_place_continuation
 
 os.environ.setdefault("MUJOCO_GL", "egl")
 
@@ -16,6 +17,8 @@ def main():
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--visual-follow", action="store_true", help="probe co-motion; place only with RGB evidence")
     parser.add_argument("--skip-pick", action="store_true", help="ungrasped negative control")
+    parser.add_argument("--pick-max-steps", type=int, default=260)
+    parser.add_argument("--occlude-feedback", action="store_true", help="controlled full-frame observation blackout")
     args = parser.parse_args()
     import numpy as np
     from PIL import Image
@@ -52,7 +55,8 @@ def main():
             # Evaluator snapshots kept outside controller, never used for targeting.
             initial_positions = {name: env.data.body(name).xpos.copy() for name in ["obj", "candidate_blue", "candidate_yellow"]}
             pick_result = ({"completed": False, "reason": "skipped_negative_control", "steps": 0}
-                           if args.skip_pick else controller.execute(contract.request(pick, bindings=bindings, observation_id="initial")))
+                           if args.skip_pick else controller.execute(contract.request(pick, bindings=bindings, observation_id="initial"),
+                                                                    max_steps=args.pick_max_steps))
             Image.fromarray(np.flip(np.asarray(env.render()), (0, 1))).save(output / "after_pick.png")
             # Scoring snapshot only: never used to gate probing or placement.
             pick_lift_height = float(env.data.body("candidate_blue").xpos[2] - initial_positions["candidate_blue"][2])
@@ -60,6 +64,7 @@ def main():
             place_result = None
             probe_steps = 0
             evidence_frames = []
+            continuation = {"action": "observe_again", "reason": "not_tested"}
             if args.visual_follow:
                 # Only proprioception and rendered RGB drive this branch.
                 probe_origin = np.asarray(env.get_endeff_pos()).copy()
@@ -76,18 +81,25 @@ def main():
                             break
                     current = np.asarray(env.render()).copy()
                     Image.fromarray(np.flip(current, (0, 1))).save(output / f"probe_{index}.png")
+                    feedback_frame = np.zeros_like(current) if args.occlude_feedback else current
+                    Image.fromarray(np.flip(feedback_frame, (0, 1))).save(output / f"feedback_{index}.png")
                     try:
-                        target_pixel = color_pixel(current, "blue")[0]
+                        target_pixel = color_pixel(feedback_frame, "blue")[0]
                     except ValueError:
                         target_pixel = None
                     evidence_frames.append({"target_pixel": target_pixel,
                                             "hand_pixel": project_point(calibration, env.get_endeff_pos())})
                 holding = holding_evidence(blue, [f["target_pixel"] for f in evidence_frames],
                                            [f["hand_pixel"] for f in evidence_frames])
-                if holding["status"] == "holding_supported":
+                try:
+                    fresh_green = color_pixel(feedback_frame, "green")[0]
+                except ValueError:
+                    fresh_green = None
+                observation_id = "after_probe"
+                continuation, place = checked_place_continuation(holding,
+                    target_visible=fresh_green is not None, observation_id=observation_id)
+                if place is not None:
                     # Refresh destination from current RGB; never from scoring truth.
-                    fresh_green = color_pixel(current, "green")[0]
-                    observation_id = "after_probe"
                     fresh_bindings = {
                         # Holding evidence plus proprioception gives an approximate
                         # held-object reference, not a measured object 6D pose.
@@ -96,8 +108,6 @@ def main():
                             observation_id=observation_id),
                         "green_region": visual_binding(calibration, object_id="green_region",
                             observation_id=observation_id, pixel=fresh_green, plane_z=.008)}
-                    place = ExecutableStep(2, "fixed_place", "place",
-                        {"object_id": "blue_candidate", "target_id": "green_region", "arm": "right"}, "place")
                     place_result = controller.execute(contract.request(place, bindings=fresh_bindings, observation_id=observation_id))
                     for _ in range(30):
                         env.step(np.array([0., 0., 0., -1.]))
@@ -128,7 +138,9 @@ def main():
                       "probe_steps": probe_steps, "place_execution": place_result,
                       "place_attempted": place_result is not None, "task_success": placed,
                       "negative_control": args.skip_pick,
-                      "scope": "restricted RGB execution feedback; no language planner or recovery loop"}
+                      "pick_max_steps": args.pick_max_steps, "controlled_feedback_blackout": args.occlude_feedback,
+                      "continuation_decision": continuation,
+                      "scope": "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop"}
             (output / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)
         finally:

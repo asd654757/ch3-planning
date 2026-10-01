@@ -1,0 +1,107 @@
+{
+  "record_type": "multiobject_rgb_pick_smoke",
+  "model_calls": 0,
+  "episode_resets": 1,
+  "seed": 0,
+  "camera": "corner2",
+  "pixel_frame": "native_render",
+  "assumed_plane_z": {
+    "blue_candidate": 0.02,
+    "green_region": 0.008
+  },
+  "target_selection": "fixed blue color heuristic, not language model",
+  "blue_pixel": [
+    235.0,
+    211.0
+  ],
+  "green_pixel": [
+    194.0,
+    208.5
+  ],
+  "color_pixels": [
+    110,
+    368
+  ],
+  "estimated_blue_position": [
+    -0.11695731897267492,
+    0.6852294432158192,
+    0.020000000000000018
+  ],
+  "pick_execution": {
+    "completed": false,
+    "reason": "waypoint_timeout",
+    "steps": 20,
+    "trace": [
+      {
+        "phase": 0,
+        "steps": 20,
+        "waypoint_reached": true
+      },
+      {
+        "phase": 1,
+        "steps": 0,
+        "waypoint_reached": false
+      }
+    ]
+  },
+  "evaluation_only": {
+    "blue_lifted_after_pick": false,
+    "blue_lift_height_after_pick_m": 3.195170394584834e-08,
+    "blue_final_height_change_m": 3.195748606715787e-08,
+    "blue_in_region_after_release": false,
+    "placement_rule": "cube footprint inside region, center z in [0.01,0.055] after opening and settling",
+    "lift_threshold_m": 0.06,
+    "body_displacement_m": {
+      "obj": 3.067690805930009e-07,
+      "candidate_blue": 3.195748606715787e-08,
+      "candidate_yellow": 3.195748606715787e-08
+    }
+  },
+  "visual_holding": {
+    "status": "unknown",
+    "reason": "comotion_or_proximity_not_supported",
+    "displacement_px": 0.0,
+    "hand_motion_px": 5.203496434451417,
+    "target_motion_px": 0.0,
+    "offset_drift_px": 5.203496434451417,
+    "max_target_hand_distance_px": 21.705769345777775
+  },
+  "evidence_frames": [
+    {
+      "target_pixel": [
+        235.0,
+        211.0
+      ],
+      "hand_pixel": [
+        236.5308771814074,
+        231.64738363699493
+      ]
+    },
+    {
+      "target_pixel": [
+        235.0,
+        211.0
+      ],
+      "hand_pixel": [
+        231.38241619928993,
+        232.40218470943904
+      ]
+    }
+  ],
+  "probe_steps": 27,
+  "place_execution": null,
+  "place_attempted": false,
+  "task_success": false,
+  "negative_control": false,
+  "pick_max_steps": 20,
+  "controlled_feedback_blackout": false,
+  "continuation_decision": {
+    "action": "observe_again",
+    "reason": "holding_not_supported",
+    "observation_id": "after_probe",
+    "observed_facts": [],
+    "validator_valid": null,
+    "predicted_goal_satisfied": null
+  },
+  "scope": "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop"
+}

@@ -19,7 +19,11 @@ def main():
     parser.add_argument("--skip-pick", action="store_true", help="ungrasped negative control")
     parser.add_argument("--pick-max-steps", type=int, default=260)
     parser.add_argument("--occlude-feedback", action="store_true", help="controlled full-frame observation blackout")
+    parser.add_argument("--reobserve-rounds", type=int, default=0, help="bounded extra observation rounds")
+    parser.add_argument("--blackout-rounds", type=int, default=0, help="first N observation rounds receive blackout")
     args = parser.parse_args()
+    if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
+        parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -64,40 +68,50 @@ def main():
             place_result = None
             probe_steps = 0
             evidence_frames = []
+            observation_history = []
             continuation = {"action": "observe_again", "reason": "not_tested"}
             if args.visual_follow:
-                # Only proprioception and rendered RGB drive this branch.
-                probe_origin = np.asarray(env.get_endeff_pos()).copy()
-                for index, delta in enumerate(([0., 0., 0.], [.04, 0., .02])):
-                    waypoint = probe_origin + delta
-                    for _ in range(40):
-                        action = np.r_[np.clip(10 * (waypoint - env.get_endeff_pos()), -1, 1),
-                                       -1 if args.skip_pick else 1]
-                        _, _, terminated, truncated, _ = env.step(action)
-                        probe_steps += 1
-                        if terminated or truncated:
-                            raise RuntimeError("episode ended during visual probe")
-                        if np.linalg.norm(env.get_endeff_pos() - waypoint) < .005:
-                            break
-                    current = np.asarray(env.render()).copy()
-                    Image.fromarray(np.flip(current, (0, 1))).save(output / f"probe_{index}.png")
-                    feedback_frame = np.zeros_like(current) if args.occlude_feedback else current
-                    Image.fromarray(np.flip(feedback_frame, (0, 1))).save(output / f"feedback_{index}.png")
+                for round_index in range(args.reobserve_rounds + 1):
+                    # Only proprioception and rendered RGB drive this branch.
+                    evidence_frames = []
+                    probe_origin = np.asarray(env.get_endeff_pos()).copy()
+                    for index, delta in enumerate(([0., 0., 0.], [.04 if round_index % 2 == 0 else -.04, 0., 0.])):
+                        waypoint = probe_origin + delta
+                        for _ in range(40):
+                            action = np.r_[np.clip(10 * (waypoint - env.get_endeff_pos()), -1, 1),
+                                           -1 if args.skip_pick else 1]
+                            _, _, terminated, truncated, _ = env.step(action)
+                            probe_steps += 1
+                            if terminated or truncated:
+                                raise RuntimeError("episode ended during visual probe")
+                            if np.linalg.norm(env.get_endeff_pos() - waypoint) < .005:
+                                break
+                        current = np.asarray(env.render()).copy()
+                        Image.fromarray(np.flip(current, (0, 1))).save(output / f"probe_round{round_index}_{index}.png")
+                        feedback_frame = np.zeros_like(current) if (args.occlude_feedback or round_index < args.blackout_rounds) else current
+                        Image.fromarray(np.flip(feedback_frame, (0, 1))).save(output / f"feedback_round{round_index}_{index}.png")
+                        try:
+                            target_pixel = color_pixel(feedback_frame, "blue")[0]
+                        except ValueError:
+                            target_pixel = None
+                        evidence_frames.append({"target_pixel": target_pixel,
+                                                "hand_pixel": project_point(calibration, env.get_endeff_pos())})
+                    holding = holding_evidence(blue, [f["target_pixel"] for f in evidence_frames],
+                                               [f["hand_pixel"] for f in evidence_frames])
                     try:
-                        target_pixel = color_pixel(feedback_frame, "blue")[0]
+                        fresh_green = color_pixel(feedback_frame, "green")[0]
                     except ValueError:
-                        target_pixel = None
-                    evidence_frames.append({"target_pixel": target_pixel,
-                                            "hand_pixel": project_point(calibration, env.get_endeff_pos())})
-                holding = holding_evidence(blue, [f["target_pixel"] for f in evidence_frames],
-                                           [f["hand_pixel"] for f in evidence_frames])
-                try:
-                    fresh_green = color_pixel(feedback_frame, "green")[0]
-                except ValueError:
-                    fresh_green = None
-                observation_id = "after_probe"
-                continuation, place = checked_place_continuation(holding,
-                    target_visible=fresh_green is not None, observation_id=observation_id)
+                        fresh_green = None
+                    observation_id = f"after_probe_{round_index}"
+                    continuation, place = checked_place_continuation(holding,
+                        target_visible=fresh_green is not None, observation_id=observation_id)
+                    observation_history.append({"round": round_index, "evidence_frames": evidence_frames,
+                                                "holding": holding, "decision": continuation})
+                    if place is not None:
+                        break
+                if place is None:
+                    continuation = dict(continuation, action="stop", reason="observation_budget_exhausted",
+                                        last_observation_reason=continuation["reason"])
                 if place is not None:
                     # Refresh destination from current RGB; never from scoring truth.
                     fresh_bindings = {
@@ -139,7 +153,9 @@ def main():
                       "place_attempted": place_result is not None, "task_success": placed,
                       "negative_control": args.skip_pick,
                       "pick_max_steps": args.pick_max_steps, "controlled_feedback_blackout": args.occlude_feedback,
-                      "continuation_decision": continuation,
+                      "continuation_decision": continuation, "observation_history": observation_history,
+                      "reobserve_rounds_budget": args.reobserve_rounds, "blackout_rounds": args.blackout_rounds,
+                      "pick_attempts": 0 if args.skip_pick else 1,
                       "scope": "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop"}
             (output / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)

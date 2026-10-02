@@ -1,0 +1,8 @@
+{
+  "prompt": "{\"goal\": \"on(blue_candidate, green_region)\", \"initial_state_source\": \"explicit controlled-scene precondition, not visual state estimation\", \"initial_facts\": [\"hand_empty(right)\", \"on(blue_candidate, table)\", \"on(green_region, table)\"], \"objects\": [\"blue_candidate\", \"green_region\"], \"available_skills\": [\"pick\", \"place\"], \"available_arms\": [\"right\"], \"request\": \"Generate the complete plan from this initial state. Return exactly one JSON OBJECT with the single top-level key actions, whose value is a populated array of action records. Do NOT return a bare array. Each record has step_id, skill, object_id, target_id (place only), arm. IDs start at 1. No schema, markdown, or commentary.\"}",
+  "raw_response": "{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": null,\n      \"arm\": \"right\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\",\n      \"arm\": \"right\"\n    }\n  ]\n}",
+  "model": "qwen-vl-plus",
+  "total_tokens": 514,
+  "latency_ms": 1247,
+  "image_sha256": "a242d5fe66dd33019d68360deadb20bd2afbb9741aea71d321def2e28c8135aa"
+}

@@ -1,0 +1,50 @@
+{
+  "plan": {
+    "actions": [
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "table",
+        "arm": "right"
+      },
+      {
+        "step_id": 2,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 3,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  "valid": true,
+  "error_code": "None",
+  "goal_satisfied": true,
+  "within_execution_scope": true,
+  "accepted": true,
+  "current_facts": [
+    "holding(right, blue_candidate)",
+    "on(green_region, table)",
+    "on(yellow_candidate, table)"
+  ],
+  "required_final_facts": [
+    "on(blue_candidate, table)",
+    "on(yellow_candidate, green_region)"
+  ],
+  "state_source": "RGB_supported_blue_holding_plus_untouched_yellow_table_fixture",
+  "physical_execution_authorized": false,
+  "request_context": {
+    "request_id": "request-1",
+    "task_version": 2,
+    "observation_version": 1,
+    "instruction_digest": "009f24d2a88f4d646987c190e97efed63d07013484a548350e31bd49a6330653",
+    "observation_digest": "b3af8e9a751f775020b770c4b713ea446cdaeae96775d8c9cd7cfe962f95adc3"
+  }
+}

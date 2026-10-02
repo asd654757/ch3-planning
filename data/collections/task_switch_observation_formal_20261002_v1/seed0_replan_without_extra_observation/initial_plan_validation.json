@@ -1,0 +1,28 @@
+{
+  "initial_state_source": "controlled_scene_precondition",
+  "plan": {
+    "actions": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 2,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  "validator_valid": true,
+  "predicted_goal_satisfied": true,
+  "error_code": "None",
+  "initial_facts": [
+    "on(blue_candidate, table)",
+    "on(green_region, table)"
+  ]
+}

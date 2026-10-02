@@ -54,7 +54,7 @@ def main():
         source_sha256={name: hashlib.sha256((root/name).read_bytes()).hexdigest() for name in
             ["scripts/task_semantics_pilot.py", "ch3/vlm/task_semantics.py"]},
         physical_execution=False, state_source="explicit_held_blue_fixture", model="qwen-vl-plus",
-        automatic_reruns=False, max_calls=22, annotation_in_model_prompt=False)
+        automatic_reruns=False, max_calls=24, annotation_in_model_prompt=False)
     (a.output_dir/"manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
     if not a.execute:
         print(json.dumps(dict(manifest=str(a.output_dir/"manifest.json"), executed=False)))

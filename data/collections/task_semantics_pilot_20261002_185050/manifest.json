@@ -1,0 +1,240 @@
+{
+  "protocol": "task_semantics_symbolic_pilot_v1",
+  "cases": [
+    {
+      "case_id": "cancel_1",
+      "family": "cancellation",
+      "instruction": "Cancel the blue-to-green task. Put the blue cube back on the table and finish with an empty hand.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "cancel_2",
+      "family": "cancellation",
+      "instruction": "蓝色方块不送去绿色区域了，把它放回桌面，然后结束。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "switch_1",
+      "family": "object_change",
+      "instruction": "Return blue to the table; instead take yellow to the green region, then finish empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "switch_2",
+      "family": "object_change",
+      "instruction": "改搬黄色方块到绿色区域；手上的蓝块先放回桌面，最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "reference_1",
+      "family": "held_reference",
+      "instruction": "Put the cube you are holding on the green region and finish empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "reference_2",
+      "family": "held_reference",
+      "instruction": "把手里那个放回桌面，不要碰黄色方块，然后结束。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "prohibition_1",
+      "family": "prohibition",
+      "instruction": "Place blue in the green region. Do not pick or place yellow. Finish with an empty hand.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "prohibition_2",
+      "family": "prohibition",
+      "instruction": "蓝块放回桌面，黄色方块禁止移动，最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "order_1",
+      "family": "ordering",
+      "instruction": "Put both cubes in green, blue first and yellow second, ending empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "order_2",
+      "family": "ordering",
+      "instruction": "两个方块都放到绿色区域，必须先完成黄色的放置，再完成蓝色的放置，最后空手。可以临时将蓝色放回桌面。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "yellow_candidate",
+          "blue_candidate"
+        ],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "ambiguous_1",
+      "family": "refusal",
+      "instruction": "Put that cube over there.",
+      "gold": {
+        "status": "clarify",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      }
+    },
+    {
+      "case_id": "unavailable_1",
+      "family": "refusal",
+      "instruction": "Return blue to the table, then carry the orange cube to green.",
+      "gold": {
+        "status": "unsupported",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      }
+    }
+  ],
+  "image": "data/collections/task_switch_observation_formal_20261002_v1/seed0_rule_with_observation/blue_holding_1.png",
+  "image_sha256": "3287a337e9e5fa2876eaeac55b75f325d958927d95f33b54343e9ca1a6466c22",
+  "commit": "9ce6eb7b02faaab15f2c8aae7e596ee704b58e87",
+  "source_sha256": {
+    "scripts/task_semantics_pilot.py": "79dbea9deea4032a8cc7921d3defead665e5efe6db3f2055d9c29b71e4bb977f",
+    "ch3/vlm/task_semantics.py": "31f504efb7cebde7820ff77384e74d2f8f7e171993e32bf80a9115bfae8b0eb6"
+  },
+  "physical_execution": false,
+  "state_source": "explicit_held_blue_fixture",
+  "model": "qwen-vl-plus",
+  "automatic_reruns": false,
+  "max_calls": 22,
+  "annotation_in_model_prompt": false
+}

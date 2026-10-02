@@ -1,0 +1,8 @@
+{
+  "prompt": "{\"task_contract\": {\"status\": \"ready\", \"goals\": [{\"object_id\": \"blue_candidate\", \"target_id\": \"green_region\"}], \"forbidden_objects\": [\"yellow_candidate\"], \"placement_order\": [\"blue_candidate\"], \"hand_empty\": false}, \"current_facts\": [\"holding(right, blue_candidate)\", \"on(green_region, table)\", \"on(yellow_candidate, table)\"], \"state_source\": \"explicit_fixture_not_perception\", \"candidates\": {\"blue_candidate\": \"blue cube\", \"yellow_candidate\": \"yellow cube\", \"green_region\": \"green placement region\"}, \"available_skills\": [\"pick\", \"place\"], \"arms\": [\"right\"], \"special_targets\": [\"table\"], \"rules\": \"Return ONLY {actions:[...]}. Each action has contiguous step_id starting 1, skill, object_id, arm, and target_id for place. Generate ONLY remaining actions: blue pick is already executed, blue is held. Never replay history. Each arm holds at most one object. Honor final goals AND every prohibition/order constraint. Empty actions allowed only if already satisfied. Do not invent constraints or objects.\"}",
+  "raw_response": "{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"arm\": \"right\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}",
+  "model": "qwen-vl-plus",
+  "total_tokens": 540,
+  "latency_ms": 865,
+  "image_sha256": "3287a337e9e5fa2876eaeac55b75f325d958927d95f33b54343e9ca1a6466c22"
+}

@@ -98,3 +98,18 @@ def test_v3_embedded_goal_quote():
 def test_v3_partial_refusal_rejected():
     raw=dict(status='unsupported',reason_quote='orange',goals=[dict(object_id='blue_candidate',target_id='table',quote='blue')],forbidden_objects=[],placement_order=[],order_quote='',hand_empty=False,hand_quote='')
     with pytest.raises(ValueError):SimpleGroundedSemantics.model_validate(raw).to_contract('blue orange')
+
+
+def test_v3_language_parser_has_no_image_or_gold(tmp_path):
+    import json
+    from types import SimpleNamespace
+    from ch3.vlm.task_semantics import parse_semantics
+    class Client:
+        def complete(self,**kw):
+            assert kw['image_path'] is None
+            assert 'on(blue_candidate, green_region)' not in kw['user_prompt']
+            assert 'previous_unexecuted_goal' not in kw['user_prompt']
+            return SimpleNamespace(content=json.dumps(dict(status='clarify',reason_quote='there',goals=[],forbidden_objects=[],placement_order=[],order_quote='',hand_empty=False,hand_quote='')),model='test',total_tokens=1,latency_ms=1,finish_reason='stop',prompt_tokens=1,completion_tokens=1)
+    c=parse_semantics(Client(),instruction='Put it there.',image_path=tmp_path/'nonexistent.png',log_path=tmp_path/'semantic_call.json')
+    assert c.status=='clarify'
+    assert json.loads((tmp_path/'semantic_call.json').read_text())['image_input'] is False

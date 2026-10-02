@@ -20,3 +20,9 @@ v2目录`data/collections/task_semantics_pilot_v2_20261002_190630`12/12完成，
 v3将quote嵌入各goal/forbidden对象，取消ready必填status证据的冗余要求，拒绝仍须reason_quote。提示不提供旧目的，保留已执行blue pick与当前持物事实。**语义解析调用不输入图像**，只消费共享已落地候选和状态；规划调用仍用同一冻结图像。这是前端分解开发试验，不能把收益归因于视觉，也不能声称隔离了单一变量（schema、prompt与输入模态同时变化）。仍不声称证据片段能验证语义真实性。
 
 本轮只限再跑12条开发指令，不自动扩规模。新增可复用分析脚本保留所有预期case分母，单列缺测、schema拒绝、正确澄清与gold计划成功。
+
+## v3结果与JSON输出模式诊断
+
+v3目录`data/collections/task_semantics_pilot_v3_20261002_191157`12/12完成，严格语义与gold计划均2/12（可执行任务2/10）；其余多为生成重复键、无关额外字段、JSON截断，另有quote来自提示规则而非指令。JSON模式下模型先填出合理字段，再不停添加无关字段或重复hand_quote，直到1024token截断。不能将该现象直接等同模型理解失败，也不应提高token预算掩盖非终止输出。
+
+v4为有界配对开发诊断：**保持v3语言解析prompt、输入、温度、seed与token上限，只关闭API response_format=json_object**。严格JSON/schema/quote检查不放松、不自动截取字段、不用gold纠正答案。新增finish_reason、prompt/completion token日志帮助区分长度截断与语义错误。该诊断不是正式模型比较，v3/v4运行时点不同亦不能保证服务端完全无漂移。

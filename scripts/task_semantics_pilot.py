@@ -39,6 +39,7 @@ def main():
     p.add_argument("--env-file", required=True)
     p.add_argument("--output-dir", type=Path, required=True)
     p.add_argument("--execute", action="store_true")
+    p.add_argument("--parser-version", choices=["v2","v3","v4"], default="v4")
     a = p.parse_args()
     a.output_dir.mkdir(parents=True, exist_ok=False)
     rows = cases()
@@ -48,13 +49,13 @@ def main():
         if gold.status == "ready" and deterministic_plan(gold) is None:
             raise ValueError("unreachable annotation: " + row["case_id"])
     root = Path(__file__).resolve().parents[1]
-    manifest = dict(protocol="task_semantics_symbolic_pilot_v3", cases=rows,
+    manifest = dict(protocol="task_semantics_symbolic_pilot_"+a.parser_version, cases=rows,
         image=str(a.image), image_sha256=hashlib.sha256(a.image.read_bytes()).hexdigest(),
         commit=subprocess.check_output(["git","rev-parse","HEAD"], cwd=root, text=True).strip(),
         source_sha256={name: hashlib.sha256((root/name).read_bytes()).hexdigest() for name in
             ["scripts/task_semantics_pilot.py", "ch3/vlm/task_semantics.py"]},
         physical_execution=False, state_source="explicit_held_blue_fixture", model="qwen-vl-plus",
-        automatic_reruns=False, parser_version="v3", semantic_image_input=False, development_retest_of_v1=True, max_calls=24, annotation_in_model_prompt=False)
+        automatic_reruns=False, parser_version=a.parser_version, semantic_image_input=a.parser_version=="v2", development_retest_of_v1=True, max_calls=24, annotation_in_model_prompt=False)
     (a.output_dir/"manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
     if not a.execute:
         print(json.dumps(dict(manifest=str(a.output_dir/"manifest.json"), executed=False)))
@@ -72,7 +73,7 @@ def main():
         record["oracle_semantics_symbolic_search"] = evaluate_plan(oracle,gold) if oracle is not None else {"decision":"refuse"}
         try:
             parsed = parse_semantics(client, instruction=row["instruction"], image_path=a.image,
-                                     log_path=target/"semantic_call.json")
+                                     log_path=target/"semantic_call.json", version=a.parser_version)
             record["parsed_contract"] = parsed.model_dump()
             record["semantic_correct"] = semantic_equal(parsed,gold)
             record["refusal_correct"] = parsed.status == gold.status if gold.status != "ready" else None

@@ -1,0 +1,72 @@
+{
+  "protocol": "task_semantics_symbolic_pilot_v3",
+  "expected": 12,
+  "completed": 12,
+  "missing_case_ids": [],
+  "semantic_exact_match": 2,
+  "ready_expected": 10,
+  "ready_completed": 10,
+  "ready_gold_plan_success": 2,
+  "ready_end_to_end_strict_success": 2,
+  "parsed_contract_search_gold_success": 2,
+  "refusal_expected": 2,
+  "refusal_completed": 2,
+  "correct_refusals": 0,
+  "semantic_misaccept": 0,
+  "errors": [
+    {
+      "case_id": "cancel_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\ntask_description\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Cancel the blue-to-green...ish with an empty hand.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden"
+    },
+    {
+      "case_id": "cancel_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a string at line 35 column 23 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\...  \"hand_quote\": \"蓝色', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "switch_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a string at line 111 column 26 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\...resource_allocation\": \"', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "switch_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a value at line 48 column 0 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\...: \"最后空手\"\\n  ,\\n', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "reference_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing an object at line 61 column 0 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\...\": \"然后结束\"\\n  \\n', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "prohibition_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a string at line 102 column 74 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\... task uses basic object', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "order_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a value at line 133 column 0 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\..._id\": \"green_region\",\\n', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "order_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a string at line 122 column 62 [type=json_invalid, input_value='{\\n  \"status\": \"ready\",\\...lease_temp_release_temp', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "ambiguous_1",
+      "error_type": "ValueError",
+      "error": "hand quote without requirement"
+    },
+    {
+      "case_id": "unavailable_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: EOF while parsing a string at line 144 column 52 [type=json_invalid, input_value='{\\n  \"status\": \"unsuppor...he orange cube to green', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    }
+  ],
+  "logged_calls": 14,
+  "total_tokens": 13022,
+  "physical_execution": false,
+  "development_retest": true
+}

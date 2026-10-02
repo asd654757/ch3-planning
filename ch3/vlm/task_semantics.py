@@ -163,10 +163,10 @@ class SimpleGroundedSemantics(BaseModel):
         return contract
 
 
-def parse_semantics(client, *, instruction, image_path, log_path, version="v3"):
+def parse_semantics(client, *, instruction, image_path, log_path, version="v4"):
     if version == "v2":
         return parse_semantics_v2(client, instruction=instruction,image_path=image_path,log_path=log_path)
-    if version != "v3":
+    if version not in {"v3", "v4"}:
         raise ValueError("unknown semantic parser version")
     # Already-grounded scene evidence is shared; no pixels enter this NL stage.
     prompt = """Extract the complete NEW task, not a motion plan.
@@ -193,11 +193,13 @@ If no order, order_quote empty. If no empty-hand requirement, hand_quote empty.
 NEW INSTRUCTION (sole authority):
 """ + instruction
     response = client.complete(system_prompt="You are a faithful task instruction translator. Never substitute objects or destinations. Return the specified JSON only.",
-        user_prompt=prompt, image_path=None, seed=0, temperature=.1,max_tokens=1024,json_mode=True)
+        user_prompt=prompt, image_path=None, seed=0, temperature=.1,max_tokens=1024,json_mode=(version == "v3"))
     from pathlib import Path
     Path(log_path).write_text(json.dumps({"prompt":prompt,"raw_response":response.content,
         "model":response.model,"total_tokens":response.total_tokens,"latency_ms":response.latency_ms,
-        "parser_version":version,"image_input":False,"state_source":"explicit_shared_fixture"},ensure_ascii=False,indent=2))
+        "parser_version":version,"image_input":False,"state_source":"explicit_shared_fixture",
+        "json_mode":version == "v3", "finish_reason":response.finish_reason,
+        "prompt_tokens":response.prompt_tokens,"completion_tokens":response.completion_tokens},ensure_ascii=False,indent=2))
     grounded=SimpleGroundedSemantics.model_validate_json(response.content)
     contract=grounded.to_contract(instruction)
     Path(log_path).with_name("semantic_evidence_audit.json").write_text(json.dumps({

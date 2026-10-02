@@ -72,3 +72,29 @@ def test_refusal_evidence_does_not_authorize_partial_request():
     raw['contract']={**c,'goals':[dict(object_id='blue_candidate',target_id='table')]}
     with pytest.raises(ValueError):
         GroundedSemantics.model_validate(raw).check_evidence('Return blue then carry orange cube.')
+
+
+def test_analysis_preserves_missing_denominator(tmp_path):
+    import json
+    from scripts.analyze_task_semantics import analyze
+    (tmp_path/'manifest.json').write_text(json.dumps(dict(protocol='test',cases=cases())))
+    row=dict(case_id='cancel_1',semantic_correct=False,end_to_end_symbolic_success=False,logged_calls=1,total_tokens=9,error='invalid contract',error_type='ValueError')
+    (tmp_path/'records.jsonl').write_text(json.dumps(row)+'\n')
+    a=analyze(tmp_path)
+    assert a['expected']==12 and a['completed']==1 and len(a['missing_case_ids'])==11
+    assert a['ready_expected']==10 and a['ready_gold_plan_success']==0
+    (tmp_path/'records.jsonl').write_text((json.dumps(row)+'\n')*2)
+    with pytest.raises(ValueError):analyze(tmp_path)
+
+from ch3.vlm.task_semantics import SimpleGroundedSemantics
+
+def test_v3_embedded_goal_quote():
+    raw=dict(status='ready',reason_quote='',goals=[dict(object_id='blue_candidate',target_id='table',quote='Return blue to table')],forbidden_objects=[],placement_order=[],order_quote='',hand_empty=True,hand_quote='Return blue to table')
+    c=SimpleGroundedSemantics.model_validate(raw).to_contract('Return blue to table.')
+    assert c.goals[0].target_id=='table'
+    raw['goals'][0]['quote']='not in instruction'
+    with pytest.raises(ValueError):SimpleGroundedSemantics.model_validate(raw).to_contract('Return blue to table.')
+
+def test_v3_partial_refusal_rejected():
+    raw=dict(status='unsupported',reason_quote='orange',goals=[dict(object_id='blue_candidate',target_id='table',quote='blue')],forbidden_objects=[],placement_order=[],order_quote='',hand_empty=False,hand_quote='')
+    with pytest.raises(ValueError):SimpleGroundedSemantics.model_validate(raw).to_contract('blue orange')

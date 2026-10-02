@@ -1,0 +1,82 @@
+{
+  "protocol": "task_semantics_symbolic_pilot_v2",
+  "expected": 12,
+  "completed": 12,
+  "missing_case_ids": [],
+  "semantic_exact_match": 0,
+  "ready_expected": 10,
+  "ready_completed": 10,
+  "ready_gold_plan_success": 0,
+  "ready_end_to_end_strict_success": 0,
+  "parsed_contract_search_gold_success": 0,
+  "refusal_expected": 2,
+  "refusal_completed": 2,
+  "correct_refusals": 0,
+  "semantic_misaccept": 0,
+  "errors": [
+    {
+      "case_id": "cancel_1",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "cancel_2",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "switch_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for GroundedSemantics\nstate_source\n  Extra inputs are not permitted [type=extra_forbidden, input_value='explicit_fixture_not_visual_state_estimation', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden"
+    },
+    {
+      "case_id": "switch_2",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "reference_1",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "reference_2",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "prohibition_1",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "prohibition_2",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "order_1",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "order_2",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "ambiguous_1",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    },
+    {
+      "case_id": "unavailable_1",
+      "error_type": "ValueError",
+      "error": "missing or unexpected semantic evidence fields"
+    }
+  ],
+  "logged_calls": 12,
+  "total_tokens": 11798,
+  "physical_execution": false,
+  "development_retest": true
+}

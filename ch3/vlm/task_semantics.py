@@ -76,7 +76,7 @@ class GroundedSemantics(BaseModel):
                 raise ValueError("semantic evidence is not an exact instruction substring")
 
 
-def parse_semantics(client, *, instruction, image_path, log_path, version="v2"):
+def parse_semantics_v2(client, *, instruction, image_path, log_path, version="v2"):
     # No expected goals, answer plan, case family or annotation is supplied.
     if version == "v1":
         raise ValueError("legacy v1 outputs retained; use its frozen source to reproduce")
@@ -116,6 +116,94 @@ def parse_semantics(client, *, instruction, image_path, log_path, version="v2"):
         "semantic_correctness_guaranteed": False,
         "grounded_output": grounded.model_dump()}, ensure_ascii=False, indent=2))
     return grounded.contract
+
+
+class QuotedGoal(LocationGoal):
+    quote: str
+
+class QuotedObject(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    object_id: str
+    quote: str
+
+class SimpleGroundedSemantics(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    status: Literal["ready", "clarify", "unsupported"]
+    reason_quote: str
+    goals: list[QuotedGoal]
+    forbidden_objects: list[QuotedObject]
+    placement_order: list[str]
+    order_quote: str
+    hand_empty: bool
+    hand_quote: str
+
+    def to_contract(self, instruction):
+        quotes = [g.quote for g in self.goals] + [o.quote for o in self.forbidden_objects]
+        if self.status != "ready":
+            quotes.append(self.reason_quote)
+        elif self.reason_quote:
+            raise ValueError("ready reason_quote must be empty")
+        if self.placement_order:
+            if len(self.placement_order) < 2:
+                raise ValueError("singleton ordering is not an explicit ordering constraint")
+            quotes.append(self.order_quote)
+        elif self.order_quote:
+            raise ValueError("order quote without order")
+        if self.hand_empty:
+            quotes.append(self.hand_quote)
+        elif self.hand_quote:
+            raise ValueError("hand quote without requirement")
+        if any(not q.strip() or q not in instruction for q in quotes):
+            raise ValueError("missing or fabricated evidence quote")
+        contract = TaskSemantics(status=self.status,
+            goals=[LocationGoal(object_id=g.object_id,target_id=g.target_id) for g in self.goals],
+            forbidden_objects=[o.object_id for o in self.forbidden_objects],
+            placement_order=self.placement_order, hand_empty=self.hand_empty)
+        contract.check_scope()
+        return contract
+
+
+def parse_semantics(client, *, instruction, image_path, log_path, version="v3"):
+    if version == "v2":
+        return parse_semantics_v2(client, instruction=instruction,image_path=image_path,log_path=log_path)
+    if version != "v3":
+        raise ValueError("unknown semantic parser version")
+    # Already-grounded scene evidence is shared; no pixels enter this NL stage.
+    prompt = """Extract the complete NEW task, not a motion plan.
+Shared grounded scene: blue_candidate = blue cube/蓝块, yellow_candidate = yellow cube/黄块,
+green_region = green placement region/绿色区域, table = table/桌面.
+Right hand currently holds blue_candidate; yellow is on table. Only pick/place supported.
+No previous destination is supplied or authorized. Current facts are explicit fixture, not new visual estimates.
+RULES:
+- All requested final positions go in goals. Return/put back/放回桌面 means target_id table, NOT just empty hand.
+- 'the cube you hold/手里那个' = blue_candidate. A vague 'that cube over there' without definite destination requires clarify.
+- If ANY requested object is absent (e.g. orange cube), status unsupported; no substitution or partial task.
+- Do not touch/move object means forbidden_objects. Keep all prohibitions.
+- placement_order only for explicit order of at least two final goal placements, otherwise []. Temporary release is not a final placement order.
+- Putting down/placing/returning/finishing transport or explicit empty hand requires hand_empty true.
+- Every quote must be copied EXACTLY from the instruction. Quotes establish provenance, not truth.
+OUTPUT exactly these eight keys, populated JSON, no schema:
+{"status":"ready|clarify|unsupported", "reason_quote":"",
+ "goals":[{"object_id":"candidate ID","target_id":"table or green_region","quote":"instruction phrase"}],
+ "forbidden_objects":[{"object_id":"candidate ID","quote":"prohibition phrase"}],
+ "placement_order":[],"order_quote":"","hand_empty":true,"hand_quote":"instruction phrase"}
+ready: reason_quote empty. Refusal: reason_quote copied from ambiguous/unsupported request,
+all arrays empty, hand_empty false, order_quote and hand_quote empty.
+If no order, order_quote empty. If no empty-hand requirement, hand_quote empty.
+NEW INSTRUCTION (sole authority):
+""" + instruction
+    response = client.complete(system_prompt="You are a faithful task instruction translator. Never substitute objects or destinations. Return the specified JSON only.",
+        user_prompt=prompt, image_path=None, seed=0, temperature=.1,max_tokens=1024,json_mode=True)
+    from pathlib import Path
+    Path(log_path).write_text(json.dumps({"prompt":prompt,"raw_response":response.content,
+        "model":response.model,"total_tokens":response.total_tokens,"latency_ms":response.latency_ms,
+        "parser_version":version,"image_input":False,"state_source":"explicit_shared_fixture"},ensure_ascii=False,indent=2))
+    grounded=SimpleGroundedSemantics.model_validate_json(response.content)
+    contract=grounded.to_contract(instruction)
+    Path(log_path).with_name("semantic_evidence_audit.json").write_text(json.dumps({
+        "version":version,"quote_coverage_valid":True,"semantic_correctness_guaranteed":False,
+        "grounded_output":grounded.model_dump()},ensure_ascii=False,indent=2))
+    return contract
 
 
 def semantic_equal(a, b):

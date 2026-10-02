@@ -63,6 +63,8 @@ def main():
     parser.add_argument('--env-file',type=Path)
     parser.add_argument('--freeze-only',action='store_true')
     parser.add_argument('--explicit-event',action='store_true', help='v3: both model settings receive the same disturbance and preconditions')
+    parser.add_argument('--fixed-right-arm', action='store_true')
+    parser.add_argument('--case-ids', nargs='+', help='Explicit bounded diagnostic subset')
     args=parser.parse_args()
     if args.freeze_only:
         args.manifest.parent.mkdir(parents=True,exist_ok=True)
@@ -73,8 +75,11 @@ def main():
     client=DashScopeVLMClient(env_path=args.env_file,timeout=60,max_retries=0)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     with args.output.open('x') as f:
+        completed = 0
         for line in args.manifest.read_text().splitlines():
             case=json.loads(line)
+            if args.case_ids and case['case_id'] not in args.case_ids:
+                continue
             state=WorldState(objects=set(case['objects']),at=case['at'])
             registry=load_registry(); registry._arms={'right'}
             validator=Validator(state.objects,registry)
@@ -86,14 +91,17 @@ def main():
                     plan,audit=generate_suffix(client=client,state=state,goal=goal,validator=validator,
                         history=case['history'],attempts=2,instruction=case['instruction'],targets=case['targets'],
                         protected_objects=case['protected_objects'],feedback_enabled=method=='MODEL_FEEDBACK',
-                        execution_event=case['perturbation'] if args.explicit_event else None)
+                        execution_event=case['perturbation'] if args.explicit_event else None,
+                        fixed_right_arm=args.fixed_right_arm)
                     reason='accepted' if plan else 'candidate_rejected'
                 row={'case_id':case['case_id'],'level':case['level'],'method':method,
                     'symbolic_ready':plan is not None,'reason':reason,
                     'plan':plan.model_dump(mode='json') if plan else None,'calls':len(audit),
-                    'audit':audit,'explicit_event':args.explicit_event, 'physical_success':None,'scope':'symbolic_difficulty_pilot'}
+                    'audit':audit,'explicit_event':args.explicit_event,
+                    'fixed_right_arm':args.fixed_right_arm, 'physical_success':None,'scope':'symbolic_difficulty_pilot'}
                 f.write(json.dumps(row)+'\n');f.flush()
+                completed += 1
                 print(json.dumps({k:row[k] for k in ['case_id','method','symbolic_ready','calls']}),flush=True)
-    print(json.dumps({'completed_cases':45,'scope':'symbolic_only_not_physical'}),flush=True)
+    print(json.dumps({'completed_cases':completed,'scope':'symbolic_only_not_physical'}),flush=True)
 
 if __name__=='__main__':main()

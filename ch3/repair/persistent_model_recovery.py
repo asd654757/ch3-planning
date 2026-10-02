@@ -7,7 +7,7 @@ from ch3.schema.model_plan import ModelPlan
 from pydantic import ValidationError
 
 
-def strict_plan(text):
+def strict_plan(text, *, fixed_right_arm=False):
     text = text.strip()
     fence = re.fullmatch(r'```(?:json)?\s*(.*?)\s*```', text, re.S)
     if fence:
@@ -27,10 +27,14 @@ def strict_plan(text):
     for action in data['actions']:
         if not isinstance(action, dict) or set(action) - {'step_id','skill','object_id','target_id','arm'}:
             raise ValueError('unexpected_action_fields')
+        if fixed_right_arm:
+            if 'arm' in action and action['arm'] != 'right':
+                raise ValueError('unsupported_explicit_arm')
+            action.setdefault('arm', 'right')
     return ModelPlan.model_validate(data)
 
 
-def generate_suffix(*, client, state, goal, validator, history, attempts=1, instruction=None, targets=None, protected_objects=(), feedback_enabled=True, execution_event=None):
+def generate_suffix(*, client, state, goal, validator, history, attempts=1, instruction=None, targets=None, protected_objects=(), feedback_enabled=True, execution_event=None, fixed_right_arm=False):
     """Both settings retain Validator AND Goal Checker before any execution.
 
     attempts=2 adds error-conditioned correction, not an unfair goal-check removal.
@@ -38,6 +42,8 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1, inst
     """
     if attempts not in (1, 2):
         raise ValueError('attempts must be 1 or 2')
+    if fixed_right_arm and set(validator.registry.arms) != {'right'}:
+        raise ValueError('fixed_right_arm_requires_single_right_backend')
     audit = []
     feedback = None
     for index in range(attempts):
@@ -60,6 +66,10 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1, inst
                 if instruction else {'actions': [{'step_id':1,'skill':'pick','object_id':'red_cube_0','arm':'right'}]}),
         }
         item = {'attempt': index + 1, 'request': request, 'accepted': False}
+        if fixed_right_arm:
+            request['backend_configuration'] = {'arm': 'right', 'adapter_supplies_arm': True}
+            request['output_schema']['actions'][0].pop('arm', None)
+        item['adapter'] = 'fixed_right_arm_v1' if fixed_right_arm else 'strict_model_plan'
         audit.append(item)
         try:
             response = client.complete(system_prompt=(
@@ -70,7 +80,8 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1, inst
                 user_prompt=json.dumps(request), seed=0, temperature=.1, max_tokens=1024, json_mode=False)
             item.update(content=response.content, total_tokens=response.total_tokens,
                         latency_ms=response.latency_ms, finish_reason=response.finish_reason)
-            plan = strict_plan(response.content)
+            plan = strict_plan(response.content, fixed_right_arm=fixed_right_arm)
+            item['normalized_plan'] = plan.model_dump(mode='json')
             check = validator.validate(plan, state)
             item['valid'] = check.valid
             item['goal_satisfied'] = bool(check.valid and goal_satisfied(check.final_state, goal, {'right'}))
@@ -86,6 +97,8 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1, inst
             if isinstance(exc, ValidationError):
                 feedback['schema_errors'] = [{'location':list(e['loc']),'type':e['type'],'message':e['msg']}
                                             for e in exc.errors()]
+            elif isinstance(exc, ValueError):
+                item['local_rejection_code'] = str(exc)
             if 'content' in item:
                 feedback['rejected_output'] = item['content']
         item['rejection'] = feedback

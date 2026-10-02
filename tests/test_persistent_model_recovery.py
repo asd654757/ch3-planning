@@ -77,3 +77,23 @@ def test_event_shared_with_both_settings():
             validator=Validator(state.objects,registry),history=[],attempts=2,feedback_enabled=feedback,
             execution_event='held_object_dropped_to_table')
         assert plan is not None
+
+
+def test_fixed_backend_supplies_only_missing_arm():
+    raw=GOOD.replace(',"arm":"right"','')
+    plan=strict_plan(raw,fixed_right_arm=True)
+    assert all(a.arm.value=='right' for a in plan.actions)
+    with pytest.raises(ValueError):strict_plan(raw)
+    with pytest.raises(ValueError,match='unsupported_explicit_arm'):
+        strict_plan(GOOD.replace('"right"','"left"'),fixed_right_arm=True)
+    with pytest.raises(ValueError,match='unsupported_explicit_arm'):
+        strict_plan(GOOD.replace('"right"','null'),fixed_right_arm=True)
+
+
+def test_fixed_backend_does_not_fix_wrong_state_or_target():
+    registry=load_registry();registry._arms={'right'}
+    state=WorldState.table_scene({'red_cube_0','tray_1'})
+    raw='{"actions":['+PLACE.replace('"step_id":2','"step_id":1').replace(',"arm":"right"','')+']}'
+    plan=strict_plan(raw,fixed_right_arm=True)
+    assert not Validator(state.objects,registry).validate(plan,state).valid
+    with pytest.raises(ValueError):strict_plan(raw.replace('"skill":"place"','"skill":"place","extra":1'),fixed_right_arm=True)

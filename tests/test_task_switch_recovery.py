@@ -44,3 +44,39 @@ def test_rejects_unknown_extra_fields_and_unconfirmed_state():
     raw["actions"][1]["object_id"] = "unseen_object"
     audit, plan = evaluate_switch_plan(raw, switch_fixture())
     assert not audit["valid"] and plan is None
+
+
+def test_live_call_rejects_task_changed_while_pending(tmp_path):
+    import json
+    from hashlib import sha256
+    from types import SimpleNamespace
+    from ch3.execution.recovery_context import RecoveryContext
+    from ch3.vlm.task_switch_recovery import generate_switch_plan
+    image = tmp_path / "image.png"
+    image.write_bytes(b"fixture-image")
+    c = RecoveryContext("Cancel the unexecuted blue-to-green placement. Now transport the yellow cube to the green region, returning the held blue cube to table.",
+        {"on(yellow_candidate, green_region)", "on(blue_candidate, table)", "hand_empty(right)"})
+    c.observe(facts=switch_fixture().facts(), image_sha256=sha256(image.read_bytes()).hexdigest(), evidence_source="explicit_fixture_not_visual_state_estimation")
+    class Client:
+        def complete(self, **kwargs):
+            c.update_task("another task", {"on(blue_candidate, green_region)"})
+            return SimpleNamespace(content=json.dumps(correct()), model="test", total_tokens=1, latency_ms=1)
+    with pytest.raises(ValueError, match="stale"):
+        generate_switch_plan(Client(), image_path=image, log_path=tmp_path / "call.json", state=switch_fixture(), context=c)
+    assert (tmp_path / "call.json").exists()
+    assert "stale" in json.loads((tmp_path / "switch_request_binding.json").read_text())["rejection"]
+
+
+def test_live_call_records_binding_without_model_echo(tmp_path):
+    import json
+    from types import SimpleNamespace
+    from ch3.vlm.task_switch_recovery import generate_switch_plan
+    image = tmp_path / "image.png"
+    image.write_bytes(b"fixture-image")
+    class Client:
+        def complete(self, **kwargs):
+            assert "request_context" in kwargs["user_prompt"]
+            return SimpleNamespace(content=json.dumps(correct()), model="test", total_tokens=1, latency_ms=1)
+    executable = generate_switch_plan(Client(), image_path=image, log_path=tmp_path / "call.json", state=switch_fixture())
+    assert executable is not None
+    assert json.loads((tmp_path / "switch_request_binding.json").read_text())["response_current"]

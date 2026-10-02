@@ -1,0 +1,128 @@
+{
+  "scope": "explicit_state_symbolic_diagnostic_not_online_simulation",
+  "image_source": "data/collections/complete_initial_stability_20261001_v2_seed0/feedback_round0_1.png",
+  "task_update_source": "scripted_external_command_not_model_failure",
+  "historical_remainder": {
+    "plan": {
+      "actions": [
+        {
+          "step_id": 1,
+          "skill": "place",
+          "object_id": "blue_candidate",
+          "target_id": "green_region",
+          "arm": "right"
+        }
+      ]
+    },
+    "valid": true,
+    "error_code": "None",
+    "goal_satisfied": false,
+    "within_execution_scope": false,
+    "accepted": false,
+    "current_facts": [
+      "holding(right, blue_candidate)",
+      "on(green_region, table)",
+      "on(yellow_candidate, table)"
+    ],
+    "required_final_facts": [
+      "on(blue_candidate, table)",
+      "on(yellow_candidate, green_region)"
+    ],
+    "state_source": "explicit_fixture_not_visual_state_estimation",
+    "physical_execution_authorized": false
+  },
+  "handwritten_release_then_transport_control": {
+    "plan": {
+      "actions": [
+        {
+          "step_id": 1,
+          "skill": "place",
+          "object_id": "blue_candidate",
+          "target_id": "table",
+          "arm": "right"
+        },
+        {
+          "step_id": 2,
+          "skill": "pick",
+          "object_id": "yellow_candidate",
+          "target_id": null,
+          "arm": "right"
+        },
+        {
+          "step_id": 3,
+          "skill": "place",
+          "object_id": "yellow_candidate",
+          "target_id": "green_region",
+          "arm": "right"
+        }
+      ]
+    },
+    "valid": true,
+    "error_code": "None",
+    "goal_satisfied": true,
+    "within_execution_scope": true,
+    "accepted": true,
+    "current_facts": [
+      "holding(right, blue_candidate)",
+      "on(green_region, table)",
+      "on(yellow_candidate, table)"
+    ],
+    "required_final_facts": [
+      "on(blue_candidate, table)",
+      "on(yellow_candidate, green_region)"
+    ],
+    "state_source": "explicit_fixture_not_visual_state_estimation",
+    "physical_execution_authorized": false
+  },
+  "physical_execution_attempted": false,
+  "task_version": 2,
+  "observation_version": 1,
+  "executed_history": [
+    {
+      "event_id": "historical_blue_pick_fixture",
+      "task_version": 1,
+      "observation_version": 1,
+      "skill": "pick",
+      "object_id": "blue_candidate",
+      "outcome": "supported_success",
+      "evidence_source": "explicit_diagnostic_fixture_not_new_physical_execution"
+    }
+  ],
+  "remaining_goal_facts": [
+    "hand_empty(right)",
+    "on(blue_candidate, table)",
+    "on(yellow_candidate, green_region)"
+  ],
+  "model_plan_accepted": true,
+  "executable_plan": [
+    {
+      "step_id": 1,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right",
+        "target_id": "table"
+      }
+    },
+    {
+      "step_id": 2,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 3,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right",
+        "target_id": "green_region"
+      }
+    }
+  ]
+}

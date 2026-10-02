@@ -1,0 +1,41 @@
+{
+  "source": "data/collections/shared_candidate_recovery_pilot_20261002_142344.jsonl",
+  "scope": "symbolic_shared_candidate_pilot_not_physical",
+  "complete": true,
+  "audit_errors": [],
+  "counts": {
+    "first_accepted": 9,
+    "first_rejected": 6,
+    "missing_first_response": 0,
+    "actual_calls": 27,
+    "no_feedback_ready": 13,
+    "feedback_ready": 14,
+    "paired_wins": 1,
+    "paired_losses": 0,
+    "paired_ties": 14,
+    "correction_eligible": 6,
+    "no_feedback_corrected": 4,
+    "feedback_corrected": 5
+  },
+  "levels": {
+    "simple": {
+      "cases": 5,
+      "first_accepted": 5,
+      "no_feedback_ready": 5,
+      "feedback_ready": 5
+    },
+    "partial": {
+      "cases": 5,
+      "first_accepted": 2,
+      "no_feedback_ready": 5,
+      "feedback_ready": 5
+    },
+    "constrained": {
+      "cases": 5,
+      "first_accepted": 2,
+      "no_feedback_ready": 3,
+      "feedback_ready": 4
+    }
+  },
+  "interpretation": "Report both all-case and common-rejected-candidate denominators; no selected failures discarded."
+}

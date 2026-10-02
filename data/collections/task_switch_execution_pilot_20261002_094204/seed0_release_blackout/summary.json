@@ -1,0 +1,220 @@
+{
+  "record_type": "persistent_task_switch_execution_pilot",
+  "seed": 0,
+  "setting": "rule_recovery",
+  "scope": "restricted_known_color_controlled_scene_not_open_world",
+  "instruction_source": "scripted_external_command",
+  "initial_state_source": "controlled_empty_hand_and_objects_on_table_fixture",
+  "untouched_yellow_state_source": "controlled_fixture_not_full_visual_state_estimation",
+  "task_success": false,
+  "episode_resets": 1,
+  "recovery_episode_resets": 0,
+  "model_calls": 1,
+  "events": [
+    {
+      "stage": "blue_pick",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 95,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 20,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 1,
+            "steps": 22,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true
+          }
+        ]
+      }
+    },
+    {
+      "stage": "blue_return",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 93,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 23,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 1,
+            "steps": 18,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true
+          }
+        ]
+      }
+    }
+  ],
+  "yellow_pick_attempted": false,
+  "blackout_release": true,
+  "geometry_assumptions": {
+    "table_cube_centroid_z": 0.02,
+    "region_cube_centroid_z": 0.028,
+    "region_surface_z": 0.008,
+    "region_pixel_statistic": "RGB_ray_plane_world_extrema_center_1percent_trim",
+    "limitation": "known_flat_regions_edges_assumed_visible; not_general_occlusion_reconstruction"
+  },
+  "episode_step_limit": 800,
+  "blue_holding_evidence": {
+    "status": "holding_supported",
+    "reason": "target_displacement_and_hand_comotion",
+    "displacement_px": 17.46424919657298,
+    "hand_motion_px": 6.029323771376885,
+    "target_motion_px": 5.830951894845301,
+    "offset_drift_px": 0.23121579721774677,
+    "max_target_hand_distance_px": 5.588992102250204,
+    "records": [
+      {
+        "target_pixel": [
+          236.0,
+          231.0
+        ],
+        "hand_pixel": [
+          237.72341367440254,
+          236.31664161157187
+        ],
+        "image": "data/collections/task_switch_execution_pilot_20261002_094204/seed0_release_blackout/blue_holding_0.png"
+      },
+      {
+        "target_pixel": [
+          231.0,
+          228.0
+        ],
+        "hand_pixel": [
+          232.61648960918512,
+          233.11163432106633
+        ],
+        "image": "data/collections/task_switch_execution_pilot_20261002_094204/seed0_release_blackout/blue_holding_1.png"
+      }
+    ]
+  },
+  "switch_route": "REPLAN_FROM_CURRENT_STATE",
+  "remaining_plan": [
+    {
+      "step_id": 1,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right",
+        "target_id": "table"
+      }
+    },
+    {
+      "step_id": 2,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 3,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right",
+        "target_id": "green_region"
+      }
+    }
+  ],
+  "table_binding": {
+    "object_id": "table",
+    "position": [
+      -0.14680584574209768,
+      0.7864984618168724,
+      0.008
+    ],
+    "coordinate_frame": "mujoco_world",
+    "observation_id": "blue_return",
+    "source": "visual_estimate"
+  },
+  "blue_release_evidence": {
+    "status": "unknown",
+    "empty_hand_supported": false,
+    "reason": "missing_or_ambiguous_release_RGB",
+    "records": [
+      {
+        "target_pixel": null,
+        "hand_pixel": [
+          222.55358067420295,
+          249.77839599115075
+        ],
+        "image": "data/collections/task_switch_execution_pilot_20261002_094204/seed0_release_blackout/blue_release_0.png"
+      },
+      {
+        "target_pixel": null,
+        "hand_pixel": [
+          217.92062005502925,
+          248.03923932209995
+        ],
+        "image": "data/collections/task_switch_execution_pilot_20261002_094204/seed0_release_blackout/blue_release_1.png"
+      }
+    ]
+  },
+  "error": "release not supported; yellow pick refused",
+  "stage": "blue_return",
+  "task_version": 2,
+  "observation_version": 2,
+  "executed_history": [
+    {
+      "event_id": "blue_pick",
+      "task_version": 1,
+      "observation_version": 1,
+      "skill": "pick",
+      "object_id": "blue_candidate",
+      "outcome": "supported_success",
+      "evidence_source": "RGB_displacement_and_hand_comotion"
+    }
+  ],
+  "remaining_goal_facts": [
+    "hand_empty(right)",
+    "on(blue_candidate, table)",
+    "on(yellow_candidate, green_region)"
+  ],
+  "control_steps": 270,
+  "evaluation_only": {
+    "yellow_in_green": false,
+    "blue_in_return_region": true,
+    "source": "simulator_truth_not_online_feedback",
+    "blue_xyz": [
+      -0.1455458992970249,
+      0.7953562264223161,
+      0.02789224457978379
+    ],
+    "yellow_xyz": [
+      0.11999999999995407,
+      0.6684893356881892,
+      0.019892244579783815
+    ]
+  }
+}

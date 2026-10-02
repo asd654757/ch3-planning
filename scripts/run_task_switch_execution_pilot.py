@@ -12,8 +12,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--env-file", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--resume", action="store_true", help="preserve all existing records; mark interrupted launched cases rather than rerun them")
     args = parser.parse_args()
-    args.output_dir.mkdir(parents=True, exist_ok=False)
+    args.output_dir.mkdir(parents=True, exist_ok=args.resume)
     script = Path(__file__).with_name("task_switch_execution_smoke.py")
     cases = []
     for seed in range(3):
@@ -28,9 +29,29 @@ def main():
         "cases": cases, "per_case_wall_timeout_s": 240,
         "model_decoding_seed": 0, "scene_seeds": [0, 1, 2], "episode_step_limit": 800,
         "no_success_only_reruns": True}
-    (args.output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
-    records = []
+    manifest_path = args.output_dir / "manifest.json"
+    if args.resume:
+        existing = json.loads(manifest_path.read_text())
+        if existing["cases"] != cases or existing["runner_sha256"] != manifest["runner_sha256"]:
+            raise ValueError("cannot resume changed execution protocol")
+    else:
+        manifest_path.write_text(json.dumps(manifest, indent=2))
+    record_path = args.output_dir / "records.jsonl"
+    records = [json.loads(line) for line in record_path.read_text().splitlines()] if args.resume and record_path.exists() else []
     for i, case in enumerate(cases):
+        if any(r["case_id"] == case["case_id"] for r in records):
+            continue
+        if args.resume and (args.output_dir / case["case_id"]).exists():
+            record = dict(case, task_success=False, error="interrupted_previous_launch_not_rerun")
+            summary_path = args.output_dir / case["case_id"] / "summary.json"
+            if summary_path.exists():
+                data = json.loads(summary_path.read_text())
+                record.update({key: data.get(key) for key in ["task_success", "stage", "error", "model_calls", "yellow_pick_attempted", "control_steps"]})
+            records.append(record)
+            with record_path.open("a") as stream:
+                stream.write(json.dumps(record) + "\n")
+            print(f"[switch-pilot] preserved interrupted case={case['case_id']}", flush=True)
+            continue
         print(f"[switch-pilot] case={i+1}/{len(cases)} id={case['case_id']} start", flush=True)
         target = args.output_dir / case["case_id"]
         log = args.output_dir / (case["case_id"] + ".log")

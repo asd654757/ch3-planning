@@ -1,0 +1,93 @@
+{
+  "completed_at_utc": "2026-10-02T09:44:40.037675+00:00",
+  "completed_cases": 7,
+  "scope": "feasibility_pilot_not_formal_performance_claim",
+  "records": [
+    {
+      "case_id": "seed0_rule_recovery",
+      "seed": 0,
+      "setting": "rule_recovery",
+      "blackout_release": false,
+      "exit_code": 0,
+      "task_success": true,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 1,
+      "yellow_pick_attempted": true,
+      "control_steps": 515
+    },
+    {
+      "case_id": "seed0_current_state_replan",
+      "seed": 0,
+      "setting": "current_state_replan",
+      "blackout_release": false,
+      "exit_code": 0,
+      "task_success": true,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "yellow_pick_attempted": true,
+      "control_steps": 515
+    },
+    {
+      "case_id": "seed1_current_state_replan",
+      "seed": 1,
+      "setting": "current_state_replan",
+      "blackout_release": false,
+      "exit_code": 0,
+      "task_success": false,
+      "stage": "yellow_place",
+      "error": "missing or ambiguous color candidates",
+      "model_calls": 2,
+      "yellow_pick_attempted": true,
+      "control_steps": 386
+    },
+    {
+      "case_id": "seed1_rule_recovery",
+      "seed": 1,
+      "setting": "rule_recovery",
+      "blackout_release": false,
+      "exit_code": 0,
+      "task_success": false,
+      "stage": "yellow_place",
+      "error": "missing or ambiguous color candidates",
+      "model_calls": 1,
+      "yellow_pick_attempted": true,
+      "control_steps": 386
+    },
+    {
+      "case_id": "seed2_rule_recovery",
+      "seed": 2,
+      "setting": "rule_recovery",
+      "blackout_release": false,
+      "task_success": false,
+      "error": "interrupted_previous_launch_not_rerun"
+    },
+    {
+      "case_id": "seed2_current_state_replan",
+      "seed": 2,
+      "setting": "current_state_replan",
+      "blackout_release": false,
+      "exit_code": 0,
+      "task_success": true,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "yellow_pick_attempted": true,
+      "control_steps": 514
+    },
+    {
+      "case_id": "seed0_release_blackout",
+      "seed": 0,
+      "setting": "rule_recovery",
+      "blackout_release": true,
+      "exit_code": 0,
+      "task_success": false,
+      "stage": "blue_return",
+      "error": "release not supported; yellow pick refused",
+      "model_calls": 1,
+      "yellow_pick_attempted": false,
+      "control_steps": 270
+    }
+  ]
+}

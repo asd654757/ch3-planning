@@ -1,0 +1,60 @@
+{
+  "protocol": "task_switch_execution_pilot_v1",
+  "scope": "pilot_not_formal_statistics",
+  "created_at_utc": "2026-10-02T09:42:04.942733+00:00",
+  "code_commit": "820369260a35570936552f30580eace2d514ae73",
+  "runner_sha256": "165089733190f3d93dce213eb6dfa29ebef6bdfc76898c403ddcff0edf020fbb",
+  "cases": [
+    {
+      "case_id": "seed0_rule_recovery",
+      "seed": 0,
+      "setting": "rule_recovery",
+      "blackout_release": false
+    },
+    {
+      "case_id": "seed0_current_state_replan",
+      "seed": 0,
+      "setting": "current_state_replan",
+      "blackout_release": false
+    },
+    {
+      "case_id": "seed1_current_state_replan",
+      "seed": 1,
+      "setting": "current_state_replan",
+      "blackout_release": false
+    },
+    {
+      "case_id": "seed1_rule_recovery",
+      "seed": 1,
+      "setting": "rule_recovery",
+      "blackout_release": false
+    },
+    {
+      "case_id": "seed2_rule_recovery",
+      "seed": 2,
+      "setting": "rule_recovery",
+      "blackout_release": false
+    },
+    {
+      "case_id": "seed2_current_state_replan",
+      "seed": 2,
+      "setting": "current_state_replan",
+      "blackout_release": false
+    },
+    {
+      "case_id": "seed0_release_blackout",
+      "seed": 0,
+      "setting": "rule_recovery",
+      "blackout_release": true
+    }
+  ],
+  "per_case_wall_timeout_s": 240,
+  "model_decoding_seed": 0,
+  "scene_seeds": [
+    0,
+    1,
+    2
+  ],
+  "episode_step_limit": 800,
+  "no_success_only_reruns": true
+}

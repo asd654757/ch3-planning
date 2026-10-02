@@ -1,0 +1,16 @@
+{
+  "protocol": "persistent_model_recovery_v1",
+  "seeds": 30,
+  "perturbations": ["none", "post_grasp_slip"],
+  "methods": ["RETRY_SAME_SUFFIX", "OBSERVED_SEARCH", "MODEL_DIRECT", "MODEL_VERIFIED"],
+  "budget_per_primitive": 300,
+  "supported_table_goal": true,
+  "phased_grasp": true,
+  "model": "qwen-vl-plus",
+  "decode_seed": 0,
+  "temperature": 0.1,
+  "max_tokens": 1024,
+  "internal_retries": 0,
+  "scope": "single_object_simulator_state_feedback_not_visual",
+  "initial_plan": "fixed_pick_place_shared_not_end_to_end_model_planning"
+}

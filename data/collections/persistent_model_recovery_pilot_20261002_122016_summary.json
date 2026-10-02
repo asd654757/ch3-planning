@@ -1,0 +1,74 @@
+{
+  "source": "data/collections/persistent_model_recovery_pilot_20261002_122016.jsonl",
+  "tasks": 24,
+  "expected_tasks": 24,
+  "protocol_complete": true,
+  "gate_errors": [],
+  "scope": "simulator_state_feedback_not_visual_full_ROUTED",
+  "groups": [
+    {
+      "perturbation": "none",
+      "method": "MODEL_DIRECT",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 0,
+      "tokens": 0
+    },
+    {
+      "perturbation": "none",
+      "method": "MODEL_VERIFIED",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 0,
+      "tokens": 0
+    },
+    {
+      "perturbation": "none",
+      "method": "OBSERVED_SEARCH",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 0,
+      "tokens": 0
+    },
+    {
+      "perturbation": "none",
+      "method": "RETRY_SAME_SUFFIX",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 0,
+      "tokens": 0
+    },
+    {
+      "perturbation": "post_grasp_slip",
+      "method": "MODEL_DIRECT",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 3,
+      "tokens": 1107
+    },
+    {
+      "perturbation": "post_grasp_slip",
+      "method": "MODEL_VERIFIED",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 3,
+      "tokens": 1107
+    },
+    {
+      "perturbation": "post_grasp_slip",
+      "method": "OBSERVED_SEARCH",
+      "tasks": 3,
+      "actual_success": 3,
+      "calls": 0,
+      "tokens": 0
+    },
+    {
+      "perturbation": "post_grasp_slip",
+      "method": "RETRY_SAME_SUFFIX",
+      "tasks": 3,
+      "actual_success": 0,
+      "calls": 0,
+      "tokens": 0
+    }
+  ]
+}

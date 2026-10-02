@@ -68,7 +68,7 @@ def stable_goal_check(executor, steps=10):
 
 
 def run_case(seed, perturbation, method, budget, supported_table_goal=False,
-             phased_grasp=False):
+             phased_grasp=False, client=None):
     registry = load_registry()
     # The adapter represents one physical arm, not interchangeable dual arms.
     registry._arms = {"right"}
@@ -89,11 +89,12 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
         initial = executor.reset()
         initial_target_pos = list(initial["target_pos"])
         failed_index = 0 if perturbation == "grasp_timeout" else 1
+        model_audit = []
         disturbance_steps = 0
         perturbation_applied = False
         for index, action in enumerate(executable.steps):
             result = executor.execute_step(action, max_steps=(
-                1 if index == failed_index and perturbation != "post_grasp_slip" else budget
+                1 if index == failed_index and perturbation in {"grasp_timeout", "place_timeout"} else budget
             ))
             trace.append({"phase": "initial", "step_id": action.step_id,
                           "success": result.success, "steps": result.steps})
@@ -163,6 +164,31 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
             )
             recovery_reason = outcome.reason
             recovery_accepted = outcome.accepted
+        if initial_failed and method in {"MODEL_DIRECT", "MODEL_VERIFIED"} and (perturbation != "post_grasp_slip" or perturbation_applied):
+            from ch3.repair.persistent_model_recovery import generate_suffix
+            candidate, model_audit = generate_suffix(
+                client=client, state=observed, goal=goal, validator=validator,
+                history=trace.copy(), attempts=1 if method == "MODEL_DIRECT" else 2)
+            recovery_reason = "model_candidate_rejected"
+            if candidate is not None:
+                recovery_reason = "model_suffix_execution"
+                for symbolic_action, action in zip(candidate.actions, compile_plan(candidate, registry).steps):
+                    from ch3.state.simulator import step
+                    current_state, _ = observe(executor)
+                    predicted, allowed, _, _ = step(current_state, symbolic_action, validator.valid_targets)
+                    if not allowed:
+                        recovery_reason = "fresh_state_precondition_failed"
+                        break
+                    result = executor.execute_step(action, max_steps=budget)
+                    trace.append({"phase":"recovery", "step_id":action.step_id,
+                                  "skill":action.source_skill, "success":result.success,"steps":result.steps})
+                    if not result.success:
+                        recovery_reason = "physical_execution_failed"
+                        break
+                    actual, _ = observe(executor)
+                    if actual.facts() != predicted.facts() or actual.empty_hand_facts({"right"}) != predicted.empty_hand_facts({"right"}):
+                        recovery_reason = "post_action_observation_mismatch"
+                        break
         stable_success, observation_steps = stable_goal_check(executor)
         final, distance = observe(executor)
         return {"seed": seed, "perturbation": perturbation, "method": method,
@@ -188,7 +214,9 @@ def run_case(seed, perturbation, method, budget, supported_table_goal=False,
                 "final_puck_pos": executor._state()["puck_pos"].tolist(),
                 "final_gripper_distance": executor._state()["gripper_distance"],
                 "total_control_steps": sum(item["steps"] for item in trace) + disturbance_steps + observation_steps,
-                "reset_count": 1, "vlm_calls": 0}
+                "reset_count": 1, "vlm_calls": len(model_audit),
+                "model_audit": model_audit,
+                "model_tokens": sum(x.get("total_tokens", 0) for x in model_audit)}
     finally:
         executor.close()
 
@@ -202,22 +230,31 @@ def main():
                         help="Controlled table placement, not native MetaWorld success protocol.")
     parser.add_argument("--phased-grasp", action="store_true",
                         help="Use a fixed approach/descend/close/lift primitive after failure.")
+    parser.add_argument("--methods", nargs="+", default=["NO_RECOVERY", "RETRY_SAME_SUFFIX", "OBSERVED_SEARCH"],
+                        choices=["NO_RECOVERY", "RETRY_SAME_SUFFIX", "OBSERVED_SEARCH", "MODEL_DIRECT", "MODEL_VERIFIED"])
+    parser.add_argument("--perturbations", nargs="+", default=["grasp_timeout", "place_timeout", "post_grasp_slip"],
+                        choices=["none", "grasp_timeout", "place_timeout", "post_grasp_slip"])
+    parser.add_argument("--env-file", type=Path)
     args = parser.parse_args()
+    client = None
+    if any(m.startswith("MODEL_") for m in args.methods):
+        from ch3.vlm.client import DashScopeVLMClient
+        client = DashScopeVLMClient(env_path=args.env_file, timeout=60, max_retries=0)
     if args.seeds < 1 or args.budget < 1:
         parser.error("seeds and budget must be positive")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8") as output:
         for seed in range(args.seeds):
-            for perturbation in ("grasp_timeout", "place_timeout", "post_grasp_slip"):
-                for method in ("NO_RECOVERY", "RETRY_SAME_SUFFIX", "OBSERVED_SEARCH"):
+            for perturbation in args.perturbations:
+                for method in args.methods:
                     row = run_case(seed, perturbation, method, args.budget,
-                                   args.supported_table_goal, args.phased_grasp)
+                                   args.supported_table_goal, args.phased_grasp, client)
                     output.write(json.dumps(row) + "\n")
                     output.flush()
                     print(json.dumps({k: row[k] for k in
                                       ("seed", "perturbation", "method", "success", "recovery_reason")}), flush=True)
     print(json.dumps({"completed_at_utc": datetime.now(timezone.utc).isoformat(),
-                      "cases": args.seeds * 9, "output": str(args.output),
+                      "cases": args.seeds * len(args.methods) * len(args.perturbations), "output": str(args.output),
                       "supported_table_goal": args.supported_table_goal,
                       "phased_grasp_after_failure": args.phased_grasp,
                       "protocol": "single_puck_same_episode_simulator_state_feedback"}), flush=True)

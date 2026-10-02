@@ -3,7 +3,7 @@
 This is a symbolic semantic pilot, not perception or physical authorization.
 """
 import json
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 from typing import Literal
 from ch3.schema.model_plan import ModelPlan
 from ch3.vlm.task_switch_recovery import switch_fixture
@@ -45,17 +45,77 @@ class TaskSemantics(BaseModel):
             raise ValueError("ready contract needs goal")
 
 
-def parse_semantics(client, *, instruction, image_path, log_path):
+class SemanticEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    field: str
+    quote: str
+
+
+class GroundedSemantics(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    contract: TaskSemantics
+    evidence: list[SemanticEvidence]
+
+    def check_evidence(self, instruction):
+        """Check provenance coverage only, NOT that a quote entails its claim."""
+        self.contract.check_scope()
+        fields = [e.field for e in self.evidence]
+        if len(fields) != len(set(fields)):
+            raise ValueError("duplicate evidence field")
+        required = {"status"}
+        required |= {f"goals.{i}" for i in range(len(self.contract.goals))}
+        required |= {f"forbidden_objects.{i}" for i in range(len(self.contract.forbidden_objects))}
+        if self.contract.placement_order:
+            required.add("placement_order")
+        if self.contract.hand_empty:
+            required.add("hand_empty")
+        if set(fields) != required:
+            raise ValueError("missing or unexpected semantic evidence fields")
+        for e in self.evidence:
+            if not e.quote.strip() or e.quote not in instruction:
+                raise ValueError("semantic evidence is not an exact instruction substring")
+
+
+def parse_semantics(client, *, instruction, image_path, log_path, version="v2"):
     # No expected goals, answer plan, case family or annotation is supplied.
-    prompt = json.dumps({"instruction": instruction, "candidate_catalog": CANDIDATES,
-        "current_facts": sorted(switch_fixture().facts()),
-        "state_source": "explicit_fixture_held_blue_not_visual_state_estimation",
-        "previous_unexecuted_goal": "on(blue_candidate, green_region)",
-        "contract_schema": TaskSemantics.model_json_schema(),
-        "rules": "Resolve the NEW instruction, including cancellation, held-object references, prohibitions and placement ordering. goals lists required final locations; forbidden_objects prohibits ANY future pick/place of those objects, not just wrong final locations. placement_order lists objects whose goal-achieving placements must occur in that order. hand_empty is true if instructed to release/put down or finish transport. Do not preserve a cancelled old goal. Do not invent an unstated destination for a held object. If references/destinations are ambiguous use clarify; unavailable objects/unsupported operations use unsupported. For either refusal return empty arrays and hand_empty=false. Use candidate IDs, not descriptions. Return a populated JSON record, not a schema."}, ensure_ascii=False)
-    result = TaskSemantics.model_validate_json(logged_call(client, prompt=prompt, image_path=image_path, log_path=log_path))
-    result.check_scope()
-    return result
+    if version == "v1":
+        raise ValueError("legacy v1 outputs retained; use its frozen source to reproduce")
+    if version != "v2":
+        raise ValueError("unknown semantic parser version")
+    prompt = json.dumps({
+        "NEW_USER_INSTRUCTION": instruction,
+        "candidate_catalog": CANDIDATES,
+        "available_destinations": {"table": "桌面 / table", "green_region": "绿色区域 / green region"},
+        "SUPPORTED_CURRENT_STATE": {"held_by_right": "blue_candidate",
+            "yellow_candidate_location": "table"},
+        "state_source": "explicit_fixture_not_visual_state_estimation",
+        "historical_context": "A blue pick has already executed. The old blue-to-green destination is HISTORY ONLY, never a default goal. Parse the new instruction independently.",
+        "output": {
+            "contract": {"status": "ready OR clarify OR unsupported", "goals": "array of {object_id,target_id}",
+                         "forbidden_objects": "array of candidate IDs", "placement_order": "array of candidate IDs",
+                         "hand_empty": "boolean"},
+            "evidence": "array of {field,quote}; quote is an EXACT substring of NEW_USER_INSTRUCTION"},
+        "rules": [
+            "READ THE NEW INSTRUCTION, not the old destination or what looks convenient in the image. Use the instruction's explicit destinations.",
+            "goals includes ALL required final positions, including return/put back/放回/放回桌面. Returning to table requires an object→table goal; hand_empty alone does NOT represent it.",
+            "held-object references resolve to blue_candidate using the supplied current state. A vague 'that cube over there' with no definite object AND destination requires clarify, never reuse the historical goal.",
+            "Any requested unavailable object (even after a valid clause), unknown destination or unsupported skill makes the WHOLE request unsupported. Never substitute another object or authorize the valid part.",
+            "forbidden_objects prohibits future pick/place, including move-and-return. Preserve every do-not-touch/do-not-move restriction.",
+            "placement_order is EMPTY unless the instruction explicitly orders GOAL-ACHIEVING placements of at least two objects. Ordering temporary release before picking is not an order between final goal placements. Never insert singleton order.",
+            "hand_empty=true for explicit empty-handed/空手 AND instructions to put down, return, place or complete transportation. false only if no such requirement exists.",
+            "ready only when references and destinations are grounded. clarify/unsupported must have empty goals, forbidden_objects, placement_order and hand_empty=false.",
+            "Evidence fields: status always; goals.0, goals.1 etc for each goal; forbidden_objects.0 etc for each prohibition; placement_order if nonempty; hand_empty if true. No other fields. Goal quote must include its destination or the applicable shared destination clause. Reuse quotes when justified.",
+            "Do not add unrequested goals, movement order or destinations. No schema, markdown, commentary; emit populated contract and evidence records."
+        ]}, ensure_ascii=False)
+    grounded = GroundedSemantics.model_validate_json(logged_call(client, prompt=prompt,
+        image_path=image_path, log_path=log_path))
+    grounded.check_evidence(instruction)
+    from pathlib import Path
+    Path(log_path).with_name("semantic_evidence_audit.json").write_text(json.dumps({
+        "version": version, "quote_coverage_valid": True,
+        "semantic_correctness_guaranteed": False,
+        "grounded_output": grounded.model_dump()}, ensure_ascii=False, indent=2))
+    return grounded.contract
 
 
 def semantic_equal(a, b):
@@ -137,5 +197,6 @@ def generate_plan(client, *, contract, image_path, log_path):
     prompt = json.dumps({"task_contract": contract.model_dump(), "current_facts": sorted(switch_fixture().facts()),
         "state_source": "explicit_fixture_not_perception", "candidates": CANDIDATES,
         "available_skills": ["pick", "place"], "arms": ["right"], "special_targets": ["table"],
+        "planning_notes": "A held blue object must be released BEFORE any yellow pick. If yellow must reach green before blue, temporarily place blue on table, then pick/place yellow green, then pick/place blue green. Temporary releases must not violate prohibitions. This is a generic current-state dependency, not a replacement for the task contract.",
         "rules": "Return ONLY {actions:[...]}. Each action has contiguous step_id starting 1, skill, object_id, arm, and target_id for place. Generate ONLY remaining actions: blue pick is already executed, blue is held. Never replay history. Each arm holds at most one object. Honor final goals AND every prohibition/order constraint. Empty actions allowed only if already satisfied. Do not invent constraints or objects."})
     return json.loads(logged_call(client, prompt=prompt, image_path=image_path, log_path=log_path))

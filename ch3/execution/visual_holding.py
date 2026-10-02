@@ -52,3 +52,40 @@ def holding_evidence(initial_pixel, target_pixels, hand_pixels):
     else:
         result["reason"] = "comotion_or_proximity_not_supported"
     return result
+
+
+def failed_pick_evidence(initial_pixel, target_pixels, hand_pixels):
+    """Restricted evidence that the visible target did not follow a hand probe.
+
+    This is NOT empty-hand or table-contact estimation. In particular another
+    object might be held, and a 2-D projection cannot establish contact. No
+    executable WorldState facts or retry permission are emitted here.
+    """
+    result = {"status": "unknown", "reason": "insufficient_visual_evidence",
+              "empty_hand_supported": False, "retry_authorized": False,
+              "observed_facts": []}
+    if initial_pixel is None or len(target_pixels) < 2 or len(target_pixels) != len(hand_pixels):
+        return result
+    if any(p is None for p in target_pixels + hand_pixels):
+        return result
+    targets, hands = np.asarray(target_pixels, float), np.asarray(hand_pixels, float)
+    initial = np.asarray(initial_pixel, float)
+    if targets.shape != (len(target_pixels), 2) or hands.shape != targets.shape or initial.shape != (2,):
+        return result
+    if not all(np.isfinite(a).all() for a in (targets, hands, initial)):
+        return result
+    # Check every frame rather than merely matching the two endpoints.
+    initial_drift = float(np.max(np.linalg.norm(targets - initial, axis=1)))
+    target_motion = float(np.max(np.linalg.norm(targets - targets[0], axis=1)))
+    hand_motion = float(np.linalg.norm(hands[-1] - hands[0]))
+    separation = float(np.min(np.linalg.norm(targets - hands, axis=1)))
+    result.update(max_initial_drift_px=initial_drift, max_target_motion_px=target_motion,
+                  hand_motion_px=hand_motion, min_target_hand_distance_px=separation)
+    if holding_evidence(initial_pixel, target_pixels, hand_pixels)["status"] == "holding_supported":
+        result["reason"] = "positive_holding_evidence"
+    elif initial_drift <= 3 and target_motion <= 2 and hand_motion >= 4 and separation >= 12:
+        result.update(status="target_not_following_supported",
+                      reason="visible_stationary_target_during_separated_hand_probe")
+    else:
+        result["reason"] = "stationarity_or_probe_separation_not_supported"
+    return result

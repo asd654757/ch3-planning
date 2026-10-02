@@ -1,0 +1,27 @@
+{
+  "protocol": "task_semantics_symbolic_pilot_v5",
+  "expected": 12,
+  "completed": 12,
+  "missing_case_ids": [],
+  "semantic_exact_match": 11,
+  "ready_expected": 10,
+  "ready_completed": 10,
+  "ready_gold_plan_success": 7,
+  "ready_end_to_end_strict_success": 7,
+  "parsed_contract_search_gold_success": 10,
+  "refusal_expected": 2,
+  "refusal_completed": 2,
+  "correct_refusals": 1,
+  "semantic_misaccept": 0,
+  "errors": [
+    {
+      "case_id": "ambiguous_1",
+      "error_type": "ValueError",
+      "error": "hand quote without requirement"
+    }
+  ],
+  "logged_calls": 22,
+  "total_tokens": 13123,
+  "physical_execution": false,
+  "development_retest": true
+}

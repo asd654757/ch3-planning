@@ -1,0 +1,14 @@
+{
+  "prompt": "Extract the complete NEW task, not a motion plan.\nShared grounded scene: blue_candidate = blue cube/蓝块, yellow_candidate = yellow cube/黄块,\ngreen_region = green placement region/绿色区域, table = table/桌面.\nRight hand currently holds blue_candidate; yellow is on table. Only pick/place supported.\nNo previous destination is supplied or authorized. Current facts are explicit fixture, not new visual estimates.\nRULES:\n- All requested final positions go in goals. Return/put back/放回桌面 means target_id table, NOT just empty hand.\n- 'the cube you hold/手里那个' = blue_candidate. A vague 'that cube over there' without definite destination requires clarify.\n- If ANY requested object is absent (e.g. orange cube), status unsupported; no substitution or partial task.\n- Do not touch/move object means forbidden_objects. Keep all prohibitions.\n- placement_order only for explicit order of at least two final goal placements, otherwise []. Temporary release is not a final placement order.\n- Putting down/placing/returning/finishing transport or explicit empty hand requires hand_empty true.\n- Every quote must be copied EXACTLY from the instruction. Quotes establish provenance, not truth.\nOUTPUT exactly these eight keys, populated JSON, no schema:\n{\"status\":\"ready|clarify|unsupported\", \"reason_quote\":\"\",\n \"goals\":[{\"object_id\":\"candidate ID\",\"target_id\":\"table or green_region\",\"quote\":\"instruction phrase\"}],\n \"forbidden_objects\":[{\"object_id\":\"candidate ID\",\"quote\":\"prohibition phrase\"}],\n \"placement_order\":[],\"order_quote\":\"\",\"hand_empty\":true,\"hand_quote\":\"instruction phrase\"}\nready: reason_quote empty. Refusal: reason_quote copied from ambiguous/unsupported request,\nall arrays empty, hand_empty false, order_quote and hand_quote empty.\nIf no order, order_quote empty. If no empty-hand requirement, hand_quote empty.\nNEW INSTRUCTION (sole authority):\n蓝块放回桌面，黄色方块禁止移动，最后空手。",
+  "raw_response": "```json\n{\n  \"status\": \"ready\",\n  \"reason_quote\": \"\",\n  \"goals\": [\n    {\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"table\",\n      \"quote\": \"蓝块放回桌面\"\n    }\n  ],\n  \"forbidden_objects\": [\n    {\n      \"object_id\": \"yellow_candidate\",\n      \"quote\": \"黄色方块禁止移动\"\n    }\n  ],\n  \"placement_order\": [],\n  \"order_quote\": \"\",\n  \"hand_empty\": true,\n  \"hand_quote\": \"最后空手\"\n}\n```",
+  "model": "qwen-vl-plus",
+  "total_tokens": 564,
+  "latency_ms": 1244,
+  "parser_version": "v5",
+  "image_input": false,
+  "state_source": "explicit_shared_fixture",
+  "json_mode": false,
+  "finish_reason": "stop",
+  "prompt_tokens": 443,
+  "completion_tokens": 121
+}

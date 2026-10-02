@@ -315,3 +315,35 @@ def generate_plan(client, *, contract, image_path, log_path):
         "planning_notes": "A held blue object must be released BEFORE any yellow pick. If yellow must reach green before blue, temporarily place blue on table, then pick/place yellow green, then pick/place blue green. Temporary releases must not violate prohibitions. This is a generic current-state dependency, not a replacement for the task contract.",
         "rules": "Return ONLY {actions:[...]}. Each action has contiguous step_id starting 1, skill, object_id, arm, and target_id for place. Generate ONLY remaining actions: blue pick is already executed, blue is held. Never replay history. Each arm holds at most one object. Honor final goals AND every prohibition/order constraint. Empty actions allowed only if already satisfied. Do not invent constraints or objects."})
     return json.loads(logged_call(client, prompt=prompt, image_path=image_path, log_path=log_path))
+
+
+def generate_semantic_remaining_plan(client, *, contract, image_path, log_path):
+    """v6 language-stage consumer; non-JSON-mode strict whole-object decode.
+
+    No per-case solution hints. State dependence shared with symbolic baseline.
+    Image is not used: this stage consumes the shared grounded state.
+    """
+    contract.check_scope()
+    if contract.status != 'ready':
+        raise ValueError('refused semantics')
+    prompt=json.dumps(dict(task_contract=contract.model_dump(),
+        current_facts=sorted(switch_fixture().facts()),state_source='explicit_shared_fixture',
+        candidates=CANDIDATES,available_skills=['pick','place'],arm='right',special_targets=['table'],
+        output_formats={
+            'pick':{'step_id':'integer','skill':'pick','object_id':'candidate ID','arm':'right'},
+            'place':{'step_id':'integer','skill':'place','object_id':'candidate ID','target_id':'table or green_region','arm':'right'}},
+        rules=[
+            'Return exactly one JSON object with actions array. No commentary or extra keys.',
+            'pick MUST NOT include target_id, not even empty string or null. place MUST include target_id.',
+            'This is remaining planning; the historical blue pick has executed. Do not replay it.',
+            'Right holds blue initially. Release what is held before another pick. A temporary release may be necessary to meet final placement order; do not mistake temporary release for achieving a different required final destination.',
+            'Check ALL final locations, prohibitions, placement ordering and empty-hand requirements before responding. IDs consecutive from 1. Empty actions only if current state satisfies task.'
+        ]),ensure_ascii=False)
+    response=client.complete(system_prompt='Generate only a populated remaining action plan respecting the provided contract.',
+        user_prompt=prompt,image_path=None,seed=0,temperature=.1,max_tokens=1024,json_mode=False)
+    from pathlib import Path
+    Path(log_path).write_text(json.dumps(dict(prompt=prompt,raw_response=response.content,model=response.model,
+        total_tokens=response.total_tokens,latency_ms=response.latency_ms,finish_reason=response.finish_reason,
+        prompt_tokens=response.prompt_tokens,completion_tokens=response.completion_tokens,image_input=False,
+        json_mode=False,planning_version='semantic_remaining_v6'),ensure_ascii=False,indent=2))
+    return decode_semantic_json(response.content)

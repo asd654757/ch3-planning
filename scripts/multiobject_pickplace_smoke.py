@@ -29,6 +29,8 @@ def main():
     parser.add_argument("--frozen-front-end", help="replay two saved calls only if prompt and image match exactly")
     parser.add_argument("--model-initial-plan", action="store_true", help="generate complete initial plan using explicit fixture state")
     parser.add_argument("--recover-early-pick", action="store_true", help="one pre-contact timeout reset and fresh-state complete replan; controlled fixture only")
+    parser.add_argument("--early-recovery-setting", choices=["stop", "fixed_retry", "model_replan"],
+                        help="bounded comparison after pick timeout; same evidence/reset/retry budget")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
@@ -36,6 +38,9 @@ def main():
         parser.error("model-initial-plan requires language-instruction and visual-follow, without frozen-front-end")
     if args.recover_early_pick and (not args.model_initial_plan or args.skip_pick):
         parser.error("recover-early-pick requires model-initial-plan without skip-pick")
+    if args.early_recovery_setting and (not args.model_initial_plan or args.skip_pick or args.recover_early_pick):
+        parser.error("early-recovery-setting requires model-initial-plan without skip-pick or recover-early-pick")
+    recovery_setting = args.early_recovery_setting or ("model_replan" if args.recover_early_pick else None)
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -110,7 +115,14 @@ def main():
             Image.fromarray(np.flip(np.asarray(env.render()), (0, 1))).save(output / "after_pick.png")
             early_recovery = {"attempted": False}
             pick_attempts = 0 if args.skip_pick else 1
-            if args.recover_early_pick and not pick_result["completed"]:
+            if recovery_setting == "stop" and not pick_result["completed"]:
+                (output / "summary.json").write_text(json.dumps({"seed": args.seed,
+                    "model_calls": model_calls, "episode_resets": 1, "task_success": False,
+                    "place_attempted": False, "pick_attempts": pick_attempts,
+                    "recovery_setting": recovery_setting, "stage": "pick_timeout_stopped",
+                    "initial_pick_result": pick_result}, indent=2))
+                return
+            if recovery_setting in {"fixed_retry", "model_replan"} and not pick_result["completed"]:
                 from ch3.execution.early_pick_recovery import early_recovery_gate
                 try:
                     fresh_blue = color_pixel(np.asarray(env.render()), "blue")[0]
@@ -134,10 +146,15 @@ def main():
                             early_recovery["post_reset_gate"] = post_gate
                             if not post_gate["authorized"]:
                                 raise ValueError("post-reset evidence rejected")
-                            model_calls += 1
-                            recovery_plan = generate_initial(client, goal=language_goal,
-                                image_path=output / "early_recovery.png", log_path=output / "early_replan_call.json",
-                                initial_state=WorldState.table_scene({"blue_candidate", "green_region"}))
+                            if recovery_setting == "model_replan":
+                                model_calls += 1
+                                recovery_plan = generate_initial(client, goal=language_goal,
+                                    image_path=output / "early_recovery.png", log_path=output / "early_replan_call.json",
+                                    initial_state=WorldState.table_scene({"blue_candidate", "green_region"}))
+                            else:
+                                # Same reset and new visual bindings; reuse the originally validated plan.
+                                recovery_plan = initial_executable
+                            early_recovery["plan_source"] = recovery_setting
                             early_recovery["replan"] = recovery_plan.to_list()
                             early_recovery["replan_state_source"] = "controlled_initial_facts_preserved_by_precontact_trace; not visual empty-hand estimation"
                             bindings = {"blue_candidate": visual_binding(calibration, object_id="blue_candidate",
@@ -156,6 +173,7 @@ def main():
                     (output / "summary.json").write_text(json.dumps({"seed": args.seed,
                         "model_calls": model_calls, "episode_resets": 1, "task_success": False,
                         "place_attempted": False, "stage": "early_recovery_stopped",
+                        "recovery_setting": recovery_setting, "pick_attempts": pick_attempts,
                         "early_recovery": early_recovery}, indent=2))
                     return
             # Scoring snapshot only: never used to gate probing or placement.
@@ -255,7 +273,8 @@ def main():
                       "initial_plan_source": "vlm_complete_plan" if initial_executable else "scripted_pick",
                       "initial_state_source": "controlled_scene_precondition" if initial_executable else "not_used_by_initial_planner",
                       "initial_executable_plan": initial_executable.to_list() if initial_executable else None,
-                      "seed": args.seed, "early_recovery": early_recovery, "camera": "corner2", "pixel_frame": "native_render",
+                      "seed": args.seed, "early_recovery": early_recovery, "recovery_setting": recovery_setting,
+                      "camera": "corner2", "pixel_frame": "native_render",
                       "assumed_plane_z": {"blue_candidate": .02, "green_region": .008},
                       "target_selection": "fixed blue color heuristic, not language model",
                       "blue_pixel": blue, "green_pixel": green, "color_pixels": [blue_count, green_count],

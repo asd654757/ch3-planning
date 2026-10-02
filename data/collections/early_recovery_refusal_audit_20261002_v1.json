@@ -1,0 +1,38 @@
+{
+  "scope": "two_controlled_refusal_cases_not_recovery_success",
+  "records": [
+    {
+      "source": "data/collections/early_recovery_descent_refusal_20261002_v1",
+      "expected_reason": "outside_precontact_scope",
+      "all_checks_passed": true,
+      "model_calls": 2,
+      "actual_initial_trace": [
+        {
+          "phase": 0,
+          "steps": 20,
+          "waypoint_reached": true
+        },
+        {
+          "phase": 1,
+          "steps": 10,
+          "waypoint_reached": false
+        }
+      ],
+      "authorization_image_sha256": "258538d76022cc548500252f4401dd3ea6264f05b0d0084bf582cd595a3a0e45"
+    },
+    {
+      "source": "data/collections/early_recovery_blackout_refusal_20261002_v1",
+      "expected_reason": "missing_rgb_target",
+      "all_checks_passed": true,
+      "model_calls": 2,
+      "actual_initial_trace": [
+        {
+          "phase": 0,
+          "steps": 8,
+          "waypoint_reached": false
+        }
+      ],
+      "authorization_image_sha256": "5788502112a7570acc256788bee9e7c372761f0a024514ab183094adb2c0707a"
+    }
+  ]
+}

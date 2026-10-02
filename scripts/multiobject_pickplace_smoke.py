@@ -31,6 +31,8 @@ def main():
     parser.add_argument("--recover-early-pick", action="store_true", help="one pre-contact timeout reset and fresh-state complete replan; controlled fixture only")
     parser.add_argument("--early-recovery-setting", choices=["stop", "fixed_retry", "model_replan"],
                         help="bounded comparison after pick timeout; same evidence/reset/retry budget")
+    parser.add_argument("--occlude-early-feedback", action="store_true",
+                        help="controlled blackout of authorization RGB; must reject before reset")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
@@ -41,6 +43,8 @@ def main():
     if args.early_recovery_setting and (not args.model_initial_plan or args.skip_pick or args.recover_early_pick):
         parser.error("early-recovery-setting requires model-initial-plan without skip-pick or recover-early-pick")
     recovery_setting = args.early_recovery_setting or ("model_replan" if args.recover_early_pick else None)
+    if args.occlude_early_feedback and recovery_setting not in {"fixed_retry", "model_replan"}:
+        parser.error("occlude-early-feedback requires a recovery setting")
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -124,13 +128,18 @@ def main():
                 return
             if recovery_setting in {"fixed_retry", "model_replan"} and not pick_result["completed"]:
                 from ch3.execution.early_pick_recovery import early_recovery_gate
+                authorization_frame = np.asarray(env.render()).copy()
+                if args.occlude_early_feedback:
+                    authorization_frame = np.zeros_like(authorization_frame)
+                Image.fromarray(np.flip(authorization_frame, (0, 1))).save(output / "early_authorization.png")
                 try:
-                    fresh_blue = color_pixel(np.asarray(env.render()), "blue")[0]
+                    fresh_blue = color_pixel(authorization_frame, "blue")[0]
                 except ValueError:
                     fresh_blue = None
                 early_recovery = early_recovery_gate(pick_result, initial_empty_fixture=True,
                     initial_pixel=blue, fresh_pixel=fresh_blue)
-                early_recovery.update(attempted=True, initial_pick_result=pick_result)
+                early_recovery.update(attempted=True, initial_pick_result=pick_result,
+                    controlled_authorization_blackout=args.occlude_early_feedback)
                 if early_recovery["authorized"]:
                     reset_result = controller.retract_open()
                     early_recovery["reset"] = reset_result

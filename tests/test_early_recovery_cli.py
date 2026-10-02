@@ -5,6 +5,7 @@ import pytest
 
 
 @pytest.mark.parametrize("flags", [
+    ["--occlude-early-feedback"],
     ["--early-recovery-setting", "fixed_retry"],
     ["--model-initial-plan", "--visual-follow", "--language-instruction", "move blue",
      "--early-recovery-setting", "fixed_retry", "--skip-pick"],

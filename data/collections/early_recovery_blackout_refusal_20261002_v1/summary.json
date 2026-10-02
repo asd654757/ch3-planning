@@ -1,0 +1,30 @@
+{
+  "seed": 0,
+  "model_calls": 2,
+  "episode_resets": 1,
+  "task_success": false,
+  "place_attempted": false,
+  "stage": "early_recovery_stopped",
+  "recovery_setting": "model_replan",
+  "pick_attempts": 1,
+  "early_recovery": {
+    "authorized": false,
+    "reason": "missing_rgb_target",
+    "state_source": "controlled_initial_fixture_plus_precontact_trace_and_rgb",
+    "empty_hand_visually_estimated": false,
+    "attempted": true,
+    "initial_pick_result": {
+      "completed": false,
+      "reason": "waypoint_timeout",
+      "steps": 8,
+      "trace": [
+        {
+          "phase": 0,
+          "steps": 8,
+          "waypoint_reached": false
+        }
+      ]
+    },
+    "controlled_authorization_blackout": true
+  }
+}

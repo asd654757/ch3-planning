@@ -118,6 +118,30 @@ def parse_semantics_v2(client, *, instruction, image_path, log_path, version="v2
     return grounded.contract
 
 
+def decode_semantic_json(text):
+    """Accept plain JSON or exactly one whole JSON fence; never recover fragments.
+
+    Duplicate keys, NaN/Infinity, commentary and truncated payloads are rejected.
+    """
+    import re
+    text = text.strip()
+    if text.startswith("```"):
+        match = re.fullmatch(r"```(?:json)?\s*\n(.*?)\n```", text, re.DOTALL)
+        if match is None:
+            raise ValueError("not a single whole JSON fence")
+        text = match.group(1)
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError("duplicate JSON key: " + key)
+            result[key] = value
+        return result
+    def reject_constant(value):
+        raise ValueError("nonfinite JSON constant: " + value)
+    return json.loads(text, object_pairs_hook=pairs, parse_constant=reject_constant)
+
+
 class QuotedGoal(LocationGoal):
     quote: str
 
@@ -163,10 +187,10 @@ class SimpleGroundedSemantics(BaseModel):
         return contract
 
 
-def parse_semantics(client, *, instruction, image_path, log_path, version="v4"):
+def parse_semantics(client, *, instruction, image_path, log_path, version="v5"):
     if version == "v2":
         return parse_semantics_v2(client, instruction=instruction,image_path=image_path,log_path=log_path)
-    if version not in {"v3", "v4"}:
+    if version not in {"v3", "v4", "v5"}:
         raise ValueError("unknown semantic parser version")
     # Already-grounded scene evidence is shared; no pixels enter this NL stage.
     prompt = """Extract the complete NEW task, not a motion plan.
@@ -200,7 +224,8 @@ NEW INSTRUCTION (sole authority):
         "parser_version":version,"image_input":False,"state_source":"explicit_shared_fixture",
         "json_mode":version == "v3", "finish_reason":response.finish_reason,
         "prompt_tokens":response.prompt_tokens,"completion_tokens":response.completion_tokens},ensure_ascii=False,indent=2))
-    grounded=SimpleGroundedSemantics.model_validate_json(response.content)
+    grounded=(SimpleGroundedSemantics.model_validate(decode_semantic_json(response.content))
+        if version == "v5" else SimpleGroundedSemantics.model_validate_json(response.content))
     contract=grounded.to_contract(instruction)
     Path(log_path).with_name("semantic_evidence_audit.json").write_text(json.dumps({
         "version":version,"quote_coverage_valid":True,"semantic_correctness_guaranteed":False,

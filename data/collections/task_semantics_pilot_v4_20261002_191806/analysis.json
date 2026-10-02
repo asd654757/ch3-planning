@@ -1,0 +1,82 @@
+{
+  "protocol": "task_semantics_symbolic_pilot_v4",
+  "expected": 12,
+  "completed": 12,
+  "missing_case_ids": [],
+  "semantic_exact_match": 0,
+  "ready_expected": 10,
+  "ready_completed": 10,
+  "ready_gold_plan_success": 0,
+  "ready_end_to_end_strict_success": 0,
+  "parsed_contract_search_gold_success": 0,
+  "refusal_expected": 2,
+  "refusal_completed": 2,
+  "correct_refusals": 0,
+  "semantic_misaccept": 0,
+  "errors": [
+    {
+      "case_id": "cancel_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ... an empty hand\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "cancel_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ...后结束。\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "switch_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ...h empty-handed\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "switch_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ... \"最后空手\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "reference_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ...h empty-handed\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "reference_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ... \"然后结束\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "prohibition_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ...an empty hand.\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "prohibition_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ... \"最后空手\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "order_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ... empty-handed.\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "order_2",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ... \"最后空手\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "ambiguous_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ...be over there.\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    },
+    {
+      "case_id": "unavailable_1",
+      "error_type": "ValidationError",
+      "error": "1 validation error for SimpleGroundedSemantics\n  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='```json\\n{\\n  \"status\": ...hand_quote\": \"\"\\n}\\n```', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid"
+    }
+  ],
+  "logged_calls": 12,
+  "total_tokens": 6769,
+  "physical_execution": false,
+  "development_retest": true
+}

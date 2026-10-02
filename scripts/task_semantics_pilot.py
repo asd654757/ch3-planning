@@ -39,7 +39,7 @@ def main():
     p.add_argument("--env-file", required=True)
     p.add_argument("--output-dir", type=Path, required=True)
     p.add_argument("--execute", action="store_true")
-    p.add_argument("--parser-version", choices=["v2","v3","v4"], default="v4")
+    p.add_argument("--parser-version", choices=["v2","v3","v4","v5"], default="v5")
     a = p.parse_args()
     a.output_dir.mkdir(parents=True, exist_ok=False)
     rows = cases()

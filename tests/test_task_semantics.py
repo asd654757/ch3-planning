@@ -113,3 +113,21 @@ def test_v3_language_parser_has_no_image_or_gold(tmp_path):
     c=parse_semantics(Client(),instruction='Put it there.',image_path=tmp_path/'nonexistent.png',log_path=tmp_path/'semantic_call.json')
     assert c.status=='clarify'
     assert json.loads((tmp_path/'semantic_call.json').read_text())['image_input'] is False
+
+from ch3.vlm.task_semantics import decode_semantic_json
+
+def test_whole_json_fence_normalization_not_repair():
+    assert decode_semantic_json('```json\n{"x":1}\n```') == {'x':1}
+    assert decode_semantic_json(' {"x":1} ') == {'x':1}
+
+@pytest.mark.parametrize('raw',[
+    'Here is JSON:\n```json\n{"x":1}\n```',
+    '```json\n{"x":1}\n``` extra',
+    '```json\n{"x":1',
+    '{"x":1,"x":2}',
+    '{"x":NaN}',
+    '{"nested":{"x":1,"x":2}}',
+    '```json\n{"x":1}\n```\n```json\n{"x":2}\n```',
+])
+def test_normalization_rejects_fragment_duplicates_commentary(raw):
+    with pytest.raises(ValueError):decode_semantic_json(raw)

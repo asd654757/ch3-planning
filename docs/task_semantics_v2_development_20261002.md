@@ -26,3 +26,11 @@ v3将quote嵌入各goal/forbidden对象，取消ready必填status证据的冗余
 v3目录`data/collections/task_semantics_pilot_v3_20261002_191157`12/12完成，严格语义与gold计划均2/12（可执行任务2/10）；其余多为生成重复键、无关额外字段、JSON截断，另有quote来自提示规则而非指令。JSON模式下模型先填出合理字段，再不停添加无关字段或重复hand_quote，直到1024token截断。不能将该现象直接等同模型理解失败，也不应提高token预算掩盖非终止输出。
 
 v4为有界配对开发诊断：**保持v3语言解析prompt、输入、温度、seed与token上限，只关闭API response_format=json_object**。严格JSON/schema/quote检查不放松、不自动截取字段、不用gold纠正答案。新增finish_reason、prompt/completion token日志帮助区分长度截断与语义错误。该诊断不是正式模型比较，v3/v4运行时点不同亦不能保证服务端完全无漂移。
+
+## v4输出模式与v5纯外包装解码
+
+v4目录`data/collections/task_semantics_pilot_v4_20261002_191806`12条生成均finish_reason=stop，不再重复扩写；12条均带完整JSON Markdown fence，原严格JSON解码全部拒绝。不能把此全拒绝当成全部语义错误。
+
+对**冻结v4原文**仅做解码回放（`offline_fence_replay.json`，0次调用）：去掉单个完整外层fence后10条通过schema/quote并精确匹配gold；order_2目标证据拼接而非原指令连续片段、ambiguous_1使用提示规则作reason_quote且残留hand_quote，仍拒绝。回放只用于定位格式问题，不是实际端到端模型执行结果。
+
+v5沿用v4提示与非JSON输出模式；唯一输出处理变化为完整单JSON fence规范化。拒绝说明文字、多个fence、残缺JSON、重复键、NaN/Infinity、额外schema字段；不截取合法前缀、不删除不合法语义、不使用gold补全。v4原记录保持不改写，v5独立全量重跑12条开发任务。模型规划阶段保持原live调用与独立gold评分，无新的物理执行。

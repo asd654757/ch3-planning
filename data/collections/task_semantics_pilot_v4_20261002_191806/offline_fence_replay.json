@@ -1,0 +1,235 @@
+{
+  "scope": "decoder-only replay; not live end-to-end result",
+  "records": [
+    {
+      "case_id": "cancel_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "cancel_2",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "switch_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "switch_2",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "reference_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "reference_2",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "prohibition_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "prohibition_2",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "order_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "hand_empty": true
+      },
+      "search_gold_accepted": true
+    },
+    {
+      "case_id": "order_2",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "error": "missing or fabricated evidence quote"
+    },
+    {
+      "case_id": "ambiguous_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "error": "hand quote without requirement"
+    },
+    {
+      "case_id": "unavailable_1",
+      "offline_frozen_raw_replay": true,
+      "new_model_calls": 0,
+      "physical_execution": false,
+      "semantic_correct": true,
+      "contract": {
+        "status": "unsupported",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      },
+      "search_gold_accepted": null
+    }
+  ]
+}

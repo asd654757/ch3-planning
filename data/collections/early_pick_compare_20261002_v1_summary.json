@@ -1,0 +1,269 @@
+{
+  "scope": "single_seed_live_calls_diagnostic_not_formal_performance_comparison",
+  "same_initial_plan": true,
+  "same_initial_timeout_trace": true,
+  "matching_images": {
+    "before.png": true,
+    "after_pick.png": true
+  },
+  "records": [
+    {
+      "source": "data/collections/early_pick_compare_20261002_v1_stop",
+      "setting": "stop",
+      "stage": "pick_timeout_stopped",
+      "error": null,
+      "task_success": false,
+      "model_calls": 2,
+      "logged_total_tokens": 1044,
+      "pick_attempts": 1,
+      "initial_pick_result": {
+        "completed": false,
+        "reason": "waypoint_timeout",
+        "steps": 8,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 8,
+            "waypoint_reached": false
+          }
+        ]
+      },
+      "initial_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "image_hashes": {
+        "before.png": "f6fd7e66650ff733a3b2f5ac602d6879288548b38c26812517b9f1956e39eb31",
+        "after_pick.png": "baef021da07af7022879f1ba91da828e6bedc2c3447bff108c2e4a4af83ae639"
+      },
+      "reset": null,
+      "retry_pick": null,
+      "place_execution": null,
+      "probe_steps": 0
+    },
+    {
+      "source": "data/collections/early_pick_compare_20261002_v1_fixed_retry",
+      "setting": "fixed_retry",
+      "stage": null,
+      "error": null,
+      "task_success": true,
+      "model_calls": 3,
+      "logged_total_tokens": 1477,
+      "pick_attempts": 2,
+      "initial_pick_result": {
+        "completed": false,
+        "reason": "waypoint_timeout",
+        "steps": 8,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 8,
+            "waypoint_reached": false
+          }
+        ]
+      },
+      "initial_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "image_hashes": {
+        "before.png": "f6fd7e66650ff733a3b2f5ac602d6879288548b38c26812517b9f1956e39eb31",
+        "after_pick.png": "baef021da07af7022879f1ba91da828e6bedc2c3447bff108c2e4a4af83ae639",
+        "early_recovery.png": "3e171fc881a97a0b6af6125eae11665611afddf329a9af5091f21c3179d9c9a1"
+      },
+      "reset": {
+        "completed": true,
+        "reason": "vertical_reset_completed",
+        "steps": 17
+      },
+      "retry_pick": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 92,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 18,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 1,
+            "steps": 21,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true
+          }
+        ]
+      },
+      "place_execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 103,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 28,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 1,
+            "steps": 21,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 3,
+            "steps": 19,
+            "waypoint_reached": true
+          }
+        ]
+      },
+      "probe_steps": 20
+    },
+    {
+      "source": "data/collections/early_pick_compare_20261002_v1_model_replan",
+      "setting": "model_replan",
+      "stage": null,
+      "error": null,
+      "task_success": true,
+      "model_calls": 4,
+      "logged_total_tokens": 1991,
+      "pick_attempts": 2,
+      "initial_pick_result": {
+        "completed": false,
+        "reason": "waypoint_timeout",
+        "steps": 8,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 8,
+            "waypoint_reached": false
+          }
+        ]
+      },
+      "initial_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "image_hashes": {
+        "before.png": "f6fd7e66650ff733a3b2f5ac602d6879288548b38c26812517b9f1956e39eb31",
+        "after_pick.png": "baef021da07af7022879f1ba91da828e6bedc2c3447bff108c2e4a4af83ae639",
+        "early_recovery.png": "3e171fc881a97a0b6af6125eae11665611afddf329a9af5091f21c3179d9c9a1"
+      },
+      "reset": {
+        "completed": true,
+        "reason": "vertical_reset_completed",
+        "steps": 17
+      },
+      "retry_pick": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 92,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 18,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 1,
+            "steps": 21,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true
+          }
+        ]
+      },
+      "place_execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 103,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 28,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 1,
+            "steps": 21,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true
+          },
+          {
+            "phase": 3,
+            "steps": 19,
+            "waypoint_reached": true
+          }
+        ]
+      },
+      "probe_steps": 20
+    }
+  ]
+}

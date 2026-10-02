@@ -4,6 +4,7 @@ import json
 import re
 from ch3.goal.goal_checker import goal_satisfied
 from ch3.schema.model_plan import ModelPlan
+from pydantic import ValidationError
 
 
 def strict_plan(text):
@@ -29,7 +30,7 @@ def strict_plan(text):
     return ModelPlan.model_validate(data)
 
 
-def generate_suffix(*, client, state, goal, validator, history, attempts=1):
+def generate_suffix(*, client, state, goal, validator, history, attempts=1, instruction=None, targets=None, protected_objects=(), feedback_enabled=True):
     """Both settings retain Validator AND Goal Checker before any execution.
 
     attempts=2 adds error-conditioned correction, not an unfair goal-check removal.
@@ -41,14 +42,17 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1):
     feedback = None
     for index in range(attempts):
         request = {
-            'instruction': 'Place red_cube_0 on tray_1 and finish with the right hand empty.',
+            'instruction': instruction or 'Place red_cube_0 on tray_1 and finish with the right hand empty.',
             'current_facts': sorted(state.facts() | state.empty_hand_facts({'right'})),
             'goal': goal.facts, 'objects': sorted(state.objects),
             'skills': ['pick','place'], 'arms': ['right'],
-            'targets': ['table','tray_1'],
+            'targets': targets or ['table','tray_1'],
             'executed_history_NOT_current_state': history,
-            'rejection_feedback': feedback,
-            'output_schema': {'actions': [{'step_id':1,'skill':'pick','object_id':'red_cube_0','arm':'right'}]},
+            'rejection_feedback': feedback if feedback_enabled else None,
+            **({'forbidden_objects': list(protected_objects)} if protected_objects else {}),
+            'output_schema': ({'actions': [{'step_id':'integer starting at 1', 'skill':'pick or place',
+                'object_id':'one of objects', 'target_id':'required for place; omit for pick', 'arm':'right'}]}
+                if instruction else {'actions': [{'step_id':1,'skill':'pick','object_id':'red_cube_0','arm':'right'}]}),
         }
         item = {'attempt': index + 1, 'request': request, 'accepted': False}
         audit.append(item)
@@ -65,13 +69,19 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1):
             check = validator.validate(plan, state)
             item['valid'] = check.valid
             item['goal_satisfied'] = bool(check.valid and goal_satisfied(check.final_state, goal, {'right'}))
-            if item['goal_satisfied']:
+            item['constraints_satisfied'] = not any(a.object_id in protected_objects for a in plan.actions)
+            if item['goal_satisfied'] and item['constraints_satisfied']:
                 item['accepted'] = True
                 return plan, audit
             feedback = {'error_code': str(check.error_code), 'message': check.message,
-                        'goal_satisfied': item['goal_satisfied'], 'rejected_output':response.content}
+                        'goal_satisfied': item['goal_satisfied'], 'constraints_satisfied':item['constraints_satisfied'], 'rejected_output':response.content}
         except Exception as exc:
             # Never log transport exception strings (may contain service payloads).
             feedback = {'error_type': type(exc).__name__}
+            if isinstance(exc, ValidationError):
+                feedback['schema_errors'] = [{'location':list(e['loc']),'type':e['type'],'message':e['msg']}
+                                            for e in exc.errors()]
+            if 'content' in item:
+                feedback['rejected_output'] = item['content']
         item['rejection'] = feedback
     return None, audit

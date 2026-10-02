@@ -41,3 +41,22 @@ def test_real_client_interface():
     plan,audit=generate_suffix(client=DashScopeVLMClient(transport=Transport()),state=state,
         goal=GoalSpec(facts=['on(red_cube_0, tray_1)']),validator=Validator(state.objects,registry),history=[],attempts=1)
     assert plan is not None and audit[0]['total_tokens']==12
+
+
+def test_protected_object_and_equal_budget():
+    registry=load_registry(); registry._arms={'right'}
+    state=WorldState.table_scene({'red_cube_0','tray_1'})
+    class Client:
+        def __init__(self):self.requests=[]
+        def complete(self,**kwargs):
+            import json
+            self.requests.append(json.loads(kwargs['user_prompt']))
+            return SimpleNamespace(content=GOOD,total_tokens=1,latency_ms=0,finish_reason='stop')
+    for feedback in [False,True]:
+        client=Client()
+        plan,audit=generate_suffix(client=client,state=state,goal=GoalSpec(facts=['on(red_cube_0, tray_1)']),
+            validator=Validator(state.objects,registry),history=[],attempts=2,
+            protected_objects=['red_cube_0'],feedback_enabled=feedback)
+        assert plan is None and len(audit)==2
+        assert not audit[0]['constraints_satisfied']
+        assert bool(client.requests[1]['rejection_feedback'])==feedback

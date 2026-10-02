@@ -6,7 +6,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 
-def build_scene_xml(source: Path, destination: Path, *, hide_goal_marker: bool = False) -> None:
+def build_scene_xml(source: Path, destination: Path, *, hide_goal_marker: bool = False, add_return_region: bool = False) -> None:
     tree = ET.parse(source)
     root = tree.getroot()
     def expand(parent, directory):
@@ -51,6 +51,11 @@ def build_scene_xml(source: Path, destination: Path, *, hide_goal_marker: bool =
     body = ET.SubElement(world, "body", name="placement_region", pos="0 0.84 0.004")
     ET.SubElement(body, "geom", name="placement_region_geom", type="box",
                   size="0.07 0.045 0.004", rgba="0.05 0.75 0.3 1")
+    if add_return_region:
+        # Optional visible semantic destination. No online code reads its pose.
+        body = ET.SubElement(world, "body", name="return_region", pos="-0.15 0.79 0.004")
+        ET.SubElement(body, "geom", name="return_region_geom", type="box",
+                      size="0.05 0.035 0.004", rgba="0.8 0.05 0.8 1")
     # Give the native puck a visible solid color rather than a wood texture.
     native = world.find("body[@name='obj']/geom")
     if native is not None:

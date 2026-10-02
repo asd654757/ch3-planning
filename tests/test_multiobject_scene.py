@@ -37,3 +37,13 @@ def test_nested_includes_resolve_original_asset_paths(tmp_path):
     root = ET.parse(output).getroot()
     assert root.find("include") is None
     assert root.find("asset/mesh").get("file") == str(assets / "mesh.stl")
+
+
+def test_optional_return_marker_does_not_change_old_scene(tmp_path):
+    source = tmp_path / "source.xml"
+    source.write_text('<mujoco><worldbody/></mujoco>')
+    output = tmp_path / "scene.xml"
+    build_scene_xml(source, output)
+    assert ET.parse(output).getroot().find(".//body[@name='return_region']") is None
+    build_scene_xml(source, output, add_return_region=True)
+    assert ET.parse(output).getroot().find(".//body[@name='return_region']/geom").get("rgba") == "0.8 0.05 0.8 1"

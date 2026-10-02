@@ -6,7 +6,7 @@ evidence returns unknown; simulator object poses must never enter this module.
 import numpy as np
 
 
-def color_pixel(frame, color):
+def color_pixel(frame, color, *, require_unique=False):
     rgb = np.asarray(frame, dtype=float)
     if rgb.ndim != 3 or rgb.shape[2] != 3:
         raise ValueError("RGB image required")
@@ -14,11 +14,38 @@ def color_pixel(frame, color):
         mask = (rgb[:, :, 2] > 75) & (rgb[:, :, 2] > 1.6 * rgb[:, :, 0]) & (rgb[:, :, 2] > 1.4 * rgb[:, :, 1])
     elif color == "green":
         mask = (rgb[:, :, 1] > 75) & (rgb[:, :, 1] > 1.6 * rgb[:, :, 0]) & (rgb[:, :, 1] > 1.4 * rgb[:, :, 2])
+    elif color == "yellow":
+        mask = (rgb[:, :, 0] > 100) & (rgb[:, :, 1] > 85) & (rgb[:, :, 2] < .55 * np.minimum(rgb[:, :, 0], rgb[:, :, 1]))
+    elif color == "magenta":
+        mask = (rgb[:, :, 0] > 90) & (rgb[:, :, 2] > 90) & (rgb[:, :, 1] < .55 * np.minimum(rgb[:, :, 0], rgb[:, :, 2]))
     else:
         raise ValueError("unsupported color")
     y, x = np.nonzero(mask)
     if len(x) < 20:
         raise ValueError("insufficient target color evidence")
+    if require_unique:
+        # 8-connected components; fail closed when another sizeable candidate
+        # is visible. No truth identity or nearest-to-answer selection.
+        remaining = set(zip(y.tolist(), x.tolist()))
+        components = []
+        while remaining:
+            seed = remaining.pop()
+            stack, component = [seed], [seed]
+            while stack:
+                row, col = stack.pop()
+                for dy in (-1, 0, 1):
+                    for dx in (-1, 0, 1):
+                        neighbor = (row + dy, col + dx)
+                        if neighbor in remaining:
+                            remaining.remove(neighbor)
+                            stack.append(neighbor)
+                            component.append(neighbor)
+            if len(component) >= 20:
+                components.append(component)
+        if len(components) != 1:
+            raise ValueError("missing or ambiguous color candidates")
+        coords = np.asarray(components[0])
+        y, x = coords[:, 0], coords[:, 1]
     return (float(np.median(x)), float(np.median(y))), int(len(x))
 
 

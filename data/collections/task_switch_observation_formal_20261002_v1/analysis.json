@@ -1,0 +1,101 @@
+{
+  "scope": "restricted_persistent_task_switch_not_full_ROUTED_or_open_world",
+  "started_runs": 150,
+  "normal_runs": 90,
+  "missing_feedback_runs": 60,
+  "groups": {
+    "replan_persistent_missing": {
+      "n": 30,
+      "task_success": 0,
+      "task_success_rate": 0.0,
+      "wilson95": [
+        0,
+        0.11351339317396321
+      ],
+      "destination_observation_reached": 30,
+      "placement_attempted": 0,
+      "infrastructure_errors": 0,
+      "mean_model_calls": 2,
+      "mean_tokens": 1343.9666666666667,
+      "mean_control_steps": 458.1333333333333,
+      "mean_extra_observations": 2
+    },
+    "replan_with_observation": {
+      "n": 30,
+      "task_success": 30,
+      "task_success_rate": 1.0,
+      "wilson95": [
+        0.8864866068260369,
+        1
+      ],
+      "destination_observation_reached": 30,
+      "placement_attempted": 30,
+      "infrastructure_errors": 0,
+      "mean_model_calls": 2,
+      "mean_tokens": 1344.6666666666667,
+      "mean_control_steps": 544.4333333333333,
+      "mean_extra_observations": 0.7
+    },
+    "replan_without_extra_observation": {
+      "n": 30,
+      "task_success": 15,
+      "task_success_rate": 0.5,
+      "wilson95": [
+        0.33154125640534177,
+        0.6684587435946583
+      ],
+      "destination_observation_reached": 30,
+      "placement_attempted": 15,
+      "infrastructure_errors": 0,
+      "mean_model_calls": 2,
+      "mean_tokens": 1344.2333333333333,
+      "mean_control_steps": 455.8333333333333,
+      "mean_extra_observations": 0
+    },
+    "rule_persistent_missing": {
+      "n": 30,
+      "task_success": 0,
+      "task_success_rate": 0.0,
+      "wilson95": [
+        0,
+        0.11351339317396321
+      ],
+      "destination_observation_reached": 30,
+      "placement_attempted": 0,
+      "infrastructure_errors": 0,
+      "mean_model_calls": 1,
+      "mean_tokens": 513.5333333333333,
+      "mean_control_steps": 458.1333333333333,
+      "mean_extra_observations": 2
+    },
+    "rule_with_observation": {
+      "n": 30,
+      "task_success": 30,
+      "task_success_rate": 1.0,
+      "wilson95": [
+        0.8864866068260369,
+        1
+      ],
+      "destination_observation_reached": 30,
+      "placement_attempted": 30,
+      "infrastructure_errors": 0,
+      "mean_model_calls": 1,
+      "mean_tokens": 513.5333333333333,
+      "mean_control_steps": 544.4333333333333,
+      "mean_extra_observations": 0.7
+    }
+  },
+  "observation_paired_comparison": {
+    "matched_seeds": 30,
+    "with_only_success": 15,
+    "without_only_success": 0,
+    "success_difference_percentage_points": 50.0,
+    "mcnemar_exact_two_sided_p": 6.103515625e-05,
+    "caution": "same controlled task family; seed pairing not task-template generalization; active observation includes motion/time cost"
+  },
+  "integrity": {
+    "case_ids_unique": true,
+    "all_single_initial_reset": true,
+    "all_records_match_manifest": true
+  }
+}

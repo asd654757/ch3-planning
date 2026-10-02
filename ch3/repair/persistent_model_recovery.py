@@ -34,7 +34,7 @@ def strict_plan(text, *, fixed_right_arm=False):
     return ModelPlan.model_validate(data)
 
 
-def generate_suffix(*, client, state, goal, validator, history, attempts=1, instruction=None, targets=None, protected_objects=(), feedback_enabled=True, execution_event=None, fixed_right_arm=False):
+def generate_suffix(*, client, state, goal, validator, history, attempts=1, instruction=None, targets=None, protected_objects=(), feedback_enabled=True, execution_event=None, fixed_right_arm=False, initial_feedback=None, previous_candidate=None):
     """Both settings retain Validator AND Goal Checker before any execution.
 
     attempts=2 adds error-conditioned correction, not an unfair goal-check removal.
@@ -45,7 +45,7 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1, inst
     if fixed_right_arm and set(validator.registry.arms) != {'right'}:
         raise ValueError('fixed_right_arm_requires_single_right_backend')
     audit = []
-    feedback = None
+    feedback = initial_feedback
     for index in range(attempts):
         request = {
             'instruction': instruction or 'Place red_cube_0 on tray_1 and finish with the right hand empty.',
@@ -60,6 +60,7 @@ def generate_suffix(*, client, state, goal, validator, history, attempts=1, inst
                 'state_precedence':'Current observed facts override historical action effects.'}
                if execution_event is not None else {}),
             'rejection_feedback': feedback if feedback_enabled else None,
+            **({'previous_candidate': previous_candidate} if previous_candidate is not None else {}),
             **({'forbidden_objects': list(protected_objects)} if protected_objects else {}),
             'output_schema': ({'actions': [{'step_id':'integer starting at 1', 'skill':'pick or place',
                 'object_id':'one of objects', 'target_id':'required for place; omit for pick', 'arm':'right'}]}

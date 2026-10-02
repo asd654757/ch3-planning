@@ -1,0 +1,466 @@
+{
+  "completed_at_utc": "2026-10-02T10:04:51.671148+00:00",
+  "completed_cases": 15,
+  "phase": "pilot",
+  "protocol": "persistent_task_switch_observation_v1",
+  "records": [
+    {
+      "case_id": "seed0_rule_with_observation",
+      "seed": 0,
+      "variant": "rule_with_observation",
+      "setting": "rule_recovery",
+      "reobserve_budget": 2,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 1,
+      "control_steps": 515,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 507
+    },
+    {
+      "case_id": "seed0_replan_with_observation",
+      "seed": 0,
+      "variant": "replan_with_observation",
+      "setting": "current_state_replan",
+      "reobserve_budget": 2,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "control_steps": 515,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 1334
+    },
+    {
+      "case_id": "seed0_replan_without_extra_observation",
+      "seed": 0,
+      "variant": "replan_without_extra_observation",
+      "setting": "current_state_replan",
+      "reobserve_budget": 0,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "control_steps": 515,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 1341
+    },
+    {
+      "case_id": "seed0_rule_persistent_missing",
+      "seed": 0,
+      "variant": "rule_persistent_missing",
+      "setting": "rule_recovery",
+      "reobserve_budget": 2,
+      "blackout_destination": true,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 1,
+      "control_steps": 452,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 1,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 2,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "safe_stop": true,
+      "total_tokens": 514
+    },
+    {
+      "case_id": "seed0_replan_persistent_missing",
+      "seed": 0,
+      "variant": "replan_persistent_missing",
+      "setting": "current_state_replan",
+      "reobserve_budget": 2,
+      "blackout_destination": true,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 2,
+      "control_steps": 452,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 1,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 2,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "safe_stop": true,
+      "total_tokens": 1341
+    },
+    {
+      "case_id": "seed1_replan_with_observation",
+      "seed": 1,
+      "variant": "replan_with_observation",
+      "setting": "current_state_replan",
+      "reobserve_budget": 2,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "control_steps": 549,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "missing or ambiguous color candidates"
+        },
+        {
+          "round": 1,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 1349
+    },
+    {
+      "case_id": "seed1_replan_without_extra_observation",
+      "seed": 1,
+      "variant": "replan_without_extra_observation",
+      "setting": "current_state_replan",
+      "reobserve_budget": 0,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 2,
+      "control_steps": 386,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "missing or ambiguous color candidates"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "total_tokens": 1349
+    },
+    {
+      "case_id": "seed1_rule_with_observation",
+      "seed": 1,
+      "variant": "rule_with_observation",
+      "setting": "rule_recovery",
+      "reobserve_budget": 2,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 1,
+      "control_steps": 549,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "missing or ambiguous color candidates"
+        },
+        {
+          "round": 1,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 514
+    },
+    {
+      "case_id": "seed1_rule_persistent_missing",
+      "seed": 1,
+      "variant": "rule_persistent_missing",
+      "setting": "rule_recovery",
+      "reobserve_budget": 2,
+      "blackout_destination": true,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 1,
+      "control_steps": 453,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 1,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 2,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "safe_stop": true,
+      "total_tokens": 514
+    },
+    {
+      "case_id": "seed1_replan_persistent_missing",
+      "seed": 1,
+      "variant": "replan_persistent_missing",
+      "setting": "current_state_replan",
+      "reobserve_budget": 2,
+      "blackout_destination": true,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 2,
+      "control_steps": 453,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 1,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 2,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "safe_stop": true,
+      "total_tokens": 1349
+    },
+    {
+      "case_id": "seed2_replan_without_extra_observation",
+      "seed": 2,
+      "variant": "replan_without_extra_observation",
+      "setting": "current_state_replan",
+      "reobserve_budget": 0,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "control_steps": 514,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 1341
+    },
+    {
+      "case_id": "seed2_rule_with_observation",
+      "seed": 2,
+      "variant": "rule_with_observation",
+      "setting": "rule_recovery",
+      "reobserve_budget": 2,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 1,
+      "control_steps": 514,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 507
+    },
+    {
+      "case_id": "seed2_replan_with_observation",
+      "seed": 2,
+      "variant": "replan_with_observation",
+      "setting": "current_state_replan",
+      "reobserve_budget": 2,
+      "blackout_destination": false,
+      "blackout_release": false,
+      "task_success": true,
+      "exit_code": 0,
+      "stage": "completed",
+      "error": null,
+      "model_calls": 2,
+      "control_steps": 514,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": true
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": true,
+      "total_tokens": 1334
+    },
+    {
+      "case_id": "seed2_rule_persistent_missing",
+      "seed": 2,
+      "variant": "rule_persistent_missing",
+      "setting": "rule_recovery",
+      "reobserve_budget": 2,
+      "blackout_destination": true,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 1,
+      "control_steps": 452,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 1,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 2,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "safe_stop": true,
+      "total_tokens": 514
+    },
+    {
+      "case_id": "seed2_replan_persistent_missing",
+      "seed": 2,
+      "variant": "replan_persistent_missing",
+      "setting": "current_state_replan",
+      "reobserve_budget": 2,
+      "blackout_destination": true,
+      "blackout_release": false,
+      "task_success": false,
+      "exit_code": 0,
+      "stage": "yellow_place",
+      "error": "destination observation budget exhausted; placement refused",
+      "model_calls": 2,
+      "control_steps": 452,
+      "reobservations": [
+        {
+          "round": 0,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 1,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        },
+        {
+          "round": 2,
+          "destination_supported": false,
+          "reason": "insufficient target color evidence"
+        }
+      ],
+      "episode_resets": 1,
+      "recovery_episode_resets": 0,
+      "yellow_placement_attempted": false,
+      "safe_stop": true,
+      "total_tokens": 1341
+    }
+  ]
+}

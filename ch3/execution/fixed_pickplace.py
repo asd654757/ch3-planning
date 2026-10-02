@@ -15,6 +15,28 @@ class FixedPickPlaceController:
     def __init__(self, env):
         self.env = env
 
+    def retract_open(self, *, max_steps=80):
+        """Bounded vertical reset for an authorized PRE-CONTACT interruption only.
+
+        Caller must check that no descent/contact/gripper closure occurred.
+        Workspace heuristic, not a collision-free motion guarantee.
+        """
+        if max_steps < 1:
+            raise ValueError("positive step budget required")
+        origin = np.asarray(self.env.get_endeff_pos(), float)
+        if origin.shape != (3,) or not np.isfinite(origin).all() or not (.4 <= origin[1] <= .95 and abs(origin[0]) <= .3 and 0 < origin[2] <= .35):
+            raise ValueError("retraction origin outside workspace")
+        target = origin.copy()
+        target[2] = min(.30, max(.20, origin[2] + .06))
+        for step in range(1, max_steps + 1):
+            action = np.r_[np.clip(10 * (target - self.env.get_endeff_pos()), -1, 1), -1.]
+            _, _, terminated, truncated, _ = self.env.step(action)
+            if terminated or truncated:
+                return {"completed": False, "reason": "episode_ended", "steps": step}
+            if np.linalg.norm(self.env.get_endeff_pos() - target) < .015:
+                return {"completed": True, "reason": "vertical_reset_completed", "steps": step}
+        return {"completed": False, "reason": "reset_timeout", "steps": max_steps}
+
     def execute(self, request: SkillRequest, *, max_steps: int = 260):
         if request.backend != self.backend or request.arm != "right":
             raise ValueError("unsupported backend or arm")

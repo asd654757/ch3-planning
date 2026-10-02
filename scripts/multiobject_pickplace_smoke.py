@@ -28,11 +28,14 @@ def main():
     parser.add_argument("--inject-unknown-target", action="store_true", help="controlled remainder fault, never natural model error")
     parser.add_argument("--frozen-front-end", help="replay two saved calls only if prompt and image match exactly")
     parser.add_argument("--model-initial-plan", action="store_true", help="generate complete initial plan using explicit fixture state")
+    parser.add_argument("--recover-early-pick", action="store_true", help="one pre-contact timeout reset and fresh-state complete replan; controlled fixture only")
     args = parser.parse_args()
     if not 0 <= args.reobserve_rounds <= 3 or args.blackout_rounds < 0:
         parser.error("reobserve-rounds must be 0..3 and blackout-rounds nonnegative")
     if args.model_initial_plan and (not args.language_instruction or args.frozen_front_end or not args.visual_follow):
         parser.error("model-initial-plan requires language-instruction and visual-follow, without frozen-front-end")
+    if args.recover_early_pick and (not args.model_initial_plan or args.skip_pick):
+        parser.error("recover-early-pick requires model-initial-plan without skip-pick")
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -105,6 +108,56 @@ def main():
                            if args.skip_pick else controller.execute(contract.request(pick, bindings=bindings, observation_id="initial"),
                                                                     max_steps=args.pick_max_steps))
             Image.fromarray(np.flip(np.asarray(env.render()), (0, 1))).save(output / "after_pick.png")
+            early_recovery = {"attempted": False}
+            pick_attempts = 0 if args.skip_pick else 1
+            if args.recover_early_pick and not pick_result["completed"]:
+                from ch3.execution.early_pick_recovery import early_recovery_gate
+                try:
+                    fresh_blue = color_pixel(np.asarray(env.render()), "blue")[0]
+                except ValueError:
+                    fresh_blue = None
+                early_recovery = early_recovery_gate(pick_result, initial_empty_fixture=True,
+                    initial_pixel=blue, fresh_pixel=fresh_blue)
+                early_recovery.update(attempted=True, initial_pick_result=pick_result)
+                if early_recovery["authorized"]:
+                    reset_result = controller.retract_open()
+                    early_recovery["reset"] = reset_result
+                    if reset_result["completed"]:
+                        recovery_frame = np.asarray(env.render()).copy()
+                        Image.fromarray(np.flip(recovery_frame, (0, 1))).save(output / "early_recovery.png")
+                        try:
+                            fresh_blue = color_pixel(recovery_frame, "blue")[0]
+                            fresh_region = color_pixel(recovery_frame, "green")[0]
+                            # Recheck after reset, not merely before motion.
+                            post_gate = early_recovery_gate(early_recovery["initial_pick_result"],
+                                initial_empty_fixture=True, initial_pixel=blue, fresh_pixel=fresh_blue)
+                            early_recovery["post_reset_gate"] = post_gate
+                            if not post_gate["authorized"]:
+                                raise ValueError("post-reset evidence rejected")
+                            model_calls += 1
+                            recovery_plan = generate_initial(client, goal=language_goal,
+                                image_path=output / "early_recovery.png", log_path=output / "early_replan_call.json",
+                                initial_state=WorldState.table_scene({"blue_candidate", "green_region"}))
+                            early_recovery["replan"] = recovery_plan.to_list()
+                            early_recovery["replan_state_source"] = "controlled_initial_facts_preserved_by_precontact_trace; not visual empty-hand estimation"
+                            bindings = {"blue_candidate": visual_binding(calibration, object_id="blue_candidate",
+                                observation_id="early_reset", pixel=fresh_blue, plane_z=.02),
+                                "green_region": visual_binding(calibration, object_id="green_region",
+                                observation_id="early_reset", pixel=fresh_region, plane_z=.008)}
+                            pick_attempts += 1
+                            pick_result = controller.execute(contract.request(recovery_plan.steps[0],
+                                bindings=bindings, observation_id="early_reset"))
+                            early_recovery["retry_pick_result"] = pick_result
+                            Image.fromarray(np.flip(np.asarray(env.render()), (0, 1))).save(output / "after_retry_pick.png")
+                        except Exception as exc:
+                            early_recovery["error"] = str(exc)
+                # An unauthorized/failed reset must not enter the closed-gripper probe.
+                if not early_recovery.get("retry_pick_result", {}).get("completed", False):
+                    (output / "summary.json").write_text(json.dumps({"seed": args.seed,
+                        "model_calls": model_calls, "episode_resets": 1, "task_success": False,
+                        "place_attempted": False, "stage": "early_recovery_stopped",
+                        "early_recovery": early_recovery}, indent=2))
+                    return
             # Scoring snapshot only: never used to gate probing or placement.
             pick_lift_height = float(env.data.body("candidate_blue").xpos[2] - initial_positions["candidate_blue"][2])
             holding = {"status": "unknown", "reason": "not_tested"}
@@ -202,7 +255,7 @@ def main():
                       "initial_plan_source": "vlm_complete_plan" if initial_executable else "scripted_pick",
                       "initial_state_source": "controlled_scene_precondition" if initial_executable else "not_used_by_initial_planner",
                       "initial_executable_plan": initial_executable.to_list() if initial_executable else None,
-                      "seed": args.seed, "camera": "corner2", "pixel_frame": "native_render",
+                      "seed": args.seed, "early_recovery": early_recovery, "camera": "corner2", "pixel_frame": "native_render",
                       "assumed_plane_z": {"blue_candidate": .02, "green_region": .008},
                       "target_selection": "fixed blue color heuristic, not language model",
                       "blue_pixel": blue, "green_pixel": green, "color_pixels": [blue_count, green_count],
@@ -222,7 +275,7 @@ def main():
                       "pick_max_steps": args.pick_max_steps, "controlled_feedback_blackout": args.occlude_feedback,
                       "continuation_decision": continuation, "observation_history": observation_history,
                       "reobserve_rounds_budget": args.reobserve_rounds, "blackout_rounds": args.blackout_rounds,
-                      "pick_attempts": 0 if args.skip_pick else 1,
+                      "pick_attempts": pick_attempts,
                       "scope": ("restricted language planning with optional R1_FROM_STATE fallback; initial state assumptions and initial_plan_source recorded separately; no full ROUTED"
                                 if language_goal else "restricted RGB feedback and local remaining-plan validation; no language planner or recovery loop")}
             if args.frozen_front_end:

@@ -74,7 +74,8 @@ def generate_initial(client, *, goal, image_path, log_path, initial_state):
     audit = {"initial_state_source": "controlled_scene_precondition", "plan": plan.model_dump(mode="json"),
              "validator_valid": result.valid, "predicted_goal_satisfied": predicted,
              "error_code": str(result.error_code), "initial_facts": sorted(initial_state.facts())}
-    Path(log_path).with_name("initial_plan_validation.json").write_text(json.dumps(audit, indent=2))
+    audit_name = "early_replan_call_validation.json" if Path(log_path).name == "early_replan_call.json" else "initial_plan_validation.json"
+    Path(log_path).with_name(audit_name).write_text(json.dumps(audit, indent=2))
     if not predicted:
         raise ValueError("initial plan failed Validator or predicted goal check")
     if len(plan.actions) != 2 or [a.skill.value for a in plan.actions] != ["pick", "place"]:

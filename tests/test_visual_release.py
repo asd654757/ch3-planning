@@ -32,3 +32,23 @@ def test_locator_rejects_missing_and_multiple_candidates(color, rgb):
     image[20:26, 20:26] = rgb
     with pytest.raises(ValueError, match="ambiguous"):
         color_pixel(image, color, require_unique=True)
+
+
+def test_adjacent_occluded_color_patches_are_grouped_but_distant_are_not():
+    image = np.zeros((50, 50, 3), dtype=np.uint8)
+    image[5:15, 5:10] = (10, 20, 230)
+    image[5:15, 12:17] = (10, 20, 230)
+    assert color_pixel(image, "blue", require_unique=True)[1] == 100
+    image[30:40, 30:40] = (10, 20, 230)
+    with pytest.raises(ValueError, match="ambiguous"):
+        color_pixel(image, "blue", require_unique=True)
+
+
+def test_region_bbox_center_is_explicit_statistic_not_default():
+    image = np.zeros((40, 40, 3), dtype=np.uint8)
+    image[5:25, 5:25] = (200, 10, 200)
+    image[10:25, 10:20] = 0  # controlled occlusion, outer edges still visible
+    center, _ = color_pixel(image, "magenta", require_unique=True, pixel_statistic="bbox_center")
+    assert center == (14.5, 14.5)
+    with pytest.raises(ValueError):
+        color_pixel(image, "magenta", pixel_statistic="truth")

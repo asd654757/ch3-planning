@@ -111,3 +111,23 @@ def fixed_mujoco_calibration(model, data, *, camera: str, width: int, height: in
     result = CameraCalibration(intrinsics, transform, width, height, "mujoco_world")
     result.validate()
     return result
+
+
+def visual_region_binding(calibration, *, frame, color, object_id, observation_id, plane_z):
+    """Center of a known axis-aligned flat region from RGB plane points.
+
+    Unlike image bbox center, this accounts for perspective before taking world
+    extrema. Assumes outer edges remain visible; not arbitrary occlusion or
+    object pose inference. Known color, static calibration and plane only.
+    """
+    if not object_id or not observation_id:
+        raise ValueError("missing object or observation identity")
+    from ch3.execution.visual_holding import color_pixel, color_mask
+    color_pixel(frame, color, require_unique=True)  # rejects distant duplicates
+    ys, xs = np.nonzero(color_mask(frame, color))
+    # Ignore isolated speckle by trimming one percent of ray intersections.
+    points = np.asarray([pixel_to_plane(calibration, pixel=(float(x), float(y)), plane_z=plane_z)
+                         for y, x in zip(ys, xs)])
+    low, high = np.quantile(points[:, :2], [.01, .99], axis=0)
+    position = tuple(float(v) for v in np.r_[(low + high) / 2, plane_z])
+    return TargetBinding(object_id, position, calibration.coordinate_frame, observation_id, "visual_estimate")

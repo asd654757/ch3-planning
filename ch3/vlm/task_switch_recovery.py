@@ -24,7 +24,7 @@ def switch_fixture():
                       at={"yellow_candidate": "table", "green_region": "table"})
 
 
-def evaluate_switch_plan(raw, state):
+def evaluate_switch_plan(raw, state, *, state_source="explicit_fixture_not_visual_state_estimation"):
     """All facts supplied explicitly; no inferred empty-hand or object poses."""
     expected = switch_fixture()
     if state != expected:
@@ -48,7 +48,7 @@ def evaluate_switch_plan(raw, state):
              "error_code": str(validation.error_code), "goal_satisfied": goal_ok,
              "within_execution_scope": in_scope, "accepted": accepted,
              "current_facts": sorted(state.facts()), "required_final_facts": sorted(goals),
-             "state_source": "explicit_fixture_not_visual_state_estimation",
+             "state_source": state_source,
              "physical_execution_authorized": False}
     return audit, compile_plan(plan, registry) if accepted else None
 
@@ -82,7 +82,7 @@ def generate_switch_plan(client, *, image_path, log_path, state, context=None):
     prompt = json.dumps({"task_update": instruction,
         "request_context": asdict(ticket),
         "remaining_goal_facts": sorted(context.remaining_goals),
-        "state_source": "explicit diagnostic fixture; not inferred from image",
+        "state_source": context.evidence_source,
         "current_facts": sorted(state.facts()),
         "objects": {"blue_candidate": "blue cube", "yellow_candidate": "yellow cube", "green_region": "green region"},
         "required_final_facts": ["on(yellow_candidate, green_region)", "on(blue_candidate, table)", "hand_empty(right)"],
@@ -95,7 +95,7 @@ def generate_switch_plan(client, *, image_path, log_path, state, context=None):
         binding["rejection"] = str(exc)
         binding_path.write_text(json.dumps(binding, indent=2))
         raise
-    audit, executable = evaluate_switch_plan(raw, state)
+    audit, executable = evaluate_switch_plan(raw, state, state_source=context.evidence_source)
     audit["request_context"] = asdict(ticket)
     binding["response_current"] = True
     binding_path.write_text(json.dumps(binding, indent=2))

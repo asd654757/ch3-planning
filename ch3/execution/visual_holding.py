@@ -6,7 +6,7 @@ evidence returns unknown; simulator object poses must never enter this module.
 import numpy as np
 
 
-def color_pixel(frame, color, *, require_unique=False):
+def color_mask(frame, color):
     rgb = np.asarray(frame, dtype=float)
     if rgb.ndim != 3 or rgb.shape[2] != 3:
         raise ValueError("RGB image required")
@@ -20,6 +20,13 @@ def color_pixel(frame, color, *, require_unique=False):
         mask = (rgb[:, :, 0] > 90) & (rgb[:, :, 2] > 90) & (rgb[:, :, 1] < .55 * np.minimum(rgb[:, :, 0], rgb[:, :, 2]))
     else:
         raise ValueError("unsupported color")
+    return mask
+
+
+def color_pixel(frame, color, *, require_unique=False, pixel_statistic="median"):
+    if pixel_statistic not in {"median", "bbox_center"}:
+        raise ValueError("unsupported pixel statistic")
+    mask = color_mask(frame, color)
     y, x = np.nonzero(mask)
     if len(x) < 20:
         raise ValueError("insufficient target color evidence")
@@ -42,10 +49,32 @@ def color_pixel(frame, color, *, require_unique=False):
                             component.append(neighbor)
             if len(component) >= 20:
                 components.append(component)
-        if len(components) != 1:
+        # Gripper occlusion can split ONE colored cube into adjacent patches.
+        # Group only patches whose bounding-box pixel gap is <=3; distant
+        # same-color candidates still reject. This is a restricted adapter,
+        # not proof of object identity for nearby same-color objects.
+        groups = [np.asarray(c) for c in components]
+        merged = True
+        while merged:
+            merged = False
+            for i in range(len(groups)):
+                for j in range(i + 1, len(groups)):
+                    low_i, high_i = groups[i].min(0), groups[i].max(0)
+                    low_j, high_j = groups[j].min(0), groups[j].max(0)
+                    gap = np.maximum(np.maximum(low_i - high_j, low_j - high_i), 0)
+                    if np.max(gap) <= 3:
+                        groups[i] = np.concatenate([groups[i], groups[j]])
+                        groups.pop(j)
+                        merged = True
+                        break
+                if merged:
+                    break
+        if len(groups) != 1:
             raise ValueError("missing or ambiguous color candidates")
-        coords = np.asarray(components[0])
+        coords = groups[0]
         y, x = coords[:, 0], coords[:, 1]
+    if pixel_statistic == "bbox_center":
+        return (float((x.min() + x.max()) / 2), float((y.min() + y.max()) / 2)), int(len(x))
     return (float(np.median(x)), float(np.median(y))), int(len(x))
 
 

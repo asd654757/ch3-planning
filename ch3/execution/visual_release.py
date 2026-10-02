@@ -30,7 +30,7 @@ def release_evidence(target_pixels, hand_pixels, target_world_xy, destination_xy
     arrived = bool(np.all(np.abs(xy - destination) <= destination_tolerance))
     result.update(target_drift_px=drift, hand_separation_px=separation,
                   hand_motion_px=hand_motion, destination_supported=arrived,
-                  location_source="RGB_centroid_assumed_table_plane_not_truth")
+                  location_source="RGB_centroid_assumed_support_plane_not_truth")
     if drift <= 3 and separation >= 18 and hand_motion >= 4 and arrived:
         result.update(status="release_supported", empty_hand_supported=True,
                       reason="stationary_target_at_destination_during_open_hand_retreat")

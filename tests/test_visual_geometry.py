@@ -55,3 +55,18 @@ def test_projection_roundtrip():
     point = (.1, -.1, 0.)
     pixel = project_point(camera(), point)
     assert pixel_to_plane(camera(), pixel=pixel, plane_z=0.) == pytest.approx(point)
+
+
+def test_region_binding_uses_pixels_plane_and_declared_identity():
+    from ch3.execution.visual_geometry import visual_region_binding
+    image = np.zeros((100, 100, 3), dtype=np.uint8)
+    image[40:61, 40:61] = (10, 200, 20)
+    image[46:55, 46:55] = 0
+    b = visual_region_binding(camera(), frame=image, color="green", object_id="region", observation_id="rgb-1", plane_z=0)
+    assert b.position == pytest.approx((0, 0, 0))
+    assert b.source == "visual_estimate" and b.observation_id == "rgb-1"
+    with pytest.raises(ValueError):
+        visual_region_binding(camera(), frame=image, color="green", object_id="", observation_id="rgb-1", plane_z=0)
+    image[80:90, 80:90] = (10, 200, 20)
+    with pytest.raises(ValueError, match="ambiguous"):
+        visual_region_binding(camera(), frame=image, color="green", object_id="region", observation_id="rgb-1", plane_z=0)

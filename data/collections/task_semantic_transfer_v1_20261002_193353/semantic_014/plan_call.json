@@ -1,0 +1,13 @@
+{
+  "prompt": "{\"task_contract\": {\"status\": \"ready\", \"goals\": [{\"object_id\": \"blue_candidate\", \"target_id\": \"table\"}], \"forbidden_objects\": [], \"placement_order\": [], \"hand_empty\": true}, \"current_facts\": [\"holding(right, blue_candidate)\", \"on(green_region, table)\", \"on(yellow_candidate, table)\"], \"state_source\": \"explicit_shared_fixture\", \"candidates\": {\"blue_candidate\": \"blue cube\", \"yellow_candidate\": \"yellow cube\", \"green_region\": \"green placement region\"}, \"available_skills\": [\"pick\", \"place\"], \"arm\": \"right\", \"special_targets\": [\"table\"], \"output_formats\": {\"pick\": {\"step_id\": \"integer\", \"skill\": \"pick\", \"object_id\": \"candidate ID\", \"arm\": \"right\"}, \"place\": {\"step_id\": \"integer\", \"skill\": \"place\", \"object_id\": \"candidate ID\", \"target_id\": \"table or green_region\", \"arm\": \"right\"}}, \"rules\": [\"Return exactly one JSON object with actions array. No commentary or extra keys.\", \"pick MUST NOT include target_id, not even empty string or null. place MUST include target_id.\", \"This is remaining planning; the historical blue pick has executed. Do not replay it.\", \"Right holds blue initially. Release what is held before another pick. A temporary release may be necessary to meet final placement order; do not mistake temporary release for achieving a different required final destination.\", \"Check ALL final locations, prohibitions, placement ordering and empty-hand requirements before responding. IDs consecutive from 1. Empty actions only if current state satisfies task.\"]}",
+  "raw_response": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"table\",\n      \"arm\": \"right\"\n    }\n  ]\n}\n```",
+  "model": "qwen-vl-plus",
+  "total_tokens": 423,
+  "latency_ms": 716,
+  "finish_reason": "stop",
+  "prompt_tokens": 366,
+  "completion_tokens": 57,
+  "image_input": false,
+  "json_mode": false,
+  "planning_version": "semantic_remaining_v6"
+}

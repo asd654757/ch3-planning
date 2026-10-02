@@ -1,0 +1,29 @@
+{
+  "version": "v5",
+  "quote_coverage_valid": true,
+  "semantic_correctness_guaranteed": false,
+  "grounded_output": {
+    "status": "ready",
+    "reason_quote": "",
+    "goals": [
+      {
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "quote": "蓝色的最终放置必须早于黄色的最终放置"
+      },
+      {
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "quote": "两块最后都在绿色区域"
+      }
+    ],
+    "forbidden_objects": [],
+    "placement_order": [
+      "blue_candidate",
+      "yellow_candidate"
+    ],
+    "order_quote": "蓝色的最终放置必须早于黄色的最终放置",
+    "hand_empty": true,
+    "hand_quote": "操作结束时手要空"
+  }
+}

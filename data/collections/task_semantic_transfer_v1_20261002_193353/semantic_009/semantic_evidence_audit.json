@@ -1,0 +1,29 @@
+{
+  "version": "v5",
+  "quote_coverage_valid": true,
+  "semantic_correctness_guaranteed": false,
+  "grounded_output": {
+    "status": "ready",
+    "reason_quote": "",
+    "goals": [
+      {
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "quote": "Move both cubes to green region; blue cube first yellow cube second"
+      },
+      {
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "quote": "Move both cubes to green region; blue cube first yellow cube second"
+      }
+    ],
+    "forbidden_objects": [],
+    "placement_order": [
+      "blue_candidate",
+      "yellow_candidate"
+    ],
+    "order_quote": "blue cube first yellow cube second",
+    "hand_empty": true,
+    "hand_quote": "finish empty-handed"
+  }
+}

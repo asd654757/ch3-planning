@@ -46,3 +46,16 @@ def test_wrong_semantics_can_pass_online_but_not_gold():
     b=TaskSemantics.model_validate(ROWS[10]['gold'])
     r=score(b,deterministic_plan(b),a)
     assert r['misaccept'] and not r['strict_success']
+
+
+def test_transfer_analyzer_preserves_denominator_and_duplicate_guard(tmp_path):
+    from scripts.analyze_task_semantic_transfer import analyze
+    names=['rule_semantics_search','model_semantics_search','model_semantics_model_plan','oracle_semantics_search']
+    (tmp_path/'manifest.json').write_text(json.dumps(dict(protocol='test',cases=ROWS,variants=names)))
+    row=dict(case_id=ROWS[0]['case_id'],subset='controlled',results={n:dict(strict_success=False) for n in names})
+    (tmp_path/'records.jsonl').write_text(json.dumps(row)+'\n')
+    result=analyze(tmp_path)
+    assert result['expected']==24 and result['completed']==1 and len(result['missing_case_ids'])==23
+    assert result['by_subset']['controlled']['expected']==12
+    (tmp_path/'records.jsonl').write_text((json.dumps(row)+'\n')*2)
+    with pytest.raises(ValueError):analyze(tmp_path)

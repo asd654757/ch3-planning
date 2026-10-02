@@ -1,0 +1,504 @@
+{
+  "protocol": "task_semantic_transfer_v1",
+  "created_at_utc": "2026-10-02T11:33:54.090453+00:00",
+  "commit": "1af9edc97cc1e0a7fea1f1489ea1fc326cf40c2f",
+  "cases": [
+    {
+      "case_id": "semantic_001",
+      "subset": "controlled",
+      "family": "cancel",
+      "instruction": "Forget the previous instruction; place blue cube onto the table; end with an empty hand.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_002",
+      "subset": "controlled",
+      "family": "cancel",
+      "instruction": "取消之前的目标；蓝块放回桌面；最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_003",
+      "subset": "controlled",
+      "family": "reference",
+      "instruction": "Return the held cube to the table; leave yellow untouched; end empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_004",
+      "subset": "controlled",
+      "family": "reference",
+      "instruction": "手上的方块送到绿色区域；不要碰黄块；最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_005",
+      "subset": "controlled",
+      "family": "switch",
+      "instruction": "Forget the old goal; carry blue back to table; take yellow cube onto green region; finish empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_006",
+      "subset": "controlled",
+      "family": "switch",
+      "instruction": "取消旧任务；蓝色方块放回桌面；黄色方块搬到绿色区域；最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_007",
+      "subset": "controlled",
+      "family": "prohibition",
+      "instruction": "Move blue cube onto green region; leave the yellow cube untouched; end with an empty hand.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_008",
+      "subset": "controlled",
+      "family": "prohibition",
+      "instruction": "蓝块放回桌面；禁止移动黄色方块；最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_009",
+      "subset": "controlled",
+      "family": "ordering",
+      "instruction": "Move both cubes to green region; blue cube first yellow cube second; finish empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_010",
+      "subset": "controlled",
+      "family": "ordering",
+      "instruction": "两个方块都放到绿色区域；先放黄块再放蓝块；最后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "yellow_candidate",
+          "blue_candidate"
+        ],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_011",
+      "subset": "controlled",
+      "family": "reference",
+      "instruction": "Place the cube you hold in green; end with an empty hand.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_012",
+      "subset": "controlled",
+      "family": "switch",
+      "instruction": "Return the blue cube on table; carry the yellow cube in green; end empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_013",
+      "subset": "paraphrase",
+      "family": "cancel",
+      "instruction": "Disregard the earlier delivery. The blue block should end up on the tabletop, and your hand should be free.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_014",
+      "subset": "paraphrase",
+      "family": "cancel",
+      "instruction": "刚才送绿区的要求作废。请让蓝色方块最终回到桌面，手中不留物体。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_015",
+      "subset": "paraphrase",
+      "family": "reference",
+      "instruction": "The block in your gripper belongs on the green patch. Leave the yellow one alone and release your grip at the end.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_016",
+      "subset": "paraphrase",
+      "family": "reference",
+      "instruction": "只把你正拿着的那个安置在桌面上，黄的别动，结束时空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_017",
+      "subset": "paraphrase",
+      "family": "switch",
+      "instruction": "Change of plan: yellow is the delivery for the green patch. Blue must finish back on the table; leave the gripper empty.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "table"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_018",
+      "subset": "paraphrase",
+      "family": "prohibition",
+      "instruction": "绿色区域只接收蓝块；黄色方块从现在起不允许被抓取或放置。完成后空手。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [
+          "yellow_candidate"
+        ],
+        "placement_order": [],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_019",
+      "subset": "paraphrase",
+      "family": "ordering",
+      "instruction": "Both blocks must finish in the green area. Complete the yellow delivery before the blue delivery; putting blue temporarily on the table is fine. End empty-handed.",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "yellow_candidate",
+          "blue_candidate"
+        ],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_020",
+      "subset": "paraphrase",
+      "family": "ordering",
+      "instruction": "两块最后都在绿色区域。蓝色的最终放置必须早于黄色的最终放置，操作结束时手要空。",
+      "gold": {
+        "status": "ready",
+        "goals": [
+          {
+            "object_id": "blue_candidate",
+            "target_id": "green_region"
+          },
+          {
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          }
+        ],
+        "forbidden_objects": [],
+        "placement_order": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "hand_empty": true
+      }
+    },
+    {
+      "case_id": "semantic_021",
+      "subset": "refusal",
+      "family": "ambiguity",
+      "instruction": "Move one of the cubes to that spot.",
+      "gold": {
+        "status": "clarify",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      }
+    },
+    {
+      "case_id": "semantic_022",
+      "subset": "refusal",
+      "family": "ambiguity",
+      "instruction": "把其中一个放到那边去。",
+      "gold": {
+        "status": "clarify",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      }
+    },
+    {
+      "case_id": "semantic_023",
+      "subset": "refusal",
+      "family": "missing",
+      "instruction": "Place blue on table; carry purple cube to green.",
+      "gold": {
+        "status": "unsupported",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      }
+    },
+    {
+      "case_id": "semantic_024",
+      "subset": "refusal",
+      "family": "missing",
+      "instruction": "蓝块放回桌面，然后把橙色方块送到绿色区域。",
+      "gold": {
+        "status": "unsupported",
+        "goals": [],
+        "forbidden_objects": [],
+        "placement_order": [],
+        "hand_empty": false
+      }
+    }
+  ],
+  "source_sha256": {
+    "ch3/vlm/task_semantics.py": "38f09cf3b367bd6aa5d09f7e55c002e7736839a3ed11ceffb5c3a2140f2da8b8",
+    "ch3/vlm/rule_task_semantics.py": "a7361ebe7b3c574e58bd6bd55d0d5db0a3475c4299fb87a12b4663f376697e13",
+    "scripts/task_semantic_transfer_benchmark.py": "c4ccc141ad67d874de534dfbe66816c8e4def95779c5748fab4ee126f47bc29e",
+    "data/scenarios/task_semantic_transfer_v1.jsonl": "6d800f3a1b2fd50045769e1475eef3b7ad12d9d64308a84675031c31cba1897a"
+  },
+  "phase": "new_wording_pilot_not_formal",
+  "author_constructed": true,
+  "author_knows_rule_grammar": true,
+  "current_state": "fixed_held_blue_fixture",
+  "physical_execution": false,
+  "visual_state_estimation": false,
+  "rule_input": "same instruction, grounded catalog and held-blue state as model",
+  "model": "qwen-vl-plus",
+  "seed": 0,
+  "temperature": 0.1,
+  "max_tokens": 1024,
+  "json_mode": false,
+  "variants": [
+    "rule_semantics_search",
+    "model_semantics_search",
+    "model_semantics_model_plan",
+    "oracle_semantics_search"
+  ],
+  "oracle_is_not_natural_language_baseline": true,
+  "max_calls": 48,
+  "automatic_reruns": false
+}

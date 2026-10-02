@@ -62,6 +62,7 @@ def main():
     parser.add_argument('--output',type=Path)
     parser.add_argument('--env-file',type=Path)
     parser.add_argument('--freeze-only',action='store_true')
+    parser.add_argument('--explicit-event',action='store_true', help='v3: both model settings receive the same disturbance and preconditions')
     args=parser.parse_args()
     if args.freeze_only:
         args.manifest.parent.mkdir(parents=True,exist_ok=True)
@@ -84,12 +85,13 @@ def main():
                 else:
                     plan,audit=generate_suffix(client=client,state=state,goal=goal,validator=validator,
                         history=case['history'],attempts=2,instruction=case['instruction'],targets=case['targets'],
-                        protected_objects=case['protected_objects'],feedback_enabled=method=='MODEL_FEEDBACK')
+                        protected_objects=case['protected_objects'],feedback_enabled=method=='MODEL_FEEDBACK',
+                        execution_event=case['perturbation'] if args.explicit_event else None)
                     reason='accepted' if plan else 'candidate_rejected'
                 row={'case_id':case['case_id'],'level':case['level'],'method':method,
                     'symbolic_ready':plan is not None,'reason':reason,
                     'plan':plan.model_dump(mode='json') if plan else None,'calls':len(audit),
-                    'audit':audit,'physical_success':None,'scope':'symbolic_difficulty_pilot'}
+                    'audit':audit,'explicit_event':args.explicit_event, 'physical_success':None,'scope':'symbolic_difficulty_pilot'}
                 f.write(json.dumps(row)+'\n');f.flush()
                 print(json.dumps({k:row[k] for k in ['case_id','method','symbolic_ready','calls']}),flush=True)
     print(json.dumps({'completed_cases':45,'scope':'symbolic_only_not_physical'}),flush=True)

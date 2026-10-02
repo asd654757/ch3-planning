@@ -60,3 +60,20 @@ def test_protected_object_and_equal_budget():
         assert plan is None and len(audit)==2
         assert not audit[0]['constraints_satisfied']
         assert bool(client.requests[1]['rejection_feedback'])==feedback
+
+
+def test_event_shared_with_both_settings():
+    import json
+    registry=load_registry();registry._arms={'right'}
+    state=WorldState.table_scene({'red_cube_0','tray_1'})
+    class Client:
+        def complete(self,**kwargs):
+            request=json.loads(kwargs['user_prompt'])
+            assert request['latest_execution_event']=='held_object_dropped_to_table'
+            assert 'historical pick is insufficient' in request['action_preconditions']['place']
+            return SimpleNamespace(content=GOOD,total_tokens=1,latency_ms=0,finish_reason='stop')
+    for feedback in [False,True]:
+        plan,_=generate_suffix(client=Client(),state=state,goal=GoalSpec(facts=['on(red_cube_0, tray_1)']),
+            validator=Validator(state.objects,registry),history=[],attempts=2,feedback_enabled=feedback,
+            execution_event='held_object_dropped_to_table')
+        assert plan is not None

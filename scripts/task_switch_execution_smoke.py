@@ -21,8 +21,12 @@ def main():
     parser.add_argument("--env-file", required=True)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--setting", choices=["current_state_replan", "rule_recovery"], default="current_state_replan")
+    parser.add_argument("--blackout-destination", action="store_true", help="persistent destination feedback blackout; must stop without placement")
+    parser.add_argument("--reobserve-budget", type=int, default=2)
     parser.add_argument("--blackout-release", action="store_true", help="negative control; no yellow pick permitted")
     args = parser.parse_args()
+    if not 0 <= args.reobserve_budget <= 2:
+        parser.error("reobserve-budget must be 0..2")
     args.output_dir.mkdir(parents=True, exist_ok=False)
     out = args.output_dir
     import numpy as np
@@ -47,7 +51,8 @@ def main():
               "untouched_yellow_state_source": "controlled_fixture_not_full_visual_state_estimation",
               "task_success": False, "episode_resets": 0, "recovery_episode_resets": 0,
               "model_calls": 0, "events": [], "yellow_pick_attempted": False,
-              "blackout_release": args.blackout_release,
+              "blackout_release": args.blackout_release, "blackout_destination": args.blackout_destination,
+              "reobserve_budget": args.reobserve_budget, "reobservations": [],
               "geometry_assumptions": {"table_cube_centroid_z": .02, "region_cube_centroid_z": .028,
                   "region_surface_z": .008, "region_pixel_statistic": "RGB_ray_plane_world_extrema_center_1percent_trim",
                   "limitation": "known_flat_regions_edges_assumed_visible; not_general_occlusion_reconstruction"}}
@@ -223,8 +228,49 @@ def main():
                                      outcome="supported_success", evidence_source="RGB_displacement_and_hand_comotion")
             stage = "yellow_place"
             observation_id = "yellow_place"
+            destination = None
+            for observation_round in range(args.reobserve_budget + 1):
+                # Keep gripper closed while observing. A bounded vertical lift
+                # reduces target-region occlusion; never use object truth or
+                # open/regrasp. New holding evidence is required after motion.
+                if observation_round:
+                    origin = np.asarray(env.get_endeff_pos()).copy()
+                    target = origin + [0., 0., .035]
+                    if target[2] > .30:
+                        raise ValueError("reobservation pose outside supported workspace")
+                    reached = False
+                    for _ in range(40):
+                        _, _, terminated, truncated, _ = env.step(np.r_[np.clip(10 * (target - env.get_endeff_pos()), -1, 1), 1.])
+                        if terminated or truncated:
+                            raise ValueError("episode ended during bounded reobservation")
+                        if np.linalg.norm(env.get_endeff_pos() - target) < .005:
+                            reached = True
+                            break
+                    if not reached:
+                        raise ValueError("bounded reobservation motion timeout")
+                    records, rgb, path = probe(f"yellow_reobserve_{observation_round}", "yellow", 1.)
+                    new_holding = holding_evidence(yellow_initial, [r["target_pixel"] for r in records], [r["hand_pixel"] for r in records])
+                    if new_holding["status"] != "holding_supported":
+                        raise ValueError("holding unsupported after reobservation; placement refused")
+                observed_rgb = np.zeros_like(rgb) if args.blackout_destination else rgb
+                _, evidence_path = frame(f"destination_observation_{observation_round}", blackout=args.blackout_destination)
+                # Use exactly the saved fresh observation for bindings.
+                observed_rgb = np.flip(np.asarray(Image.open(evidence_path)), (0, 1)).copy()
+                observation_id = f"yellow_place_{observation_round}"
+                try:
+                    destination = binding(observed_rgb, "green_region", "green", observation_id, .008)
+                    report["reobservations"].append({"round": observation_round, "destination_supported": True})
+                    break
+                except ValueError as exc:
+                    report["reobservations"].append({"round": observation_round, "destination_supported": False, "reason": str(exc)})
+            if destination is None:
+                context.observe(facts=[], image_sha256=sha256(evidence_path.read_bytes()).hexdigest(),
+                    evidence_source="destination_RGB_insufficient", status="unknown")
+                raise ValueError("destination observation budget exhausted; placement refused")
+            context.observe(facts={"holding(right, yellow_candidate)", "on(green_region, table)"},
+                image_sha256=sha256(evidence_path.read_bytes()).hexdigest(), evidence_source="fresh_RGB_destination_and_supported_holding")
             fresh = {"yellow_candidate": replace(yellow_binding, position=tuple(env.get_endeff_pos()), observation_id=observation_id),
-                     "green_region": binding(rgb, "green_region", "green", observation_id, .008)}
+                     "green_region": destination}
             if version != context.task_version:
                 raise ValueError("task changed before placement")
             result = controller.execute(contract.request(plan.steps[2], bindings=fresh, observation_id=observation_id))

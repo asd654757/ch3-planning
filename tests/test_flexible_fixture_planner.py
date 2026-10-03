@@ -88,3 +88,48 @@ def test_initial_shared_snapshot_is_immutable_after_goal_update(tmp_path):
     assert second.initial(image)
     assert client.calls==1
     assert second.audit[0]['shared_candidate']
+
+
+def test_feedback_comparison_has_same_inputs_gate_and_retry_budget(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    requests=[]
+    for feedback_enabled in (False,True):
+        class Client:
+            calls=0
+            def complete(self,**kwargs):
+                self.calls+=1
+                requests.append((feedback_enabled,json.loads(kwargs['user_prompt'])))
+                pairs=[('blue_candidate','green_region'),('yellow_candidate','return_region')]
+                # Legal syntax but an incomplete goal, so both must reject it.
+                if self.calls==1:
+                    pairs=pairs[:1]
+                return SimpleNamespace(content=plan(pairs).model_dump_json(),total_tokens=10)
+        client=Client()
+        planner=FlexibleFixturePlanner(client,recovery=True,shared={},update_goals=True,
+            error_feedback=feedback_enabled)
+        planner.observe_release('blue_candidate','return_region')
+        executable=planner.remaining([],image,completed=1)
+        assert len(executable.steps)==4 and client.calls==2
+        assert [a['accepted'] for a in planner.audit]==[False,True]
+    for i in (0,1):
+        direct=requests[i][1].copy();feedback=requests[i+2][1].copy()
+        assert direct.pop('feedback') is None
+        assert feedback.pop('feedback') is not None
+        assert direct==feedback
+
+
+def test_rejected_outputs_stop_after_equal_budget(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    import pytest
+    for enabled in (False,True):
+        class Client:
+            calls=0
+            def complete(self,**kwargs):
+                self.calls+=1
+                return SimpleNamespace(content='[]',total_tokens=1)
+        client=Client()
+        planner=FlexibleFixturePlanner(client,recovery=True,shared={},error_feedback=enabled)
+        with pytest.raises(ValueError,match='flexible_remaining_repair_rejected'):
+            planner.remaining([],image,completed=0)
+        assert client.calls==2
+        assert all(not a['accepted'] for a in planner.audit)

@@ -59,8 +59,9 @@ class FlexibleFixturePlanner:
     flexible = True
     long_task = False
 
-    def __init__(self, client, *, recovery, shared, update_goals=False):
+    def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True):
         self.client, self.recovery, self.shared = client, recovery, shared
+        self.error_feedback = error_feedback
         self.audit = []
         self.state = WorldState.table_scene(OBJECTS)
         self.history = []
@@ -94,7 +95,7 @@ class FlexibleFixturePlanner:
             goals=dict(self.goals), executed_history=list(self.history), goal_updates=deepcopy(self.goal_updates),
             forbidden_objects=sorted(self.protected()), movable_objects=sorted(MOVABLE), targets=sorted(REGIONS),
             backend_contract='right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed',
-            feedback=feedback, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
+            feedback=feedback if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
                 object_id='registered cube',target_id='registered region for place, omitted for pick')]})
         item=dict(request=prompt, image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=0, accepted=False, phase=('initial' if initial else
@@ -132,6 +133,16 @@ class FlexibleFixturePlanner:
             raise ValueError('flexible_initial_plan_rejected')
         return executable
 
+    def _remaining_request(self, image_path, rejection):
+        # Identical noninitial budget and acceptance gate in both settings.
+        # The direct-replan reference retries without validator error content.
+        while sum(a['phase']!='initial' for a in self.audit)<2:
+            executable=self._request(image_path,feedback=rejection)
+            if executable is not None:
+                return executable
+            rejection=self.audit[-1]['rejection']
+        raise ValueError('flexible_remaining_repair_rejected')
+
     def remaining(self,steps,image_path,*,completed):
         if completed != len(self.history):
             raise ValueError('executed_history_progress_mismatch')
@@ -148,7 +159,4 @@ class FlexibleFixturePlanner:
             return executable
         if not self.recovery:
             raise ValueError('remaining_plan_rejected_no_recovery')
-        executable=self._request(image_path,feedback=rejection)
-        if executable is None:
-            raise ValueError('flexible_remaining_repair_rejected')
-        return executable
+        return self._remaining_request(image_path,rejection)

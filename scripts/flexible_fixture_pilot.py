@@ -14,6 +14,7 @@ if __name__=='__main__':
     p.add_argument('--env-file',type=Path,required=True)
     p.add_argument('--seeds',type=int,nargs='+',default=[55,56,57])
     p.add_argument('--update-goals',action='store_true')
+    p.add_argument('--compare-feedback',action='store_true',help='Matched direct replan versus error-feedback replan')
     args=p.parse_args()
     if len(args.seeds)!=len(set(args.seeds)) or any(s<0 for s in args.seeds):
         p.error('unique nonnegative seeds required')
@@ -24,6 +25,8 @@ if __name__=='__main__':
         actual_model=True,shared_initial_candidate=True,episode_resets=1,
         initial_y_spread_m=.025,pick_contact_offset_m=.03,
         backend='fixed_pick_place',max_total_transfers=4,max_repair_calls=2,
+        protocol_version='flexible_feedback_v3',compare_feedback=args.compare_feedback,
+        shared_acceptance_gate=True,failed_candidate_retry='up to remaining noninitial budget',
         scope='task_update_replanning_pilot_not_natural_execution_failure_recovery')
     (args.output_dir/'protocol.json').write_text(json.dumps(protocol,indent=2))
     client=DashScopeVLMClient(env_path=args.env_file,timeout=60,max_retries=0)
@@ -32,10 +35,13 @@ if __name__=='__main__':
         for seed in args.seeds:
             shared={}
             methods=[('MODEL_NO_TASK_REPAIR',False),('MODEL_CONSTRAINT_REPAIR',True)]
+            if args.compare_feedback:
+                methods=[('MODEL_DIRECT_REPLAN',True),('MODEL_CONSTRAINT_REPAIR',True)]
             if seed%2:methods.reverse()
             for method,recovery in methods:
                 print(f'[flexible-fixture] seed={seed} method={method} start',flush=True)
-                planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals)
+                planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,
+                    error_feedback=method!='MODEL_DIRECT_REPLAN')
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True)
                 row.update(method=method,scope=protocol['scope'])

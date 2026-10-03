@@ -12,7 +12,7 @@ import tempfile
 os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
-def run(seed, out, *, reobserve_budget=0, model_planner=None):
+def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False):
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -106,10 +106,69 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None):
                     step = executable.steps[2*n]
                 result = controller.execute(contract.request(step, bindings={obj: source}, observation_id=oid))
                 report['events'].append(dict(stage=stage, execution=result))
+                recovered_holding = False
                 if not result['completed']:
-                    raise ValueError('pick_waypoint_incomplete')
-                records, rgb = probe(stage+'_holding', color, 1.)
-                held = holding_evidence(initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
+                    frame(stage+'_failure')
+                    if not (execution_recovery and model_planner is not None and model_planner.recovery):
+                        raise ValueError('pick_waypoint_incomplete')
+                    from ch3.execution.pick_failure_evidence import failure_scope
+                    scope = failure_scope(result)
+                    event = dict(error_code='PICK_WAYPOINT_TIMEOUT', primitive_trace=result, trace_scope=scope)
+                    if scope == 'closure_attempted':
+                        records, rgb = probe(stage+'_failure_holding', color, 1.)
+                        held = holding_evidence(initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
+                        if held['status'] != 'holding_supported':
+                            raise ValueError('timeout_holding_unknown_no_replan')
+                        event.update(state_source='RGB_positive_holding_comotion_after_timeout_plus_prior_fixture', holding_evidence=held)
+                        name = stage+'_failure_holding_1'
+                        repaired = model_planner.execution_repair(executable.steps[2*n+1:], out/f'{name}.png',
+                            completed=n, holding_object=obj, event=event)
+                        executable.steps[2*n+1:] = repaired.steps
+                        recovered_holding = True
+                    elif scope == 'open_only':
+                        # Gripper never closed; prior empty state is preserved by trace.
+                        # This is controlled trace inference, NOT general visual empty-hand sensing.
+                        origin = np.asarray(env.get_endeff_pos()).copy()
+                        target = origin.copy(); target[2] = .24
+                        reached = False
+                        for _ in range(60):
+                            _, _, terminated, truncated, _ = env.step(np.r_[np.clip(10*(target-env.get_endeff_pos()), -1, 1), -1.])
+                            if terminated or truncated:
+                                raise ValueError('episode_ended_during_open_observe')
+                            if np.linalg.norm(env.get_endeff_pos()-target)<.01:
+                                reached=True; break
+                        if not reached:
+                            raise ValueError('open_observe_retreat_timeout')
+                        records, rgb = probe(stage+'_failure_stationary', color, -1.)
+                        pixels = [r['target_pixel'] for r in records]
+                        if any(p is None for p in pixels) or np.linalg.norm(np.asarray(pixels[1])-pixels[0])>3:
+                            raise ValueError('failed_pick_object_location_unknown')
+                        fresh_source = visual_binding(calibration, object_id=obj, observation_id=stage+'_retry',
+                            pixel=pixel(rgb, color), plane_z=source_heights.get(obj,.02))
+                        # Support region must be visible and object remain at it.
+                        support = next((r for o,_,r,_ in sequence[:n][::-1] if o==obj), 'table')
+                        if support == 'table':
+                            raise ValueError('table_failure_location_outside_recovery_scope')
+                        support_color = 'green' if support=='green_region' else 'magenta'
+                        region_binding = visual_region_binding(calibration, frame=rgb, color=support_color,
+                            object_id=support, observation_id=stage+'_retry', plane_z=.008)
+                        if not np.all(np.abs(np.asarray(fresh_source.position[:2])-region_binding.position[:2])<=[.025,.018]):
+                            raise ValueError('failed_pick_object_not_at_supported_surface')
+                        event.update(state_source='prior_RGB_release_plus_never_closed_gripper_trace_and_fresh_stationary_RGB_surface_location',
+                                     supported_surface=support)
+                        repaired = model_planner.execution_repair(executable.steps[2*n:], out/f'{stage}_failure_stationary_1.png',
+                            completed=n, event=event)
+                        executable.steps[2*n:] = repaired.steps
+                        result = controller.execute(contract.request(executable.steps[2*n], bindings={obj:fresh_source},
+                            observation_id=stage+'_retry'))
+                        report['events'].append(dict(stage=stage+'_model_repaired_retry', execution=result, recovery_event=event))
+                        if not result['completed']:
+                            raise ValueError('model_repaired_pick_retry_incomplete')
+                    else:
+                        raise ValueError('pick_failure_trace_unknown')
+                if not recovered_holding:
+                    records, rgb = probe(stage+'_holding', color, 1.)
+                    held = holding_evidence(initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
                 report['events'][-1]['holding'] = held
                 if held['status'] != 'holding_supported':
                     raise ValueError('holding_not_supported')

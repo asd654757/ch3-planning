@@ -84,3 +84,24 @@ def test_flat_surface_pick_opt_in_preserves_legacy_validator():
     legacy = Validator(state.objects, fixed_registry()).validate(plan, state)
     supported = Validator(state.objects, fixed_registry(), pick_surfaces={'green_region'}).validate(plan, state)
     assert not legacy.valid and supported.valid
+
+
+def test_execution_timeout_holding_repairs_place_without_repick(tmp_path):
+    image = tmp_path/'frame.png'; image.write_bytes(b'fixture')
+    class Client:
+        calls = 0
+        def complete(self, **kwargs):
+            self.calls += 1
+            request = json.loads(kwargs['user_prompt'])
+            assert 'holding(right, blue_candidate)' in request['current_facts']
+            actions = [dict(a, step_id=i+1) for i,a in enumerate(GOOD['actions'][1:])]
+            return SimpleNamespace(content=json.dumps({'actions':actions}), total_tokens=10)
+    from ch3.compiler.executable_plan import compile_plan
+    from ch3.execution.observed_continuation import fixed_registry
+    from ch3.repair.persistent_model_recovery import strict_plan
+    steps = compile_plan(strict_plan(json.dumps(GOOD), fixed_right_arm=True), fixed_registry()).steps[1:]
+    client = Client(); p = SequenceModelPlanner(client, recovery=True, shared={}, long_task=True)
+    result = p.execution_repair(steps, image, completed=1, holding_object='blue_candidate',
+                               event=dict(state_source='supported_RGB', error_code='PICK_TIMEOUT'))
+    assert client.calls == 1 and result.steps[0].source_skill == 'place'
+    assert p.audit[-1]['phase'] == 'execution_repair' and p.audit[-1]['accepted']

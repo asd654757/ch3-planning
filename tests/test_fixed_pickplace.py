@@ -36,6 +36,11 @@ def test_waypoint_completion_is_not_grasp_success():
     assert result["trace"][2]["steps"] == 35
     assert "success" not in result
     assert len(robot.actions) == result["steps"]
+    for phase in result['trace']:
+        assert phase['binding_source'] == 'visual_estimate'
+        assert phase['observation_id'] == 'frame1'
+        assert np.allclose(np.asarray(phase['final_hand_position']) - phase['target_position'],
+                           phase['position_error'])
 
 
 def test_exact_budget_completion_and_short_budget_timeout():

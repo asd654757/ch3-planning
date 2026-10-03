@@ -1,0 +1,37 @@
+[model-sequence] seed=0 method=MODEL_NO_PLAN_REPAIR start
+[reference-sequence] seed=0 stage=transfer_0_blue_pick
+[reference-sequence] seed=0 stage=transfer_0_blue_place
+[reference-sequence] seed=0 stage=transfer_1_blue_pick
+{"seed": 0, "method": "MODEL_NO_PLAN_REPAIR", "success": false, "model_calls": 1, "failure_stage": "transfer_1_blue_pick"}
+[model-sequence] seed=0 method=MODEL_DIAGNOSTIC_REPAIR start
+[reference-sequence] seed=0 stage=transfer_0_blue_pick
+[reference-sequence] seed=0 stage=transfer_0_blue_place
+[reference-sequence] seed=0 stage=transfer_1_blue_pick
+{"seed": 0, "method": "MODEL_DIAGNOSTIC_REPAIR", "success": false, "model_calls": 1, "failure_stage": "transfer_1_blue_pick"}
+[model-sequence] seed=1 method=MODEL_DIAGNOSTIC_REPAIR start
+[reference-sequence] seed=1 stage=transfer_0_blue_pick
+[reference-sequence] seed=1 stage=transfer_0_blue_place
+[reference-sequence] seed=1 stage=transfer_1_blue_pick
+{"seed": 1, "method": "MODEL_DIAGNOSTIC_REPAIR", "success": false, "model_calls": 1, "failure_stage": "transfer_1_blue_pick"}
+[model-sequence] seed=1 method=MODEL_NO_PLAN_REPAIR start
+[reference-sequence] seed=1 stage=transfer_0_blue_pick
+[reference-sequence] seed=1 stage=transfer_0_blue_place
+[reference-sequence] seed=1 stage=transfer_1_blue_pick
+{"seed": 1, "method": "MODEL_NO_PLAN_REPAIR", "success": false, "model_calls": 0, "failure_stage": "transfer_1_blue_pick"}
+[model-sequence] seed=2 method=MODEL_NO_PLAN_REPAIR start
+[reference-sequence] seed=2 stage=transfer_0_blue_pick
+[reference-sequence] seed=2 stage=transfer_0_blue_place
+[reference-sequence] seed=2 stage=transfer_1_blue_pick
+[reference-sequence] seed=2 stage=transfer_1_blue_place
+[reference-sequence] seed=2 stage=transfer_2_yellow_pick
+[reference-sequence] seed=2 stage=transfer_2_yellow_place
+{"seed": 2, "method": "MODEL_NO_PLAN_REPAIR", "success": true, "model_calls": 1, "failure_stage": null}
+[model-sequence] seed=2 method=MODEL_DIAGNOSTIC_REPAIR start
+[reference-sequence] seed=2 stage=transfer_0_blue_pick
+[reference-sequence] seed=2 stage=transfer_0_blue_place
+[reference-sequence] seed=2 stage=transfer_1_blue_pick
+[reference-sequence] seed=2 stage=transfer_1_blue_place
+[reference-sequence] seed=2 stage=transfer_2_yellow_pick
+[reference-sequence] seed=2 stage=transfer_2_yellow_place
+{"seed": 2, "method": "MODEL_DIAGNOSTIC_REPAIR", "success": true, "model_calls": 0, "failure_stage": null}
+{"completed_episodes": 6, "actual_model_calls": 4, "scope": "live_model_initial_planning_and_plan_rejection_repair_not_full_routed", "methods": {"MODEL_NO_PLAN_REPAIR": {"episodes": 3, "successes": 1, "repair_calls": 0}, "MODEL_DIAGNOSTIC_REPAIR": {"episodes": 3, "successes": 1, "repair_calls": 1}}}

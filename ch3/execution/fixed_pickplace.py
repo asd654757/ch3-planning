@@ -12,8 +12,11 @@ from ch3.execution.skill_contract import SkillRequest
 class FixedPickPlaceController:
     backend = "fixed_multibody_waypoints"
 
-    def __init__(self, env):
+    def __init__(self, env, *, pick_contact_offset=.015):
+        if not np.isfinite(pick_contact_offset) or not .015 <= pick_contact_offset <= .04:
+            raise ValueError('pick contact offset outside supported calibration range')
         self.env = env
+        self.pick_contact_offset = float(pick_contact_offset)
 
     def retract_open(self, *, max_steps=80):
         """Bounded vertical reset for an authorized PRE-CONTACT interruption only.
@@ -57,8 +60,8 @@ class FixedPickPlaceController:
             raise ValueError("target outside controller workspace")
         if request.skill == "pick":
             phases = [(point + [0, 0, .12], -1, 80),
-                      (point + [0, 0, .015], -1, 80),
-                      (point + [0, 0, .015], 1, 35),
+                      (point + [0, 0, self.pick_contact_offset], -1, 80),
+                      (point + [0, 0, self.pick_contact_offset], 1, 35),
                       (point + [0, 0, .15], 1, 65)]
         else:
             phases = [(point + [0, 0, .15], 1, 80),
@@ -82,7 +85,14 @@ class FixedPickPlaceController:
                     return {"completed": False, "reason": "episode_ended", "steps": total, "trace": trace}
                 if reached and index != 2:
                     break
-            trace.append({"phase": index, "steps": steps, "waypoint_reached": bool(reached)})
+            final_hand = np.asarray(self.env.get_endeff_pos(), dtype=float)
+            trace.append({"phase": index, "steps": steps, "waypoint_reached": bool(reached),
+                          "target_position": np.asarray(target).tolist(),
+                          "final_hand_position": final_hand.tolist(),
+                          "position_error": (final_hand - target).tolist(),
+                          "binding_position": point.tolist(),
+                          "binding_source": binding.source,
+                          "observation_id": request.observation_id})
             dwell_completed = index != 2 or steps == limit
             if not reached or not dwell_completed:
                 return {"completed": False, "reason": "waypoint_timeout", "steps": total, "trace": trace}

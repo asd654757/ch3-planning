@@ -121,3 +121,44 @@ class SequenceModelPlanner:
         if plan is None:
             raise ValueError('model_remaining_repair_rejected')
         return evaluate(plan, state, completed=completed, long_task=self.long_task)[0]
+
+    def execution_repair(self, steps, image_path, *, completed, holding_object=None, event):
+        """A real model call from externally supported CURRENT state, not predicted pick."""
+        state = fixture_state(completed=completed, long_task=self.long_task)
+        if holding_object:
+            state.holding['right'] = holding_object
+        expected = [(s.source_skill, s.args['object_id'], s.args.get('target_id')) for s in steps]
+        request = dict(instruction=LONG_INSTRUCTION if self.long_task else INSTRUCTION,
+            current_facts=sorted(state.facts() | state.empty_hand_facts({'right'})),
+            current_state_source=event['state_source'], latest_execution_event=event,
+            completed_transfers=transfers(self.long_task)[:completed],
+            remaining_goal_facts=sorted({'on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)',
+                'hand_empty(right)'} - (state.facts() | state.empty_hand_facts({'right'}))),
+            objects=sorted(OBJECTS), targets=['green_region', 'return_region'],
+            pick_support_surfaces=['table', 'green_region', 'return_region'],
+            output_schema={'actions': [{'step_id': 'contiguous from 1', 'skill': 'pick or place',
+                'object_id': 'registered object', 'target_id': 'required for place only'}]},
+            backend_arm='right', forbidden_objects=['blue_candidate'] if state.at.get('blue_candidate')=='return_region' else [],
+            rejection_feedback=event)
+        item = dict(request=request, actual_model_calls=1, accepted=False, phase='execution_repair',
+            image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest())
+        self.audit.append(item)
+        try:
+            response = self.client.complete(system_prompt='Return only JSON with actions. Repair ONLY the remaining task from current supported facts. History is not current state. Never repeat completed transfers. If already holding an object, place it before any pick.',
+                user_prompt=json.dumps(request), image_path=image_path, seed=0, temperature=.1, max_tokens=1024, json_mode=False)
+            item.update(content=response.content, total_tokens=response.total_tokens)
+            plan = strict_plan(response.content, fixed_right_arm=True)
+            registry = fixed_registry()
+            check = Validator(OBJECTS, registry, pick_surfaces={'green_region', 'return_region'}).validate(plan, state)
+            goal = GoalSpec(facts=['on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)', 'hand_empty(right)'])
+            actual = [(a.skill.value, a.object_id, a.target_id) for a in plan.actions]
+            item.update(normalized_plan=plan.model_dump(mode='json'), valid=check.valid,
+                        goal_satisfied=bool(check.valid and goal_satisfied(check.final_state, goal, {'right'})),
+                        backend_scope_satisfied=actual==expected)
+            if not (item['valid'] and item['goal_satisfied'] and item['backend_scope_satisfied']):
+                raise ValueError('execution_repair_rejected')
+            item['accepted'] = True
+            return compile_plan(plan, registry)
+        except Exception as exc:
+            item['rejection'] = dict(error_type=type(exc).__name__)
+            raise ValueError('model_execution_repair_rejected') from None

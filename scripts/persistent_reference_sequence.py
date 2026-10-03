@@ -13,8 +13,10 @@ os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
 def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
-        feedback_v2=False, initial_y_spread=.025):
+        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0.):
     import numpy as np
+    if controlled_place_offset not in (0., .045):
+        raise ValueError('unsupported_controlled_place_offset')
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
     from ch3.execution.multiobject_scene import build_scene_xml, make_scene
@@ -34,6 +36,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                   reobserve_budget=reobserve_budget, destination_observations=[],
                   pick_contact_offset_m=pick_contact_offset, feedback_v2=feedback_v2,
                   initial_y_spread_m=initial_y_spread)
+    report['controlled_first_place_x_offset_m']=controlled_place_offset
     env = None
     stage = 'setup'
     with tempfile.TemporaryDirectory() as tmp:
@@ -45,8 +48,10 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             report['episode_resets'] = 1
             long_task = bool(model_planner is not None and model_planner.long_task)
             flexible = bool(model_planner is not None and getattr(model_planner, 'flexible', False))
-            if flexible and (not feedback_v2 or execution_recovery):
-                raise ValueError('flexible_pilot_requires_feedback_v2_and_no_legacy_execution_recovery')
+            if flexible and not feedback_v2:
+                raise ValueError('flexible_pilot_requires_feedback_v2')
+            if controlled_place_offset and not flexible:
+                raise ValueError('controlled_offset_requires_flexible_pilot')
             env.max_path_length = 1800 if flexible else 1500 if long_task else 1000
             report['episode_step_limit'] = env.max_path_length
             for _ in range(30):
@@ -144,7 +149,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 recovered_holding = False
                 if not result['completed']:
                     frame(stage+'_failure')
-                    if not (execution_recovery and model_planner is not None and model_planner.recovery):
+                    if flexible or not (execution_recovery and model_planner is not None and model_planner.recovery):
                         raise ValueError('pick_waypoint_incomplete')
                     from ch3.execution.pick_failure_evidence import failure_scope
                     scope = failure_scope(result)
@@ -253,13 +258,18 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 # Object binding is required by dispatch but place targets only the region.
                 from dataclasses import replace
                 bindings = {obj: replace(source, observation_id=oid), region: dest}
+                if flexible and n==0 and controlled_place_offset:
+                    # Declared actuator-target perturbation, identical in all
+                    # methods; never change the independent scoring reference.
+                    dest=replace(dest,position=tuple(np.asarray(dest.position)+np.array([controlled_place_offset,0.,0.])))
+                    bindings[region]=dest
                 step = ExecutableStep(2*n+2, 'fixed_place', 'place', dict(object_id=obj, arm='right', target_id=region), 'place')
                 if executable is not None:
                     step = executable.steps[2*n+1]
                 result = controller.execute(contract.request(step, bindings=bindings, observation_id=oid))
                 report['events'].append(dict(stage=stage, execution=result))
                 if not result['completed']:
-                    if not (feedback_v2 and execution_recovery and model_planner is not None and model_planner.recovery
+                    if flexible or not (feedback_v2 and execution_recovery and model_planner is not None and model_planner.recovery
                             and result['reason']=='waypoint_timeout'
                             and result['trace'] and result['trace'][-1]['phase'] <= 1):
                         raise ValueError('place_waypoint_incomplete')
@@ -297,6 +307,21 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                     if observed['status'] == 'unknown':
                         raise ValueError('observed_goal_unknown_no_completion')
                     if observed['status'] == 'not_satisfied':
+                        if flexible:
+                            if not execution_recovery:
+                                raise ValueError('observed_goal_not_satisfied')
+                            repaired=model_planner.released_object_repair(out/f'{stage}_release_1.png',
+                                object_id=obj,release=release,observed_goal=observed)
+                            # Failed transfer was physically attempted, not a
+                            # completed delivery. Append complete model suffix;
+                            # do not replay completed transfers or claim success.
+                            offset=2*n+2
+                            executable.steps[offset:]=repaired.steps
+                            sequence[n+1:]=sequence_from_steps(repaired.steps)
+                            source_heights[obj]=.028
+                            report.setdefault('execution_repair_plans',[]).append(repaired.to_list())
+                            report['execution_deviations']=model_planner.execution_deviations
+                            continue
                         if not (execution_recovery and model_planner is not None and model_planner.recovery):
                             raise ValueError('observed_goal_not_satisfied')
                         event = dict(error_code='OBSERVED_GOAL_NOT_SATISFIED', observed_goal=observed,
@@ -348,7 +373,8 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                     observed_name = f'observed_release_{n}'
                     frame(observed_name)
                     offset = 2*n+2
-                    remaining = model_planner.remaining(executable.steps[offset:], out / f'{observed_name}.png', completed=n+1)
+                    remaining = model_planner.remaining(executable.steps[offset:], out / f'{observed_name}.png',
+                        completed=len(model_planner.history) if flexible else n+1)
                     executable.steps[offset:] = remaining.steps
                     if flexible:
                         sequence[n+1:] = sequence_from_steps(remaining.steps)

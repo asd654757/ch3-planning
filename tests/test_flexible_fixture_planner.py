@@ -196,3 +196,29 @@ def test_rejected_simulation_never_advances_current_state(tmp_path):
     assert planner.state.facts()==facts and planner.history==history
     assert all(a['request']['remaining_goal_facts']==['on(blue_candidate, green_region)',
         'on(yellow_candidate, return_region)'] for a in planner.audit)
+
+
+def test_off_goal_release_updates_observed_support_not_completed_history(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    class Client:
+        def complete(self,**kwargs):
+            request=json.loads(kwargs['user_prompt'])
+            assert 'on(blue_candidate, observed_support)' in request['current_facts']
+            assert request['executed_history']==[]
+            return SimpleNamespace(content=plan([('blue_candidate','return_region'),
+                ('yellow_candidate','green_region')]).model_dump_json(),total_tokens=10)
+    planner=FlexibleFixturePlanner(Client(),recovery=True,shared={})
+    result=planner.released_object_repair(image,object_id='blue_candidate',
+        release={'status':'release_supported'},observed_goal={'status':'not_satisfied'})
+    assert len(result.steps)==4 and planner.history==[]
+    assert planner.state.location_of('blue_candidate')=='observed_support'
+
+
+def test_unknown_release_cannot_authorize_recovery_or_change_state(tmp_path):
+    import pytest
+    planner=FlexibleFixturePlanner(None,recovery=True,shared={})
+    facts=planner.state.facts()
+    with pytest.raises(ValueError,match='unsupported_released_object_recovery_evidence'):
+        planner.released_object_repair(tmp_path/'absent',object_id='blue_candidate',
+            release={'status':'unknown'},observed_goal={'status':'not_satisfied'})
+    assert planner.state.facts()==facts and not planner.audit

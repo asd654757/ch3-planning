@@ -99,6 +99,7 @@ class FlexibleFixturePlanner:
         self.goals = dict(blue_candidate='return_region', yellow_candidate='green_region')
         self.update_goals = update_goals
         self.goal_updates = []
+        self.execution_deviations = []
 
     def protected(self):
         completed_objects = {obj for obj,_ in self.history}
@@ -126,7 +127,11 @@ class FlexibleFixturePlanner:
             'The current task below is authoritative; feedback is diagnostic only. '
             'Before returning actions, internally check every required obligation and the empty-hand goal.',
             current_facts=sorted(self.state.facts()|self.state.empty_hand_facts({'right'})),
-            state_source='controlled_initial_fixture' if initial else 'supported_RGB_release_history_plus_untouched_fixture',
+            state_source=('controlled_initial_fixture' if initial else
+                'supported_RGB_release_and_off_goal_observation_plus_untouched_fixture' if self.execution_deviations
+                else 'supported_RGB_release_history_plus_untouched_fixture'),
+            observed_execution_deviations=[dict(object_id=e['object_id'],status='detached_off_goal',
+                location='observed_support') for e in self.execution_deviations],
             goals=dict(self.goals), executed_history=list(self.history), goal_updates=deepcopy(self.goal_updates),
             remaining_goal_facts=sorted(f'on({obj}, {region})' for obj,region in self.goals.items()
                 if self.state.location_of(obj)!=region),
@@ -142,6 +147,7 @@ class FlexibleFixturePlanner:
             feedback_protocol='authoritative_task_diagnostic_projection_v6',
             image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=0, accepted=False, phase=('initial' if initial else
+                'execution_repair' if self.execution_deviations else
                 'remaining_task_repair' if self.history else 'initial_plan_correction'))
         self.audit.append(item)
         try:
@@ -189,6 +195,24 @@ class FlexibleFixturePlanner:
                 return executable
             rejection=self.audit[-1]['rejection']
         raise ValueError('flexible_remaining_repair_rejected')
+
+    def released_object_repair(self, image_path, *, object_id, release, observed_goal):
+        """Recover only a positively detached, stationary off-goal object.
+
+        No completed-delivery history is added. Unknown evidence cannot authorize
+        recovery; observed_support is deliberately not a fabricated destination.
+        """
+        if (object_id not in MOVABLE or release.get('status')!='release_supported'
+                or observed_goal.get('status')!='not_satisfied'):
+            raise ValueError('unsupported_released_object_recovery_evidence')
+        self.state.at[object_id]='observed_support'
+        self.state.holding.pop('right',None)
+        event=dict(object_id=object_id,release=deepcopy(release),observed_goal=deepcopy(observed_goal),
+            state_source='RGB_release_and_stationary_off_goal_on_assumed_plane')
+        self.execution_deviations.append(event)
+        if not self.recovery:
+            raise ValueError('execution_deviation_no_recovery')
+        return self._remaining_request(image_path,dict(error_code='OBSERVED_GOAL_NOT_SATISFIED'))
 
     def remaining(self,steps,image_path,*,completed):
         if completed != len(self.history):

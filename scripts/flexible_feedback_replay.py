@@ -1,5 +1,6 @@
 """Real-model correction of a saved rejected candidate; NOT an execution benchmark."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -17,7 +18,8 @@ def main():
     saved=json.loads((args.source_dir/'summary.json').read_text())
     # Use only the original online model request/candidate, never terminal scores.
     failed=next(a for a in saved['model_audit'] if a['phase']=='remaining_task_repair' and not a['accepted'])
-    image=next(args.source_dir.glob('*suffix_observation.png'),None)
+    image=next((p for p in sorted(args.source_dir.glob('observed_release_*.png'))
+        if hashlib.sha256(p.read_bytes()).hexdigest()==failed['image_sha256']),None)
     if image is None:
         raise ValueError('saved_online_suffix_image_required')
     client=DashScopeVLMClient(env_path=args.env_file,timeout=60,max_retries=0)

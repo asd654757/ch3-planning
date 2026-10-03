@@ -1,0 +1,328 @@
+{
+  "scope": "selected_failure_replay_not_performance_or_execution_evidence",
+  "source": "data/collections/flexible_feedback_v5_formal_20261003_075028/seed_72/MODEL_CONSTRAINT_REPAIR",
+  "rows": [
+    {
+      "method": "MODEL_DIRECT_REPLAN",
+      "accepted": true,
+      "audit": [
+        {
+          "request": {
+            "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+            "current_facts": [
+              "hand_empty(right)",
+              "on(blue_candidate, return_region)",
+              "on(green_region, table)",
+              "on(return_region, table)",
+              "on(yellow_candidate, table)"
+            ],
+            "state_source": "supported_RGB_release_history_plus_untouched_fixture",
+            "goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "executed_history": [
+              [
+                "blue_candidate",
+                "return_region"
+              ]
+            ],
+            "goal_updates": [
+              {
+                "event": "user_goal_update_after_first_supported_delivery",
+                "old_goals": {
+                  "blue_candidate": "return_region",
+                  "yellow_candidate": "green_region"
+                },
+                "new_goals": {
+                  "blue_candidate": "green_region",
+                  "yellow_candidate": "return_region"
+                },
+                "source": "predeclared_controlled_task_update_not_execution_failure"
+              }
+            ],
+            "remaining_goal_facts": [
+              "on(blue_candidate, green_region)",
+              "on(yellow_candidate, return_region)"
+            ],
+            "current_task_obligations": [
+              {
+                "object_id": "blue_candidate",
+                "observed_location": "return_region",
+                "required_target": "green_region",
+                "requires_delivery": true
+              },
+              {
+                "object_id": "yellow_candidate",
+                "observed_location": "table",
+                "required_target": "return_region",
+                "requires_delivery": true
+              }
+            ],
+            "terminal_conditions": [
+              "hand_empty(right)"
+            ],
+            "forbidden_objects": [],
+            "movable_objects": [
+              "blue_candidate",
+              "yellow_candidate"
+            ],
+            "targets": [
+              "green_region",
+              "return_region"
+            ],
+            "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+            "feedback": null,
+            "output_schema": {
+              "actions": [
+                {
+                  "step_id": "contiguous from 1",
+                  "skill": "pick or place",
+                  "object_id": "registered cube",
+                  "target_id": "registered region for place, omitted for pick"
+                }
+              ]
+            }
+          },
+          "local_feedback_evidence": {
+            "error_code": "GOAL_NOT_SATISFIED",
+            "unmet_goal_facts": [
+              "on(blue_candidate, green_region)"
+            ],
+            "predicted_final_facts": [
+              "hand_empty(right)",
+              "on(blue_candidate, return_region)",
+              "on(green_region, table)",
+              "on(return_region, table)",
+              "on(yellow_candidate, return_region)"
+            ],
+            "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+            "rejected_candidate": {
+              "actions": [
+                {
+                  "step_id": 1,
+                  "skill": "pick",
+                  "object_id": "yellow_candidate",
+                  "target_id": null,
+                  "arm": "right"
+                },
+                {
+                  "step_id": 2,
+                  "skill": "place",
+                  "object_id": "yellow_candidate",
+                  "target_id": "return_region",
+                  "arm": "right"
+                }
+              ]
+            }
+          },
+          "feedback_protocol": "authoritative_task_diagnostic_projection_v6",
+          "image_sha256": "71d2ebf65104f21c0065d04813de7d9655e30bcbe562adc90c5ecb5fecd7fa9d",
+          "actual_model_calls": 1,
+          "accepted": true,
+          "phase": "remaining_task_repair",
+          "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+          "total_tokens": 895,
+          "rejection": null,
+          "normalized_plan": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "blue_candidate",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 2,
+                "skill": "place",
+                "object_id": "blue_candidate",
+                "target_id": "green_region",
+                "arm": "right"
+              },
+              {
+                "step_id": 3,
+                "skill": "pick",
+                "object_id": "yellow_candidate",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 4,
+                "skill": "place",
+                "object_id": "yellow_candidate",
+                "target_id": "return_region",
+                "arm": "right"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "MODEL_CONSTRAINT_REPAIR",
+      "accepted": true,
+      "audit": [
+        {
+          "request": {
+            "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+            "current_facts": [
+              "hand_empty(right)",
+              "on(blue_candidate, return_region)",
+              "on(green_region, table)",
+              "on(return_region, table)",
+              "on(yellow_candidate, table)"
+            ],
+            "state_source": "supported_RGB_release_history_plus_untouched_fixture",
+            "goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "executed_history": [
+              [
+                "blue_candidate",
+                "return_region"
+              ]
+            ],
+            "goal_updates": [
+              {
+                "event": "user_goal_update_after_first_supported_delivery",
+                "old_goals": {
+                  "blue_candidate": "return_region",
+                  "yellow_candidate": "green_region"
+                },
+                "new_goals": {
+                  "blue_candidate": "green_region",
+                  "yellow_candidate": "return_region"
+                },
+                "source": "predeclared_controlled_task_update_not_execution_failure"
+              }
+            ],
+            "remaining_goal_facts": [
+              "on(blue_candidate, green_region)",
+              "on(yellow_candidate, return_region)"
+            ],
+            "current_task_obligations": [
+              {
+                "object_id": "blue_candidate",
+                "observed_location": "return_region",
+                "required_target": "green_region",
+                "requires_delivery": true
+              },
+              {
+                "object_id": "yellow_candidate",
+                "observed_location": "table",
+                "required_target": "return_region",
+                "requires_delivery": true
+              }
+            ],
+            "terminal_conditions": [
+              "hand_empty(right)"
+            ],
+            "forbidden_objects": [],
+            "movable_objects": [
+              "blue_candidate",
+              "yellow_candidate"
+            ],
+            "targets": [
+              "green_region",
+              "return_region"
+            ],
+            "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+            "feedback": {
+              "error_code": "GOAL_NOT_SATISFIED",
+              "candidate_executed": false,
+              "role": "diagnostic_only_not_current_state_or_replacement_goal",
+              "repair_mode": "regenerate_complete_suffix_from_current_task",
+              "category": "incomplete_goal_coverage",
+              "omitted_goal_count": 1,
+              "correction": "Cover ALL current remaining obligations together, not just a missing-goal patch."
+            },
+            "output_schema": {
+              "actions": [
+                {
+                  "step_id": "contiguous from 1",
+                  "skill": "pick or place",
+                  "object_id": "registered cube",
+                  "target_id": "registered region for place, omitted for pick"
+                }
+              ]
+            }
+          },
+          "local_feedback_evidence": {
+            "error_code": "GOAL_NOT_SATISFIED",
+            "unmet_goal_facts": [
+              "on(blue_candidate, green_region)"
+            ],
+            "predicted_final_facts": [
+              "hand_empty(right)",
+              "on(blue_candidate, return_region)",
+              "on(green_region, table)",
+              "on(return_region, table)",
+              "on(yellow_candidate, return_region)"
+            ],
+            "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+            "rejected_candidate": {
+              "actions": [
+                {
+                  "step_id": 1,
+                  "skill": "pick",
+                  "object_id": "yellow_candidate",
+                  "target_id": null,
+                  "arm": "right"
+                },
+                {
+                  "step_id": 2,
+                  "skill": "place",
+                  "object_id": "yellow_candidate",
+                  "target_id": "return_region",
+                  "arm": "right"
+                }
+              ]
+            }
+          },
+          "feedback_protocol": "authoritative_task_diagnostic_projection_v6",
+          "image_sha256": "71d2ebf65104f21c0065d04813de7d9655e30bcbe562adc90c5ecb5fecd7fa9d",
+          "actual_model_calls": 1,
+          "accepted": true,
+          "phase": "remaining_task_repair",
+          "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+          "total_tokens": 980,
+          "rejection": null,
+          "normalized_plan": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "blue_candidate",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 2,
+                "skill": "place",
+                "object_id": "blue_candidate",
+                "target_id": "green_region",
+                "arm": "right"
+              },
+              {
+                "step_id": 3,
+                "skill": "pick",
+                "object_id": "yellow_candidate",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 4,
+                "skill": "place",
+                "object_id": "yellow_candidate",
+                "target_id": "return_region",
+                "arm": "right"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

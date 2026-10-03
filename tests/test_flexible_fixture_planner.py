@@ -222,3 +222,26 @@ def test_unknown_release_cannot_authorize_recovery_or_change_state(tmp_path):
         planner.released_object_repair(tmp_path/'absent',object_id='blue_candidate',
             release={'status':'unknown'},observed_goal={'status':'not_satisfied'})
     assert planner.state.facts()==facts and not planner.audit
+
+
+def test_second_delivery_deviation_preserves_history_and_current_goal_protection(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    for hard in (False,True):
+        class Client:
+            def complete(self,**kwargs):
+                request=json.loads(kwargs['user_prompt'])
+                assert request['executed_history']==[['blue_candidate','return_region']]
+                if hard:
+                    assert request['forbidden_objects']==[]
+                    pairs=[('blue_candidate','green_region'),('yellow_candidate','return_region')]
+                else:
+                    assert request['forbidden_objects']==['blue_candidate']
+                    pairs=[('yellow_candidate','green_region')]
+                return SimpleNamespace(content=plan(pairs).model_dump_json(),total_tokens=10)
+        planner=FlexibleFixturePlanner(Client(),recovery=True,shared={},update_on_deviation=hard)
+        planner.observe_release('blue_candidate','return_region')
+        result=planner.released_object_repair(image,object_id='yellow_candidate',
+            release={'status':'release_supported'},observed_goal={'status':'not_satisfied'})
+        assert len(result.steps)==(4 if hard else 2)
+        assert len(planner.history)==1
+        assert len(planner.goal_updates)==int(hard)

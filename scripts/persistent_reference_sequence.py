@@ -13,10 +13,12 @@ os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
 def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
-        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0.):
+        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0):
     import numpy as np
     if controlled_place_offset not in (0., .045):
         raise ValueError('unsupported_controlled_place_offset')
+    if deviation_transfer_index not in (0,1):
+        raise ValueError('unsupported_deviation_transfer_index')
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
     from ch3.execution.multiobject_scene import build_scene_xml, make_scene
@@ -37,6 +39,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                   pick_contact_offset_m=pick_contact_offset, feedback_v2=feedback_v2,
                   initial_y_spread_m=initial_y_spread)
     report['controlled_first_place_x_offset_m']=controlled_place_offset
+    report['controlled_place_deviation']=dict(transfer_index=deviation_transfer_index,x_offset_m=controlled_place_offset)
     env = None
     stage = 'setup'
     with tempfile.TemporaryDirectory() as tmp:
@@ -258,7 +261,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 # Object binding is required by dispatch but place targets only the region.
                 from dataclasses import replace
                 bindings = {obj: replace(source, observation_id=oid), region: dest}
-                if flexible and n==0 and controlled_place_offset:
+                if flexible and n==deviation_transfer_index and controlled_place_offset:
                     # Declared actuator-target perturbation, identical in all
                     # methods; never change the independent scoring reference.
                     dest=replace(dest,position=tuple(np.asarray(dest.position)+np.array([controlled_place_offset,0.,0.])))

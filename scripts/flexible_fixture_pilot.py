@@ -17,7 +17,11 @@ if __name__=='__main__':
     p.add_argument('--compare-feedback',action='store_true',help='Matched direct replan versus error-feedback replan')
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
     p.add_argument('--include-no-repair',action='store_true',help='Also retain a safe-stop reference in feedback comparison')
+    p.add_argument('--difficulty',choices=['medium','hard'],help='Second delivery deviation; hard also updates goals after deviation')
     args=p.parse_args()
+    if args.difficulty:
+        args.execution_deviation=True
+        args.compare_feedback=True
     if args.execution_deviation and args.update_goals:
         p.error('separate execution-deviation and goal-update conditions')
     if args.include_no_repair and not args.compare_feedback:
@@ -37,6 +41,8 @@ if __name__=='__main__':
         remaining_goals_available_to_both=True,
         shared_acceptance_gate=True,failed_candidate_retry='up to remaining noninitial budget',
         controlled_place_offset_m=.045 if args.execution_deviation else 0.,
+        difficulty=args.difficulty,deviation_transfer_index=1 if args.difficulty else 0,
+        update_on_deviation=args.difficulty=='hard',
         scope=('controlled_off_goal_execution_recovery_not_natural_failure' if args.execution_deviation
             else 'task_update_replanning_pilot_not_natural_execution_failure_recovery'))
     (args.output_dir/'protocol.json').write_text(json.dumps(protocol,indent=2))
@@ -55,10 +61,11 @@ if __name__=='__main__':
             for method,recovery in methods:
                 print(f'[flexible-fixture] seed={seed} method={method} start',flush=True)
                 planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,
-                    error_feedback=method!='MODEL_DIRECT_REPLAN')
+                    error_feedback=method!='MODEL_DIRECT_REPLAN',update_on_deviation=args.difficulty=='hard')
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
-                    controlled_place_offset=.045 if args.execution_deviation else 0.)
+                    controlled_place_offset=.045 if args.execution_deviation else 0.,
+                    deviation_transfer_index=1 if args.difficulty else 0)
                 row.update(method=method,scope=protocol['scope'])
                 f.write(json.dumps(row)+'\n');f.flush();rows.append(row)
                 print(json.dumps(dict(seed=seed,method=method,success=row['success'],model_calls=row['model_calls'],

@@ -90,7 +90,8 @@ class FlexibleFixturePlanner:
     flexible = True
     long_task = False
 
-    def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True):
+    def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True,
+                 update_on_deviation=False):
         self.client, self.recovery, self.shared = client, recovery, shared
         self.error_feedback = error_feedback
         self.audit = []
@@ -98,6 +99,7 @@ class FlexibleFixturePlanner:
         self.history = []
         self.goals = dict(blue_candidate='return_region', yellow_candidate='green_region')
         self.update_goals = update_goals
+        self.update_on_deviation = update_on_deviation
         self.goal_updates = []
         self.execution_deviations = []
 
@@ -210,6 +212,12 @@ class FlexibleFixturePlanner:
         event=dict(object_id=object_id,release=deepcopy(release),observed_goal=deepcopy(observed_goal),
             state_source='RGB_release_and_stationary_off_goal_on_assumed_plane')
         self.execution_deviations.append(event)
+        if self.update_on_deviation and not self.goal_updates:
+            old=dict(self.goals)
+            self.goals=dict(blue_candidate='green_region',yellow_candidate='return_region')
+            self.goal_updates.append(dict(event='user_goal_update_after_supported_execution_deviation',
+                old_goals=old,new_goals=dict(self.goals),
+                source='predeclared_controlled_task_update_not_failure_inference'))
         if not self.recovery:
             raise ValueError('execution_deviation_no_recovery')
         return self._remaining_request(image_path,dict(error_code='OBSERVED_GOAL_NOT_SATISFIED'))

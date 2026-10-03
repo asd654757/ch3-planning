@@ -1,0 +1,1356 @@
+{
+  "seed": 128,
+  "scope": "live_model_planning_persistent_execution_restricted_fixture",
+  "episode_resets": 1,
+  "model_calls": 2,
+  "success": true,
+  "events": [
+    {
+      "stage": "transfer_0_blue_pick",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 88,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 20,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.14
+            ],
+            "final_hand_position": [
+              -0.10521197628997994,
+              0.676275651350003,
+              0.1422693498702817
+            ],
+            "position_error": [
+              0.011745342682694976,
+              -0.00895379186581624,
+              0.002269349870281684
+            ],
+            "binding_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          },
+          {
+            "phase": 1,
+            "steps": 16,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.05000000000000002
+            ],
+            "final_hand_position": [
+              -0.11641318042717592,
+              0.6894466233369799,
+              0.06302300316927478
+            ],
+            "position_error": [
+              0.0005441385454989928,
+              0.00421718012116068,
+              0.013023003169274766
+            ],
+            "binding_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.05000000000000002
+            ],
+            "final_hand_position": [
+              -0.11750748038894472,
+              0.6862652309299839,
+              0.04972030337138951
+            ],
+            "position_error": [
+              -0.0005501614162698037,
+              0.001035787714164682,
+              -0.0002796966286105068
+            ],
+            "binding_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.17
+            ],
+            "final_hand_position": [
+              -0.11807427236972515,
+              0.6798351534294954,
+              0.1562314324994213
+            ],
+            "position_error": [
+              -0.0011169533970502299,
+              -0.005394289786323836,
+              -0.013768567500578699
+            ],
+            "binding_position": [
+              -0.11695731897267492,
+              0.6852294432158192,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          }
+        ]
+      },
+      "holding": {
+        "status": "holding_supported",
+        "reason": "target_displacement_and_hand_comotion",
+        "displacement_px": 17.46424919657298,
+        "hand_motion_px": 6.099711241081522,
+        "target_motion_px": 5.830951894845301,
+        "offset_drift_px": 0.2997102933477363,
+        "max_target_hand_distance_px": 5.34412856817019
+      }
+    },
+    {
+      "stage": "transfer_0_blue_place",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 93,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 23,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.1389907639315539,
+              0.7747002705613403,
+              0.161533399657882
+            ],
+            "position_error": [
+              0.0053296295285822914,
+              -0.011799313961279423,
+              0.0035333996578819915
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          },
+          {
+            "phase": 1,
+            "steps": 18,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.053
+            ],
+            "final_hand_position": [
+              -0.14241319779393025,
+              0.7863657804442836,
+              0.06679388693134708
+            ],
+            "position_error": [
+              0.001907195666205952,
+              -0.000133804078336075,
+              0.013793886931347081
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.053
+            ],
+            "final_hand_position": [
+              -0.14551434183032624,
+              0.7917678207291711,
+              0.051167755972793216
+            ],
+            "position_error": [
+              -0.0011939483701900455,
+              0.005268236206551369,
+              -0.0018322440272067822
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.14589996524067295,
+              0.7879414008642022,
+              0.14641382303308578
+            ],
+            "position_error": [
+              -0.0015795717805367482,
+              0.0014418163415824692,
+              -0.011586176966914219
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          }
+        ]
+      },
+      "release": {
+        "status": "release_supported",
+        "empty_hand_supported": true,
+        "reason": "stationary_target_detached_during_open_hand_retreat_not_goal_completion",
+        "scope": "single_previously_held_object_with_open_retreat_and_visible_stationarity",
+        "target_drift_px": 0.0,
+        "hand_separation_px": 25.45670508647706,
+        "hand_motion_px": 4.957505005337527,
+        "destination_supported": true,
+        "location_source": "RGB_centroid_assumed_support_plane_not_truth"
+      },
+      "observed_goal": {
+        "status": "satisfied",
+        "source": "post_release_RGB_against_initial_static_region_RGB",
+        "calibrated_error_bound_available": false,
+        "absolute_errors_m": [
+          [
+            0.0021677521740962047,
+            0.008590986529957156
+          ],
+          [
+            0.0021677521740962047,
+            0.008590986529957156
+          ]
+        ],
+        "reference_xy": [
+          -0.1443203934601362,
+          0.7864995845226197
+        ],
+        "position_samples": [
+          [
+            -0.1464881456342324,
+            0.7950905710525769
+          ],
+          [
+            -0.1464881456342324,
+            0.7950905710525769
+          ]
+        ],
+        "tolerance_m": [
+          0.025,
+          0.018
+        ]
+      }
+    },
+    {
+      "stage": "transfer_1_blue_pick",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 81,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 13,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.14800000000000002
+            ],
+            "final_hand_position": [
+              -0.13696745604518087,
+              0.7933856156306923,
+              0.15639722818708937
+            ],
+            "position_error": [
+              0.009520689589051529,
+              -0.0017049554218845353,
+              0.00839722818708935
+            ],
+            "binding_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.028000000000000025
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_pick"
+          },
+          {
+            "phase": 1,
+            "steps": 16,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.058000000000000024
+            ],
+            "final_hand_position": [
+              -0.1462810768496403,
+              0.7946971985761914,
+              0.07121693043486572
+            ],
+            "position_error": [
+              0.00020706878459209044,
+              -0.00039337247638548956,
+              0.0132169304348657
+            ],
+            "binding_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.028000000000000025
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_pick"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.058000000000000024
+            ],
+            "final_hand_position": [
+              -0.14641837721291032,
+              0.7953451135348917,
+              0.05777052275552595
+            ],
+            "position_error": [
+              6.976842132208616e-05,
+              0.00025454248231482346,
+              -0.0002294772444740717
+            ],
+            "binding_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.028000000000000025
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_pick"
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.17800000000000002
+            ],
+            "final_hand_position": [
+              -0.1469706310455649,
+              0.7921451242032134,
+              0.16404910408632745
+            ],
+            "position_error": [
+              -0.00048248541133250056,
+              -0.0029454468493634867,
+              -0.013950895913672573
+            ],
+            "binding_position": [
+              -0.1464881456342324,
+              0.7950905710525769,
+              0.028000000000000025
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_pick"
+          }
+        ]
+      },
+      "holding": {
+        "status": "holding_supported",
+        "reason": "target_displacement_and_hand_comotion",
+        "displacement_px": 16.28649747490233,
+        "hand_motion_px": 5.947023983938325,
+        "target_motion_px": 6.4031242374328485,
+        "offset_drift_px": 0.9817351062126273,
+        "max_target_hand_distance_px": 6.3186867684302195
+      }
+    },
+    {
+      "stage": "transfer_1_blue_place",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 90,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.007337025511738485,
+              0.82846422886917,
+              0.157341469366514
+            ],
+            "position_error": [
+              -0.011639210117162724,
+              -0.007766118318214721,
+              -0.0006585306334860042
+            ],
+            "binding_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_place_observation_0"
+          },
+          {
+            "phase": 1,
+            "steps": 20,
+            "waypoint_reached": true,
+            "target_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.053
+            ],
+            "final_hand_position": [
+              0.005268575557159461,
+              0.8297754980613509,
+              0.06521003630622016
+            ],
+            "position_error": [
+              0.000966390951735222,
+              -0.00645484912603389,
+              0.01221003630622016
+            ],
+            "binding_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_place_observation_0"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.053
+            ],
+            "final_hand_position": [
+              0.0043739011142529295,
+              0.8372258930206277,
+              0.05557548936194413
+            ],
+            "position_error": [
+              7.171650882869043e-05,
+              0.0009955458332429057,
+              0.0025754893619441346
+            ],
+            "binding_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_place_observation_0"
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true,
+            "target_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.158
+            ],
+            "final_hand_position": [
+              0.0036552917542341484,
+              0.8418855966027138,
+              0.14715920666181048
+            ],
+            "position_error": [
+              -0.0006468928511900907,
+              0.005655249415329022,
+              -0.01084079333818952
+            ],
+            "binding_position": [
+              0.004302184605424239,
+              0.8362303471873848,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_1_blue_place_observation_0"
+          }
+        ]
+      },
+      "release": {
+        "status": "release_supported",
+        "empty_hand_supported": true,
+        "reason": "stationary_target_detached_during_open_hand_retreat_not_goal_completion",
+        "scope": "single_previously_held_object_with_open_retreat_and_visible_stationarity",
+        "target_drift_px": 0.0,
+        "hand_separation_px": 28.094978692662057,
+        "hand_motion_px": 5.432450153200703,
+        "destination_supported": true,
+        "location_source": "RGB_centroid_assumed_support_plane_not_truth"
+      },
+      "observed_goal": {
+        "status": "satisfied",
+        "source": "post_release_RGB_against_initial_static_region_RGB",
+        "calibrated_error_bound_available": false,
+        "absolute_errors_m": [
+          [
+            0.0029992881586130143,
+            0.0011734345932964407
+          ],
+          [
+            0.0029992881586130143,
+            0.0011734345932964407
+          ]
+        ],
+        "reference_xy": [
+          0.004302184605424239,
+          0.8362303471873848
+        ],
+        "position_samples": [
+          [
+            0.007301472764037253,
+            0.8350569125940883
+          ],
+          [
+            0.007301472764037253,
+            0.8350569125940883
+          ]
+        ],
+        "tolerance_m": [
+          0.025,
+          0.018
+        ]
+      }
+    },
+    {
+      "stage": "transfer_2_yellow_pick",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 91,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 23,
+            "waypoint_reached": true,
+            "target_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.14
+            ],
+            "final_hand_position": [
+              0.1186508545719401,
+              0.6904156238610528,
+              0.14157582624630333
+            ],
+            "position_error": [
+              -0.0017652078028566331,
+              0.01315062577047632,
+              0.0015758262463033135
+            ],
+            "binding_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_pick"
+          },
+          {
+            "phase": 1,
+            "steps": 16,
+            "waypoint_reached": true,
+            "target_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.05000000000000002
+            ],
+            "final_hand_position": [
+              0.1204261438515671,
+              0.6687901287852134,
+              0.05898896167672597
+            ],
+            "position_error": [
+              1.0081476770354425e-05,
+              -0.00847486930536312,
+              0.008988961676725957
+            ],
+            "binding_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_pick"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.05000000000000002
+            ],
+            "final_hand_position": [
+              0.1204734982343287,
+              0.6776508613496415,
+              0.049936473495576825
+            ],
+            "position_error": [
+              5.743585953195407e-05,
+              0.000385863259064978,
+              -6.352650442319197e-05
+            ],
+            "binding_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_pick"
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.17
+            ],
+            "final_hand_position": [
+              0.11858585604707189,
+              0.6731312278999751,
+              0.15763889486552338
+            ],
+            "position_error": [
+              -0.0018302063277248481,
+              -0.004133770190601349,
+              -0.012361105134476635
+            ],
+            "binding_position": [
+              0.12041606237479674,
+              0.6772649980905765,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_pick"
+          }
+        ]
+      },
+      "holding": {
+        "status": "holding_supported",
+        "reason": "target_displacement_and_hand_comotion",
+        "displacement_px": 18.027756377319946,
+        "hand_motion_px": 6.9647836506590615,
+        "target_motion_px": 7.211102550927978,
+        "offset_drift_px": 0.31814126583377017,
+        "max_target_hand_distance_px": 6.509809727756343
+      }
+    },
+    {
+      "stage": "transfer_2_yellow_place",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 102,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.13037368524613516,
+              0.7903572655921243,
+              0.1579343879398249
+            ],
+            "position_error": [
+              0.013946708214001041,
+              0.0038576810695045705,
+              -6.561206017510757e-05
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_place_observation_0"
+          },
+          {
+            "phase": 1,
+            "steps": 16,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.053
+            ],
+            "final_hand_position": [
+              -0.14494106629379386,
+              0.7929260346611058,
+              0.06509136237254892
+            ],
+            "position_error": [
+              -0.0006206728336576595,
+              0.006426450138486084,
+              0.012091362372548924
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_place_observation_0"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.053
+            ],
+            "final_hand_position": [
+              -0.14440998750215886,
+              0.7860469551631342,
+              0.05294765702562944
+            ],
+            "position_error": [
+              -8.959404202266152e-05,
+              -0.0004526293594855346,
+              -5.234297437056029e-05
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_place_observation_0"
+          },
+          {
+            "phase": 3,
+            "steps": 16,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.14396988186870965,
+              0.7829603546370543,
+              0.14610439026028826
+            ],
+            "position_error": [
+              0.0003505115914265444,
+              -0.0035392298855654314,
+              -0.011895609739711738
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_2_yellow_place_observation_0"
+          }
+        ]
+      },
+      "release": {
+        "status": "release_supported",
+        "empty_hand_supported": true,
+        "reason": "stationary_target_detached_during_open_hand_retreat_not_goal_completion",
+        "scope": "single_previously_held_object_with_open_retreat_and_visible_stationarity",
+        "target_drift_px": 0.0,
+        "hand_separation_px": 25.262285865484902,
+        "hand_motion_px": 4.908053315740647,
+        "destination_supported": true,
+        "location_source": "RGB_centroid_assumed_support_plane_not_truth"
+      },
+      "observed_goal": {
+        "status": "satisfied",
+        "source": "post_release_RGB_against_initial_static_region_RGB",
+        "calibrated_error_bound_available": false,
+        "absolute_errors_m": [
+          [
+            0.0047610191454434125,
+            0.009669402787205517
+          ],
+          [
+            0.0047610191454434125,
+            0.009669402787205517
+          ]
+        ],
+        "reference_xy": [
+          -0.1443203934601362,
+          0.7864995845226197
+        ],
+        "position_samples": [
+          [
+            -0.13955937431469279,
+            0.7961689873098252
+          ],
+          [
+            -0.13955937431469279,
+            0.7961689873098252
+          ]
+        ],
+        "tolerance_m": [
+          0.025,
+          0.018
+        ]
+      }
+    }
+  ],
+  "truth_usage": "scoring_only_not_targeting_or_authorization",
+  "reference_sequence": [
+    "blue_candidate_to_return_region",
+    "yellow_candidate_to_green_region"
+  ],
+  "protected_displacement_limit_m": 0.015,
+  "episode_step_limit": 1800,
+  "reobserve_budget": 2,
+  "destination_observations": [
+    {
+      "stage": "transfer_0_blue_place",
+      "round": 0,
+      "supported": true,
+      "fresh_estimate": [
+        -0.14513409629498047,
+        0.786498574087447,
+        0.008
+      ]
+    },
+    {
+      "stage": "transfer_1_blue_place",
+      "round": 0,
+      "supported": true,
+      "fresh_estimate": [
+        0.004302184605424239,
+        0.8362303471873848,
+        0.008
+      ]
+    },
+    {
+      "stage": "transfer_2_yellow_place",
+      "round": 0,
+      "supported": true,
+      "fresh_estimate": [
+        -0.14478159595696286,
+        0.7857632265435518,
+        0.008
+      ]
+    }
+  ],
+  "pick_contact_offset_m": 0.03,
+  "feedback_v2": true,
+  "initial_y_spread_m": 0.025,
+  "region_references": {
+    "green_region": [
+      0.004302184605424239,
+      0.8362303471873848,
+      0.008
+    ],
+    "return_region": [
+      -0.1443203934601362,
+      0.7864995845226197,
+      0.008
+    ]
+  },
+  "initial_model_plan": [
+    {
+      "step_id": 1,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 2,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right",
+        "target_id": "return_region"
+      }
+    },
+    {
+      "step_id": 3,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 4,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right",
+        "target_id": "green_region"
+      }
+    }
+  ],
+  "observed_execution_history": [
+    [
+      "blue_candidate",
+      "return_region"
+    ],
+    [
+      "blue_candidate",
+      "green_region"
+    ],
+    [
+      "yellow_candidate",
+      "return_region"
+    ]
+  ],
+  "current_task_goals": {
+    "blue_candidate": "green_region",
+    "yellow_candidate": "return_region"
+  },
+  "task_update_events": [
+    {
+      "event": "user_goal_update_after_first_supported_delivery",
+      "old_goals": {
+        "blue_candidate": "return_region",
+        "yellow_candidate": "green_region"
+      },
+      "new_goals": {
+        "blue_candidate": "green_region",
+        "yellow_candidate": "return_region"
+      },
+      "source": "predeclared_controlled_task_update_not_execution_failure"
+    }
+  ],
+  "remaining_model_plans": [
+    [
+      {
+        "step_id": 1,
+        "policy_id": "fixed_pick",
+        "primitive": "grasp",
+        "args": {
+          "object_id": "blue_candidate",
+          "arm": "right"
+        }
+      },
+      {
+        "step_id": 2,
+        "policy_id": "fixed_place",
+        "primitive": "place",
+        "args": {
+          "object_id": "blue_candidate",
+          "arm": "right",
+          "target_id": "green_region"
+        }
+      },
+      {
+        "step_id": 3,
+        "policy_id": "fixed_pick",
+        "primitive": "grasp",
+        "args": {
+          "object_id": "yellow_candidate",
+          "arm": "right"
+        }
+      },
+      {
+        "step_id": 4,
+        "policy_id": "fixed_place",
+        "primitive": "place",
+        "args": {
+          "object_id": "yellow_candidate",
+          "arm": "right",
+          "target_id": "return_region"
+        }
+      }
+    ],
+    [
+      {
+        "step_id": 1,
+        "policy_id": "fixed_pick",
+        "primitive": "grasp",
+        "args": {
+          "object_id": "yellow_candidate",
+          "arm": "right"
+        }
+      },
+      {
+        "step_id": 2,
+        "policy_id": "fixed_place",
+        "primitive": "place",
+        "args": {
+          "object_id": "yellow_candidate",
+          "arm": "right",
+          "target_id": "return_region"
+        }
+      }
+    ],
+    []
+  ],
+  "terminal_scores": {
+    "candidate_blue": {
+      "position": [
+        0.004932308532663549,
+        0.8349903765346396,
+        0.027892244579783784
+      ],
+      "destination": [
+        0.0,
+        0.84,
+        0.004
+      ],
+      "arrived": true
+    },
+    "candidate_yellow": {
+      "position": [
+        -0.140810363992464,
+        0.7943613024315195,
+        0.027892244579783808
+      ],
+      "destination": [
+        -0.15,
+        0.79,
+        0.004
+      ],
+      "arrived": true
+    }
+  },
+  "protected_displacement_samples_m": [],
+  "protected_object_preserved": true,
+  "protected_constraint_scope": "plan_actions_prohibited_on_unchanged_completed_goals_no_continuous_physical_certificate",
+  "model_audit": [
+    {
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, table)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, table)"
+        ],
+        "state_source": "controlled_initial_fixture",
+        "goals": {
+          "blue_candidate": "return_region",
+          "yellow_candidate": "green_region"
+        },
+        "executed_history": [],
+        "goal_updates": [],
+        "remaining_goal_facts": [
+          "on(blue_candidate, return_region)",
+          "on(yellow_candidate, green_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "table",
+            "required_target": "return_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "table",
+            "required_target": "green_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": null,
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        }
+      },
+      "local_feedback_evidence": null,
+      "feedback_protocol": "authoritative_task_diagnostic_projection_v6",
+      "image_sha256": "c3f99776b35334dace2a43490ccd07054478d398cf3f582f5828a9fac0823e13",
+      "actual_model_calls": 1,
+      "accepted": true,
+      "phase": "initial",
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "total_tokens": 812,
+      "rejection": null,
+      "normalized_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, table)"
+        ],
+        "state_source": "supported_RGB_release_history_plus_untouched_fixture",
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_first_supported_delivery",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_execution_failure"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "table",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": null,
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        }
+      },
+      "local_feedback_evidence": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, green_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      },
+      "feedback_protocol": "authoritative_task_diagnostic_projection_v6",
+      "image_sha256": "a3bb41aae2fa88303a1430973245a07e2c8ac72e004548c2f13a731e9694e512",
+      "actual_model_calls": 1,
+      "accepted": true,
+      "phase": "remaining_task_repair",
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "total_tokens": 895,
+      "rejection": null,
+      "normalized_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      }
+    }
+  ],
+  "model_recovery_enabled": true,
+  "execution_unknown_policy": "stop_not_fabricate_current_state"
+}

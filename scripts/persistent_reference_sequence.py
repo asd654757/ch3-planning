@@ -44,7 +44,10 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             env = make_scene(xml, seed=seed, initial_y_spread=initial_y_spread)
             report['episode_resets'] = 1
             long_task = bool(model_planner is not None and model_planner.long_task)
-            env.max_path_length = 1500 if long_task else 1000
+            flexible = bool(model_planner is not None and getattr(model_planner, 'flexible', False))
+            if flexible and (not feedback_v2 or execution_recovery):
+                raise ValueError('flexible_pilot_requires_feedback_v2_and_no_legacy_execution_recovery')
+            env.max_path_length = 1800 if flexible else 1500 if long_task else 1000
             report['episode_step_limit'] = env.max_path_length
             for _ in range(30):
                 env.step(np.array([0., 0., 0., -1.]))
@@ -115,10 +118,18 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 ('yellow_candidate', 'yellow', 'green_region', 'green')]
             if long_task:
                 sequence.insert(0, ('blue_candidate', 'blue', 'green_region', 'green'))
+            def sequence_from_steps(steps):
+                from ch3.repair.flexible_fixture_planner import transfer_pairs
+                return [(obj, 'blue' if obj=='blue_candidate' else 'yellow', region,
+                         'green' if region=='green_region' else 'magenta') for obj,region in transfer_pairs(steps)]
+            if flexible:
+                sequence = sequence_from_steps(executable.steps)
             report['reference_sequence'] = [f'{o}_to_{r}' for o, _, r, _ in sequence]
             source_heights = {}
             for n, (obj, color, region, region_color) in enumerate(sequence):
-                stage = f'{color}_pick' if not long_task else f'transfer_{n}_{color}_pick'
+                if flexible and n >= 4:
+                    raise ValueError('flexible_total_transfer_budget_exhausted')
+                stage = f'{color}_pick' if not (long_task or flexible) else f'transfer_{n}_{color}_pick'
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
                 rgb = frame(stage)
                 initial = pixel(rgb, color)
@@ -199,7 +210,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                     raise ValueError('holding_not_supported')
                 if blue_after_first is not None:
                     protected_distances.append(float(np.linalg.norm(env.data.body('candidate_blue').xpos - blue_after_first)))
-                stage = f'{color}_place' if not long_task else f'transfer_{n}_{color}_place'
+                stage = f'{color}_place' if not (long_task or flexible) else f'transfer_{n}_{color}_place'
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
                 dest = None
                 for observation_round in range(reobserve_budget + 1):
@@ -324,21 +335,32 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                         if release['status']!='release_supported' or observed['status']!='satisfied':
                             raise ValueError('goal_repair_postcondition_not_supported')
                 source_heights[obj] = .028
-                if obj == 'blue_candidate' and region == 'return_region':
+                if not flexible and obj == 'blue_candidate' and region == 'return_region':
                     blue_after_first = env.data.body('candidate_blue').xpos.copy()
                 elif blue_after_first is not None:
                     protected_distances.append(float(np.linalg.norm(env.data.body('candidate_blue').xpos - blue_after_first)))
-                if model_planner is not None and n < len(sequence)-1:
+                if flexible:
+                    model_planner.observe_release(obj,region)
+                    report['observed_execution_history'] = list(model_planner.history)
+                    report['current_task_goals'] = dict(model_planner.goals)
+                    report['task_update_events'] = model_planner.goal_updates
+                if model_planner is not None and (flexible or n < len(sequence)-1):
                     observed_name = f'observed_release_{n}'
                     frame(observed_name)
                     offset = 2*n+2
                     remaining = model_planner.remaining(executable.steps[offset:], out / f'{observed_name}.png', completed=n+1)
                     executable.steps[offset:] = remaining.steps
+                    if flexible:
+                        sequence[n+1:] = sequence_from_steps(remaining.steps)
                     report.setdefault('remaining_model_plans', []).append(remaining.to_list())
 
             # Independent truth scoring AFTER execution, not used to select actions.
             scores = {}
-            for name, region in [('candidate_blue', 'return_region'), ('candidate_yellow', 'placement_region')]:
+            scoring_pairs = [('candidate_blue', 'return_region'), ('candidate_yellow', 'placement_region')]
+            if flexible:
+                scoring_pairs = [(('candidate_blue' if obj=='blue_candidate' else 'candidate_yellow'),
+                    ('placement_region' if region=='green_region' else 'return_region')) for obj,region in model_planner.goals.items()]
+            for name, region in scoring_pairs:
                 position = env.data.body(name).xpos.copy()
                 target = env.data.body(region).xpos.copy()
                 scores[name] = dict(position=position.tolist(), destination=target.tolist(),
@@ -346,6 +368,8 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             report['terminal_scores'] = scores
             report['protected_displacement_samples_m'] = protected_distances
             report['protected_object_preserved'] = max(protected_distances, default=0.) <= .015
+            if flexible:
+                report['protected_constraint_scope'] = 'plan_actions_prohibited_on_unchanged_completed_goals_no_continuous_physical_certificate'
             report['success'] = all(s['arrived'] for s in scores.values()) and report['protected_object_preserved']
         except Exception as exc:
             report['failure_stage'] = stage

@@ -1,0 +1,785 @@
+{
+  "seed": 81,
+  "scope": "live_model_planning_persistent_execution_restricted_fixture",
+  "episode_resets": 1,
+  "model_calls": 3,
+  "success": false,
+  "events": [
+    {
+      "stage": "transfer_0_blue_pick",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 89,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 21,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.14
+            ],
+            "final_hand_position": [
+              -0.11257163693521698,
+              0.6707616303030696,
+              0.1413467095213122
+            ],
+            "position_error": [
+              0.010371683941737389,
+              -0.006965549970846419,
+              0.0013467095213121894
+            ],
+            "binding_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          },
+          {
+            "phase": 1,
+            "steps": 16,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.05000000000000002
+            ],
+            "final_hand_position": [
+              -0.12241956813675554,
+              0.6821931541045707,
+              0.06295027866758557
+            ],
+            "position_error": [
+              0.0005237527401988212,
+              0.004465973830654724,
+              0.012950278667585552
+            ],
+            "binding_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.05000000000000002
+            ],
+            "final_hand_position": [
+              -0.12346001103011096,
+              0.6785001093898232,
+              0.049824241615368275
+            ],
+            "position_error": [
+              -0.0005166901531565987,
+              0.000772929115907206,
+              -0.0001757583846317412
+            ],
+            "binding_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.17
+            ],
+            "final_hand_position": [
+              -0.12403556565039514,
+              0.6722756333029074,
+              0.1561810960988414
+            ],
+            "position_error": [
+              -0.0010922447734407759,
+              -0.005451546971008581,
+              -0.013818903901158613
+            ],
+            "binding_position": [
+              -0.12294332087695437,
+              0.677727180273916,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_pick"
+          }
+        ]
+      },
+      "holding": {
+        "status": "holding_supported",
+        "reason": "target_displacement_and_hand_comotion",
+        "displacement_px": 16.62077013859466,
+        "hand_motion_px": 6.063043057912094,
+        "target_motion_px": 6.020797289396148,
+        "offset_drift_px": 0.9890966155609321,
+        "max_target_hand_distance_px": 6.190768241297312
+      }
+    },
+    {
+      "stage": "transfer_0_blue_place",
+      "execution": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 93,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 23,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.13873601159105192,
+              0.7739684398864398,
+              0.16131885422184689
+            ],
+            "position_error": [
+              0.005584381869084276,
+              -0.01253114463617988,
+              0.003318854221846884
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          },
+          {
+            "phase": 1,
+            "steps": 18,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.053
+            ],
+            "final_hand_position": [
+              -0.14252653308325047,
+              0.7865925944950914,
+              0.06686162295227732
+            ],
+            "position_error": [
+              0.0017938603768857253,
+              9.300997247174703e-05,
+              0.013861622952277323
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.053
+            ],
+            "final_hand_position": [
+              -0.145534048718714,
+              0.7918837092527341,
+              0.05117927821562744
+            ],
+            "position_error": [
+              -0.001213655258577806,
+              0.0053841247301144035,
+              -0.0018207217843725573
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          },
+          {
+            "phase": 3,
+            "steps": 17,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.158
+            ],
+            "final_hand_position": [
+              -0.14591526281073805,
+              0.7879871639825448,
+              0.14640002218031217
+            ],
+            "position_error": [
+              -0.0015948693506018519,
+              0.0014875794599250591,
+              -0.011599977819687829
+            ],
+            "binding_position": [
+              -0.1443203934601362,
+              0.7864995845226197,
+              0.008
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "transfer_0_blue_place_observation_0"
+          }
+        ]
+      },
+      "release": {
+        "status": "release_supported",
+        "empty_hand_supported": true,
+        "reason": "stationary_target_detached_during_open_hand_retreat_not_goal_completion",
+        "scope": "single_previously_held_object_with_open_retreat_and_visible_stationarity",
+        "target_drift_px": 0.0,
+        "hand_separation_px": 25.88356540028344,
+        "hand_motion_px": 4.9579003060803455,
+        "destination_supported": true,
+        "location_source": "RGB_centroid_assumed_support_plane_not_truth"
+      },
+      "observed_goal": {
+        "status": "satisfied",
+        "source": "post_release_RGB_against_initial_static_region_RGB",
+        "calibrated_error_bound_available": false,
+        "absolute_errors_m": [
+          [
+            0.0047610191454434125,
+            0.009669402787205517
+          ],
+          [
+            0.0047610191454434125,
+            0.009669402787205517
+          ]
+        ],
+        "reference_xy": [
+          -0.1443203934601362,
+          0.7864995845226197
+        ],
+        "position_samples": [
+          [
+            -0.13955937431469279,
+            0.7961689873098252
+          ],
+          [
+            -0.13955937431469279,
+            0.7961689873098252
+          ]
+        ],
+        "tolerance_m": [
+          0.025,
+          0.018
+        ]
+      }
+    }
+  ],
+  "truth_usage": "scoring_only_not_targeting_or_authorization",
+  "reference_sequence": [
+    "blue_candidate_to_return_region",
+    "yellow_candidate_to_green_region"
+  ],
+  "protected_displacement_limit_m": 0.015,
+  "episode_step_limit": 1800,
+  "reobserve_budget": 2,
+  "destination_observations": [
+    {
+      "stage": "transfer_0_blue_place",
+      "round": 0,
+      "supported": true,
+      "fresh_estimate": [
+        -0.14442614336032086,
+        0.7864986863580219,
+        0.008
+      ]
+    }
+  ],
+  "pick_contact_offset_m": 0.03,
+  "feedback_v2": true,
+  "initial_y_spread_m": 0.025,
+  "region_references": {
+    "green_region": [
+      0.004302184605424239,
+      0.8362303471873848,
+      0.008
+    ],
+    "return_region": [
+      -0.1443203934601362,
+      0.7864995845226197,
+      0.008
+    ]
+  },
+  "initial_model_plan": [
+    {
+      "step_id": 1,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 2,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "blue_candidate",
+        "arm": "right",
+        "target_id": "return_region"
+      }
+    },
+    {
+      "step_id": 3,
+      "policy_id": "fixed_pick",
+      "primitive": "grasp",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right"
+      }
+    },
+    {
+      "step_id": 4,
+      "policy_id": "fixed_place",
+      "primitive": "place",
+      "args": {
+        "object_id": "yellow_candidate",
+        "arm": "right",
+        "target_id": "green_region"
+      }
+    }
+  ],
+  "observed_execution_history": [
+    [
+      "blue_candidate",
+      "return_region"
+    ]
+  ],
+  "current_task_goals": {
+    "blue_candidate": "green_region",
+    "yellow_candidate": "return_region"
+  },
+  "task_update_events": [
+    {
+      "event": "user_goal_update_after_first_supported_delivery",
+      "old_goals": {
+        "blue_candidate": "return_region",
+        "yellow_candidate": "green_region"
+      },
+      "new_goals": {
+        "blue_candidate": "green_region",
+        "yellow_candidate": "return_region"
+      },
+      "source": "predeclared_controlled_task_update_not_execution_failure"
+    }
+  ],
+  "failure_stage": "transfer_0_blue_place",
+  "error": "ValueError: flexible_remaining_repair_rejected",
+  "model_audit": [
+    {
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. Feedback predicted_final_facts describe a rejected simulation, NOT the current world.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, table)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, table)"
+        ],
+        "state_source": "controlled_initial_fixture",
+        "goals": {
+          "blue_candidate": "return_region",
+          "yellow_candidate": "green_region"
+        },
+        "executed_history": [],
+        "goal_updates": [],
+        "remaining_goal_facts": [
+          "on(blue_candidate, return_region)",
+          "on(yellow_candidate, green_region)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": null,
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        }
+      },
+      "image_sha256": "5704d2ac9dba2028a5e03dbce76778d8b60af8c90bffb1dbbf7ea5bd6babee1c",
+      "actual_model_calls": 1,
+      "accepted": true,
+      "phase": "initial",
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": null\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": null\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "total_tokens": 737,
+      "rejection": null,
+      "normalized_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. Feedback predicted_final_facts describe a rejected simulation, NOT the current world.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, table)"
+        ],
+        "state_source": "supported_RGB_release_history_plus_untouched_fixture",
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_first_supported_delivery",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_execution_failure"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "GOAL_NOT_SATISFIED",
+          "unmet_goal_facts": [
+            "on(blue_candidate, green_region)",
+            "on(yellow_candidate, return_region)"
+          ],
+          "predicted_final_facts": [
+            "hand_empty(right)",
+            "on(blue_candidate, return_region)",
+            "on(green_region, table)",
+            "on(return_region, table)",
+            "on(yellow_candidate, green_region)"
+          ],
+          "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+          "rejected_candidate": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "yellow_candidate",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 2,
+                "skill": "place",
+                "object_id": "yellow_candidate",
+                "target_id": "green_region",
+                "arm": "right"
+              }
+            ]
+          }
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        }
+      },
+      "image_sha256": "21049ffc7f2c44dbeb2997e2b11a2a4777e5b081b0b0ff4ace1e533e644b057c",
+      "actual_model_calls": 1,
+      "accepted": false,
+      "phase": "remaining_task_repair",
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": null,\n      \"arm\": \"right\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\",\n      \"arm\": \"right\"\n    }\n  ]\n}\n```",
+      "total_tokens": 936,
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      },
+      "normalized_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. Feedback predicted_final_facts describe a rejected simulation, NOT the current world.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, table)"
+        ],
+        "state_source": "supported_RGB_release_history_plus_untouched_fixture",
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_first_supported_delivery",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_execution_failure"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "GOAL_NOT_SATISFIED",
+          "unmet_goal_facts": [
+            "on(blue_candidate, green_region)"
+          ],
+          "predicted_final_facts": [
+            "hand_empty(right)",
+            "on(blue_candidate, return_region)",
+            "on(green_region, table)",
+            "on(return_region, table)",
+            "on(yellow_candidate, return_region)"
+          ],
+          "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+          "rejected_candidate": {
+            "actions": [
+              {
+                "step_id": 1,
+                "skill": "pick",
+                "object_id": "yellow_candidate",
+                "target_id": null,
+                "arm": "right"
+              },
+              {
+                "step_id": 2,
+                "skill": "place",
+                "object_id": "yellow_candidate",
+                "target_id": "return_region",
+                "arm": "right"
+              }
+            ]
+          }
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        }
+      },
+      "image_sha256": "21049ffc7f2c44dbeb2997e2b11a2a4777e5b081b0b0ff4ace1e533e644b057c",
+      "actual_model_calls": 1,
+      "accepted": false,
+      "phase": "remaining_task_repair",
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": null,\n      \"arm\": \"right\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\",\n      \"arm\": \"right\"\n    }\n  ]\n}\n```",
+      "total_tokens": 927,
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(yellow_candidate, return_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, green_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, table)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      },
+      "normalized_plan": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      }
+    }
+  ],
+  "model_recovery_enabled": true,
+  "execution_unknown_policy": "stop_not_fabricate_current_state"
+}

@@ -1,0 +1,74 @@
+[flexible-fixture] seed=55 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=55 stage=transfer_0_blue_pick
+[reference-sequence] seed=55 stage=transfer_0_blue_place
+[reference-sequence] seed=55 stage=transfer_1_yellow_pick
+[reference-sequence] seed=55 stage=transfer_1_yellow_place
+{"seed": 55, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=55 method=MODEL_NO_TASK_REPAIR start
+[reference-sequence] seed=55 stage=transfer_0_blue_pick
+[reference-sequence] seed=55 stage=transfer_0_blue_place
+[reference-sequence] seed=55 stage=transfer_1_yellow_pick
+[reference-sequence] seed=55 stage=transfer_1_yellow_place
+{"seed": 55, "method": "MODEL_NO_TASK_REPAIR", "success": true, "model_calls": 0, "error": null}
+[flexible-fixture] seed=56 method=MODEL_NO_TASK_REPAIR start
+[reference-sequence] seed=56 stage=transfer_0_blue_pick
+[reference-sequence] seed=56 stage=transfer_0_blue_place
+[reference-sequence] seed=56 stage=transfer_1_yellow_pick
+[reference-sequence] seed=56 stage=transfer_1_yellow_place
+{"seed": 56, "method": "MODEL_NO_TASK_REPAIR", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=56 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=56 stage=transfer_0_blue_pick
+[reference-sequence] seed=56 stage=transfer_0_blue_place
+[reference-sequence] seed=56 stage=transfer_1_yellow_pick
+[reference-sequence] seed=56 stage=transfer_1_yellow_place
+{"seed": 56, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 0, "error": null}
+[flexible-fixture] seed=57 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=57 stage=transfer_0_blue_pick
+[reference-sequence] seed=57 stage=transfer_0_blue_place
+[reference-sequence] seed=57 stage=transfer_1_yellow_pick
+[reference-sequence] seed=57 stage=transfer_1_yellow_place
+{"seed": 57, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=57 method=MODEL_NO_TASK_REPAIR start
+[reference-sequence] seed=57 stage=transfer_0_blue_pick
+[reference-sequence] seed=57 stage=transfer_0_blue_place
+[reference-sequence] seed=57 stage=transfer_1_yellow_pick
+[reference-sequence] seed=57 stage=transfer_1_yellow_place
+{"seed": 57, "method": "MODEL_NO_TASK_REPAIR", "success": true, "model_calls": 0, "error": null}
+{"completed_episodes": 6, "actual_model_calls": 3, "methods": {"MODEL_CONSTRAINT_REPAIR": {"episodes": 3, "successes": 3, "accepted_remaining_repairs": 0}, "MODEL_NO_TASK_REPAIR": {"episodes": 3, "successes": 3, "accepted_remaining_repairs": 0}}}
+[flexible-fixture] seed=55 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=55 stage=transfer_0_blue_pick
+[reference-sequence] seed=55 stage=transfer_0_blue_place
+[reference-sequence] seed=55 stage=transfer_1_blue_pick
+[reference-sequence] seed=55 stage=transfer_1_blue_place
+[reference-sequence] seed=55 stage=transfer_2_yellow_pick
+[reference-sequence] seed=55 stage=transfer_2_yellow_place
+{"seed": 55, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=55 method=MODEL_NO_TASK_REPAIR start
+[reference-sequence] seed=55 stage=transfer_0_blue_pick
+[reference-sequence] seed=55 stage=transfer_0_blue_place
+{"seed": 55, "method": "MODEL_NO_TASK_REPAIR", "success": false, "model_calls": 0, "error": "ValueError: remaining_plan_rejected_no_recovery"}
+[flexible-fixture] seed=56 method=MODEL_NO_TASK_REPAIR start
+[reference-sequence] seed=56 stage=transfer_0_blue_pick
+[reference-sequence] seed=56 stage=transfer_0_blue_place
+{"seed": 56, "method": "MODEL_NO_TASK_REPAIR", "success": false, "model_calls": 1, "error": "ValueError: remaining_plan_rejected_no_recovery"}
+[flexible-fixture] seed=56 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=56 stage=transfer_0_blue_pick
+[reference-sequence] seed=56 stage=transfer_0_blue_place
+[reference-sequence] seed=56 stage=transfer_1_blue_pick
+[reference-sequence] seed=56 stage=transfer_1_blue_place
+[reference-sequence] seed=56 stage=transfer_2_yellow_pick
+[reference-sequence] seed=56 stage=transfer_2_yellow_place
+{"seed": 56, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=57 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=57 stage=transfer_0_blue_pick
+[reference-sequence] seed=57 stage=transfer_0_blue_place
+[reference-sequence] seed=57 stage=transfer_1_blue_pick
+[reference-sequence] seed=57 stage=transfer_1_blue_place
+[reference-sequence] seed=57 stage=transfer_2_yellow_pick
+[reference-sequence] seed=57 stage=transfer_2_yellow_place
+{"seed": 57, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=57 method=MODEL_NO_TASK_REPAIR start
+[reference-sequence] seed=57 stage=transfer_0_blue_pick
+[reference-sequence] seed=57 stage=transfer_0_blue_place
+{"seed": 57, "method": "MODEL_NO_TASK_REPAIR", "success": false, "model_calls": 0, "error": "ValueError: remaining_plan_rejected_no_recovery"}
+{"completed_episodes": 6, "actual_model_calls": 6, "methods": {"MODEL_CONSTRAINT_REPAIR": {"episodes": 3, "successes": 3, "accepted_remaining_repairs": 3}, "MODEL_NO_TASK_REPAIR": {"episodes": 3, "successes": 0, "accepted_remaining_repairs": 0}}}

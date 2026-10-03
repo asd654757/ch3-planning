@@ -1,7 +1,7 @@
 import json
 from types import SimpleNamespace
 
-from ch3.repair.flexible_fixture_planner import FlexibleFixturePlanner, evaluate_flexible
+from ch3.repair.flexible_fixture_planner import FlexibleFixturePlanner, evaluate_flexible, diagnostic_feedback
 from ch3.repair.persistent_model_recovery import strict_plan
 from ch3.repair.sequence_model_planner import OBJECTS
 from ch3.state.world_state import WorldState
@@ -145,7 +145,7 @@ def test_missing_goal_feedback_names_actual_omission_without_truth():
     assert 'on(blue_candidate, return_region)' in error['predicted_final_facts']
 
 
-def test_second_feedback_contains_rejected_candidate_and_specific_goal(tmp_path):
+def test_second_feedback_is_diagnostic_and_full_obligations_remain_authoritative(tmp_path):
     image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
     class Client:
         calls=0
@@ -158,10 +158,41 @@ def test_second_feedback_contains_rejected_candidate_and_specific_goal(tmp_path)
             assert 'COMPLETE replacement suffix' in request['instruction']
             pairs=[('yellow_candidate','return_region')]
             if self.calls==2:
-                assert request['feedback']['unmet_goal_facts']==['on(blue_candidate, green_region)']
-                assert len(request['feedback']['rejected_candidate']['actions'])==2
+                assert request['feedback']['omitted_goal_count']==1
+                assert 'unmet_goal_facts' not in request['feedback']
+                assert 'rejected_candidate' not in request['feedback']
+                assert [o['object_id'] for o in request['current_task_obligations']
+                    if o['requires_delivery']]==['blue_candidate','yellow_candidate']
                 pairs.insert(0,('blue_candidate','green_region'))
             return SimpleNamespace(content=plan(pairs).model_dump_json(),total_tokens=10)
     planner=FlexibleFixturePlanner(Client(),recovery=True,shared={},update_goals=True)
     planner.observe_release('blue_candidate','return_region')
     assert len(planner.remaining([],image,completed=1).steps)==4
+    assert len(planner.audit[1]['local_feedback_evidence']['rejected_candidate']['actions'])==2
+
+
+def test_feedback_projection_does_not_leak_rejected_plan_or_simulated_state():
+    rejection=dict(error_code='GOAL_NOT_SATISFIED',unmet_goal_facts=['on(blue, green)'],
+        predicted_final_facts=['on(yellow, return)'],rejected_output='untrusted model output',
+        rejected_candidate={'actions':[]})
+    result=diagnostic_feedback(rejection)
+    assert result['candidate_executed'] is False
+    assert result['omitted_goal_count']==1
+    assert not {'unmet_goal_facts','predicted_final_facts','rejected_output','rejected_candidate'} & result.keys()
+    assert rejection['predicted_final_facts']==['on(yellow, return)']
+
+
+def test_rejected_simulation_never_advances_current_state(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    class Client:
+        def complete(self,**kwargs):
+            return SimpleNamespace(content=plan([('yellow_candidate','return_region')]).model_dump_json(),total_tokens=1)
+    planner=FlexibleFixturePlanner(Client(),recovery=True,shared={},update_goals=True)
+    planner.observe_release('blue_candidate','return_region')
+    facts=planner.state.facts().copy();history=list(planner.history)
+    import pytest
+    with pytest.raises(ValueError,match='flexible_remaining_repair_rejected'):
+        planner.remaining([],image,completed=1)
+    assert planner.state.facts()==facts and planner.history==history
+    assert all(a['request']['remaining_goal_facts']==['on(blue_candidate, green_region)',
+        'on(yellow_candidate, return_region)'] for a in planner.audit)

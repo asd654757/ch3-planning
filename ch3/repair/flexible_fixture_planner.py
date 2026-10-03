@@ -19,6 +19,34 @@ MOVABLE = {'blue_candidate', 'yellow_candidate'}
 REGIONS = {'green_region', 'return_region'}
 
 
+def diagnostic_feedback(rejection):
+    """Project local rejection evidence into a bounded, non-state diagnostic.
+
+    Full candidates/predictions stay in the audit. Never forward simulated
+    locations, raw model text or a subset of goals as the next planning task.
+    """
+    if not rejection:
+        return None
+    code = rejection.get('error_code', 'REJECTED')
+    result = dict(error_code=code, candidate_executed=False,
+        role='diagnostic_only_not_current_state_or_replacement_goal',
+        repair_mode='regenerate_complete_suffix_from_current_task')
+    if code == 'GOAL_NOT_SATISFIED':
+        result.update(category='incomplete_goal_coverage',
+            omitted_goal_count=len(rejection.get('unmet_goal_facts', [])),
+            correction='Cover ALL current remaining obligations together, not just a missing-goal patch.')
+    elif code == 'PROTECTED_OBJECT_MUTATION':
+        result.update(category='protected_object_violation',
+            correction='Do not act on forbidden_objects; regenerate the complete remaining plan.')
+    elif code == 'MODEL_OR_PARSE_FAILURE':
+        result.update(category='output_or_request_failure',
+            correction='Return a JSON object with actions matching output_schema; no bare array.')
+    else:
+        result.update(category='plan_contract_violation',
+            correction='Recheck current facts, object registry and backend contract for the complete suffix.')
+    return result
+
+
 def transfer_pairs(steps):
     """Backend contract, not a prescribed answer/order. Never rewrite a plan."""
     if len(steps) % 2 or len(steps) > 8:
@@ -95,17 +123,24 @@ class FlexibleFixturePlanner:
             'Executed history is not a command to replay; changed goals may require moving a previously delivered object. '
             'Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. '
             'Rejected candidates were NEVER executed. Do not return only an incremental patch. '
-            'Feedback predicted_final_facts describe a rejected simulation, NOT the current world.',
+            'The current task below is authoritative; feedback is diagnostic only. '
+            'Before returning actions, internally check every required obligation and the empty-hand goal.',
             current_facts=sorted(self.state.facts()|self.state.empty_hand_facts({'right'})),
             state_source='controlled_initial_fixture' if initial else 'supported_RGB_release_history_plus_untouched_fixture',
             goals=dict(self.goals), executed_history=list(self.history), goal_updates=deepcopy(self.goal_updates),
             remaining_goal_facts=sorted(f'on({obj}, {region})' for obj,region in self.goals.items()
                 if self.state.location_of(obj)!=region),
+            current_task_obligations=[dict(object_id=obj,observed_location=self.state.location_of(obj),
+                required_target=region,requires_delivery=self.state.location_of(obj)!=region)
+                for obj,region in sorted(self.goals.items())],
+            terminal_conditions=['hand_empty(right)'],
             forbidden_objects=sorted(self.protected()), movable_objects=sorted(MOVABLE), targets=sorted(REGIONS),
             backend_contract='right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed',
-            feedback=deepcopy(feedback) if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
+            feedback=diagnostic_feedback(feedback) if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
                 object_id='registered cube',target_id='registered region for place, omitted for pick')]})
-        item=dict(request=prompt, image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
+        item=dict(request=prompt, local_feedback_evidence=deepcopy(feedback),
+            feedback_protocol='authoritative_task_diagnostic_projection_v6',
+            image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=0, accepted=False, phase=('initial' if initial else
                 'remaining_task_repair' if self.history else 'initial_plan_correction'))
         self.audit.append(item)

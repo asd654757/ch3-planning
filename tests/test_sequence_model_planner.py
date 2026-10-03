@@ -52,3 +52,35 @@ def test_invalid_remaining_repaired_without_completed_pick(tmp_path):
     p = SequenceModelPlanner(Client(), recovery=True, shared={})
     assert len(p.remaining(bad, image).steps) == 2
     assert all(a.object_id != 'blue_candidate' for a in __import__('ch3.schema.model_plan', fromlist=['ModelPlan']).ModelPlan.model_validate(p.audit[0]['normalized_plan']).actions)
+
+
+def test_long_task_cannot_skip_intermediate_delivery():
+    from ch3.repair.sequence_model_planner import evaluate, fixture_state
+    from ch3.repair.persistent_model_recovery import strict_plan
+    plan = strict_plan(json.dumps(GOOD), fixed_right_arm=True)
+    executable, rejection = evaluate(plan, fixture_state(), long_task=True)
+    assert executable is None and rejection['error_code'] == 'BACKEND_SEQUENCE_OUT_OF_SCOPE'
+
+
+def test_long_task_repick_is_remaining_not_prefix_replay():
+    from ch3.repair.sequence_model_planner import evaluate, fixture_state
+    from ch3.repair.persistent_model_recovery import strict_plan
+    state = fixture_state(completed=1, long_task=True)
+    assert state.at['blue_candidate'] == 'green_region'
+    plan = strict_plan(json.dumps(GOOD), fixed_right_arm=True)
+    executable, rejection = evaluate(plan, state, completed=1, long_task=True)
+    assert rejection is None and len(executable.steps) == 4
+    state = fixture_state(completed=2, long_task=True)
+    assert state.at['blue_candidate'] == 'return_region'
+
+
+def test_flat_surface_pick_opt_in_preserves_legacy_validator():
+    from ch3.repair.sequence_model_planner import fixture_state
+    from ch3.repair.persistent_model_recovery import strict_plan
+    from ch3.validator.pipeline import Validator
+    from ch3.execution.observed_continuation import fixed_registry
+    state = fixture_state(completed=1, long_task=True)
+    plan = strict_plan(json.dumps(GOOD), fixed_right_arm=True)
+    legacy = Validator(state.objects, fixed_registry()).validate(plan, state)
+    supported = Validator(state.objects, fixed_registry(), pick_surfaces={'green_region'}).validate(plan, state)
+    assert not legacy.valid and supported.valid

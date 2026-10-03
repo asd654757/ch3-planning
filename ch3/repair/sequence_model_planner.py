@@ -13,18 +13,27 @@ from ch3.compiler.executable_plan import compile_plan
 OBJECTS = {'blue_candidate', 'yellow_candidate', 'return_region', 'green_region'}
 INSTRUCTION = ('First move the blue cube to the magenta return region. Then move the yellow cube '
                'to the green region. Leave the completed blue cube untouched and finish empty-handed.')
+LONG_INSTRUCTION = ('First move the blue cube to the green region as an intermediate delivery. '
+    'After releasing it there, pick it up again and move it to the magenta return region. '
+    'Only then move the yellow cube to the green region. Do not skip the intermediate delivery. '
+    'Leave blue untouched after its return-region delivery and finish empty-handed.')
 
 
-def fixture_state(completed=False):
+def transfers(long_task=False):
+    pairs = [('blue_candidate', 'return_region'), ('yellow_candidate', 'green_region')]
+    return [('blue_candidate', 'green_region')] + pairs if long_task else pairs
+
+
+def fixture_state(completed=False, *, long_task=False):
     state = WorldState.table_scene(OBJECTS)
-    if completed:
-        state.at['blue_candidate'] = 'return_region'
+    for obj, region in transfers(long_task)[:int(completed)]:
+        state.at[obj] = region
     return state
 
 
-def evaluate(plan, state, completed=False):
+def evaluate(plan, state, completed=False, *, long_task=False):
     registry = fixed_registry()
-    result = Validator(OBJECTS, registry).validate(plan, state)
+    result = Validator(OBJECTS, registry, pick_surfaces={'green_region', 'return_region'} if long_task else None).validate(plan, state)
     goal = GoalSpec(facts=['on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)', 'hand_empty(right)'])
     if not result.valid:
         return None, dict(error_code=str(result.error_code), message=result.message)
@@ -32,9 +41,8 @@ def evaluate(plan, state, completed=False):
         return None, dict(error_code='GOAL_NOT_SATISFIED', remaining_goal_facts=sorted(
             set(goal.facts) - (result.final_state.facts() | result.final_state.empty_hand_facts({'right'}))))
     # Explicit executor scope, never silently replace unsupported model plans.
-    expected = [('pick', 'yellow_candidate', None), ('place', 'yellow_candidate', 'green_region')]
-    if not completed:
-        expected = [('pick', 'blue_candidate', None), ('place', 'blue_candidate', 'return_region')] + expected
+    expected = [action for obj, region in transfers(long_task)[int(completed):]
+                for action in [('pick', obj, None), ('place', obj, region)]]
     actual = [(a.skill.value, a.object_id, a.target_id) for a in plan.actions]
     if actual != expected:
         return None, dict(error_code='BACKEND_SEQUENCE_OUT_OF_SCOPE', supported_order=expected)
@@ -42,19 +50,25 @@ def evaluate(plan, state, completed=False):
 
 
 class SequenceModelPlanner:
-    def __init__(self, client, *, recovery, shared):
+    def __init__(self, client, *, recovery, shared, long_task=False):
         self.client, self.recovery, self.shared = client, recovery, shared
         self.audit = []
+        self.long_task = long_task
 
     def _request(self, state, image_path, completed, feedback=None, previous=None):
-        prompt = dict(instruction=INSTRUCTION, current_facts=sorted(state.facts() | state.empty_hand_facts({'right'})),
-            state_source='controlled_initial_fixture' if not completed else 'RGB_supported_blue_release_plus_untouched_yellow_fixture',
+        final_goal = {'on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)', 'hand_empty(right)'}
+        history = [f'{skill} {obj}' + (f' {region}' if skill == 'place' else '')
+                   for obj, region in transfers(self.long_task)[:int(completed)] for skill in ('pick', 'place')]
+        prompt = dict(instruction=LONG_INSTRUCTION if self.long_task else INSTRUCTION,
+            current_facts=sorted(state.facts() | state.empty_hand_facts({'right'})),
+            state_source='controlled_initial_fixture' if not completed else 'RGB_supported_latest_release_plus_prior_supported_and_untouched_fixture_facts',
             objects=sorted(OBJECTS), targets=['return_region', 'green_region'],
-            remaining_goal_facts=['on(yellow_candidate, green_region)', 'hand_empty(right)'] if completed else
-                ['on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)', 'hand_empty(right)'],
-            executed_history=[] if not completed else ['pick blue_candidate', 'place blue_candidate return_region'],
-            forbidden_objects=['blue_candidate'] if completed else [],
+            remaining_goal_facts=sorted(final_goal - (state.facts() | state.empty_hand_facts({'right'}))),
+            executed_history=history,
+            completed_transfer_count=int(completed),
+            forbidden_objects=['blue_candidate'] if state.at.get('blue_candidate') == 'return_region' else [],
             backend_configuration={'arm': 'right', 'skills': ['pick', 'place']},
+            pick_support_surfaces=['table', 'green_region', 'return_region'] if self.long_task else ['table'],
             output_schema={'actions': [{'step_id': 'contiguous from 1', 'skill': 'pick or place',
                 'object_id': 'registered ID', 'target_id': 'required for place, omitted for pick'}]},
             rejection_feedback=feedback, previous_candidate=previous)
@@ -76,7 +90,7 @@ class SequenceModelPlanner:
                 if not completed and feedback is None:
                     self.shared['initial'] = dict(request=prompt, image_sha256=item['image_sha256'], content=response.content)
             plan = strict_plan(item['content'], fixed_right_arm=True)
-            executable, rejection = evaluate(plan, state, completed)
+            executable, rejection = evaluate(plan, state, completed, long_task=self.long_task)
             item.update(normalized_plan=plan.model_dump(mode='json'), accepted=executable is not None, rejection=rejection)
             return plan if executable else None, rejection
         except Exception as exc:
@@ -85,25 +99,25 @@ class SequenceModelPlanner:
             return None, rejection
 
     def initial(self, image_path):
-        state = fixture_state()
+        state = fixture_state(long_task=self.long_task)
         plan, rejection = self._request(state, image_path, False)
         if plan is None and self.recovery:
             plan, _ = self._request(state, image_path, False, rejection, self.audit[-1].get('content'))
         if plan is None:
             raise ValueError('model_initial_plan_rejected')
-        return evaluate(plan, state)[0]
+        return evaluate(plan, state, long_task=self.long_task)[0]
 
-    def remaining(self, steps, image_path):
+    def remaining(self, steps, image_path, *, completed=1):
         # State is supported by actual release evidence, NOT predicted execution.
-        state = fixture_state(completed=True)
+        state = fixture_state(completed=completed, long_task=self.long_task)
         raw = {'actions': [dict(step_id=i+1, skill=s.source_skill, **s.args) for i, s in enumerate(steps)]}
         plan = ModelPlan.model_validate(raw)
-        executable, rejection = evaluate(plan, state, completed=True)
+        executable, rejection = evaluate(plan, state, completed=completed, long_task=self.long_task)
         if executable is not None:
             return executable
         if not self.recovery:
             raise ValueError('remaining_plan_rejected_no_recovery')
-        plan, _ = self._request(state, image_path, True, rejection, json.dumps(raw))
+        plan, _ = self._request(state, image_path, completed, rejection, json.dumps(raw))
         if plan is None:
             raise ValueError('model_remaining_repair_rejected')
-        return evaluate(plan, state, completed=True)[0]
+        return evaluate(plan, state, completed=completed, long_task=self.long_task)[0]

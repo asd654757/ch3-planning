@@ -20,6 +20,7 @@ def step(
     state: WorldState,
     action: ModelPlanAction,
     valid_targets: Optional[set[str]] = None,
+    pick_surfaces: Optional[set[str]] = None,
 ) -> tuple[WorldState, bool, Optional[ErrorCode], str]:
     """推进一个动作。失败时返回原状态（拷贝）与错误码。"""
     targets: set[str] = valid_targets if valid_targets is not None else state.objects | {state.table_id}
@@ -29,7 +30,8 @@ def step(
     if action.skill == Skill.PICK:
         if not state.arm_empty(arm):
             return state.copy(), False, ErrorCode.ARM_NOT_EMPTY, f"{arm} 非空，不能 pick {obj}"
-        if not state.is_on_table(obj):
+        supported = {state.table_id} if pick_surfaces is None else {state.table_id} | set(pick_surfaces)
+        if state.location_of(obj) not in supported:
             return state.copy(), False, ErrorCode.STATE_TRANSITION_ERROR, f"{obj} 不在 table 上，无法 pick"
         nxt = state.copy()
         nxt.holding[arm] = obj

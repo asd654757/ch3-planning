@@ -29,6 +29,7 @@ class Validator:
     scene_objects: set[str]
     registry: CapabilityRegistry
     special_targets: Optional[set[str]] = None
+    pick_surfaces: Optional[set[str]] = None  # opt-in backend-supported flat surfaces; legacy defaults unchanged
 
     def __post_init__(self) -> None:
         if self.special_targets is None:
@@ -50,7 +51,7 @@ class Validator:
         if not prefix:
             return None
         _ok, _bad, _code, _msg, final_state = state_validator.simulate_plan(
-            ModelPlan(actions=list(prefix)), initial_state, valid_targets=self.valid_targets
+            ModelPlan(actions=list(prefix)), initial_state, valid_targets=self.valid_targets, pick_surfaces=self.pick_surfaces
         )
         return final_state
 
@@ -95,7 +96,7 @@ class Validator:
 
         # 层4 state：状态模拟推进（依赖顺序）
         ok, bad_step, code, msg, final_state = state_validator.simulate_plan(
-            plan, initial_state, valid_targets=self.valid_targets
+            plan, initial_state, valid_targets=self.valid_targets, pick_surfaces=self.pick_surfaces
         )
         if not ok:
             # 找到首个 state 层失败：合法前缀 = 失败步之前的所有动作

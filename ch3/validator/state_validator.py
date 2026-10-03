@@ -14,6 +14,7 @@ def simulate_plan(
     plan: ModelPlan,
     state: WorldState,
     valid_targets: Optional[set[str]] = None,
+    pick_surfaces: Optional[set[str]] = None,
 ) -> tuple[bool, Optional[int], Optional[ErrorCode], str, WorldState]:
     """从初始状态逐动作推进；返回 (全部通过?, 首错 step_id, 错误码, 消息, 终点状态)。
 
@@ -22,7 +23,7 @@ def simulate_plan(
     """
     cur = state.copy()
     for action in plan.actions:
-        nxt, ok, code, msg = step(cur, action, valid_targets=valid_targets)
+        nxt, ok, code, msg = step(cur, action, valid_targets=valid_targets, pick_surfaces=pick_surfaces)
         if not ok:
             return False, action.step_id, code, msg, cur
         cur = nxt

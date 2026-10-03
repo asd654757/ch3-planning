@@ -12,19 +12,28 @@ if __name__ == '__main__':
     p.add_argument('--output-dir', type=Path, required=True)
     p.add_argument('--env-file', type=Path, required=True)
     p.add_argument('--seeds', type=int, default=3)
+    p.add_argument('--seed-start', type=int, default=0)
+    p.add_argument('--long-task', action='store_true')
     args = p.parse_args()
+    if args.seeds < 1 or args.seed_start < 0:
+        p.error('positive seeds and nonnegative seed-start required')
     args.output_dir.mkdir(parents=True, exist_ok=False)
+    (args.output_dir / 'protocol.json').write_text(json.dumps(dict(
+        seeds=list(range(args.seed_start, args.seed_start+args.seeds)), long_task=args.long_task,
+        injected_faults=0, shared_initial_candidate=True, reobserve_budget=2,
+        model='client_configured_model', instruction_source='fixed_natural_language_task',
+        actual_execution=True), indent=2))
     client = DashScopeVLMClient(env_path=args.env_file, timeout=60, max_retries=0)
     rows = []
     with (args.output_dir / 'episodes.jsonl').open('x') as f:
-        for seed in range(args.seeds):
+        for seed in range(args.seed_start, args.seed_start+args.seeds):
             shared = {}
             methods = [('MODEL_NO_PLAN_REPAIR', False), ('MODEL_DIAGNOSTIC_REPAIR', True)]
             if seed % 2:
                 methods.reverse()
             for method, recovery in methods:
                 print(f'[model-sequence] seed={seed} method={method} start', flush=True)
-                planner = SequenceModelPlanner(client, recovery=recovery, shared=shared)
+                planner = SequenceModelPlanner(client, recovery=recovery, shared=shared, long_task=args.long_task)
                 row = run(seed, args.output_dir / f'seed_{seed}' / method,
                           reobserve_budget=2, model_planner=planner)
                 row['method'] = method

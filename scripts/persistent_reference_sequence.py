@@ -40,7 +40,9 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None):
                             hide_goal_marker=True, add_return_region=True)
             env = make_scene(xml, seed=seed)
             report['episode_resets'] = 1
-            env.max_path_length = 1000
+            long_task = bool(model_planner is not None and model_planner.long_task)
+            env.max_path_length = 1500 if long_task else 1000
+            report['episode_step_limit'] = env.max_path_length
             for _ in range(30):
                 env.step(np.array([0., 0., 0., -1.]))
             calibration = fixed_mujoco_calibration(env.model, env.data, camera='corner2', width=480, height=480)
@@ -84,15 +86,21 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None):
                 report['initial_model_plan'] = executable.to_list()
             blue_after_first = None
             protected_distances = []  # evaluator-only snapshots, never gates
-            for n, (obj, color, region, region_color) in enumerate([
+            sequence = [
                 ('blue_candidate', 'blue', 'return_region', 'magenta'),
-                ('yellow_candidate', 'yellow', 'green_region', 'green')]):
-                stage = f'{color}_pick'
+                ('yellow_candidate', 'yellow', 'green_region', 'green')]
+            if long_task:
+                sequence.insert(0, ('blue_candidate', 'blue', 'green_region', 'green'))
+            report['reference_sequence'] = [f'{o}_to_{r}' for o, _, r, _ in sequence]
+            source_heights = {}
+            for n, (obj, color, region, region_color) in enumerate(sequence):
+                stage = f'{color}_pick' if not long_task else f'transfer_{n}_{color}_pick'
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
                 rgb = frame(stage)
                 initial = pixel(rgb, color)
                 oid = stage
-                source = visual_binding(calibration, object_id=obj, observation_id=oid, pixel=initial, plane_z=.02)
+                source = visual_binding(calibration, object_id=obj, observation_id=oid, pixel=initial,
+                                        plane_z=source_heights.get(obj, .02))
                 step = ExecutableStep(2*n+1, 'fixed_pick', 'grasp', dict(object_id=obj, arm='right'), 'pick')
                 if executable is not None:
                     step = executable.steps[2*n]
@@ -107,7 +115,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None):
                     raise ValueError('holding_not_supported')
                 if blue_after_first is not None:
                     protected_distances.append(float(np.linalg.norm(env.data.body('candidate_blue').xpos - blue_after_first)))
-                stage = f'{color}_place'
+                stage = f'{color}_place' if not long_task else f'transfer_{n}_{color}_place'
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
                 dest = None
                 for observation_round in range(reobserve_budget + 1):
@@ -161,15 +169,18 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None):
                 report['events'][-1]['release'] = release
                 if release['status'] != 'release_supported':
                     raise ValueError('release_not_supported')
-                if n == 0:
+                source_heights[obj] = .028
+                if obj == 'blue_candidate' and region == 'return_region':
                     blue_after_first = env.data.body('candidate_blue').xpos.copy()
-                    if model_planner is not None:
-                        frame('observed_blue_release')
-                        remaining = model_planner.remaining(executable.steps[2:], out / 'observed_blue_release.png')
-                        executable.steps[2:] = remaining.steps
-                        report['remaining_model_plan'] = remaining.to_list()
-                else:
+                elif blue_after_first is not None:
                     protected_distances.append(float(np.linalg.norm(env.data.body('candidate_blue').xpos - blue_after_first)))
+                if model_planner is not None and n < len(sequence)-1:
+                    observed_name = f'observed_release_{n}'
+                    frame(observed_name)
+                    offset = 2*n+2
+                    remaining = model_planner.remaining(executable.steps[offset:], out / f'{observed_name}.png', completed=n+1)
+                    executable.steps[offset:] = remaining.steps
+                    report.setdefault('remaining_model_plans', []).append(remaining.to_list())
 
             # Independent truth scoring AFTER execution, not used to select actions.
             scores = {}

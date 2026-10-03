@@ -51,6 +51,21 @@ def test_exact_budget_completion_and_short_budget_timeout():
     assert result["steps"] == steps - 1
 
 
+def test_explicit_contact_calibration_preserves_default_and_threshold():
+    default = FixedPickPlaceController(MockRobot()).execute(request())
+    calibrated = FixedPickPlaceController(MockRobot(), pick_contact_offset=.03).execute(request())
+    assert default['trace'][1]['target_position'][2] == pytest.approx(.035)
+    assert calibrated['trace'][1]['target_position'][2] == pytest.approx(.05)
+    assert calibrated['trace'][2]['steps'] == 35
+    assert calibrated['completed']
+
+
+@pytest.mark.parametrize('offset', [0., .05, float('nan')])
+def test_reject_invalid_contact_calibration(offset):
+    with pytest.raises(ValueError):
+        FixedPickPlaceController(MockRobot(), pick_contact_offset=offset)
+
+
 @pytest.mark.parametrize("binding", [
     replace(request().object_binding, source="simulator_truth"),
     replace(request().object_binding, observation_id="old"),

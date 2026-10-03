@@ -12,7 +12,7 @@ import tempfile
 os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
-def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False):
+def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015):
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -30,7 +30,8 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                   truth_usage='scoring_only_not_targeting_or_authorization',
                   reference_sequence=['blue_to_return_region', 'yellow_to_green_region'],
                   protected_displacement_limit_m=.015, episode_step_limit=1000,
-                  reobserve_budget=reobserve_budget, destination_observations=[])
+                  reobserve_budget=reobserve_budget, destination_observations=[],
+                  pick_contact_offset_m=pick_contact_offset)
     env = None
     stage = 'setup'
     with tempfile.TemporaryDirectory() as tmp:
@@ -46,7 +47,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             for _ in range(30):
                 env.step(np.array([0., 0., 0., -1.]))
             calibration = fixed_mujoco_calibration(env.model, env.data, camera='corner2', width=480, height=480)
-            controller = FixedPickPlaceController(env)
+            controller = FixedPickPlaceController(env, pick_contact_offset=pick_contact_offset)
             contract = BackendContract(controller.backend, frozenset({'pick', 'place'}), frozenset({'right'}), 'mujoco_world')
 
             def frame(name):

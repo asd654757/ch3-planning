@@ -15,15 +15,19 @@ if __name__ == '__main__':
     p.add_argument('--seed-start', type=int, default=0)
     p.add_argument('--long-task', action='store_true')
     p.add_argument('--execution-recovery', action='store_true')
+    p.add_argument('--pick-contact-offset', type=float, default=.015)
     args = p.parse_args()
     if args.seeds < 1 or args.seed_start < 0:
         p.error('positive seeds and nonnegative seed-start required')
+    if not .015 <= args.pick_contact_offset <= .04:
+        p.error('pick-contact-offset must be between .015 and .04 meters')
     args.output_dir.mkdir(parents=True, exist_ok=False)
     (args.output_dir / 'protocol.json').write_text(json.dumps(dict(
         seeds=list(range(args.seed_start, args.seed_start+args.seeds)), long_task=args.long_task,
         injected_faults=0, shared_initial_candidate=True, reobserve_budget=2,
         model='client_configured_model', instruction_source='fixed_natural_language_task',
-        actual_execution=True, execution_recovery=args.execution_recovery), indent=2))
+        actual_execution=True, execution_recovery=args.execution_recovery,
+        pick_contact_offset_m=args.pick_contact_offset), indent=2))
     client = DashScopeVLMClient(env_path=args.env_file, timeout=60, max_retries=0)
     rows = []
     with (args.output_dir / 'episodes.jsonl').open('x') as f:
@@ -36,7 +40,8 @@ if __name__ == '__main__':
                 print(f'[model-sequence] seed={seed} method={method} start', flush=True)
                 planner = SequenceModelPlanner(client, recovery=recovery, shared=shared, long_task=args.long_task)
                 row = run(seed, args.output_dir / f'seed_{seed}' / method,
-                          reobserve_budget=2, model_planner=planner, execution_recovery=args.execution_recovery)
+                          reobserve_budget=2, model_planner=planner, execution_recovery=args.execution_recovery,
+                          pick_contact_offset=args.pick_contact_offset)
                 row['method'] = method
                 f.write(json.dumps(row)+'\n'); f.flush(); rows.append(row)
                 print(json.dumps(dict(seed=seed, method=method, success=row['success'], model_calls=row['model_calls'],

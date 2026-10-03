@@ -1,0 +1,56 @@
+[v7.2] start=2026-10-03T12:53:41Z commit=f1a32513383741eaaaf5c71ae29f9546a2d21f94
+[flexible-fixture] seed=202 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=202 stage=transfer_0_blue_pick
+[reference-sequence] seed=202 stage=transfer_0_blue_place
+[reference-sequence] seed=202 stage=transfer_1_yellow_pick
+[reference-sequence] seed=202 stage=transfer_1_yellow_place
+{"seed": 202, "method": "MODEL_DIRECT_REPLAN", "success": false, "model_calls": 3, "error": "ValueError: flexible_remaining_repair_rejected"}
+[flexible-fixture] seed=202 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=202 stage=transfer_0_blue_pick
+[reference-sequence] seed=202 stage=transfer_0_blue_place
+[reference-sequence] seed=202 stage=transfer_1_yellow_pick
+[reference-sequence] seed=202 stage=transfer_1_yellow_place
+[reference-sequence] seed=202 stage=transfer_2_blue_pick
+[reference-sequence] seed=202 stage=transfer_2_blue_place
+[reference-sequence] seed=202 stage=transfer_3_yellow_pick
+[reference-sequence] seed=202 stage=transfer_3_yellow_place
+{"seed": 202, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=211 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=211 stage=transfer_0_blue_pick
+[reference-sequence] seed=211 stage=transfer_0_blue_place
+[reference-sequence] seed=211 stage=transfer_1_yellow_pick
+[reference-sequence] seed=211 stage=transfer_1_yellow_place
+{"seed": 211, "method": "MODEL_CONSTRAINT_REPAIR", "success": false, "model_calls": 3, "error": "ValueError: flexible_remaining_repair_rejected"}
+[flexible-fixture] seed=211 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=211 stage=transfer_0_blue_pick
+[reference-sequence] seed=211 stage=transfer_0_blue_place
+[reference-sequence] seed=211 stage=transfer_1_yellow_pick
+[reference-sequence] seed=211 stage=transfer_1_yellow_place
+{"seed": 211, "method": "MODEL_DIRECT_REPLAN", "success": false, "model_calls": 2, "error": "ValueError: flexible_remaining_repair_rejected"}
+{"completed_episodes": 4, "actual_model_calls": 10, "methods": {"MODEL_CONSTRAINT_REPAIR": {"episodes": 2, "successes": 1, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 1}, "MODEL_DIRECT_REPLAN": {"episodes": 2, "successes": 0, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 0}}}
+[flexible-fixture] seed=237 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=237 stage=transfer_0_blue_pick
+[reference-sequence] seed=237 stage=transfer_0_blue_place
+[reference-sequence] seed=237 stage=transfer_1_yellow_pick
+[reference-sequence] seed=237 stage=transfer_1_yellow_place
+{"seed": 237, "method": "MODEL_CONSTRAINT_REPAIR", "success": false, "model_calls": 3, "error": "ValueError: flexible_remaining_repair_rejected"}
+[flexible-fixture] seed=237 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=237 stage=transfer_0_blue_pick
+[reference-sequence] seed=237 stage=transfer_0_blue_place
+[reference-sequence] seed=237 stage=transfer_1_yellow_pick
+[reference-sequence] seed=237 stage=transfer_1_yellow_place
+{"seed": 237, "method": "MODEL_DIRECT_REPLAN", "success": false, "model_calls": 2, "error": "ValueError: flexible_remaining_repair_rejected"}
+[flexible-fixture] seed=238 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=238 stage=transfer_0_blue_pick
+[reference-sequence] seed=238 stage=transfer_0_blue_place
+[reference-sequence] seed=238 stage=transfer_1_yellow_pick
+[reference-sequence] seed=238 stage=transfer_1_yellow_place
+{"seed": 238, "method": "MODEL_DIRECT_REPLAN", "success": false, "model_calls": 3, "error": "ValueError: flexible_remaining_repair_rejected"}
+[flexible-fixture] seed=238 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=238 stage=transfer_0_blue_pick
+[reference-sequence] seed=238 stage=transfer_0_blue_place
+[reference-sequence] seed=238 stage=transfer_1_yellow_pick
+[reference-sequence] seed=238 stage=transfer_1_yellow_place
+{"seed": 238, "method": "MODEL_CONSTRAINT_REPAIR", "success": false, "model_calls": 2, "error": "ValueError: flexible_remaining_repair_rejected"}
+{"completed_episodes": 4, "actual_model_calls": 10, "methods": {"MODEL_DIRECT_REPLAN": {"episodes": 2, "successes": 0, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 0}, "MODEL_CONSTRAINT_REPAIR": {"episodes": 2, "successes": 0, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 0}}}
+[v7.2] completed_at_utc=2026-10-03T12:54:36Z

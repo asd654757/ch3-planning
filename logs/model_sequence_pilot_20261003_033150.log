@@ -1,0 +1,37 @@
+[model-sequence] seed=0 method=MODEL_NO_PLAN_REPAIR start
+[reference-sequence] seed=0 stage=blue_pick
+[reference-sequence] seed=0 stage=blue_place
+[reference-sequence] seed=0 stage=yellow_pick
+[reference-sequence] seed=0 stage=yellow_place
+{"seed": 0, "method": "MODEL_NO_PLAN_REPAIR", "success": true, "model_calls": 1, "failure_stage": null}
+[model-sequence] seed=0 method=MODEL_DIAGNOSTIC_REPAIR start
+[reference-sequence] seed=0 stage=blue_pick
+[reference-sequence] seed=0 stage=blue_place
+[reference-sequence] seed=0 stage=yellow_pick
+[reference-sequence] seed=0 stage=yellow_place
+{"seed": 0, "method": "MODEL_DIAGNOSTIC_REPAIR", "success": true, "model_calls": 0, "failure_stage": null}
+[model-sequence] seed=1 method=MODEL_DIAGNOSTIC_REPAIR start
+[reference-sequence] seed=1 stage=blue_pick
+[reference-sequence] seed=1 stage=blue_place
+[reference-sequence] seed=1 stage=yellow_pick
+[reference-sequence] seed=1 stage=yellow_place
+{"seed": 1, "method": "MODEL_DIAGNOSTIC_REPAIR", "success": true, "model_calls": 1, "failure_stage": null}
+[model-sequence] seed=1 method=MODEL_NO_PLAN_REPAIR start
+[reference-sequence] seed=1 stage=blue_pick
+[reference-sequence] seed=1 stage=blue_place
+[reference-sequence] seed=1 stage=yellow_pick
+[reference-sequence] seed=1 stage=yellow_place
+{"seed": 1, "method": "MODEL_NO_PLAN_REPAIR", "success": true, "model_calls": 0, "failure_stage": null}
+[model-sequence] seed=2 method=MODEL_NO_PLAN_REPAIR start
+[reference-sequence] seed=2 stage=blue_pick
+[reference-sequence] seed=2 stage=blue_place
+[reference-sequence] seed=2 stage=yellow_pick
+[reference-sequence] seed=2 stage=yellow_place
+{"seed": 2, "method": "MODEL_NO_PLAN_REPAIR", "success": true, "model_calls": 1, "failure_stage": null}
+[model-sequence] seed=2 method=MODEL_DIAGNOSTIC_REPAIR start
+[reference-sequence] seed=2 stage=blue_pick
+[reference-sequence] seed=2 stage=blue_place
+[reference-sequence] seed=2 stage=yellow_pick
+[reference-sequence] seed=2 stage=yellow_place
+{"seed": 2, "method": "MODEL_DIAGNOSTIC_REPAIR", "success": true, "model_calls": 0, "failure_stage": null}
+{"completed_episodes": 6, "actual_model_calls": 3, "scope": "live_model_initial_planning_and_plan_rejection_repair_not_full_routed", "methods": {"MODEL_NO_PLAN_REPAIR": {"episodes": 3, "successes": 3, "repair_calls": 0}, "MODEL_DIAGNOSTIC_REPAIR": {"episodes": 3, "successes": 3, "repair_calls": 0}}}

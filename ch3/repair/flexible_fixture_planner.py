@@ -9,10 +9,9 @@ from copy import deepcopy
 
 from ch3.compiler.executable_plan import compile_plan
 from ch3.execution.observed_continuation import fixed_registry
-from ch3.goal.goal_checker import goal_satisfied
 from ch3.repair.persistent_model_recovery import strict_plan
 from ch3.repair.sequence_model_planner import OBJECTS
-from ch3.schema.model_plan import GoalSpec, ModelPlan
+from ch3.schema.model_plan import ModelPlan
 from ch3.state.world_state import WorldState
 from ch3.validator.pipeline import Validator
 
@@ -44,9 +43,13 @@ def evaluate_flexible(plan, state, goals, protected=()):
         return None, dict(error_code='PROTECTED_OBJECT_MUTATION')
     if any(a.object_id not in MOVABLE for a in plan.actions):
         return None, dict(error_code='NON_MOVABLE_OBJECT')
-    if not goal_satisfied(validation.final_state, GoalSpec(facts=[
-        *(f'on({obj}, {region})' for obj,region in goals.items()), 'hand_empty(right)']), {'right'}):
-        return None, dict(error_code='GOAL_NOT_SATISFIED')
+    required = {*(f'on({obj}, {region})' for obj,region in goals.items()), 'hand_empty(right)'}
+    predicted = validation.final_state.facts() | validation.final_state.empty_hand_facts({'right'})
+    if not required <= predicted:
+        return None, dict(error_code='GOAL_NOT_SATISFIED',
+            unmet_goal_facts=sorted(required-predicted),
+            predicted_final_facts=sorted(predicted),
+            evidence_source='candidate_symbolic_simulation_not_simulator_truth')
     executable = compile_plan(plan, registry)
     try:
         transfer_pairs(executable.steps)
@@ -93,9 +96,11 @@ class FlexibleFixturePlanner:
             current_facts=sorted(self.state.facts()|self.state.empty_hand_facts({'right'})),
             state_source='controlled_initial_fixture' if initial else 'supported_RGB_release_history_plus_untouched_fixture',
             goals=dict(self.goals), executed_history=list(self.history), goal_updates=deepcopy(self.goal_updates),
+            remaining_goal_facts=sorted(f'on({obj}, {region})' for obj,region in self.goals.items()
+                if self.state.location_of(obj)!=region),
             forbidden_objects=sorted(self.protected()), movable_objects=sorted(MOVABLE), targets=sorted(REGIONS),
             backend_contract='right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed',
-            feedback=feedback if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
+            feedback=deepcopy(feedback) if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
                 object_id='registered cube',target_id='registered region for place, omitted for pick')]})
         item=dict(request=prompt, image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=0, accepted=False, phase=('initial' if initial else
@@ -117,10 +122,14 @@ class FlexibleFixturePlanner:
                     self.shared['flexible_initial']=dict(request=deepcopy(prompt),image_sha256=item['image_sha256'],content=response.content)
             plan=strict_plan(item['content'],fixed_right_arm=True)
             executable,rejection=evaluate_flexible(plan,self.state,self.goals,self.protected())
+            if rejection is not None:
+                rejection['rejected_candidate']=plan.model_dump(mode='json')
             item.update(accepted=executable is not None,rejection=rejection,normalized_plan=plan.model_dump(mode='json'))
             return executable
         except Exception as exc:
             item['rejection']=dict(error_code='MODEL_OR_PARSE_FAILURE',error_type=type(exc).__name__)
+            if 'content' in item:
+                item['rejection']['rejected_output']=item['content']
             if isinstance(exc, ValueError) and str(exc)=='shared_initial_input_mismatch':
                 item['rejection']['local_rejection_code']='shared_initial_input_mismatch'
             return None
@@ -153,6 +162,8 @@ class FlexibleFixturePlanner:
         if steps:
             plan=ModelPlan.model_validate(raw)
             executable,rejection=evaluate_flexible(plan,self.state,self.goals,self.protected())
+            if rejection is not None:
+                rejection['rejected_candidate']=plan.model_dump(mode='json')
         else:
             executable,rejection=None,dict(error_code='REMAINING_GOAL_WITH_EMPTY_SUFFIX')
         if executable is not None:

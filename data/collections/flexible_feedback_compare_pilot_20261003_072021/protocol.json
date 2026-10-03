@@ -1,0 +1,27 @@
+{
+  "seeds": [
+    58,
+    59,
+    60,
+    61,
+    62,
+    63
+  ],
+  "task": "two_cube_flexible_delivery",
+  "controlled_goal_update": true,
+  "goal_update_timing": "after_first_supported_delivery",
+  "update": "swap both requested destinations",
+  "actual_model": true,
+  "shared_initial_candidate": true,
+  "episode_resets": 1,
+  "initial_y_spread_m": 0.025,
+  "pick_contact_offset_m": 0.03,
+  "backend": "fixed_pick_place",
+  "max_total_transfers": 4,
+  "max_repair_calls": 2,
+  "protocol_version": "flexible_feedback_v3",
+  "compare_feedback": true,
+  "shared_acceptance_gate": true,
+  "failed_candidate_retry": "up to remaining noninitial budget",
+  "scope": "task_update_replanning_pilot_not_natural_execution_failure_recovery"
+}

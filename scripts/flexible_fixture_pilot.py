@@ -25,7 +25,9 @@ if __name__=='__main__':
         actual_model=True,shared_initial_candidate=True,episode_resets=1,
         initial_y_spread_m=.025,pick_contact_offset_m=.03,
         backend='fixed_pick_place',max_total_transfers=4,max_repair_calls=2,
-        protocol_version='flexible_feedback_v3',compare_feedback=args.compare_feedback,
+        protocol_version='flexible_feedback_v4',compare_feedback=args.compare_feedback,
+        goal_feedback='explicit_unmet_facts_and_rejected_candidate',
+        remaining_goals_available_to_both=True,
         shared_acceptance_gate=True,failed_candidate_retry='up to remaining noninitial budget',
         scope='task_update_replanning_pilot_not_natural_execution_failure_recovery')
     (args.output_dir/'protocol.json').write_text(json.dumps(protocol,indent=2))

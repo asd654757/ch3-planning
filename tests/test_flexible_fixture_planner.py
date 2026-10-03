@@ -133,3 +133,33 @@ def test_rejected_outputs_stop_after_equal_budget(tmp_path):
             planner.remaining([],image,completed=0)
         assert client.calls==2
         assert all(not a['accepted'] for a in planner.audit)
+
+
+def test_missing_goal_feedback_names_actual_omission_without_truth():
+    state=WorldState.table_scene(OBJECTS)
+    state.at['blue_candidate']='return_region'
+    goals=dict(blue_candidate='green_region',yellow_candidate='return_region')
+    _,error=evaluate_flexible(plan([('yellow_candidate','return_region')]),state,goals)
+    assert error['unmet_goal_facts']==['on(blue_candidate, green_region)']
+    assert error['evidence_source']=='candidate_symbolic_simulation_not_simulator_truth'
+    assert 'on(blue_candidate, return_region)' in error['predicted_final_facts']
+
+
+def test_second_feedback_contains_rejected_candidate_and_specific_goal(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    class Client:
+        calls=0
+        def complete(self,**kwargs):
+            self.calls+=1
+            request=json.loads(kwargs['user_prompt'])
+            assert request['remaining_goal_facts']==['on(blue_candidate, green_region)',
+                'on(yellow_candidate, return_region)']
+            pairs=[('yellow_candidate','return_region')]
+            if self.calls==2:
+                assert request['feedback']['unmet_goal_facts']==['on(blue_candidate, green_region)']
+                assert len(request['feedback']['rejected_candidate']['actions'])==2
+                pairs.insert(0,('blue_candidate','green_region'))
+            return SimpleNamespace(content=plan(pairs).model_dump_json(),total_tokens=10)
+    planner=FlexibleFixturePlanner(Client(),recovery=True,shared={},update_goals=True)
+    planner.observe_release('blue_candidate','return_region')
+    assert len(planner.remaining([],image,completed=1).steps)==4

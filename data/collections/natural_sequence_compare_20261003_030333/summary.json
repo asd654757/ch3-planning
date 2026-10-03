@@ -1,0 +1,29 @@
+{
+  "scope": "natural_execution_observation_recovery_not_routed_or_model_repair",
+  "complete": true,
+  "expected_episodes": 60,
+  "completed_episodes": 60,
+  "summary_by_method": {
+    "STOP_ON_FAILURE": {
+      "episodes": 30,
+      "successes": 15,
+      "failure_stages": {
+        "yellow_place": 15
+      },
+      "extra_observation_attempts": 0,
+      "model_calls": 0
+    },
+    "BOUNDED_REOBSERVE": {
+      "episodes": 30,
+      "successes": 30,
+      "failure_stages": {},
+      "extra_observation_attempts": 21,
+      "model_calls": 0
+    }
+  },
+  "paired_wins": 15,
+  "paired_losses": 0,
+  "paired_ties": 15,
+  "injected_faults": 0,
+  "outcome_selection": false
+}

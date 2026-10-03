@@ -12,7 +12,7 @@ import tempfile
 os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
-def run(seed, out, *, reobserve_budget=0):
+def run(seed, out, *, reobserve_budget=0, model_planner=None):
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -75,6 +75,13 @@ def run(seed, out, *, reobserve_budget=0):
                     records.append(dict(target_pixel=p, hand_pixel=project_point(calibration, env.get_endeff_pos())))
                 return records, rgb
 
+            executable = None
+            if model_planner is not None:
+                stage = 'model_initial_planning'
+                frame('model_initial')
+                executable = model_planner.initial(out / 'model_initial.png')
+                report['scope'] = 'live_model_planning_persistent_execution_restricted_fixture'
+                report['initial_model_plan'] = executable.to_list()
             blue_after_first = None
             protected_distances = []  # evaluator-only snapshots, never gates
             for n, (obj, color, region, region_color) in enumerate([
@@ -87,6 +94,8 @@ def run(seed, out, *, reobserve_budget=0):
                 oid = stage
                 source = visual_binding(calibration, object_id=obj, observation_id=oid, pixel=initial, plane_z=.02)
                 step = ExecutableStep(2*n+1, 'fixed_pick', 'grasp', dict(object_id=obj, arm='right'), 'pick')
+                if executable is not None:
+                    step = executable.steps[2*n]
                 result = controller.execute(contract.request(step, bindings={obj: source}, observation_id=oid))
                 report['events'].append(dict(stage=stage, execution=result))
                 if not result['completed']:
@@ -137,6 +146,8 @@ def run(seed, out, *, reobserve_budget=0):
                 from dataclasses import replace
                 bindings = {obj: replace(source, observation_id=oid), region: dest}
                 step = ExecutableStep(2*n+2, 'fixed_place', 'place', dict(object_id=obj, arm='right', target_id=region), 'place')
+                if executable is not None:
+                    step = executable.steps[2*n+1]
                 result = controller.execute(contract.request(step, bindings=bindings, observation_id=oid))
                 report['events'].append(dict(stage=stage, execution=result))
                 if not result['completed']:
@@ -152,6 +163,11 @@ def run(seed, out, *, reobserve_budget=0):
                     raise ValueError('release_not_supported')
                 if n == 0:
                     blue_after_first = env.data.body('candidate_blue').xpos.copy()
+                    if model_planner is not None:
+                        frame('observed_blue_release')
+                        remaining = model_planner.remaining(executable.steps[2:], out / 'observed_blue_release.png')
+                        executable.steps[2:] = remaining.steps
+                        report['remaining_model_plan'] = remaining.to_list()
                 else:
                     protected_distances.append(float(np.linalg.norm(env.data.body('candidate_blue').xpos - blue_after_first)))
 
@@ -170,6 +186,12 @@ def run(seed, out, *, reobserve_budget=0):
             report['failure_stage'] = stage
             report['error'] = f'{type(exc).__name__}: {exc}'
         finally:
+            if model_planner is not None:
+                report['scope'] = 'live_model_planning_persistent_execution_restricted_fixture'
+                report['model_audit'] = model_planner.audit
+                report['model_calls'] = sum(a['actual_model_calls'] for a in model_planner.audit)
+                report['model_recovery_enabled'] = model_planner.recovery
+                report['execution_unknown_policy'] = 'stop_not_fabricate_current_state'
             if env is not None:
                 env.close()
             (out / 'summary.json').write_text(json.dumps(report, indent=2))

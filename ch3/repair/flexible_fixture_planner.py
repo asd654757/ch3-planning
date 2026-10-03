@@ -51,6 +51,9 @@ def diagnostic_feedback(rejection, *, execution_contract=True):
             correction='Return a JSON object with actions matching output_schema; no bare array.')
     elif code == 'DESTINATION_OCCUPIED':
         result.update(category='placement_prerequisite_failure',
+            violated_precondition=dict(object_id=rejection.get('object_id'),
+                target_id=rejection.get('target_id'),
+                occupying_objects=deepcopy(rejection.get('occupying_objects', []))),
             correction='Check current destination_occupancy and clear occupying cubes before placing; regenerate the entire suffix.')
     elif code == 'REMAINING_EXECUTION_BUDGET':
         result.update(category='remaining_budget_violation',
@@ -185,6 +188,11 @@ class FlexibleFixturePlanner:
             feedback=diagnostic_feedback(feedback, execution_contract=self.execution_contract) if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
                 object_id='registered cube',target_id='registered region for place, omitted for pick')]})
         if self.execution_contract:
+            prerequisites = [dict(action='place',object_id=obj,target_id=target,
+                requires=dict(region_clear_of=other),
+                reason='other registered cube currently occupies this placement region')
+                for obj,target in sorted(self.goals.items()) for other in sorted(MOVABLE)
+                if other != obj and self.state.location_of(other)==target]
             prompt.update(execution_budget=dict(max_total_transfers=4,
                 attempted_transfers=self.attempted_transfers,
                 remaining_transfers=4-self.attempted_transfers,
@@ -193,6 +201,7 @@ class FlexibleFixturePlanner:
                 remaining_model_calls=2-sum(a['phase']!='initial' for a in self.audit)),
                 destination_occupancy={region:sorted(obj for obj in MOVABLE
                     if self.state.location_of(obj)==region) for region in sorted(REGIONS)},
+                action_prerequisites=prerequisites,
                 placement_precondition='Destination must be clear of other registered cubes. '
                     'Move an occupying cube away before placing there. Generate the order yourself; '
                     'the entire replacement suffix must fit the remaining transfer budget.',
@@ -201,6 +210,11 @@ class FlexibleFixturePlanner:
                 'satisfies a changed current goal. Use requires_delivery for BOTH cubes. '
                 'Each required delivery uses one pick AND one place: two remaining transfers permit '
                 'four actions. Do not confuse transfer count with action count.')
+            prompt['instruction'] += (' HARD RULE: before any place action, inspect action_prerequisites. '
+                'A destination occupied by another cube is unavailable even if it is this cube\'s goal. '
+                'First satisfy that prerequisite through legal actions; check again after each proposed transfer. '
+                'The currently failed cube does not automatically have priority. Return only executable actions '
+                'covering every requires_delivery obligation; no explanation or imagined successful execution.')
         item=dict(request=prompt, local_feedback_evidence=deepcopy(feedback),
             feedback_protocol=('typed_execution_feedback_contract_v7' if self.execution_contract
                 else 'authoritative_task_diagnostic_projection_v6'),

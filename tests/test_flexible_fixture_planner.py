@@ -307,3 +307,12 @@ def test_v7_progress_is_monotonic_and_bounded():
     for invalid in (2,5,-1):
         with pytest.raises(ValueError,match='invalid_execution_progress'):
             p.set_execution_progress(invalid)
+
+
+def test_occupied_rejection_feedback_is_concrete_not_a_rewritten_plan():
+    result=diagnostic_feedback(dict(error_code='DESTINATION_OCCUPIED',object_id='yellow_candidate',
+        target_id='return_region',occupying_objects=['blue_candidate'],
+        rejected_candidate={'actions':[]},predicted_final_facts=['fake']))
+    assert result['violated_precondition']==dict(object_id='yellow_candidate',
+        target_id='return_region',occupying_objects=['blue_candidate'])
+    assert 'rejected_candidate' not in result and 'predicted_final_facts' not in result

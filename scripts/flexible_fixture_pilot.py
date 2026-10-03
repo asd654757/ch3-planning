@@ -38,7 +38,7 @@ if __name__=='__main__':
         actual_model=True,shared_initial_candidate=True,episode_resets=1,
         initial_y_spread_m=.025,pick_contact_offset_m=.03,
         backend='fixed_pick_place',max_total_transfers=4,max_repair_calls=2,
-        protocol_version='flexible_feedback_v7' if args.repair_contract_v7 else 'flexible_feedback_v6',compare_feedback=args.compare_feedback,
+        protocol_version='flexible_feedback_v7_2' if args.repair_contract_v7 else 'flexible_feedback_v6',compare_feedback=args.compare_feedback,
         execution_contract_v7=args.repair_contract_v7,
         repair_semantics='complete_replacement_not_incremental_patch_rejected_plans_not_executed',
         goal_feedback='diagnostic_category_and_count_no_candidate_or_predicted_state',

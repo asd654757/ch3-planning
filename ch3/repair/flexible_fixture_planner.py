@@ -188,6 +188,8 @@ class FlexibleFixturePlanner:
             prompt.update(execution_budget=dict(max_total_transfers=4,
                 attempted_transfers=self.attempted_transfers,
                 remaining_transfers=4-self.attempted_transfers,
+                unit='one transfer is TWO actions: pick then place, not one action',
+                remaining_action_capacity=2*(4-self.attempted_transfers),
                 remaining_model_calls=2-sum(a['phase']!='initial' for a in self.audit)),
                 destination_occupancy={region:sorted(obj for obj in MOVABLE
                     if self.state.location_of(obj)==region) for region in sorted(REGIONS)},
@@ -195,6 +197,10 @@ class FlexibleFixturePlanner:
                     'Move an occupying cube away before placing there. Generate the order yourself; '
                     'the entire replacement suffix must fit the remaining transfer budget.',
                 occupancy_scope='latest_supported_release_history_not_continuous_scene_certificate')
+            prompt['instruction'] += (' A completed entry in executed_history does NOT mean the cube '
+                'satisfies a changed current goal. Use requires_delivery for BOTH cubes. '
+                'Each required delivery uses one pick AND one place: two remaining transfers permit '
+                'four actions. Do not confuse transfer count with action count.')
         item=dict(request=prompt, local_feedback_evidence=deepcopy(feedback),
             feedback_protocol=('typed_execution_feedback_contract_v7' if self.execution_contract
                 else 'authoritative_task_diagnostic_projection_v6'),

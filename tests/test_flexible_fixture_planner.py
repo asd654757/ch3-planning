@@ -245,3 +245,65 @@ def test_second_delivery_deviation_preserves_history_and_current_goal_protection
         assert len(result.steps)==(4 if hard else 2)
         assert len(planner.history)==1
         assert len(planner.goal_updates)==int(hard)
+
+
+def test_v7_occupied_destination_rejected_but_clearing_order_accepted():
+    state=WorldState.table_scene(OBJECTS)
+    state.at['blue_candidate']='return_region'
+    state.at['yellow_candidate']='observed_support'
+    goals=dict(blue_candidate='green_region',yellow_candidate='return_region')
+    bad=plan([('yellow_candidate','return_region'),('blue_candidate','green_region')])
+    # Old result remains reproducible; new gate adds execution prerequisites.
+    assert evaluate_flexible(bad,state,goals)[0] is not None
+    error=evaluate_flexible(bad,state,goals,execution_contract=True,remaining_transfers=2)[1]
+    assert error['error_code']=='DESTINATION_OCCUPIED'
+    assert error['occupying_objects']==['blue_candidate']
+    good=plan([('blue_candidate','green_region'),('yellow_candidate','return_region')])
+    assert evaluate_flexible(good,state,goals,execution_contract=True,remaining_transfers=2)[0]
+    assert evaluate_flexible(good,state,goals,execution_contract=True,
+        remaining_transfers=1)[1]['error_code']=='REMAINING_EXECUTION_BUDGET'
+
+
+def test_v7_execution_event_is_not_unexecuted_candidate():
+    result=diagnostic_feedback(dict(error_code='OBSERVED_GOAL_NOT_SATISFIED',
+        attempted_action={'skill':'place','object_id':'yellow_candidate','target_id':'green_region'},
+        observation={'goal_status':'not_satisfied'}))
+    assert result['event_type']=='execution_event' and result['action_executed']
+    assert 'candidate_executed' not in result
+    assert result['attempted_action']['target_id']=='green_region'
+
+
+def test_v7_both_methods_share_occupancy_and_remaining_budget(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    requests=[]
+    for enabled in (False,True):
+        class Client:
+            def complete(self,**kwargs):
+                requests.append(json.loads(kwargs['user_prompt']))
+                return SimpleNamespace(content=plan([('blue_candidate','green_region'),
+                    ('yellow_candidate','return_region')]).model_dump_json(),total_tokens=1)
+        planner=FlexibleFixturePlanner(Client(),recovery=True,shared={},
+            error_feedback=enabled,update_on_deviation=True,execution_contract=True)
+        planner.observe_release('blue_candidate','return_region')
+        planner.set_execution_progress(2)
+        planner.released_object_repair(image,object_id='yellow_candidate',
+            release={'status':'release_supported'},observed_goal={'status':'not_satisfied'})
+        assert planner.state.location_of('yellow_candidate')=='observed_support'
+        assert len(planner.history)==1
+    direct,feedback=requests
+    assert direct.pop('feedback') is None
+    event=feedback.pop('feedback')
+    assert event['event_type']=='execution_event'
+    assert event['attempted_action']['target_id']=='green_region'  # old attempted goal, not new one
+    assert direct==feedback
+    assert direct['execution_budget']['remaining_transfers']==2
+    assert direct['destination_occupancy']['return_region']==['blue_candidate']
+
+
+def test_v7_progress_is_monotonic_and_bounded():
+    import pytest
+    p=FlexibleFixturePlanner(None,recovery=True,shared={},execution_contract=True)
+    p.set_execution_progress(3)
+    for invalid in (2,5,-1):
+        with pytest.raises(ValueError,match='invalid_execution_progress'):
+            p.set_execution_progress(invalid)

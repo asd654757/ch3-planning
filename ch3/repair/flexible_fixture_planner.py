@@ -19,7 +19,7 @@ MOVABLE = {'blue_candidate', 'yellow_candidate'}
 REGIONS = {'green_region', 'return_region'}
 
 
-def diagnostic_feedback(rejection):
+def diagnostic_feedback(rejection, *, execution_contract=True):
     """Project local rejection evidence into a bounded, non-state diagnostic.
 
     Full candidates/predictions stay in the audit. Never forward simulated
@@ -28,7 +28,15 @@ def diagnostic_feedback(rejection):
     if not rejection:
         return None
     code = rejection.get('error_code', 'REJECTED')
+    if execution_contract and code == 'OBSERVED_GOAL_NOT_SATISFIED':
+        return dict(error_code=code, event_type='execution_event', action_executed=True,
+            category='observed_postcondition_failure',
+            evidence_source='supported_RGB_release_and_goal_check',
+            attempted_action=deepcopy(rejection.get('attempted_action')),
+            observation=deepcopy(rejection.get('observation')),
+            correction='Plan from the observed state and current goals; check occupied destinations and remaining budget.')
     result = dict(error_code=code, candidate_executed=False,
+        event_type='candidate_rejection',
         role='diagnostic_only_not_current_state_or_replacement_goal',
         repair_mode='regenerate_complete_suffix_from_current_task')
     if code == 'GOAL_NOT_SATISFIED':
@@ -41,6 +49,12 @@ def diagnostic_feedback(rejection):
     elif code == 'MODEL_OR_PARSE_FAILURE':
         result.update(category='output_or_request_failure',
             correction='Return a JSON object with actions matching output_schema; no bare array.')
+    elif code == 'DESTINATION_OCCUPIED':
+        result.update(category='placement_prerequisite_failure',
+            correction='Check current destination_occupancy and clear occupying cubes before placing; regenerate the entire suffix.')
+    elif code == 'REMAINING_EXECUTION_BUDGET':
+        result.update(category='remaining_budget_violation',
+            correction='The entire suffix must fit execution_budget.remaining_transfers; do not replay successful deliveries.')
     else:
         result.update(category='plan_contract_violation',
             correction='Recheck current facts, object registry and backend contract for the complete suffix.')
@@ -62,7 +76,7 @@ def transfer_pairs(steps):
     return pairs
 
 
-def evaluate_flexible(plan, state, goals, protected=()):
+def evaluate_flexible(plan, state, goals, protected=(), *, execution_contract=False, remaining_transfers=4):
     registry = fixed_registry()
     validation = Validator(OBJECTS, registry, pick_surfaces=REGIONS|{'observed_support'}).validate(plan, state)
     if not validation.valid:
@@ -80,9 +94,22 @@ def evaluate_flexible(plan, state, goals, protected=()):
             evidence_source='candidate_symbolic_simulation_not_simulator_truth')
     executable = compile_plan(plan, registry)
     try:
-        transfer_pairs(executable.steps)
+        pairs = transfer_pairs(executable.steps)
     except ValueError as exc:
         return None, dict(error_code='BACKEND_CONTRACT', message=str(exc))
+    if execution_contract:
+        if len(pairs) > remaining_transfers:
+            return None, dict(error_code='REMAINING_EXECUTION_BUDGET',
+                required_transfers=len(pairs), remaining_transfers=remaining_transfers)
+        locations = {obj: state.location_of(obj) for obj in MOVABLE}
+        for index, (obj, target) in enumerate(pairs):
+            occupants = sorted(other for other, location in locations.items()
+                if other != obj and location == target)
+            if occupants:
+                return None, dict(error_code='DESTINATION_OCCUPIED', transfer_index=index,
+                    object_id=obj, target_id=target, occupying_objects=occupants,
+                    evidence_source='current_observed_facts_and_candidate_projection_not_simulator_truth')
+            locations[obj] = target
     return executable, None
 
 
@@ -91,7 +118,7 @@ class FlexibleFixturePlanner:
     long_task = False
 
     def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True,
-                 update_on_deviation=False):
+                 update_on_deviation=False, execution_contract=False):
         self.client, self.recovery, self.shared = client, recovery, shared
         self.error_feedback = error_feedback
         self.audit = []
@@ -102,6 +129,18 @@ class FlexibleFixturePlanner:
         self.update_on_deviation = update_on_deviation
         self.goal_updates = []
         self.execution_deviations = []
+        self.execution_contract = execution_contract
+        self.attempted_transfers = 0
+
+    def set_execution_progress(self, attempted_transfers):
+        if attempted_transfers < self.attempted_transfers or not 0 <= attempted_transfers <= 4:
+            raise ValueError('invalid_execution_progress')
+        self.attempted_transfers = attempted_transfers
+
+    def _evaluate(self, plan):
+        return evaluate_flexible(plan, self.state, self.goals, self.protected(),
+            execution_contract=self.execution_contract,
+            remaining_transfers=4-self.attempted_transfers)
 
     def protected(self):
         completed_objects = {obj for obj,_ in self.history}
@@ -143,10 +182,22 @@ class FlexibleFixturePlanner:
             terminal_conditions=['hand_empty(right)'],
             forbidden_objects=sorted(self.protected()), movable_objects=sorted(MOVABLE), targets=sorted(REGIONS),
             backend_contract='right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed',
-            feedback=diagnostic_feedback(feedback) if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
+            feedback=diagnostic_feedback(feedback, execution_contract=self.execution_contract) if self.error_feedback else None, output_schema={'actions':[dict(step_id='contiguous from 1',skill='pick or place',
                 object_id='registered cube',target_id='registered region for place, omitted for pick')]})
+        if self.execution_contract:
+            prompt.update(execution_budget=dict(max_total_transfers=4,
+                attempted_transfers=self.attempted_transfers,
+                remaining_transfers=4-self.attempted_transfers,
+                remaining_model_calls=2-sum(a['phase']!='initial' for a in self.audit)),
+                destination_occupancy={region:sorted(obj for obj in MOVABLE
+                    if self.state.location_of(obj)==region) for region in sorted(REGIONS)},
+                placement_precondition='Destination must be clear of other registered cubes. '
+                    'Move an occupying cube away before placing there. Generate the order yourself; '
+                    'the entire replacement suffix must fit the remaining transfer budget.',
+                occupancy_scope='latest_supported_release_history_not_continuous_scene_certificate')
         item=dict(request=prompt, local_feedback_evidence=deepcopy(feedback),
-            feedback_protocol='authoritative_task_diagnostic_projection_v6',
+            feedback_protocol=('typed_execution_feedback_contract_v7' if self.execution_contract
+                else 'authoritative_task_diagnostic_projection_v6'),
             image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=0, accepted=False, phase=('initial' if initial else
                 'execution_repair' if self.execution_deviations else
@@ -167,7 +218,7 @@ class FlexibleFixturePlanner:
                 if initial:
                     self.shared['flexible_initial']=dict(request=deepcopy(prompt),image_sha256=item['image_sha256'],content=response.content)
             plan=strict_plan(item['content'],fixed_right_arm=True)
-            executable,rejection=evaluate_flexible(plan,self.state,self.goals,self.protected())
+            executable,rejection=self._evaluate(plan)
             if rejection is not None:
                 rejection['rejected_candidate']=plan.model_dump(mode='json')
             item.update(accepted=executable is not None,rejection=rejection,normalized_plan=plan.model_dump(mode='json'))
@@ -210,6 +261,7 @@ class FlexibleFixturePlanner:
         self.state.at[object_id]='observed_support'
         self.state.holding.pop('right',None)
         event=dict(object_id=object_id,release=deepcopy(release),observed_goal=deepcopy(observed_goal),
+            attempted_action=dict(skill='place',object_id=object_id,target_id=self.goals[object_id]),
             state_source='RGB_release_and_stationary_off_goal_on_assumed_plane')
         self.execution_deviations.append(event)
         if self.update_on_deviation and not self.goal_updates:
@@ -220,7 +272,10 @@ class FlexibleFixturePlanner:
                 source='predeclared_controlled_task_update_not_failure_inference'))
         if not self.recovery:
             raise ValueError('execution_deviation_no_recovery')
-        return self._remaining_request(image_path,dict(error_code='OBSERVED_GOAL_NOT_SATISFIED'))
+        return self._remaining_request(image_path,dict(error_code='OBSERVED_GOAL_NOT_SATISFIED',
+            attempted_action=event['attempted_action'],
+            observation=dict(release_status=release['status'],goal_status=observed_goal['status'],
+                object_id=object_id,location='observed_support')))
 
     def remaining(self,steps,image_path,*,completed):
         if completed != len(self.history):
@@ -231,7 +286,7 @@ class FlexibleFixturePlanner:
         raw={'actions':[dict(step_id=i+1,skill=s.source_skill,**s.args) for i,s in enumerate(steps)]}
         if steps:
             plan=ModelPlan.model_validate(raw)
-            executable,rejection=evaluate_flexible(plan,self.state,self.goals,self.protected())
+            executable,rejection=self._evaluate(plan)
             if rejection is not None:
                 rejection['rejected_candidate']=plan.model_dump(mode='json')
         else:

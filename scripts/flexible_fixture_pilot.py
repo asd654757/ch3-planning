@@ -18,6 +18,7 @@ if __name__=='__main__':
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
     p.add_argument('--include-no-repair',action='store_true',help='Also retain a safe-stop reference in feedback comparison')
     p.add_argument('--difficulty',choices=['medium','hard'],help='Second delivery deviation; hard also updates goals after deviation')
+    p.add_argument('--repair-contract-v7',action='store_true',help='Typed execution feedback, occupancy prerequisites and episode remaining-transfer gate')
     args=p.parse_args()
     if args.difficulty:
         args.execution_deviation=True
@@ -37,7 +38,8 @@ if __name__=='__main__':
         actual_model=True,shared_initial_candidate=True,episode_resets=1,
         initial_y_spread_m=.025,pick_contact_offset_m=.03,
         backend='fixed_pick_place',max_total_transfers=4,max_repair_calls=2,
-        protocol_version='flexible_feedback_v6',compare_feedback=args.compare_feedback,
+        protocol_version='flexible_feedback_v7' if args.repair_contract_v7 else 'flexible_feedback_v6',compare_feedback=args.compare_feedback,
+        execution_contract_v7=args.repair_contract_v7,
         repair_semantics='complete_replacement_not_incremental_patch_rejected_plans_not_executed',
         goal_feedback='diagnostic_category_and_count_no_candidate_or_predicted_state',
         remaining_goals_available_to_both=True,
@@ -63,7 +65,8 @@ if __name__=='__main__':
             for method,recovery in methods:
                 print(f'[flexible-fixture] seed={seed} method={method} start',flush=True)
                 planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,
-                    error_feedback=method!='MODEL_DIRECT_REPLAN',update_on_deviation=args.difficulty=='hard')
+                    error_feedback=method!='MODEL_DIRECT_REPLAN',update_on_deviation=args.difficulty=='hard',
+                    execution_contract=args.repair_contract_v7)
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
                     controlled_place_offset=.045 if args.execution_deviation else 0.,

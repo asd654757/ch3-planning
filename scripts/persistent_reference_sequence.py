@@ -136,7 +136,10 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             source_heights = {}
             for n, (obj, color, region, region_color) in enumerate(sequence):
                 if flexible and n >= 4:
+                    stage = f'transfer_{n}_budget_gate'
                     raise ValueError('flexible_total_transfer_budget_exhausted')
+                if flexible:
+                    model_planner.set_execution_progress(n+1)
                 stage = f'{color}_pick' if not (long_task or flexible) else f'transfer_{n}_{color}_pick'
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
                 rgb = frame(stage)

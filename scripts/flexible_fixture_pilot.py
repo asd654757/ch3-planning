@@ -18,7 +18,8 @@ if __name__=='__main__':
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
     p.add_argument('--include-no-repair',action='store_true',help='Also retain a safe-stop reference in feedback comparison')
     p.add_argument('--difficulty',choices=['medium','hard'],help='Second delivery deviation; hard also updates goals after deviation')
-    p.add_argument('--repair-contract-v7',action='store_true',help='Typed execution feedback, occupancy prerequisites and episode remaining-transfer gate')
+    p.add_argument('--execution-contract', '--repair-contract-v7', dest='repair_contract_v7',
+        action='store_true',help='Versioned execution contract; current protocol v8 (legacy flag is an alias)')
     args=p.parse_args()
     if args.difficulty:
         args.execution_deviation=True
@@ -41,7 +42,8 @@ if __name__=='__main__':
         protocol_version='flexible_feedback_v8' if args.repair_contract_v7 else 'flexible_feedback_v6',compare_feedback=args.compare_feedback,
         execution_contract_v7=args.repair_contract_v7,
         repair_semantics='complete_replacement_not_incremental_patch_rejected_plans_not_executed',
-        goal_feedback='diagnostic_category_and_count_no_candidate_or_predicted_state',
+        goal_feedback=('isolated_unexecuted_candidate_and_violations_no_predicted_state'
+            if args.repair_contract_v7 else 'diagnostic_category_and_count_no_candidate_or_predicted_state'),
         remaining_goals_available_to_both=True,
         shared_acceptance_gate=True,failed_candidate_retry='up to remaining noninitial budget',
         controlled_place_offset_m=.045 if args.execution_deviation else 0.,

@@ -313,6 +313,32 @@ def test_snapshot_separates_candidate_from_observation():
     assert p.state.facts()==before
 
 
+def test_v8_rejected_order_is_reviewed_without_executing_or_changing_state(tmp_path):
+    image=tmp_path/'rgb.png';image.write_bytes(b'fixture')
+    class Client:
+        calls=0
+        def complete(self,**kwargs):
+            self.calls+=1
+            request=json.loads(kwargs['user_prompt'])
+            pairs=[('yellow_candidate','return_region'),('blue_candidate','green_region')]
+            if self.calls==2:
+                review=request['rejected_candidate_review']
+                assert review['candidate_executed'] is False
+                assert review['violations']['error_code']=='DESTINATION_OCCUPIED'
+                assert request['objects'][0]['location']=='return_region'
+                pairs.reverse()
+            return SimpleNamespace(content=plan(pairs).model_dump_json(),total_tokens=1)
+    p=FlexibleFixturePlanner(Client(),recovery=True,shared={},execution_contract=True)
+    p.goals=dict(blue_candidate='green_region',yellow_candidate='return_region')
+    p.state.at['blue_candidate']='return_region'
+    p.state.at['yellow_candidate']='observed_support'
+    p.set_execution_progress(2)
+    before=p.state.facts().copy()
+    assert p._remaining_request(image,None)
+    assert p.state.facts()==before
+    assert [a['accepted'] for a in p.audit]==[False,True]
+
+
 def test_v7_progress_is_monotonic_and_bounded():
     import pytest
     p=FlexibleFixturePlanner(None,recovery=True,shared={},execution_contract=True)

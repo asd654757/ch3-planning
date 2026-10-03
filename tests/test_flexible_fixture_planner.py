@@ -154,6 +154,8 @@ def test_second_feedback_contains_rejected_candidate_and_specific_goal(tmp_path)
             request=json.loads(kwargs['user_prompt'])
             assert request['remaining_goal_facts']==['on(blue_candidate, green_region)',
                 'on(yellow_candidate, return_region)']
+            assert 'Rejected candidates were NEVER executed' in request['instruction']
+            assert 'COMPLETE replacement suffix' in request['instruction']
             pairs=[('yellow_candidate','return_region')]
             if self.calls==2:
                 assert request['feedback']['unmet_goal_facts']==['on(blue_candidate, green_region)']

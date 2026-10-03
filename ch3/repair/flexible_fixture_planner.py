@@ -92,7 +92,10 @@ class FlexibleFixturePlanner:
             raise ValueError('remaining_repair_call_budget_exhausted')
         prompt = dict(instruction='Deliver each registered cube to its CURRENT requested region. '
             'Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. '
-            'Executed history is not a command to replay; changed goals may require moving a previously delivered object.',
+            'Executed history is not a command to replay; changed goals may require moving a previously delivered object. '
+            'Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. '
+            'Rejected candidates were NEVER executed. Do not return only an incremental patch. '
+            'Feedback predicted_final_facts describe a rejected simulation, NOT the current world.',
             current_facts=sorted(self.state.facts()|self.state.empty_hand_facts({'right'})),
             state_source='controlled_initial_fixture' if initial else 'supported_RGB_release_history_plus_untouched_fixture',
             goals=dict(self.goals), executed_history=list(self.history), goal_updates=deepcopy(self.goal_updates),

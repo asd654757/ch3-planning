@@ -12,7 +12,7 @@ import tempfile
 os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
-def run(seed, out):
+def run(seed, out, *, reobserve_budget=0):
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -29,7 +29,8 @@ def run(seed, out):
                   episode_resets=0, model_calls=0, success=False, events=[],
                   truth_usage='scoring_only_not_targeting_or_authorization',
                   reference_sequence=['blue_to_return_region', 'yellow_to_green_region'],
-                  protected_displacement_limit_m=.015, episode_step_limit=1000)
+                  protected_displacement_limit_m=.015, episode_step_limit=1000,
+                  reobserve_budget=reobserve_budget, destination_observations=[])
     env = None
     stage = 'setup'
     with tempfile.TemporaryDirectory() as tmp:
@@ -99,13 +100,44 @@ def run(seed, out):
                     protected_distances.append(float(np.linalg.norm(env.data.body('candidate_blue').xpos - blue_after_first)))
                 stage = f'{color}_place'
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
-                dest = visual_region_binding(calibration, frame=rgb, color=region_color,
-                    object_id=region, observation_id=stage, plane_z=.008)
+                dest = None
+                for observation_round in range(reobserve_budget + 1):
+                    if observation_round:
+                        # Closed gripper, bounded lift, no reset or release.
+                        target = np.asarray(env.get_endeff_pos()).copy() + [0., 0., .035]
+                        if target[2] > .30:
+                            raise ValueError('reobserve_target_outside_workspace')
+                        reached = False
+                        for _ in range(40):
+                            _, _, terminated, truncated, _ = env.step(np.r_[np.clip(10 * (target - env.get_endeff_pos()), -1, 1), 1.])
+                            if terminated or truncated:
+                                raise ValueError('episode_ended_during_reobserve')
+                            if np.linalg.norm(env.get_endeff_pos() - target) < .005:
+                                reached = True
+                                break
+                        if not reached:
+                            raise ValueError('reobserve_lift_timeout')
+                        records, rgb = probe(f'{stage}_reobserve_{observation_round}', color, 1.)
+                        held = holding_evidence(initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
+                        report['events'].append(dict(stage=stage+'_reobserve', round=observation_round, holding=held))
+                        if held['status'] != 'holding_supported':
+                            raise ValueError('holding_lost_during_reobserve')
+                    oid = f'{stage}_observation_{observation_round}'
+                    rgb = frame(oid)
+                    try:
+                        dest = visual_region_binding(calibration, frame=rgb, color=region_color,
+                            object_id=region, observation_id=oid, plane_z=.008)
+                        report['destination_observations'].append(dict(stage=stage, round=observation_round, supported=True))
+                        break
+                    except ValueError as exc:
+                        report['destination_observations'].append(dict(stage=stage, round=observation_round, supported=False, reason=str(exc)))
+                if dest is None:
+                    raise ValueError('destination_observation_budget_exhausted')
                 # Object binding is required by dispatch but place targets only the region.
                 from dataclasses import replace
-                bindings = {obj: replace(source, observation_id=stage), region: dest}
+                bindings = {obj: replace(source, observation_id=oid), region: dest}
                 step = ExecutableStep(2*n+2, 'fixed_place', 'place', dict(object_id=obj, arm='right', target_id=region), 'place')
-                result = controller.execute(contract.request(step, bindings=bindings, observation_id=stage))
+                result = controller.execute(contract.request(step, bindings=bindings, observation_id=oid))
                 report['events'].append(dict(stage=stage, execution=result))
                 if not result['completed']:
                     raise ValueError('place_waypoint_incomplete')
@@ -148,11 +180,12 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output-dir', type=Path, required=True)
     p.add_argument('--seeds', type=int, nargs='+', default=[0, 1, 2])
+    p.add_argument('--reobserve-budget', type=int, choices=[0, 1, 2], default=0)
     args = p.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=False)
     rows = []
     for seed in args.seeds:
-        row = run(seed, args.output_dir / f'seed_{seed}')
+        row = run(seed, args.output_dir / f'seed_{seed}', reobserve_budget=args.reobserve_budget)
         rows.append(row)
         print('[reference-sequence] '+json.dumps(dict(seed=seed, success=row['success'], failure_stage=row.get('failure_stage'))), flush=True)
     summary = dict(completed_cases=len(rows), successes=sum(r['success'] for r in rows), model_calls=0,

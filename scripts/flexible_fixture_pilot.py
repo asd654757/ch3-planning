@@ -30,8 +30,10 @@ if __name__=='__main__':
         p.error('unique nonnegative seeds required')
     args.output_dir.mkdir(parents=True,exist_ok=False)
     protocol=dict(seeds=args.seeds,task='two_cube_flexible_delivery',
-        controlled_goal_update=args.update_goals,goal_update_timing='after_first_supported_delivery',
-        update='swap both requested destinations' if args.update_goals else None,
+        controlled_goal_update=args.update_goals or args.difficulty=='hard',
+        goal_update_timing=('after_supported_second_delivery_deviation' if args.difficulty=='hard'
+            else 'after_first_supported_delivery' if args.update_goals else None),
+        update='swap both requested destinations' if args.update_goals or args.difficulty=='hard' else None,
         actual_model=True,shared_initial_candidate=True,episode_resets=1,
         initial_y_spread_m=.025,pick_contact_offset_m=.03,
         backend='fixed_pick_place',max_total_transfers=4,max_repair_calls=2,

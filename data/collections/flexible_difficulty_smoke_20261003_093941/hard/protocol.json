@@ -1,0 +1,30 @@
+{
+  "seeds": [
+    169,
+    170
+  ],
+  "task": "two_cube_flexible_delivery",
+  "controlled_goal_update": false,
+  "goal_update_timing": "after_first_supported_delivery",
+  "update": null,
+  "actual_model": true,
+  "shared_initial_candidate": true,
+  "episode_resets": 1,
+  "initial_y_spread_m": 0.025,
+  "pick_contact_offset_m": 0.03,
+  "backend": "fixed_pick_place",
+  "max_total_transfers": 4,
+  "max_repair_calls": 2,
+  "protocol_version": "flexible_feedback_v6",
+  "compare_feedback": true,
+  "repair_semantics": "complete_replacement_not_incremental_patch_rejected_plans_not_executed",
+  "goal_feedback": "diagnostic_category_and_count_no_candidate_or_predicted_state",
+  "remaining_goals_available_to_both": true,
+  "shared_acceptance_gate": true,
+  "failed_candidate_retry": "up to remaining noninitial budget",
+  "controlled_place_offset_m": 0.045,
+  "difficulty": "hard",
+  "deviation_transfer_index": 1,
+  "update_on_deviation": true,
+  "scope": "controlled_off_goal_execution_recovery_not_natural_failure"
+}

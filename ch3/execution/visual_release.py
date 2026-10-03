@@ -8,7 +8,8 @@ import numpy as np
 
 def release_evidence(target_pixels, hand_pixels, target_world_xy, destination_xy, *,
                      prior_holding_supported, open_retreat_completed,
-                     single_object_fixture, destination_tolerance=(.025, .018)):
+                     single_object_fixture, destination_tolerance=(.025, .018),
+                     require_destination=True):
     result = {"status": "unknown", "empty_hand_supported": False,
               "reason": "release_evidence_insufficient",
               "scope": "single_previously_held_object_with_open_retreat_and_visible_stationarity"}
@@ -31,7 +32,8 @@ def release_evidence(target_pixels, hand_pixels, target_world_xy, destination_xy
     result.update(target_drift_px=drift, hand_separation_px=separation,
                   hand_motion_px=hand_motion, destination_supported=arrived,
                   location_source="RGB_centroid_assumed_support_plane_not_truth")
-    if drift <= 3 and separation >= 18 and hand_motion >= 4 and arrived:
+    if drift <= 3 and separation >= 18 and hand_motion >= 4 and (arrived or not require_destination):
         result.update(status="release_supported", empty_hand_supported=True,
-                      reason="stationary_target_at_destination_during_open_hand_retreat")
+                      reason=("stationary_target_at_destination_during_open_hand_retreat" if require_destination
+                              else "stationary_target_detached_during_open_hand_retreat_not_goal_completion"))
     return result

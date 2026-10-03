@@ -64,8 +64,10 @@ def build_scene_xml(source: Path, destination: Path, *, hide_goal_marker: bool =
     tree.write(destination, encoding="utf-8", xml_declaration=True)
 
 
-def make_scene(xml_path: Path, *, seed: int, size: int = 480):
+def make_scene(xml_path: Path, *, seed: int, size: int = 480, initial_y_spread: float = .025):
     import numpy as np
+    if not np.isfinite(initial_y_spread) or not 0 <= initial_y_spread <= .08:
+        raise ValueError('initial y spread outside declared fixture range')
     from metaworld.envs.sawyer_pick_place_v3 import SawyerPickPlaceEnvV3
 
     class Scene(SawyerPickPlaceEnvV3):
@@ -86,7 +88,7 @@ def make_scene(xml_path: Path, *, seed: int, size: int = 480):
     for name, x in (("candidate_blue", -0.12), ("candidate_yellow", 0.12)):
         joint = env.model.joint(f"{name}_joint")
         index = int(joint.qposadr[0])
-        env.data.qpos[index:index + 3] = [x, 0.68 + rng.uniform(-0.025, 0.025), 0.025]
+        env.data.qpos[index:index + 3] = [x, 0.68 + rng.uniform(-initial_y_spread, initial_y_spread), 0.025]
         env.data.qpos[index + 3:index + 7] = [1, 0, 0, 0]
     import mujoco
     mujoco.mj_forward(env.model, env.data)

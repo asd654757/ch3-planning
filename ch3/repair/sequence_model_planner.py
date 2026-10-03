@@ -122,9 +122,16 @@ class SequenceModelPlanner:
             raise ValueError('model_remaining_repair_rejected')
         return evaluate(plan, state, completed=completed, long_task=self.long_task)[0]
 
-    def execution_repair(self, steps, image_path, *, completed, holding_object=None, event):
+    def execution_repair(self, steps, image_path, *, completed, holding_object=None, event,
+                         observed_object=None):
         """A real model call from externally supported CURRENT state, not predicted pick."""
         state = fixture_state(completed=completed, long_task=self.long_task)
+        if observed_object is not None:
+            if observed_object not in {'blue_candidate', 'yellow_candidate'} or holding_object:
+                raise ValueError('unsupported observed recovery state')
+            # Physical support observation is not semantic target satisfaction.
+            # Never label an off-target object "on(goal_region)" or invent table support.
+            state.at[observed_object] = 'observed_support'
         if holding_object:
             state.holding['right'] = holding_object
         expected = [(s.source_skill, s.args['object_id'], s.args.get('target_id')) for s in steps]
@@ -135,7 +142,7 @@ class SequenceModelPlanner:
             remaining_goal_facts=sorted({'on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)',
                 'hand_empty(right)'} - (state.facts() | state.empty_hand_facts({'right'}))),
             objects=sorted(OBJECTS), targets=['green_region', 'return_region'],
-            pick_support_surfaces=['table', 'green_region', 'return_region'],
+            pick_support_surfaces=['table', 'green_region', 'return_region', 'observed_support'],
             output_schema={'actions': [{'step_id': 'contiguous from 1', 'skill': 'pick or place',
                 'object_id': 'registered object', 'target_id': 'required for place only'}]},
             backend_arm='right', forbidden_objects=['blue_candidate'] if state.at.get('blue_candidate')=='return_region' else [],
@@ -149,7 +156,7 @@ class SequenceModelPlanner:
             item.update(content=response.content, total_tokens=response.total_tokens)
             plan = strict_plan(response.content, fixed_right_arm=True)
             registry = fixed_registry()
-            check = Validator(OBJECTS, registry, pick_surfaces={'green_region', 'return_region'}).validate(plan, state)
+            check = Validator(OBJECTS, registry, pick_surfaces={'green_region', 'return_region', 'observed_support'}).validate(plan, state)
             goal = GoalSpec(facts=['on(blue_candidate, return_region)', 'on(yellow_candidate, green_region)', 'hand_empty(right)'])
             actual = [(a.skill.value, a.object_id, a.target_id) for a in plan.actions]
             item.update(normalized_plan=plan.model_dump(mode='json'), valid=check.valid,

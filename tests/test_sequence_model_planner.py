@@ -105,3 +105,22 @@ def test_execution_timeout_holding_repairs_place_without_repick(tmp_path):
                                event=dict(state_source='supported_RGB', error_code='PICK_TIMEOUT'))
     assert client.calls == 1 and result.steps[0].source_skill == 'place'
     assert p.audit[-1]['phase'] == 'execution_repair' and p.audit[-1]['accepted']
+
+
+def test_off_target_release_state_is_not_fabricated_goal_or_table(tmp_path):
+    image=tmp_path/'frame.png'; image.write_bytes(b'fixture')
+    class Client:
+        def complete(self, **kwargs):
+            request=json.loads(kwargs['user_prompt'])
+            assert 'on(yellow_candidate, observed_support)' in request['current_facts']
+            assert 'on(yellow_candidate, green_region)' not in request['current_facts']
+            assert 'on(yellow_candidate, table)' not in request['current_facts']
+            return SimpleNamespace(content=json.dumps({'actions':[
+                dict(step_id=1,skill='pick',object_id='yellow_candidate'),
+                dict(step_id=2,skill='place',object_id='yellow_candidate',target_id='green_region')]}), total_tokens=10)
+    from ch3.compiler.executable_plan import ExecutableStep
+    steps=[ExecutableStep(1,'fixed_pick','grasp',dict(object_id='yellow_candidate',arm='right'),'pick'),
+           ExecutableStep(2,'fixed_place','place',dict(object_id='yellow_candidate',arm='right',target_id='green_region'),'place')]
+    p=SequenceModelPlanner(Client(), recovery=True, shared={}, long_task=True)
+    result=p.execution_repair(steps,image,completed=2,observed_object='yellow_candidate',event=dict(state_source='RGB'))
+    assert len(result.steps)==2 and p.audit[-1]['accepted']

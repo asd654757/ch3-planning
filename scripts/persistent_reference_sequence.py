@@ -12,7 +12,8 @@ import tempfile
 os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
-def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015):
+def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
+        feedback_v2=False, initial_y_spread=.025):
     import numpy as np
     from PIL import Image
     from metaworld.asset_path_utils import full_V3_path_for
@@ -31,7 +32,8 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                   reference_sequence=['blue_to_return_region', 'yellow_to_green_region'],
                   protected_displacement_limit_m=.015, episode_step_limit=1000,
                   reobserve_budget=reobserve_budget, destination_observations=[],
-                  pick_contact_offset_m=pick_contact_offset)
+                  pick_contact_offset_m=pick_contact_offset, feedback_v2=feedback_v2,
+                  initial_y_spread_m=initial_y_spread)
     env = None
     stage = 'setup'
     with tempfile.TemporaryDirectory() as tmp:
@@ -39,7 +41,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             xml = Path(tmp) / 'scene.xml'
             build_scene_xml(Path(full_V3_path_for('sawyer_xyz/sawyer_pick_place_v3.xml')), xml,
                             hide_goal_marker=True, add_return_region=True)
-            env = make_scene(xml, seed=seed)
+            env = make_scene(xml, seed=seed, initial_y_spread=initial_y_spread)
             report['episode_resets'] = 1
             long_task = bool(model_planner is not None and model_planner.long_task)
             env.max_path_length = 1500 if long_task else 1000
@@ -77,6 +79,27 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                         p = None
                     records.append(dict(target_pixel=p, hand_pixel=project_point(calibration, env.get_endeff_pos())))
                 return records, rgb
+
+            # Static fixture assumption: reference captured BEFORE object/hand occlusion.
+            # This is image calibration, not a simulator target coordinate lookup.
+            references = {}
+            if feedback_v2:
+                reference_frame = frame('initial_region_references')
+                for region_id, region_color in [('green_region', 'green'), ('return_region', 'magenta')]:
+                    references[region_id] = visual_region_binding(calibration, frame=reference_frame,
+                        color=region_color, object_id=region_id, observation_id='initial_region_references', plane_z=.008)
+                report['region_references'] = {k: list(v.position) for k,v in references.items()}
+
+            def check_observed_goal(records, region_id):
+                from ch3.execution.observed_goal import observed_goal
+                positions = []
+                for record in records:
+                    if record['target_pixel'] is None:
+                        return dict(status='unknown', reason='post_release_object_not_visible')
+                    position = visual_binding(calibration, object_id='observed_object', observation_id='post_release',
+                        pixel=record['target_pixel'], plane_z=.028).position
+                    positions.append(position[:2])
+                return observed_goal(positions, references[region_id].position[:2])
 
             executable = None
             if model_planner is not None:
@@ -165,6 +188,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                         report['events'].append(dict(stage=stage+'_model_repaired_retry', execution=result, recovery_event=event))
                         if not result['completed']:
                             raise ValueError('model_repaired_pick_retry_incomplete')
+                        initial = pixel(rgb, color)
                     else:
                         raise ValueError('pick_failure_trace_unknown')
                 if not recovered_holding:
@@ -204,7 +228,12 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                     try:
                         dest = visual_region_binding(calibration, frame=rgb, color=region_color,
                             object_id=region, observation_id=oid, plane_z=.008)
-                        report['destination_observations'].append(dict(stage=stage, round=observation_round, supported=True))
+                        report['destination_observations'].append(dict(stage=stage, round=observation_round, supported=True,
+                            fresh_estimate=list(dest.position)))
+                        if feedback_v2:
+                            from dataclasses import replace
+                            # Do not overwrite a static pre-contact reference with an occluded center.
+                            dest = replace(references[region], observation_id=oid)
                         break
                     except ValueError as exc:
                         report['destination_observations'].append(dict(stage=stage, round=observation_round, supported=False, reason=str(exc)))
@@ -219,16 +248,81 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 result = controller.execute(contract.request(step, bindings=bindings, observation_id=oid))
                 report['events'].append(dict(stage=stage, execution=result))
                 if not result['completed']:
-                    raise ValueError('place_waypoint_incomplete')
+                    if not (feedback_v2 and execution_recovery and model_planner is not None and model_planner.recovery
+                            and result['reason']=='waypoint_timeout'
+                            and result['trace'] and result['trace'][-1]['phase'] <= 1):
+                        raise ValueError('place_waypoint_incomplete')
+                    # No release commanded yet. Positive co-motion evidence still required.
+                    records, rgb = probe(stage+'_failure_holding', color, 1.)
+                    held = holding_evidence(initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
+                    report['events'][-1]['failure_holding'] = held
+                    if held['status'] != 'holding_supported':
+                        raise ValueError('place_timeout_holding_unknown_no_replan')
+                    event = dict(error_code='PLACE_WAYPOINT_TIMEOUT', primitive_trace=result,
+                        state_source='positive_RGB_holding_comotion_and_no_release_trace', holding_evidence=held)
+                    repaired = model_planner.execution_repair(executable.steps[2*n+1:],
+                        out/f'{stage}_failure_holding_1.png', completed=n, holding_object=obj, event=event)
+                    executable.steps[2*n+1:] = repaired.steps
+                    retry_oid = stage+'_place_retry'
+                    frame(retry_oid)
+                    bindings = {obj: replace(source, observation_id=retry_oid),
+                                region: replace(references[region], observation_id=retry_oid)}
+                    result = controller.execute(contract.request(executable.steps[2*n+1], bindings=bindings, observation_id=retry_oid))
+                    report['events'].append(dict(stage=stage+'_model_repaired_retry', execution=result, recovery_event=event))
+                    if not result['completed']:
+                        raise ValueError('model_repaired_place_retry_incomplete')
                 records, rgb = probe(stage+'_release', color, -1.)
                 current = visual_binding(calibration, object_id=obj, observation_id=stage+'_release',
                     pixel=pixel(rgb, color), plane_z=.028)
                 release = release_evidence([r['target_pixel'] for r in records], [r['hand_pixel'] for r in records],
                     current.position[:2], dest.position[:2], prior_holding_supported=True,
-                    open_retreat_completed=True, single_object_fixture=True)
+                    open_retreat_completed=True, single_object_fixture=True, require_destination=not feedback_v2)
                 report['events'][-1]['release'] = release
                 if release['status'] != 'release_supported':
                     raise ValueError('release_not_supported')
+                if feedback_v2:
+                    observed = check_observed_goal(records, region)
+                    report['events'][-1]['observed_goal'] = observed
+                    if observed['status'] == 'unknown':
+                        raise ValueError('observed_goal_unknown_no_completion')
+                    if observed['status'] == 'not_satisfied':
+                        if not (execution_recovery and model_planner is not None and model_planner.recovery):
+                            raise ValueError('observed_goal_not_satisfied')
+                        event = dict(error_code='OBSERVED_GOAL_NOT_SATISFIED', observed_goal=observed,
+                            state_source='RGB_detached_stationary_object_on_assumed_support_plane_not_at_goal', release_evidence=release)
+                        repaired = model_planner.execution_repair(executable.steps[2*n:], out/f'{stage}_release_1.png',
+                            completed=n, observed_object=obj, event=event)
+                        executable.steps[2*n:] = repaired.steps
+                        retry_oid = stage+'_goal_retry_pick'
+                        rgb = frame(retry_oid); retry_initial = pixel(rgb, color)
+                        retry_source = visual_binding(calibration, object_id=obj, observation_id=retry_oid,
+                            pixel=retry_initial, plane_z=.028)
+                        result = controller.execute(contract.request(executable.steps[2*n], bindings={obj:retry_source}, observation_id=retry_oid))
+                        report['events'].append(dict(stage=retry_oid, execution=result, recovery_event=event))
+                        if not result['completed']:
+                            raise ValueError('goal_repair_pick_incomplete')
+                        records, rgb = probe(stage+'_goal_retry_holding', color, 1.)
+                        held = holding_evidence(retry_initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
+                        report['events'][-1]['holding'] = held
+                        if held['status'] != 'holding_supported':
+                            raise ValueError('goal_repair_holding_unknown')
+                        retry_oid = stage+'_goal_retry_place'
+                        frame(retry_oid)
+                        bindings = {obj:replace(retry_source, observation_id=retry_oid), region:replace(references[region], observation_id=retry_oid)}
+                        result = controller.execute(contract.request(executable.steps[2*n+1], bindings=bindings, observation_id=retry_oid))
+                        report['events'].append(dict(stage=retry_oid, execution=result))
+                        if not result['completed']:
+                            raise ValueError('goal_repair_place_incomplete')
+                        records, rgb = probe(stage+'_goal_retry_release', color, -1.)
+                        current = visual_binding(calibration, object_id=obj, observation_id=retry_oid,
+                            pixel=pixel(rgb,color), plane_z=.028)
+                        release = release_evidence([r['target_pixel'] for r in records], [r['hand_pixel'] for r in records],
+                            current.position[:2], references[region].position[:2], prior_holding_supported=True,
+                            open_retreat_completed=True, single_object_fixture=True, require_destination=False)
+                        observed = check_observed_goal(records, region)
+                        report['events'][-1].update(release=release, observed_goal=observed)
+                        if release['status']!='release_supported' or observed['status']!='satisfied':
+                            raise ValueError('goal_repair_postcondition_not_supported')
                 source_heights[obj] = .028
                 if obj == 'blue_candidate' and region == 'return_region':
                     blue_after_first = env.data.body('candidate_blue').xpos.copy()

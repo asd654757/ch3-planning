@@ -291,13 +291,26 @@ def test_v7_both_methods_share_occupancy_and_remaining_budget(tmp_path):
         assert planner.state.location_of('yellow_candidate')=='observed_support'
         assert len(planner.history)==1
     direct,feedback=requests
-    assert direct.pop('feedback') is None
-    event=feedback.pop('feedback')
-    assert event['event_type']=='execution_event'
-    assert event['attempted_action']['target_id']=='green_region'  # old attempted goal, not new one
+    assert direct.pop('rejected_candidate_review') is None
+    assert feedback.pop('rejected_candidate_review') is None
     assert direct==feedback
-    assert direct['execution_budget']['remaining_transfers']==2
-    assert direct['destination_occupancy']['return_region']==['blue_candidate']
+    assert direct['budget']['remaining_transfers']==2
+    assert direct['objects'][0]['location']=='return_region'
+
+
+def test_snapshot_separates_candidate_from_observation():
+    p=FlexibleFixturePlanner(None,recovery=True,shared={},execution_contract=True)
+    p.state.at['blue_candidate']='return_region'
+    before=p.state.facts().copy()
+    evidence=dict(error_code='DESTINATION_OCCUPIED',
+        rejected_candidate=plan([('yellow_candidate','return_region')]).model_dump(mode='json'),
+        predicted_final_facts=['untrusted'])
+    snapshot=p.planning_snapshot(evidence)
+    assert snapshot['rejected_candidate_review']['candidate_executed'] is False
+    assert 'predicted_final_facts' not in snapshot['rejected_candidate_review']['violations']
+    snapshot['rejected_candidate_review']['candidate']['actions'].clear()
+    assert evidence['rejected_candidate']['actions']
+    assert p.state.facts()==before
 
 
 def test_v7_progress_is_monotonic_and_bounded():

@@ -145,6 +145,31 @@ class FlexibleFixturePlanner:
             execution_contract=self.execution_contract,
             remaining_transfers=4-self.attempted_transfers)
 
+    def planning_snapshot(self, feedback=None):
+        """One authoritative state, with rejected candidates isolated from observations."""
+        rejection = None
+        if self.error_feedback and feedback and feedback.get('rejected_candidate'):
+            rejection = dict(candidate_executed=False,
+                candidate=deepcopy(feedback['rejected_candidate']),
+                violations={k:deepcopy(v) for k,v in feedback.items()
+                    if k not in {'rejected_candidate','predicted_final_facts','rejected_output'}})
+        return dict(protocol='execution_contract_v8',
+            task='Generate a COMPLETE remaining plan, not a patch to an earlier plan.',
+            objects=[dict(id=obj, location=self.state.location_of(obj), goal=self.goals[obj],
+                protected=obj in self.protected()) for obj in sorted(MOVABLE)],
+            state_source='controlled_fixture_updated_by_supported_RGB_release',
+            hand='empty' if not self.state.holding else dict(self.state.holding),
+            regions=sorted(REGIONS),
+            rules=['Each transfer is adjacent pick(object) then place(same object, target).',
+                'Before placing, no OTHER cube may occupy that region. Evaluate occupancy after each transfer.',
+                'All objects must finish at their listed CURRENT goals and the hand must be empty.',
+                'Never move protected objects. The candidate below was not executed and is not current state.'],
+            budget=dict(remaining_transfers=4-self.attempted_transfers,
+                max_actions=2*(4-self.attempted_transfers)),
+            rejected_candidate_review=rejection,
+            output_schema={'actions':[dict(step_id='integer starting at 1',skill='pick or place',
+                object_id='object id',target_id='region id for place; omit for pick')]})
+
     def protected(self):
         completed_objects = {obj for obj,_ in self.history}
         return {obj for obj in completed_objects if self.state.location_of(obj)==self.goals[obj]}
@@ -215,8 +240,10 @@ class FlexibleFixturePlanner:
                 'First satisfy that prerequisite through legal actions; check again after each proposed transfer. '
                 'The currently failed cube does not automatically have priority. Return only executable actions '
                 'covering every requires_delivery obligation; no explanation or imagined successful execution.')
+        if self.execution_contract:
+            prompt = self.planning_snapshot(feedback)
         item=dict(request=prompt, local_feedback_evidence=deepcopy(feedback),
-            feedback_protocol=('typed_execution_feedback_contract_v7' if self.execution_contract
+            feedback_protocol=('execution_contract_v8' if self.execution_contract
                 else 'authoritative_task_diagnostic_projection_v6'),
             image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=0, accepted=False, phase=('initial' if initial else

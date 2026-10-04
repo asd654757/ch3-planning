@@ -1,0 +1,2970 @@
+{
+  "scope": "conditional_on_archived_rejected_candidate_planning_only",
+  "inclusion": "All parseable noninitial rejected candidates in predeclared v7 sources, still rejected by v8; deduplicate snapshot/candidate/image.",
+  "sources": [
+    "data/collections/flexible_feedback_v7_development_20261003_112117",
+    "data/collections/flexible_feedback_v7_budget_units_20261003_112503",
+    "data/collections/flexible_feedback_v7_2_20261003_125341"
+  ],
+  "excluded": {},
+  "cases": [
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_231/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "39715408fefc0b9fdd163c6c1993afa0918a53c35824ada1a3d1a841e2eb9ba0",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_231/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "e33f9d40ef0b955d3e6be4d7bb253ea93e34ca756fbbd0c6b98959ef6453a761",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_232/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "436b8d78262bf9d22fbdd053431b40567bf13263b8e04f83ba9833989fdb3e91",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_232/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "485ad5b0e12152a37f94cd23b9c2efc4efcc1a8bb34b5aeb5886014b4d4c4d7d",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_233/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "1a91ab970793c73b28ac820af4b323998a7a1667042b5faad8311ec38d645912",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_233/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "5ee9c1998709d35515aa591a1756767eaa4b7908631c0a4109fbf522a70c373e",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_234/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "8a23d97c68630787810f710626b961ca00be3b078dca26856e83faddf702c5ec",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/independent_pilot/seed_234/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "d6489ca17942adb05c14994c5e9ef89a4147cec5cea4bfc03f03158621b3162b",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_202/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "237cb35c08416607a40db0f4d84639d1a6fcba487af2a44b97bbd0fa156d3b73",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_202/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "9749325f7aff33b05edbca9b24d40b28269e6c1a364ea0ad1df2940419248b09",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_211/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "44364c346d7b2e231d84f3034c1894958ba9ce45d1aa8cef5bc1d558942182cc",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_211/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "07213a6560c194e5b30da90dad854cd1ef3d1838617db95a2878a3a270d2e7f0",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_212/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "be8007b23a1b5dda6a60f66521b10101780cba6b5e9724b28f2f41c2374746de",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_212/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "6f1dc4251b35c2070eb1d864b76877aa237be4655a5392cd910f853dcfe3027d",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_217/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "fdcc115c8a62dcc7cb106c291c7a2df8ba1e893034b2cb1ae26f60cbfcae406f",
+      "image": "data/collections/flexible_feedback_v7_development_20261003_112117/old_failure_reproduction/seed_217/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "6f042449c3e2494de0765f2e8156ba4114d8a9baf6112d85655cd03b565e079d",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/development/seed_202/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 2,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "GOAL_NOT_SATISFIED",
+          "candidate_executed": false,
+          "event_type": "candidate_rejection",
+          "role": "diagnostic_only_not_current_state_or_replacement_goal",
+          "repair_mode": "regenerate_complete_suffix_from_current_task",
+          "category": "incomplete_goal_coverage",
+          "omitted_goal_count": 1,
+          "correction": "Cover ALL current remaining obligations together, not just a missing-goal patch."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 1
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "237cb35c08416607a40db0f4d84639d1a6fcba487af2a44b97bbd0fa156d3b73",
+      "image": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/development/seed_202/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "7756c32338fd0f66bfcbee9652b7d1c264b2cafe0863c8a4f5b9b942d4d39c9f",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/development/seed_211/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "44364c346d7b2e231d84f3034c1894958ba9ce45d1aa8cef5bc1d558942182cc",
+      "image": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/development/seed_211/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "91c626e089ac0704cf7f3ee3fa0242e8dc41cdcb87a789ec2d4f78809f0a4c12",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/development/seed_211/MODEL_DIRECT_REPLAN/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": null,
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "ca7ac1ab27647316391c9e42b4f8cb1ce4ae3a5158927654eda8d5f912706887",
+      "image": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/development/seed_211/MODEL_DIRECT_REPLAN/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "c0ee0880133545f74cd87d32c7b2844902f9b0d8357b2fb5d583cfdbf63f905e",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/independent/seed_235/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "4089bc2d39e7810d77c3e205b2cbd420b949f53ee06e962805dd6a0c80666de1",
+      "image": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/independent/seed_235/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "b162e1d2610b9137459ebbad99308805c9c2fc3d9029a657f18c5eb7b8cfb452",
+      "rejection": {
+        "error_code": "GOAL_NOT_SATISFIED",
+        "unmet_goal_facts": [
+          "on(blue_candidate, green_region)"
+        ],
+        "predicted_final_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "evidence_source": "candidate_symbolic_simulation_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/independent/seed_235/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 2,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "GOAL_NOT_SATISFIED",
+          "candidate_executed": false,
+          "event_type": "candidate_rejection",
+          "role": "diagnostic_only_not_current_state_or_replacement_goal",
+          "repair_mode": "regenerate_complete_suffix_from_current_task",
+          "category": "incomplete_goal_coverage",
+          "omitted_goal_count": 1,
+          "correction": "Cover ALL current remaining obligations together, not just a missing-goal patch."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 1
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "4089bc2d39e7810d77c3e205b2cbd420b949f53ee06e962805dd6a0c80666de1",
+      "image": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/independent/seed_235/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "0a72db083c2b483966f1e565293e93ff838d3e7190a535cee8a1342c6ac6894c",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/independent/seed_236/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "a74a8658c5a36e95b73b2f96a4513a7a05f1ec7f00fd0565c591d53d22cf6087",
+      "image": "data/collections/flexible_feedback_v7_budget_units_20261003_112503/independent/seed_236/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "7881ce7bec4df94b7a5156b21980ace9088e71be078999843a3e0a9ce3ddbb7f",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_2_20261003_125341/independent/seed_237/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count. HARD RULE: before any place action, inspect action_prerequisites. A destination occupied by another cube is unavailable even if it is this cube's goal. First satisfy that prerequisite through legal actions; check again after each proposed transfer. The currently failed cube does not automatically have priority. Return only executable actions covering every requires_delivery obligation; no explanation or imagined successful execution.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "action_prerequisites": [
+          {
+            "action": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "requires": {
+              "region_clear_of": "blue_candidate"
+            },
+            "reason": "other registered cube currently occupies this placement region"
+          }
+        ],
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "a6d1d2eab26ee917d6aea26be1aacea21fb3bb87e64257b187d07dad65e498e4",
+      "image": "data/collections/flexible_feedback_v7_2_20261003_125341/independent/seed_237/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "8f74b0ed00dd61b902bb7d4a89d656b667a95a6f4de27d3f4d539db75c46fbfd",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "data/collections/flexible_feedback_v7_2_20261003_125341/independent/seed_238/MODEL_CONSTRAINT_REPAIR/summary.json",
+      "audit_index": 1,
+      "request": {
+        "instruction": "Deliver each registered cube to its CURRENT requested region. Choose a legal transfer order. Preserve objects already satisfying their CURRENT goal. Executed history is not a command to replay; changed goals may require moving a previously delivered object. Return the COMPLETE replacement suffix satisfying ALL remaining_goal_facts from current_facts. Rejected candidates were NEVER executed. Do not return only an incremental patch. The current task below is authoritative; feedback is diagnostic only. Before returning actions, internally check every required obligation and the empty-hand goal. A completed entry in executed_history does NOT mean the cube satisfies a changed current goal. Use requires_delivery for BOTH cubes. Each required delivery uses one pick AND one place: two remaining transfers permit four actions. Do not confuse transfer count with action count. HARD RULE: before any place action, inspect action_prerequisites. A destination occupied by another cube is unavailable even if it is this cube's goal. First satisfy that prerequisite through legal actions; check again after each proposed transfer. The currently failed cube does not automatically have priority. Return only executable actions covering every requires_delivery obligation; no explanation or imagined successful execution.",
+        "current_facts": [
+          "hand_empty(right)",
+          "on(blue_candidate, return_region)",
+          "on(green_region, table)",
+          "on(return_region, table)",
+          "on(yellow_candidate, observed_support)"
+        ],
+        "state_source": "supported_RGB_release_and_off_goal_observation_plus_untouched_fixture",
+        "observed_execution_deviations": [
+          {
+            "object_id": "yellow_candidate",
+            "status": "detached_off_goal",
+            "location": "observed_support"
+          }
+        ],
+        "goals": {
+          "blue_candidate": "green_region",
+          "yellow_candidate": "return_region"
+        },
+        "executed_history": [
+          [
+            "blue_candidate",
+            "return_region"
+          ]
+        ],
+        "goal_updates": [
+          {
+            "event": "user_goal_update_after_supported_execution_deviation",
+            "old_goals": {
+              "blue_candidate": "return_region",
+              "yellow_candidate": "green_region"
+            },
+            "new_goals": {
+              "blue_candidate": "green_region",
+              "yellow_candidate": "return_region"
+            },
+            "source": "predeclared_controlled_task_update_not_failure_inference"
+          }
+        ],
+        "remaining_goal_facts": [
+          "on(blue_candidate, green_region)",
+          "on(yellow_candidate, return_region)"
+        ],
+        "current_task_obligations": [
+          {
+            "object_id": "blue_candidate",
+            "observed_location": "return_region",
+            "required_target": "green_region",
+            "requires_delivery": true
+          },
+          {
+            "object_id": "yellow_candidate",
+            "observed_location": "observed_support",
+            "required_target": "return_region",
+            "requires_delivery": true
+          }
+        ],
+        "terminal_conditions": [
+          "hand_empty(right)"
+        ],
+        "forbidden_objects": [],
+        "movable_objects": [
+          "blue_candidate",
+          "yellow_candidate"
+        ],
+        "targets": [
+          "green_region",
+          "return_region"
+        ],
+        "backend_contract": "right arm, adjacent pick/place of same cube; up to four transfers; end empty-handed",
+        "feedback": {
+          "error_code": "OBSERVED_GOAL_NOT_SATISFIED",
+          "event_type": "execution_event",
+          "action_executed": true,
+          "category": "observed_postcondition_failure",
+          "evidence_source": "supported_RGB_release_and_goal_check",
+          "attempted_action": {
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "green_region"
+          },
+          "observation": {
+            "release_status": "release_supported",
+            "goal_status": "not_satisfied",
+            "object_id": "yellow_candidate",
+            "location": "observed_support"
+          },
+          "correction": "Plan from the observed state and current goals; check occupied destinations and remaining budget."
+        },
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "contiguous from 1",
+              "skill": "pick or place",
+              "object_id": "registered cube",
+              "target_id": "registered region for place, omitted for pick"
+            }
+          ]
+        },
+        "execution_budget": {
+          "max_total_transfers": 4,
+          "attempted_transfers": 2,
+          "remaining_transfers": 2,
+          "unit": "one transfer is TWO actions: pick then place, not one action",
+          "remaining_action_capacity": 4,
+          "remaining_model_calls": 2
+        },
+        "destination_occupancy": {
+          "green_region": [],
+          "return_region": [
+            "blue_candidate"
+          ]
+        },
+        "action_prerequisites": [
+          {
+            "action": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "requires": {
+              "region_clear_of": "blue_candidate"
+            },
+            "reason": "other registered cube currently occupies this placement region"
+          }
+        ],
+        "placement_precondition": "Destination must be clear of other registered cubes. Move an occupying cube away before placing there. Generate the order yourself; the entire replacement suffix must fit the remaining transfer budget.",
+        "occupancy_scope": "latest_supported_release_history_not_continuous_scene_certificate"
+      },
+      "content": "```json\n{\n  \"actions\": [\n    {\n      \"step_id\": 1,\n      \"skill\": \"pick\",\n      \"object_id\": \"yellow_candidate\"\n    },\n    {\n      \"step_id\": 2,\n      \"skill\": \"place\",\n      \"object_id\": \"yellow_candidate\",\n      \"target_id\": \"return_region\"\n    },\n    {\n      \"step_id\": 3,\n      \"skill\": \"pick\",\n      \"object_id\": \"blue_candidate\"\n    },\n    {\n      \"step_id\": 4,\n      \"skill\": \"place\",\n      \"object_id\": \"blue_candidate\",\n      \"target_id\": \"green_region\"\n    }\n  ]\n}\n```",
+      "image_sha256": "db13d9b30301b1e80338f9c0d655fb15a1958c6116963a4a1cc9cd1dfc78b500",
+      "image": "data/collections/flexible_feedback_v7_2_20261003_125341/independent/seed_238/MODEL_CONSTRAINT_REPAIR/transfer_1_yellow_place_release_1.png",
+      "candidate": {
+        "actions": [
+          {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 2,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          {
+            "step_id": 3,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          {
+            "step_id": 4,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          }
+        ]
+      },
+      "case_id": "efebf3dcfb44a7b70b17fd243a497df77cc0943a2756645625a918b51a9d31b7",
+      "rejection": {
+        "error_code": "DESTINATION_OCCUPIED",
+        "transfer_index": 0,
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "occupying_objects": [
+          "blue_candidate"
+        ],
+        "evidence_source": "current_observed_facts_and_candidate_projection_not_simulator_truth",
+        "rejected_candidate": {
+          "actions": [
+            {
+              "step_id": 1,
+              "skill": "pick",
+              "object_id": "yellow_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 2,
+              "skill": "place",
+              "object_id": "yellow_candidate",
+              "target_id": "return_region",
+              "arm": "right"
+            },
+            {
+              "step_id": 3,
+              "skill": "pick",
+              "object_id": "blue_candidate",
+              "target_id": null,
+              "arm": "right"
+            },
+            {
+              "step_id": 4,
+              "skill": "place",
+              "object_id": "blue_candidate",
+              "target_id": "green_region",
+              "arm": "right"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "extra_calls_per_method": 1,
+  "temperature": 0.1,
+  "model_seed": 0,
+  "note": "Development corpus, not independent natural-failure prevalence or physical execution evidence."
+}

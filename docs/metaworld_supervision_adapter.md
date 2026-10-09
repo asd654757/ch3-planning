@@ -113,3 +113,25 @@ not an isolated causal test of the diagnostic alone. New case journals include
 first repair acceptance, rejected candidates and rejection reasons; these should
 be analyzed alongside task success and calls. Better direct-replan performance
 after the shared prompt correction must be reported, not suppressed.
+
+### Frozen V3 formal-50
+
+Frozen implementation: `10fa793e25c9df25d3f685d8a7f1625ed6877b0e`.
+Manifest: `config/benchmarks/supervision_feedback_v3_frozen_50.json`, including
+SHA-256 hashes of runtime, planner, adapter, controller and comparison script.
+Launcher checks hashes before API spending and copies manifest and launch commit
+to a new output directory. No prompt, implementation or budget change is made.
+
+Run `bash scripts/start_supervision_feedback_v3_formal50.sh` with the API key
+configured. Each scenario uses seeds 10–59 and three methods: 300 sessions in
+total. Development seeds 0–9 are excluded from the held-out seed evaluation.
+The scenarios themselves are unchanged and are not held-out task types.
+Do not change the method after inspecting formal results; any change requires a
+new protocol and separately labeled experiment. Paths are recorded in
+`/tmp/supervision_feedback_v3_formal50_{pid,log,output}`.
+
+Two development runs exist, started at 20261009_232103 and 20261009_232114.
+They reuse the same seeds and must not be pooled as independent paired samples.
+The user-reported summaries correspond to the 232114 run (the latest pointer).
+Keep both original journals for provenance; use one explicitly identified run
+for development reporting.

@@ -77,3 +77,17 @@ the timeout must be observed in diagnostics. Failure of initial plan generation
 or an initial-state mismatch aborts rather than fabricating comparable cases.
 This simple timeout pilot may saturate both recovery methods; it cannot establish
 superiority on harder tasks or naturally occurring failures.
+
+### V2 state-changing perturbations
+
+`bash scripts/start_supervision_harder_pilot.sh` runs two perturbations × ten
+seeds × three methods (60 sessions). First-place timeout uses ten controller
+steps after a completed grasp. Post-grasp slip uses fifty actual open-gripper
+simulation steps after a successful grasp; the original success receipt is
+preserved so a fresh observation must detect disagreement. No-recovery stops
+on an invalid remaining plan without requesting a new plan. Both recovery
+methods retain the same fresh state and physical safety validation. Slip is
+controlled release, not naturally occurring contact failure. Diagnostics record
+whether each disturbance was actually realized; report these counts separately,
+including unsuccessful injection cases in total task outcomes. Do not infer
+method superiority from scenario design alone.

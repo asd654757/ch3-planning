@@ -76,7 +76,10 @@ class MetaWorldObserver:
 
 
 class MetaWorldBackend:
-    def __init__(self, executor, *, max_steps=300, interrupt_first_grasp=False):
+    def __init__(self, executor, *, max_steps=300, interrupt_first_grasp=False, perturbation="none"):
+        self.perturbation = perturbation
+        self.perturbation_used = False
+        self.perturbation_events = []
         self.executor = executor
         self.max_steps = max_steps
         self.interrupt_first_grasp = interrupt_first_grasp
@@ -92,7 +95,30 @@ class MetaWorldBackend:
         if self.interrupt_first_grasp and step.source_skill == "pick":
             self.interrupt_first_grasp = False
             budget = 1  # Actually execute one simulator step, then time out.
+        if not self.perturbation_used and self.perturbation == "place_timeout" and step.source_skill == "place":
+            budget = 10
+            self.perturbation_used = True
         result = self.executor.execute_step(step, max_steps=budget)
+        if self.perturbation == "place_timeout" and budget == 10:
+            self.perturbation_events.append({"type": "place_timeout", "realized": not result.success})
+        if (not self.perturbation_used and self.perturbation == "post_grasp_slip"
+                and step.source_skill == "pick" and result.success):
+            self.perturbation_used = True
+            disturbance_steps = 0
+            for _ in range(50):
+                _, _, terminated, truncated, _ = self.executor._env._env.step(np.array([0., 0., 0., -1.]))
+                disturbance_steps += 1
+                if terminated or truncated:
+                    break
+            raw = self.executor._state()
+            observed = decode_state(raw, goal_tolerance=self.executor.goal_tolerance,
+                closed_threshold=self.executor.gripper_closed_threshold,
+                lift_threshold=self.executor.lifted_height_threshold)
+            self.perturbation_events.append({"type": "post_grasp_slip",
+                "realized": not observed.holding and observed.at.get(OBJECT) == "table",
+                "disturbance_steps": disturbance_steps})
+            # Preserve successful grasp receipt: fresh observation must detect the slip.
+
         from dataclasses import asdict
         self.results.append({"command_id": command_id, **asdict(result)})
         return Receipt("success" if result.success else "failed",
@@ -110,7 +136,7 @@ class ScriptedSmokePlanner:
         return json.dumps({"actions": actions})
 
 
-def build_session(planner=None, *, seed=0, interrupt_first_grasp=False, max_steps=300):
+def build_session(planner=None, *, seed=0, interrupt_first_grasp=False, max_steps=300, perturbation="none"):
     # Restrict both planning and compilation to the physical backend's capability.
     registry = CapabilityRegistry({"arms": ["right"], "capabilities": {
         "pick": {"primitive": "grasp", "args": ["object_id", "arm"], "policy": "adflow_grasp"},
@@ -126,5 +152,5 @@ def build_session(planner=None, *, seed=0, interrupt_first_grasp=False, max_step
     session = Session(Supervisor(Task("Place the red cube on the target and release it", (GOAL,)),
         validator, planner or ScriptedSmokePlanner(), max_model_calls=6, max_commands=8),
         MetaWorldObserver(ex), MetaWorldBackend(ex, max_steps=max_steps,
-            interrupt_first_grasp=interrupt_first_grasp), "simulator")
+            interrupt_first_grasp=interrupt_first_grasp, perturbation=perturbation), "simulator")
     return session

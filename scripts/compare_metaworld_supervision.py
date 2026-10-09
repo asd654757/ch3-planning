@@ -19,6 +19,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--seeds', type=int, default=10)
     p.add_argument('--planner', choices=['qwen', 'scripted'], default='qwen')
+    p.add_argument('--perturbation', choices=['grasp_timeout', 'place_timeout', 'post_grasp_slip'], default='grasp_timeout')
     p.add_argument('--model', default='qwen-vl-plus')
     p.add_argument('--env-file', type=Path)
     p.add_argument('--output', type=Path, required=True)
@@ -32,12 +33,12 @@ def main():
         client = DashScopeVLMClient(model=args.model, env_path=args.env_file, timeout=60, max_retries=0)
     rows = []
     with JsonlJournal(args.output) as journal:
-        journal.emit({'event': 'comparison_protocol', 'version': 'supervision_paired_v1',
+        journal.emit({'event': 'comparison_protocol', 'version': 'supervision_paired_v2',
             'created_at_utc': datetime.now(timezone.utc).isoformat(),
             'planner_kind': args.planner, 'model': args.model if client else None,
             'seed_count': args.seeds, 'methods': list(METHODS),
             'shared_initial_plan': True, 'feedback': 'privileged_simulator_state',
-            'perturbation': 'first_grasp_one_step_timeout', 'visual_feedback': False,
+            'perturbation': args.perturbation, 'visual_feedback': False,
             'shared_safety_validation': True, 'max_model_attempts': 6,
             'max_commands': 8, 'max_observations': 12,
             'initial_plan_cost': 'generated once per seed; replay charged equally in logical cost'})
@@ -47,7 +48,8 @@ def main():
             for method, cls in METHODS.items():
                 delegate = ClientPlanner(client, seed=seed) if client else ScriptedSmokePlanner()
                 planner = SharedInitialPlanner(delegate, initial)
-                session = build_session(planner, seed=seed, interrupt_first_grasp=True)
+                session = build_session(planner, seed=seed, interrupt_first_grasp=args.perturbation == "grasp_timeout",
+                                        perturbation=args.perturbation)
                 try:
                     raw = session.backend.executor._state()
                     physical = {k: raw[k].tolist() for k in ('puck_pos', 'hand_pos', 'target_pos')}
@@ -74,8 +76,12 @@ def main():
                            'actual_api_calls': planner.actual_calls if client else 0,
                            'planner_kind': args.planner,
                            'model_usage': getattr(delegate, 'usage', []),
-                           'perturbation_executed': any(r['primitive'] == 'grasp' and r['steps'] == 1
-                                                       for r in session.backend.results)}
+                           'perturbation': args.perturbation,
+                           'perturbation_events': session.backend.perturbation_events,
+                           'perturbation_executed': (any(r['primitive'] == 'grasp' and r['steps'] == 1
+                                                       for r in session.backend.results) if args.perturbation == 'grasp_timeout'
+                               else any(e['realized'] for e in session.backend.perturbation_events)),
+                           'rejected_candidates': sum(not e['accepted'] for e in supervisor.audit)}
                     for r in session.backend.results:
                         emit({'event': 'primitive_diagnostics', **r})
                     emit({**row, 'event': 'case_summary'})

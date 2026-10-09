@@ -9,7 +9,9 @@ from .core import Supervisor
 
 class NoRecoverySupervisor(Supervisor):
     def prepare(self):
-        if any(h['receipt']['status'] != 'success' for h in self.history):
+        if (any(h['receipt']['status'] != 'success' for h in self.history) or
+                (self._plan is not None and self._observation is not None
+                 and self._check(self._plan) is not None)):
             self.status = 'safe_stop'
             return self.status
         return super().prepare()

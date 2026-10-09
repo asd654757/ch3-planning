@@ -136,6 +136,7 @@ class DashScopeVLMClient:
         system_prompt: str,
         user_prompt: str,
         image_path: Optional[str | Path] = None,
+        image_paths: Optional[list[str | Path] | tuple[str | Path, ...]] = None,
         temperature: float = 0.1,
         max_tokens: int = 1024,
         seed: Optional[int] = None,
@@ -150,10 +151,13 @@ class DashScopeVLMClient:
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
-        if image_path is not None:
+        if image_path is not None and image_paths is not None:
+            raise ValueError("use image_path or image_paths, not both")
+        images = [image_path] if image_path is not None else list(image_paths or ())
+        if images:
             payload["messages"][1]["content"] = [
                 {"type": "text", "text": user_prompt},
-                {"type": "image_url", "image_url": {"url": image_data_url(image_path)}},
+                *[{"type": "image_url", "image_url": {"url": image_data_url(path)}} for path in images],
             ]
         if json_mode:
             payload["response_format"] = {"type": "json_object"}

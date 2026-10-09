@@ -51,3 +51,57 @@ def test_no_recovery_does_not_repair_success_receipt_state_disagreement():
     sup.observe(session.observer.read())
     assert sup.prepare() == 'safe_stop'
     assert sup.model_calls == 1
+
+
+def slipped_session(cls):
+    session = replace(build_session(), cls)
+    sup = session.supervisor
+    sup.observe(session.observer.read())
+    assert sup.prepare() == 'ready'
+    session.backend.count = 1
+    assert sup.execute_next(session.backend).status == 'success'
+    session.backend.state.holding.clear()
+    session.backend.state.at['red_cube_0'] = 'table'
+    sup.observe(session.observer.read())
+    return session
+
+
+def test_conflict_reports_observed_loss_not_prescribed_repair():
+    from ch3.supervision.core import Supervisor
+    session = slipped_session(Supervisor)
+    request = session.supervisor._request()
+    conflict = request['state_conflicts'][0]
+    assert conflict['current_holding'] is None
+    assert conflict['invalidated_precondition'] == 'holding(left, red_cube_0)'
+    assert conflict['blocked_action']['skill'] == 'place'
+    assert 'repair_actions' not in conflict
+    assert 'cause' in conflict
+    assert request['state_authority']
+
+
+def test_direct_gets_identical_state_authority_and_raw_success_not_conflict():
+    session = slipped_session(DirectReplanSupervisor)
+    request = session.supervisor._request()
+    assert request['held_objects']['left'] is None
+    assert request['last_execution_feedback']['receipt']['status'] == 'success'
+    assert request['state_authority']
+    assert 'state_conflicts' not in request
+
+
+def test_unknown_occupancy_does_not_report_holding_loss():
+    from ch3.supervision.core import Supervisor
+    session = slipped_session(Supervisor)
+    session.supervisor._observation.occupancy.pop('left')
+    assert session.supervisor._state_conflicts() == []
+
+
+def test_confirmed_holding_does_not_report_conflict():
+    from ch3.supervision.core import Supervisor
+    session = replace(build_session(), Supervisor)
+    sup = session.supervisor
+    sup.observe(session.observer.read())
+    sup.prepare()
+    session.backend.count = 1
+    sup.execute_next(session.backend)
+    sup.observe(session.observer.read())
+    assert sup._state_conflicts() == []

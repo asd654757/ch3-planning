@@ -18,14 +18,15 @@ METHODS = {'NO_RECOVERY': NoRecoverySupervisor, 'DIRECT_REPLAN': DirectReplanSup
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--seeds', type=int, default=10)
+    p.add_argument('--start-seed', type=int, default=0)
     p.add_argument('--planner', choices=['qwen', 'scripted'], default='qwen')
     p.add_argument('--perturbation', choices=['grasp_timeout', 'place_timeout', 'post_grasp_slip'], default='grasp_timeout')
     p.add_argument('--model', default='qwen-vl-plus')
     p.add_argument('--env-file', type=Path)
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
-    if args.seeds < 1:
-        p.error('positive seed count required')
+    if args.seeds < 1 or args.start_seed < 0:
+        p.error('positive seed count and nonnegative start seed required')
     client = None
     if args.planner == 'qwen':
         from ch3.vlm.client import DashScopeVLMClient
@@ -33,16 +34,18 @@ def main():
         client = DashScopeVLMClient(model=args.model, env_path=args.env_file, timeout=60, max_retries=0)
     rows = []
     with JsonlJournal(args.output) as journal:
-        journal.emit({'event': 'comparison_protocol', 'version': 'supervision_paired_v2',
+        journal.emit({'event': 'comparison_protocol', 'version': 'supervision_paired_v3',
             'created_at_utc': datetime.now(timezone.utc).isoformat(),
             'planner_kind': args.planner, 'model': args.model if client else None,
-            'seed_count': args.seeds, 'methods': list(METHODS),
+            'seed_count': args.seeds, 'start_seed': args.start_seed, 'methods': list(METHODS),
+            'feedback_version': 'current_state_authority_and_conflict_v1',
+            'attempts_per_preparation': 2,
             'shared_initial_plan': True, 'feedback': 'privileged_simulator_state',
             'perturbation': args.perturbation, 'visual_feedback': False,
             'shared_safety_validation': True, 'max_model_attempts': 6,
             'max_commands': 8, 'max_observations': 12,
             'initial_plan_cost': 'generated once per seed; replay charged equally in logical cost'})
-        for seed in range(args.seeds):
+        for seed in range(args.start_seed, args.start_seed + args.seeds):
             initial = None
             initial_physical = None
             for method, cls in METHODS.items():
@@ -82,6 +85,12 @@ def main():
                                                        for r in session.backend.results) if args.perturbation == 'grasp_timeout'
                                else any(e['realized'] for e in session.backend.perturbation_events)),
                            'rejected_candidates': sum(not e['accepted'] for e in supervisor.audit)}
+                    repair_attempts = [e for e in supervisor.audit
+                                       if e['request']['observation_sequence'] > 0]
+                    row['first_repair_accepted'] = (repair_attempts[0]['accepted']
+                                                    if repair_attempts else None)
+                    row['rejection_reasons'] = [e.get('rejection') for e in supervisor.audit
+                                                if not e['accepted']]
                     for r in session.backend.results:
                         emit({'event': 'primitive_diagnostics', **r})
                     emit({**row, 'event': 'case_summary'})

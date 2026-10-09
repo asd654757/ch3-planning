@@ -245,6 +245,30 @@ class Supervisor:
         self.status = "safe_stop"
         return self.status
 
+    def _state_conflicts(self) -> list[dict]:
+        """Compare the last successful grasp with NEW observed occupancy only.
+
+        This diagnoses a missing precondition, not a repair plan or the physical
+        cause of loss. Unknown occupancy must not be diagnosed as an empty hand.
+        """
+        obs = self._observation
+        if obs is None or not self._history:
+            return []
+        last = self._history[-1]
+        action = last['action']
+        arm, obj = action['arm'], action['object_id']
+        if (action['skill'] != 'pick' or last['receipt']['status'] != 'success'
+                or obs.sequence <= last['observation_sequence']
+                or arm not in obs.occupancy or obs.occupancy[arm] == obj):
+            return []
+        return [{"conflict": "holding_not_observed_after_successful_pick",
+                 "arm": arm, "object_id": obj,
+                 "current_holding": obs.occupancy[arm],
+                 "invalidated_precondition": f"holding({arm}, {obj})",
+                 "blocked_action": {"skill": "place", "object_id": obj, "arm": arm},
+                 "observation_sequence": obs.sequence,
+                 "cause": "unknown; receipt is historical, not current occupancy"}]
+
     def _request(self) -> dict:
         obs = self._observation
         return {
@@ -252,6 +276,7 @@ class Supervisor:
             "episode_id": obs.episode_id, "observation_sequence": obs.sequence,
             "current_observed_facts": sorted(obs.state.facts() | obs.state.empty_hand_facts(obs.occupancy)),
             "held_objects": dict(obs.occupancy),
+            "state_authority": "Current observed facts and occupancy override historical action receipts; success describes a past execution, not current holding.",
             "goal_facts": list(self.task.goal_facts),
             "remaining_goal_facts": list(self.remaining_goals),
             "goal_evidence": {f: {"value": e.value.value, "source": e.source, "detail": e.detail}
@@ -265,6 +290,7 @@ class Supervisor:
             "forbidden_objects": sorted(self.task.forbidden_objects),
             "executed_history_not_current_state": list(self.history),
             "rejection_feedback": self.last_rejection,
+            "state_conflicts": self._state_conflicts(),
             "output_schema": {"actions": [{"step_id": "contiguous integer from 1",
                 "skill": "registered skill", "object_id": "registered object",
                 "target_id": "when required", "arm": "registered arm"}]},

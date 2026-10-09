@@ -91,3 +91,25 @@ controlled release, not naturally occurring contact failure. Diagnostics record
 whether each disturbance was actually realized; report these counts separately,
 including unsuccessful injection cases in total task outcomes. Do not infer
 method superiority from scenario design alone.
+
+### V3 feedback correction (development regression)
+
+Run `bash scripts/start_supervision_feedback_v3.sh` from the shell containing the
+API key. It runs the same two perturbations and seeds 0–9, writing NEW journals
+under `supervision_feedback_v3_*`. Previous V2 results are not overwritten.
+These seeds are development cases, not held-out formal evaluation. Use
+`--start-seed` on the comparison CLI to reserve new seeds after freezing code.
+
+Both model-driven methods now use an identical strengthened JSON-object format
+and explicit current-observation precedence over historical success receipts.
+Only supervision includes a programmatic conflict diagnostic: last successful
+pick versus fresh occupancy, invalidated holding precondition and blocked place
+action. Unknown occupancy is not treated as loss. The physical cause remains
+unknown; diagnostics do not prescribe repair actions or consult reward.
+
+Two attempts per preparation, six total planner invocations and eight commands
+remain unchanged for both methods. This is a combined feedback/prompt correction,
+not an isolated causal test of the diagnostic alone. New case journals include
+first repair acceptance, rejected candidates and rejection reasons; these should
+be analyzed alongside task success and calls. Better direct-replan performance
+after the shared prompt correction must be reported, not suppressed.

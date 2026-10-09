@@ -22,6 +22,7 @@ class DirectReplanSupervisor(Supervisor):
         request = super()._request()
         request.pop('executed_history_not_current_state', None)
         request.pop('rejection_feedback', None)
+        request.pop('state_conflicts', None)
         request['last_execution_feedback'] = (
             {'action': self.history[-1]['action'], 'receipt': self.history[-1]['receipt']}
             if self.history else None)

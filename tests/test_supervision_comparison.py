@@ -36,3 +36,18 @@ def test_shared_initial_is_replayed_only_once():
     assert planner.actual_calls == 0
     assert planner.generate({}, ()) == 'new'
     assert planner.actual_calls == 1
+
+
+def test_no_recovery_does_not_repair_success_receipt_state_disagreement():
+    session = replace(build_session(), NoRecoverySupervisor)
+    sup = session.supervisor
+    sup.observe(session.observer.read())
+    assert sup.prepare() == 'ready'
+    # Use the mock's second (successful) pick, then simulate observed loss.
+    session.backend.count = 1
+    assert sup.execute_next(session.backend).status == 'success'
+    session.backend.state.holding.clear()
+    session.backend.state.at['red_cube_0'] = 'table'
+    sup.observe(session.observer.read())
+    assert sup.prepare() == 'safe_stop'
+    assert sup.model_calls == 1

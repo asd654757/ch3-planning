@@ -1,0 +1,30 @@
+{
+  "protocol": "supervision_feedback_v3_frozen_50",
+  "source_commit": "10fa793e25c9df25d3f685d8a7f1625ed6877b0e",
+  "seed_start": 10,
+  "seeds_per_scenario": 50,
+  "perturbations": [
+    "place_timeout",
+    "post_grasp_slip"
+  ],
+  "methods": [
+    "NO_RECOVERY",
+    "DIRECT_REPLAN",
+    "SUPERVISED_RECOVERY"
+  ],
+  "model": "qwen-vl-plus",
+  "temperature": 0.1,
+  "max_tokens": 1024,
+  "attempts_per_preparation": 2,
+  "max_model_calls": 6,
+  "max_commands": 8,
+  "max_observations": 12,
+  "sha256": {
+    "ch3/supervision/core.py": "b654661094a0c0c5cda84d93d461efdcbf8f976c85201f8d1adf822fa342ebc3",
+    "ch3/supervision/planner.py": "fa9bae81da49ba6f343ed3c2fbcf4c89c96a46c0f32fe839f1c90e14b8f6d059",
+    "ch3/supervision/comparison.py": "0232b887589d62d48f32a89b31fac1d297ee5bbc7003e5063671af485c3a4761",
+    "ch3/supervision/metaworld_adapter.py": "d3ba0b43d2a5283a4e8b22166c6e9f13b62da0f233e6866f5e2f4755131a033b",
+    "ch3/execution/metaworld_executor.py": "0a224cf7e2b8a4d0e93ce3573b3fb91638026b199535cb42faeaccffd58d9828",
+    "scripts/compare_metaworld_supervision.py": "1c8171b0665663a04f3a49e876a2a8b8becfc7df59ddaccd0180a7aeb4716d77"
+  }
+}

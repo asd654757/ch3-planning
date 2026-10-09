@@ -77,3 +77,40 @@ PYTHONPATH=. /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python -m pytest -q
 后续只需选定可用控制后端、实现 observer/backend 适配器并运行小规模接入验证。
 确认模型真实调用、观测独立于评分、修复计划改变执行序列之后，才能冻结正式实验协议。
 底层模型尚未确定，因此 RoboDojo 的策略推理、真实动力学执行和非结构化场景评测均未完成。
+
+## 2026-10-09：统一会话入口与审计日志
+
+新增 `ch3/supervision/runtime.py` 与 `scripts/run_supervision.py`。
+统一入口支持可信本地 factory 创建 `Session(supervisor, observer, backend, evidence_kind)`，
+后续只替换 observer/backend 和模型配置，不重写运行循环。
+factory 是可执行 Python 插件，只应使用作者信任的本地模块。
+
+默认明确使用 mock，不读取 API key、不调用收费接口：
+
+```bash
+cd /root/autodl-tmp/ch3-planning
+/root/autodl-tmp/.venvs/metaworld-lerobot/bin/python scripts/run_supervision.py \
+  --max-observations 20 \
+  --output /tmp/supervision_mock_$(date +%Y%m%d_%H%M%S).jsonl
+```
+
+日志逐行刷新，包含观测证据、模型候选与拒绝原因、执行动作、command_id、回执和最终摘要；
+文件以独占模式创建，拒绝覆盖旧结果。接入 `ClientPlanner` 时摘要还包含模型返回的 token 与耗时。
+API 失败计入监督层调用预算，但没有服务端 usage 时不能凭空估算 token 消耗。
+日志包含任务、图片路径和模型输出，分享前应按数据隐私要求检查。
+
+观察序号重复、episode 改变或观测器异常立即停止；观测预算耗尽不算成功。
+unknown 执行回执之后必须重新观测，不能盲目重发。
+状态已经显示目标满足但缺少明确证据时，继续请求观测，不生成多余动作。
+会话的 `evidence_kind` 由集成方如实声明，不是软件自动认证的实验类型。
+只有最终 `stop_reason=complete` 才表示本会话根据给定观测证据确认完成，
+不能把 mock/symbolic 标签结果写作真实机器人成功率。
+
+运行入口仍是同步接口，观察/控制适配器必须自行设置 IO 超时与资源清理；
+本实现不提供断电后的自动恢复或多进程并发调度。
+
+2026-10-09 本地验收：监督层与统一运行入口相关测试共 32 项通过，全项目
+396 项测试通过。实际运行默认 mock 会话得到 4 次观测、2 次脚本化模型调用、
+3 次命令下发，最终由执行后的独立新观测确认完成。
+另通过替身网络响应验证现有 Qwen 客户端贯穿首次规划与失败修复流程，
+没有调用真实服务；这些结果仅用于软件集成验收，不构成模型性能实验。

@@ -192,6 +192,13 @@ class Supervisor:
             self._plan = None
             self.status = "need_observation"
             return self.status
+        # State already predicts completion but lacks independent confirmation.
+        # Request evidence instead of generating unnecessary, potentially harmful motion.
+        if goal_satisfied(self._observation.state, GoalSpec(facts=list(self.task.goal_facts)),
+                          self.validator.registry.arms):
+            self._plan = None
+            self.status = "need_observation"
+            return self.status
         if self._plan is not None:
             rejection = self._check(self._plan)
             if rejection is None:

@@ -55,3 +55,25 @@ session. Confirm API calls and state-dependent remaining-plan changes. Then
 freeze matched tasks, seeds, controller and budgets for open-loop, direct
 replanning and supervised recovery comparisons. This adapter alone does not
 establish nonstructured-environment generalization or comparative advantage.
+
+## Paired pilot
+
+`bash scripts/start_supervision_paired_pilot.sh` starts 10 seeds × 3 methods
+in the background, provided the calling shell has `DASHSCOPE_API_KEY` configured.
+Paths are recorded in `/tmp/supervision_paired_pilot_{pid,log,output}`.
+
+The pilot shares the first real-model output per seed. Every method uses the
+same observed state, goal, fixed controller, physical initial state and hard
+validation gate. Direct replanning receives the latest raw execution feedback,
+but not immutable history or iterative validator diagnostics. Thus this is an
+ablation of structured feedback/history, not an unsafe unvalidated baseline.
+All methods have six planner attempts, eight commands and twelve observations.
+Recovery remains within each method's single episode. Seed equality is checked
+against actual initial puck, hand, gripper and target state before comparison.
+
+Actual API calls are counted separately from logical planner calls because the
+initial plan is replayed. Normal success requires post-command observation;
+the timeout must be observed in diagnostics. Failure of initial plan generation
+or an initial-state mismatch aborts rather than fabricating comparable cases.
+This simple timeout pilot may saturate both recovery methods; it cannot establish
+superiority on harder tasks or naturally occurring failures.

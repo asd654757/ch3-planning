@@ -75,7 +75,8 @@ def main():
                                         perturbation=args.perturbation)
                 if args.stress_profile != 'none':
                     from ch3.supervision.stress_backend import StressBackend
-                    session.backend = StressBackend(session.backend.executor, args.stress_profile)
+                    session = Session(session.supervisor, session.observer,
+                        StressBackend(session.backend.executor, args.stress_profile), 'simulator')
                 try:
                     raw = session.backend.executor._state()
                     physical = {k: raw[k].tolist() for k in ('puck_pos', 'hand_pos', 'target_pos')}

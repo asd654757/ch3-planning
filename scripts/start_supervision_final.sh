@@ -51,7 +51,8 @@ print('模型服务预检通过。此检查调用不计入实验性能统计。'
 PYPREFLIGHT
 nohup setsid bash -c '
 set -e
-trap '''rc=$?; echo "[supervision-final] PROCESS_EXIT=$rc"''' EXIT
+worker_exit() { rc=$?; echo "[supervision-final] PROCESS_EXIT=$rc"; }
+trap worker_exit EXIT
 /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python -u scripts/compare_supervision_final.py \
  --planner openai_compatible --source "$1" --start-seed 10 --seeds 50 \
  --perturbation post_grasp_slip --env-file "$3" --model "$4" --base-url "$5" --output "$2/cases.jsonl"

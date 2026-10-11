@@ -1,0 +1,116 @@
+{
+  "protocol": {
+    "event": "comparison_protocol",
+    "version": "supervision_final_attribution_v1",
+    "source": "data/collections/supervision_feedback_v3_formal50_20261010_000609/post_grasp_slip.jsonl",
+    "source_sha256": "98d301ae6d76cdb9586b13cbd81c7a5ebec3563ce9451da030d581ca6d5da998",
+    "created_at_utc": "2026-10-11T14:04:24.790193+00:00",
+    "planner_kind": "openai_compatible",
+    "model": "deepseek-v4.1-flash",
+    "initial_plan_source_model": "qwen-vl-plus",
+    "recovery_only_cross_model": true,
+    "stress_profile": "repeat_slip_place_timeout",
+    "seed_count": 50,
+    "start_seed": 10,
+    "methods": [
+      "STATE_FIRST_DIRECT",
+      "WITHOUT_CONFLICT",
+      "SUPERVISED_RECOVERY"
+    ],
+    "feedback_version": "current_state_authority_and_conflict_v1",
+    "attempts_per_preparation": 2,
+    "shared_initial_plan": true,
+    "feedback": "privileged_simulator_state",
+    "perturbation": "post_grasp_slip",
+    "visual_feedback": false,
+    "shared_safety_validation": true,
+    "max_model_attempts": 6,
+    "max_commands": 8,
+    "max_observations": 12,
+    "initial_plan_cost": "replayed from frozen journal for all methods; logical count includes initial plan; actual API usage is recovery only"
+  },
+  "by_method": {
+    "STATE_FIRST_DIRECT": {
+      "n": 50,
+      "successes": 50,
+      "success_rate": 1.0,
+      "wilson_95": [
+        0.928652400866645,
+        1.0
+      ],
+      "realized_disturbances": 50,
+      "first_repair_accepted": 48,
+      "mean_logical_calls": 4.04,
+      "actual_api_calls": 152,
+      "recovery_tokens": 157806,
+      "mean_commands": 5.0,
+      "rejections": {
+        "{'reason': 'generation_error', 'type': 'ValueError'}": 1,
+        "{'reason': 'generation_error', 'type': 'JSONDecodeError'}": 1
+      },
+      "failed_seeds": []
+    },
+    "WITHOUT_CONFLICT": {
+      "n": 50,
+      "successes": 50,
+      "success_rate": 1.0,
+      "wilson_95": [
+        0.928652400866645,
+        1.0
+      ],
+      "realized_disturbances": 50,
+      "first_repair_accepted": 49,
+      "mean_logical_calls": 4.02,
+      "actual_api_calls": 151,
+      "recovery_tokens": 185179,
+      "mean_commands": 5.0,
+      "rejections": {
+        "{'reason': 'generation_error', 'type': 'JSONDecodeError'}": 1
+      },
+      "failed_seeds": []
+    },
+    "SUPERVISED_RECOVERY": {
+      "n": 50,
+      "successes": 48,
+      "success_rate": 0.96,
+      "wilson_95": [
+        0.8653990931249335,
+        0.9889611156723798
+      ],
+      "realized_disturbances": 50,
+      "first_repair_accepted": 49,
+      "mean_logical_calls": 4.12,
+      "actual_api_calls": 156,
+      "recovery_tokens": 209054,
+      "mean_commands": 4.88,
+      "rejections": {
+        "{'reason': 'generation_error', 'type': 'JSONDecodeError'}": 9,
+        "{'reason': 'generation_error', 'type': 'ValueError'}": 1
+      },
+      "failed_seeds": [
+        12,
+        53
+      ]
+    }
+  },
+  "paired_tests": {
+    "STATE_FIRST_DIRECT": {
+      "full_only_success": 0,
+      "baseline_only_success": 2,
+      "mcnemar_exact_two_sided": 0.5,
+      "bonferroni_p_two_comparisons": 1.0
+    },
+    "WITHOUT_CONFLICT": {
+      "full_only_success": 0,
+      "baseline_only_success": 2,
+      "mcnemar_exact_two_sided": 0.5,
+      "bonferroni_p_two_comparisons": 1.0
+    }
+  },
+  "limitations": [
+    "Repeated scenario types, not unseen tasks",
+    "Privileged structured state, not visual perception",
+    "Recovery tokens exclude shared initial-plan generation",
+    "Ablation includes rejection feedback; interpret conflict-field contribution separately"
+  ]
+}

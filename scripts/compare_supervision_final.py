@@ -85,6 +85,11 @@ def main():
                         journal.emit({**e, 'seed': seed, 'method': method})
                     emit({'event': 'initial_physical_state', 'state': physical})
                     result = run_session(session, max_observations=12, emit=emit)
+                    if any(e.get('rejection', {}).get('type') == 'VLMError'
+                           for e in supervisor.audit):
+                        emit({'event': 'infrastructure_abort',
+                              'reason': 'model_service_error_not_method_failure'})
+                        raise RuntimeError('Model service error; comparison aborted, journal retained')
                     if initial is None:
                         initial = planner.generated_initial
                         if initial is None:

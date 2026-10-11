@@ -33,6 +33,20 @@ for name, expected in c['sha256'].items():
     if hashlib.sha256(Path(name).read_bytes()).hexdigest() != expected:
         raise SystemExit('Frozen source changed: '+name)
 PYFREEZE
+# One health check before launching 150 sessions. Never print service bodies.
+/root/autodl-tmp/.venvs/metaworld-lerobot/bin/python - "$env_file" <<'PYPREFLIGHT'
+import sys
+from ch3.vlm.client import DashScopeVLMClient
+try:
+    response = DashScopeVLMClient(env_path=sys.argv[1], model='qwen-vl-plus',
+        timeout=30, max_retries=0).complete(system_prompt='Return only JSON.',
+        user_prompt='Return {"ok": true}.', max_tokens=32, json_mode=True)
+    if not response.content:
+        raise ValueError('empty response')
+except Exception as exc:
+    raise SystemExit('模型服务预检失败（'+type(exc).__name__+'）；未启动实验。请核查密钥、模型权限与服务端点。')
+print('模型服务预检通过。此检查调用不计入实验性能统计。')
+PYPREFLIGHT
 nohup bash -c '
 set -e
 /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python -u scripts/compare_supervision_final.py \

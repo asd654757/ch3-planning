@@ -105,3 +105,26 @@ def test_confirmed_holding_does_not_report_conflict():
     sup.execute_next(session.backend)
     sup.observe(session.observer.read())
     assert sup._state_conflicts() == []
+
+
+def test_without_conflict_removes_only_one_field():
+    from ch3.supervision.core import Supervisor
+    from ch3.supervision.final_variants import WithoutConflictSupervisor
+    session = slipped_session(Supervisor)
+    sup = session.supervisor
+    variant = WithoutConflictSupervisor(sup.task, sup.validator, sup.planner)
+    variant.__dict__.update(sup.__dict__)
+    full = sup._request()
+    expected = dict(full)
+    expected.pop('state_conflicts')
+    assert variant._request() == expected
+
+
+def test_strong_direct_preserves_raw_receipt_but_labels_history():
+    from ch3.supervision.final_variants import StateFirstDirectSupervisor
+    session = slipped_session(StateFirstDirectSupervisor)
+    request = session.supervisor._request()
+    assert request['historical_execution_event_not_current_state']['receipt']['status'] == 'success'
+    assert request['planning_basis']['current_occupancy']['left'] is None
+    assert 'state_conflicts' not in request
+    assert 'rejection_feedback' not in request

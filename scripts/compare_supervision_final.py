@@ -1,4 +1,4 @@
-"""Small matched comparison. Default requires real Qwen; scripted is wiring-only."""
+"""Small matched comparison. Uses a real compatible model service; scripted is wiring-only."""
 import argparse
 from datetime import datetime, timezone
 import json
@@ -21,9 +21,10 @@ def main():
     p.add_argument('--source', type=Path, required=True, help='Frozen formal slip journal')
     p.add_argument('--seeds', type=int, default=10)
     p.add_argument('--start-seed', type=int, default=0)
-    p.add_argument('--planner', choices=['qwen', 'scripted'], default='qwen')
+    p.add_argument('--planner', choices=['qwen', 'openai_compatible', 'scripted'], default='qwen')
     p.add_argument('--perturbation', choices=['grasp_timeout', 'place_timeout', 'post_grasp_slip'], default='grasp_timeout')
     p.add_argument('--model', default='qwen-vl-plus')
+    p.add_argument('--base-url', default='https://dashscope.aliyuncs.com/compatible-mode/v1')
     p.add_argument('--env-file', type=Path)
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
@@ -42,16 +43,18 @@ def main():
     import hashlib
     source_hash = hashlib.sha256(args.source.read_bytes()).hexdigest()
     client = None
-    if args.planner == 'qwen':
+    if args.planner != 'scripted':
         from ch3.vlm.client import DashScopeVLMClient
         from ch3.supervision.planner import ClientPlanner
-        client = DashScopeVLMClient(model=args.model, env_path=args.env_file, timeout=60, max_retries=0)
+        client = DashScopeVLMClient(model=args.model, env_path=args.env_file, base_url=args.base_url, timeout=60, max_retries=0)
     rows = []
     with JsonlJournal(args.output) as journal:
         journal.emit({'event': 'comparison_protocol', 'version': 'supervision_final_attribution_v1',
             'source': str(args.source), 'source_sha256': source_hash,
             'created_at_utc': datetime.now(timezone.utc).isoformat(),
-            'planner_kind': args.planner, 'model': args.model if client else None,
+            'planner_kind': 'openai_compatible' if client else 'scripted', 'model': args.model if client else None,
+            'initial_plan_source_model': protocols[0].get('model'),
+            'recovery_only_cross_model': bool(client) and args.model != protocols[0].get('model'),
             'seed_count': args.seeds, 'start_seed': args.start_seed, 'methods': list(METHODS),
             'feedback_version': 'current_state_authority_and_conflict_v1',
             'attempts_per_preparation': 2,

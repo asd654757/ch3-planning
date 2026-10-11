@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+model="${CH3_MODEL:-qwen-vl-plus}"
+base_url="${CH3_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}"
 env_file="${CH3_ENV_FILE:-$HOME/.config/ch3-planning/dashscope.env}"
 if [[ -z "${DASHSCOPE_API_KEY:-}" ]]; then
   if [[ ! -r "$env_file" ]]; then
@@ -34,11 +36,11 @@ for name, expected in c['sha256'].items():
         raise SystemExit('Frozen source changed: '+name)
 PYFREEZE
 # One health check before launching 150 sessions. Never print service bodies.
-/root/autodl-tmp/.venvs/metaworld-lerobot/bin/python - "$env_file" <<'PYPREFLIGHT'
+/root/autodl-tmp/.venvs/metaworld-lerobot/bin/python - "$env_file" "$model" "$base_url" <<'PYPREFLIGHT'
 import sys
 from ch3.vlm.client import DashScopeVLMClient
 try:
-    response = DashScopeVLMClient(env_path=sys.argv[1], model='qwen-vl-plus',
+    response = DashScopeVLMClient(env_path=sys.argv[1], model=sys.argv[2], base_url=sys.argv[3],
         timeout=30, max_retries=0).complete(system_prompt='Return only JSON.',
         user_prompt='Return {"ok": true}.', max_tokens=32, json_mode=True)
     if not response.content:
@@ -50,12 +52,12 @@ PYPREFLIGHT
 nohup bash -c '
 set -e
 /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python -u scripts/compare_supervision_final.py \
- --planner qwen --source "$1" --start-seed 10 --seeds 50 \
- --perturbation post_grasp_slip --env-file "$3" --output "$2/cases.jsonl"
+ --planner openai_compatible --source "$1" --start-seed 10 --seeds 50 \
+ --perturbation post_grasp_slip --env-file "$3" --model "$4" --base-url "$5" --output "$2/cases.jsonl"
 /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python scripts/analyze_supervision_final.py \
  "$2/cases.jsonl" > "$2/analysis.json"
 echo "[supervision-final] ALL_COMPLETED"
-' bash "$source_file" "$outdir" "$env_file" > "$log" 2>&1 < /dev/null &
+' bash "$source_file" "$outdir" "$env_file" "$model" "$base_url" > "$log" 2>&1 < /dev/null &
 pid=$!
 printf '%s\n' "$pid" > /tmp/supervision_final_pid
 printf '%s\n' "$log" > /tmp/supervision_final_log

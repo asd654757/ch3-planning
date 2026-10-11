@@ -58,3 +58,23 @@ Background execution; no live polling required. Completion requires
 `cases.jsonl`, `analysis.json` and launch commit. Real Qwen experiment has not
 been started by the tool process without credentials. Scripted smoke is only
 adapter validation and must not enter the paper's performance table.
+
+## Model service substitution (2026-10-11)
+
+The first final run produced only service errors for all recovery requests; its
+zero successes are infrastructure-invalid, not method performance evidence.
+A minimal request to `deepseek-v4.1-flash` at the configured DashScope endpoint
+returned HTTP 200. The launcher now accepts `CH3_MODEL` and `CH3_BASE_URL`,
+checks availability before launch, and aborts on model service errors.
+
+```bash
+CH3_MODEL=deepseek-v4.1-flash bash scripts/start_supervision_final.sh
+```
+
+All compared recovery methods use the same selected model. Initial plans are
+replayed from the frozen Qwen journal and this cross-model lineage is recorded.
+This is a recovery-only cross-model comparison, not a full DeepSeek planning
+benchmark or a same-model causal ablation of the original Qwen results.
+The feedback is structured simulator state, not camera images; this substitution
+does not establish visual capability of the selected model. Frozen V3 source
+files remain unchanged.

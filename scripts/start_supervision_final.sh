@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+env_file="${CH3_ENV_FILE:-$HOME/.config/ch3-planning/dashscope.env}"
 if [[ -z "${DASHSCOPE_API_KEY:-}" ]]; then
-  echo '请在当前终端配置 DASHSCOPE_API_KEY。' >&2; exit 1
+  if [[ ! -r "$env_file" ]]; then
+    echo "请配置 DASHSCOPE_API_KEY 或创建私有密钥文件：$env_file" >&2; exit 1
+  fi
+  /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python - "$env_file" <<'PYKEY'
+import sys
+from ch3.vlm.client import load_env_file
+if not load_env_file(sys.argv[1]).get('DASHSCOPE_API_KEY'):
+    raise SystemExit('私有配置文件缺少有效 DASHSCOPE_API_KEY。')
+PYKEY
 fi
 source_dir=$(cat /tmp/supervision_feedback_v3_formal50_output)
 source_file="$source_dir/post_grasp_slip.jsonl"
@@ -28,11 +37,11 @@ nohup bash -c '
 set -e
 /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python -u scripts/compare_supervision_final.py \
  --planner qwen --source "$1" --start-seed 10 --seeds 50 \
- --perturbation post_grasp_slip --output "$2/cases.jsonl"
+ --perturbation post_grasp_slip --env-file "$3" --output "$2/cases.jsonl"
 /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python scripts/analyze_supervision_final.py \
  "$2/cases.jsonl" > "$2/analysis.json"
 echo "[supervision-final] ALL_COMPLETED"
-' bash "$source_file" "$outdir" > "$log" 2>&1 < /dev/null &
+' bash "$source_file" "$outdir" "$env_file" > "$log" 2>&1 < /dev/null &
 pid=$!
 printf '%s\n' "$pid" > /tmp/supervision_final_pid
 printf '%s\n' "$log" > /tmp/supervision_final_log

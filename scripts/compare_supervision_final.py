@@ -24,6 +24,7 @@ def main():
     p.add_argument('--planner', choices=['qwen', 'openai_compatible', 'scripted'], default='qwen')
     p.add_argument('--perturbation', choices=['grasp_timeout', 'place_timeout', 'post_grasp_slip'], default='grasp_timeout')
     p.add_argument('--model', default='qwen-vl-plus')
+    p.add_argument('--stress-profile', choices=['none', 'repeat_slip', 'repeat_slip_place_timeout'], default='none')
     p.add_argument('--base-url', default='https://dashscope.aliyuncs.com/compatible-mode/v1')
     p.add_argument('--env-file', type=Path)
     p.add_argument('--output', type=Path, required=True)
@@ -55,6 +56,7 @@ def main():
             'planner_kind': 'openai_compatible' if client else 'scripted', 'model': args.model if client else None,
             'initial_plan_source_model': protocols[0].get('model'),
             'recovery_only_cross_model': bool(client) and args.model != protocols[0].get('model'),
+            'stress_profile': args.stress_profile,
             'seed_count': args.seeds, 'start_seed': args.start_seed, 'methods': list(METHODS),
             'feedback_version': 'current_state_authority_and_conflict_v1',
             'attempts_per_preparation': 2,
@@ -71,6 +73,9 @@ def main():
                 planner = SharedInitialPlanner(delegate, initial)
                 session = build_session(planner, seed=seed, interrupt_first_grasp=args.perturbation == "grasp_timeout",
                                         perturbation=args.perturbation)
+                if args.stress_profile != 'none':
+                    from ch3.supervision.stress_backend import StressBackend
+                    session.backend = StressBackend(session.backend.executor, args.stress_profile)
                 try:
                     raw = session.backend.executor._state()
                     physical = {k: raw[k].tolist() for k in ('puck_pos', 'hand_pos', 'target_pos')}

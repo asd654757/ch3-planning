@@ -78,3 +78,10 @@ benchmark or a same-model causal ablation of the original Qwen results.
 The feedback is structured simulator state, not camera images; this substitution
 does not establish visual capability of the selected model. Frozen V3 source
 files remain unchanged.
+
+The first DeepSeek batch stopped without a traceback after four completed cases.
+No live process or completion marker remained. Cause is unconfirmed; do not
+interpret this partial journal as a completed benchmark. The launcher uses
+`setsid` in addition to `nohup` to isolate the worker session and emits its exit
+code. A replacement batch starts from the full fixed seed list in a new output
+directory; the partial batch remains preserved and is not merged into results.

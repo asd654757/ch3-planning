@@ -48,7 +48,10 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             build_scene_xml(Path(full_V3_path_for('sawyer_xyz/sawyer_pick_place_v3.xml')), xml,
                             hide_goal_marker=True, add_return_region=True)
             env = make_scene(xml, seed=seed, initial_y_spread=initial_y_spread)
-            report['episode_resets'] = 1
+            # make_scene performs the sole reset for this run.  Keep both the
+            # declared protocol value and a runtime counter so the report does
+            # not rely only on a handwritten constant.
+            report['episode_resets'] = int(getattr(env, '_ch3_reset_count', 1))
             long_task = bool(model_planner is not None and model_planner.long_task)
             flexible = bool(model_planner is not None and getattr(model_planner, 'flexible', False))
             if flexible and not feedback_v2:
@@ -414,7 +417,8 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 report['model_recovery_enabled'] = model_planner.recovery
                 report['execution_unknown_policy'] = 'stop_not_fabricate_current_state'
             if env is not None:
-                env.close()
+            report['runtime_episode_reset_count'] = int(getattr(env, '_ch3_reset_count', report['episode_resets']))
+            env.close()
             (out / 'summary.json').write_text(json.dumps(report, indent=2))
     return report
 

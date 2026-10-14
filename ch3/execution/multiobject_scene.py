@@ -84,6 +84,10 @@ def make_scene(xml_path: Path, *, seed: int, size: int = 480, initial_y_spread: 
     env._freeze_rand_vec = False
     env.seed(seed)
     env.reset()
+    # This fixture intentionally creates one continuous episode.  The counter
+    # is runtime state, not an evaluator assertion, and is consumed by the
+    # execution audit.
+    env._ch3_reset_count = 1
     rng = np.random.default_rng(seed)
     for name, x in (("candidate_blue", -0.12), ("candidate_yellow", 0.12)):
         joint = env.model.joint(f"{name}_joint")

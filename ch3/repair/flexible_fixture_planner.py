@@ -261,7 +261,15 @@ class FlexibleFixturePlanner:
                 response=self.client.complete(system_prompt='Return only a JSON OBJECT with the top-level key "actions". '
                     'Never return a bare array. Satisfy the current task and backend contract.',
                     user_prompt=json.dumps(prompt),image_path=image_path,temperature=.1,seed=0,max_tokens=1024,json_mode=False)
-                item.update(content=response.content,total_tokens=response.total_tokens)
+                # Preserve provenance needed to distinguish a real model call from
+                # a replay/shared candidate in comparative experiments.  These
+                # fields are metadata only and are never shown to the planner.
+                item.update(content=response.content,total_tokens=response.total_tokens,
+                    response_model=getattr(response, 'model', None),
+                    response_id=getattr(response, 'response_id', None),
+                    request_id=getattr(response, 'request_id', None),
+                    latency_ms=getattr(response, 'latency_ms', None),
+                    finish_reason=getattr(response, 'finish_reason', None))
                 if initial:
                     self.shared['flexible_initial']=dict(request=deepcopy(prompt),image_sha256=item['image_sha256'],content=response.content)
             plan=strict_plan(item['content'],fixed_right_arm=True)

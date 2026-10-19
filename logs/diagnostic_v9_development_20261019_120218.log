@@ -15,3 +15,207 @@
 [reference-sequence] seed=520 stage=transfer_2_yellow_place
 {"seed": 520, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 1, "error": null}
 [flexible-fixture] seed=521 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=521 stage=transfer_0_blue_pick
+[reference-sequence] seed=521 stage=transfer_0_blue_place
+[reference-sequence] seed=521 stage=transfer_1_yellow_pick
+[reference-sequence] seed=521 stage=transfer_1_yellow_place
+[reference-sequence] seed=521 stage=transfer_2_yellow_pick
+[reference-sequence] seed=521 stage=transfer_2_yellow_place
+{"seed": 521, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=521 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=521 stage=transfer_0_blue_pick
+[reference-sequence] seed=521 stage=transfer_0_blue_place
+[reference-sequence] seed=521 stage=transfer_1_yellow_pick
+[reference-sequence] seed=521 stage=transfer_1_yellow_place
+[reference-sequence] seed=521 stage=transfer_2_yellow_pick
+[reference-sequence] seed=521 stage=transfer_2_yellow_place
+{"seed": 521, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=522 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=522 stage=transfer_0_blue_pick
+[reference-sequence] seed=522 stage=transfer_0_blue_place
+[reference-sequence] seed=522 stage=transfer_1_yellow_pick
+[reference-sequence] seed=522 stage=transfer_1_yellow_place
+[reference-sequence] seed=522 stage=transfer_2_yellow_pick
+[reference-sequence] seed=522 stage=transfer_2_yellow_place
+{"seed": 522, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=522 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=522 stage=transfer_0_blue_pick
+[reference-sequence] seed=522 stage=transfer_0_blue_place
+[reference-sequence] seed=522 stage=transfer_1_yellow_pick
+[reference-sequence] seed=522 stage=transfer_1_yellow_place
+[reference-sequence] seed=522 stage=transfer_2_yellow_pick
+[reference-sequence] seed=522 stage=transfer_2_yellow_place
+{"seed": 522, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=523 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=523 stage=transfer_0_blue_pick
+[reference-sequence] seed=523 stage=transfer_0_blue_place
+[reference-sequence] seed=523 stage=transfer_1_yellow_pick
+[reference-sequence] seed=523 stage=transfer_1_yellow_place
+[reference-sequence] seed=523 stage=transfer_2_yellow_pick
+[reference-sequence] seed=523 stage=transfer_2_yellow_place
+{"seed": 523, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=523 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=523 stage=transfer_0_blue_pick
+[reference-sequence] seed=523 stage=transfer_0_blue_place
+[reference-sequence] seed=523 stage=transfer_1_yellow_pick
+[reference-sequence] seed=523 stage=transfer_1_yellow_place
+[reference-sequence] seed=523 stage=transfer_2_yellow_pick
+[reference-sequence] seed=523 stage=transfer_2_yellow_place
+{"seed": 523, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=524 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=524 stage=transfer_0_blue_pick
+[reference-sequence] seed=524 stage=transfer_0_blue_place
+[reference-sequence] seed=524 stage=transfer_1_yellow_pick
+[reference-sequence] seed=524 stage=transfer_1_yellow_place
+[reference-sequence] seed=524 stage=transfer_2_yellow_pick
+[reference-sequence] seed=524 stage=transfer_2_yellow_place
+{"seed": 524, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=524 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=524 stage=transfer_0_blue_pick
+[reference-sequence] seed=524 stage=transfer_0_blue_place
+[reference-sequence] seed=524 stage=transfer_1_yellow_pick
+[reference-sequence] seed=524 stage=transfer_1_yellow_place
+[reference-sequence] seed=524 stage=transfer_2_yellow_pick
+[reference-sequence] seed=524 stage=transfer_2_yellow_place
+{"seed": 524, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=525 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=525 stage=transfer_0_blue_pick
+[reference-sequence] seed=525 stage=transfer_0_blue_place
+[reference-sequence] seed=525 stage=transfer_1_yellow_pick
+[reference-sequence] seed=525 stage=transfer_1_yellow_place
+[reference-sequence] seed=525 stage=transfer_2_yellow_pick
+[reference-sequence] seed=525 stage=transfer_2_yellow_place
+{"seed": 525, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=525 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=525 stage=transfer_0_blue_pick
+[reference-sequence] seed=525 stage=transfer_0_blue_place
+[reference-sequence] seed=525 stage=transfer_1_yellow_pick
+[reference-sequence] seed=525 stage=transfer_1_yellow_place
+[reference-sequence] seed=525 stage=transfer_2_yellow_pick
+[reference-sequence] seed=525 stage=transfer_2_yellow_place
+{"seed": 525, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 1, "error": null}
+{"completed_episodes": 12, "actual_model_calls": 18, "methods": {"MODEL_CONSTRAINT_REPAIR": {"episodes": 6, "successes": 6, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 6}, "MODEL_DIRECT_REPLAN": {"episodes": 6, "successes": 6, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 6}}}
+[diagnostic-v9] condition=medium PROCESS_EXIT=0
+[flexible-fixture] seed=520 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=520 stage=transfer_0_blue_pick
+[reference-sequence] seed=520 stage=transfer_0_blue_place
+[reference-sequence] seed=520 stage=transfer_1_yellow_pick
+[reference-sequence] seed=520 stage=transfer_1_yellow_place
+[reference-sequence] seed=520 stage=transfer_2_blue_pick
+[reference-sequence] seed=520 stage=transfer_2_blue_place
+[reference-sequence] seed=520 stage=transfer_3_yellow_pick
+[reference-sequence] seed=520 stage=transfer_3_yellow_place
+{"seed": 520, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=520 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=520 stage=transfer_0_blue_pick
+[reference-sequence] seed=520 stage=transfer_0_blue_place
+[reference-sequence] seed=520 stage=transfer_1_yellow_pick
+[reference-sequence] seed=520 stage=transfer_1_yellow_place
+[reference-sequence] seed=520 stage=transfer_2_blue_pick
+[reference-sequence] seed=520 stage=transfer_2_blue_place
+[reference-sequence] seed=520 stage=transfer_3_yellow_pick
+[reference-sequence] seed=520 stage=transfer_3_yellow_place
+{"seed": 520, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=521 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=521 stage=transfer_0_blue_pick
+[reference-sequence] seed=521 stage=transfer_0_blue_place
+[reference-sequence] seed=521 stage=transfer_1_yellow_pick
+[reference-sequence] seed=521 stage=transfer_1_yellow_place
+[reference-sequence] seed=521 stage=transfer_2_blue_pick
+[reference-sequence] seed=521 stage=transfer_2_blue_place
+[reference-sequence] seed=521 stage=transfer_3_yellow_pick
+[reference-sequence] seed=521 stage=transfer_3_yellow_place
+{"seed": 521, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=521 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=521 stage=transfer_0_blue_pick
+[reference-sequence] seed=521 stage=transfer_0_blue_place
+[reference-sequence] seed=521 stage=transfer_1_yellow_pick
+[reference-sequence] seed=521 stage=transfer_1_yellow_place
+[reference-sequence] seed=521 stage=transfer_2_blue_pick
+[reference-sequence] seed=521 stage=transfer_2_blue_place
+[reference-sequence] seed=521 stage=transfer_3_yellow_pick
+[reference-sequence] seed=521 stage=transfer_3_yellow_place
+{"seed": 521, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=522 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=522 stage=transfer_0_blue_pick
+[reference-sequence] seed=522 stage=transfer_0_blue_place
+[reference-sequence] seed=522 stage=transfer_1_yellow_pick
+[reference-sequence] seed=522 stage=transfer_1_yellow_place
+[reference-sequence] seed=522 stage=transfer_2_blue_pick
+[reference-sequence] seed=522 stage=transfer_2_blue_place
+[reference-sequence] seed=522 stage=transfer_3_yellow_pick
+[reference-sequence] seed=522 stage=transfer_3_yellow_place
+{"seed": 522, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=522 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=522 stage=transfer_0_blue_pick
+[reference-sequence] seed=522 stage=transfer_0_blue_place
+[reference-sequence] seed=522 stage=transfer_1_yellow_pick
+[reference-sequence] seed=522 stage=transfer_1_yellow_place
+[reference-sequence] seed=522 stage=transfer_2_blue_pick
+[reference-sequence] seed=522 stage=transfer_2_blue_place
+[reference-sequence] seed=522 stage=transfer_3_yellow_pick
+[reference-sequence] seed=522 stage=transfer_3_yellow_place
+{"seed": 522, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=523 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=523 stage=transfer_0_blue_pick
+[reference-sequence] seed=523 stage=transfer_0_blue_place
+[reference-sequence] seed=523 stage=transfer_1_yellow_pick
+[reference-sequence] seed=523 stage=transfer_1_yellow_place
+[reference-sequence] seed=523 stage=transfer_2_blue_pick
+[reference-sequence] seed=523 stage=transfer_2_blue_place
+[reference-sequence] seed=523 stage=transfer_3_yellow_pick
+[reference-sequence] seed=523 stage=transfer_3_yellow_place
+{"seed": 523, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=523 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=523 stage=transfer_0_blue_pick
+[reference-sequence] seed=523 stage=transfer_0_blue_place
+[reference-sequence] seed=523 stage=transfer_1_yellow_pick
+[reference-sequence] seed=523 stage=transfer_1_yellow_place
+[reference-sequence] seed=523 stage=transfer_2_blue_pick
+[reference-sequence] seed=523 stage=transfer_2_blue_place
+[reference-sequence] seed=523 stage=transfer_3_yellow_pick
+[reference-sequence] seed=523 stage=transfer_3_yellow_place
+{"seed": 523, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 1, "error": null}
+[flexible-fixture] seed=524 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=524 stage=transfer_0_blue_pick
+[reference-sequence] seed=524 stage=transfer_0_blue_place
+[reference-sequence] seed=524 stage=transfer_1_yellow_pick
+[reference-sequence] seed=524 stage=transfer_1_yellow_place
+[reference-sequence] seed=524 stage=transfer_2_blue_pick
+[reference-sequence] seed=524 stage=transfer_2_blue_place
+[reference-sequence] seed=524 stage=transfer_3_yellow_pick
+[reference-sequence] seed=524 stage=transfer_3_yellow_place
+{"seed": 524, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=524 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=524 stage=transfer_0_blue_pick
+[reference-sequence] seed=524 stage=transfer_0_blue_place
+[reference-sequence] seed=524 stage=transfer_1_yellow_pick
+[reference-sequence] seed=524 stage=transfer_1_yellow_place
+[reference-sequence] seed=524 stage=transfer_2_blue_pick
+[reference-sequence] seed=524 stage=transfer_2_blue_place
+[reference-sequence] seed=524 stage=transfer_3_yellow_pick
+[reference-sequence] seed=524 stage=transfer_3_yellow_place
+{"seed": 524, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=525 method=MODEL_CONSTRAINT_REPAIR start
+[reference-sequence] seed=525 stage=transfer_0_blue_pick
+[reference-sequence] seed=525 stage=transfer_0_blue_place
+[reference-sequence] seed=525 stage=transfer_1_yellow_pick
+[reference-sequence] seed=525 stage=transfer_1_yellow_place
+[reference-sequence] seed=525 stage=transfer_2_blue_pick
+[reference-sequence] seed=525 stage=transfer_2_blue_place
+[reference-sequence] seed=525 stage=transfer_3_yellow_pick
+[reference-sequence] seed=525 stage=transfer_3_yellow_place
+{"seed": 525, "method": "MODEL_CONSTRAINT_REPAIR", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=525 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=525 stage=transfer_0_blue_pick
+[reference-sequence] seed=525 stage=transfer_0_blue_place
+[reference-sequence] seed=525 stage=transfer_1_yellow_pick
+[reference-sequence] seed=525 stage=transfer_1_yellow_place
+[reference-sequence] seed=525 stage=transfer_2_blue_pick
+[reference-sequence] seed=525 stage=transfer_2_blue_place
+[reference-sequence] seed=525 stage=transfer_3_yellow_pick
+[reference-sequence] seed=525 stage=transfer_3_yellow_place
+{"seed": 525, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 1, "error": null}
+{"completed_episodes": 12, "actual_model_calls": 24, "methods": {"MODEL_CONSTRAINT_REPAIR": {"episodes": 6, "successes": 6, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 6}, "MODEL_DIRECT_REPLAN": {"episodes": 6, "successes": 6, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 6}}}
+[diagnostic-v9] condition=hard PROCESS_EXIT=0
+[diagnostic-v9] ALL_COMPLETED

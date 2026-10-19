@@ -1,0 +1,83 @@
+{
+  "scope": "exploratory_not_confirmatory",
+  "conditions": {
+    "medium": {
+      "episodes": 18,
+      "complete_pairs": 6,
+      "full_only_success": 0,
+      "direct_only_success": 0,
+      "exploratory_exact_mcnemar_p": 1.0,
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 3480,
+          "recovery_latency_ms": 12934,
+          "recovery_prompt_characters": 6864,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        },
+        "MODEL_CONSTRAINT_REPAIR": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 4368,
+          "recovery_latency_ms": 9740,
+          "recovery_prompt_characters": 10308,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        },
+        "MODEL_COMPACT_REPAIR": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 3738,
+          "recovery_latency_ms": 10501,
+          "recovery_prompt_characters": 7824,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        }
+      }
+    },
+    "hard": {
+      "episodes": 18,
+      "complete_pairs": 6,
+      "full_only_success": 0,
+      "direct_only_success": 0,
+      "exploratory_exact_mcnemar_p": 1.0,
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 3798,
+          "recovery_latency_ms": 12359,
+          "recovery_prompt_characters": 6870,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        },
+        "MODEL_CONSTRAINT_REPAIR": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 12,
+          "recovery_tokens": 9921,
+          "recovery_latency_ms": 24796,
+          "recovery_prompt_characters": 21654,
+          "rejected_recovery_candidates": 6,
+          "failures": []
+        },
+        "MODEL_COMPACT_REPAIR": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 7,
+          "recovery_tokens": 4634,
+          "recovery_latency_ms": 20377,
+          "recovery_prompt_characters": 8975,
+          "rejected_recovery_candidates": 1,
+          "failures": []
+        }
+      }
+    }
+  }
+}

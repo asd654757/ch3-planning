@@ -20,6 +20,8 @@ if __name__=='__main__':
         help='Explicitly disable provider thinking for both methods; changes inference protocol')
     p.add_argument('--execution-diagnostics',action='store_true',
         help='v9 ablation: retain observed execution diagnostic separately from rejected candidates')
+    p.add_argument('--compare-feedback-formats',action='store_true',
+        help='Matched direct, legacy diagnostic, compact diagnostic; shared initial candidate')
     p.add_argument('--update-goals',action='store_true')
     p.add_argument('--compare-feedback',action='store_true',help='Matched direct replan versus error-feedback replan')
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
@@ -32,6 +34,11 @@ if __name__=='__main__':
         p.error('--max-tokens must be positive')
     if args.execution_diagnostics and not args.repair_contract_v7:
         p.error('--execution-diagnostics requires --execution-contract')
+    if args.compare_feedback_formats:
+        if not args.repair_contract_v7:
+            p.error('--compare-feedback-formats requires --execution-contract')
+        args.execution_diagnostics = True
+        args.compare_feedback = True
     if args.difficulty:
         args.execution_deviation=True
         args.compare_feedback=True
@@ -67,6 +74,9 @@ if __name__=='__main__':
     protocol['execution_diagnostics'] = args.execution_diagnostics
     if args.execution_diagnostics:
         protocol['protocol_version'] = 'flexible_feedback_v9_diagnostic_ablation'
+    if args.compare_feedback_formats:
+        protocol['protocol_version'] = 'feedback_format_v10_development'
+        protocol['method_order'] = 'cyclic_by_seed_modulo_three'
     (args.output_dir/'protocol.json').write_text(json.dumps(protocol,indent=2))
     client=DashScopeVLMClient(env_path=args.env_file,model=args.model,timeout=60,max_retries=0)
     rows=[]
@@ -80,13 +90,19 @@ if __name__=='__main__':
                     methods.append(('MODEL_NO_EXECUTION_REPAIR' if args.execution_deviation
                         else 'MODEL_NO_TASK_REPAIR',False))
             if seed%2:methods.reverse()
+            if args.compare_feedback_formats:
+                methods=[('MODEL_DIRECT_REPLAN',True),('MODEL_CONSTRAINT_REPAIR',True),
+                    ('MODEL_COMPACT_REPAIR',True)]
+                shift=seed%3
+                methods=methods[shift:]+methods[:shift]
             for method,recovery in methods:
                 print(f'[flexible-fixture] seed={seed} method={method} start',flush=True)
                 planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,
                     error_feedback=method!='MODEL_DIRECT_REPLAN',update_on_deviation=args.difficulty=='hard',
                     execution_contract=args.repair_contract_v7,max_tokens=args.max_tokens,
                     enable_thinking=False if args.disable_thinking else None,
-                    execution_diagnostics=args.execution_diagnostics)
+                    execution_diagnostics=args.execution_diagnostics,
+                    compact_feedback=method=='MODEL_COMPACT_REPAIR')
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
                     controlled_place_offset=.045 if args.execution_deviation else 0.,

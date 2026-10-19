@@ -17,11 +17,13 @@ def analyze(root):
                 raise ValueError(f'duplicate {key}')
             groups[key] = row
         methods = ['MODEL_DIRECT_REPLAN', 'MODEL_CONSTRAINT_REPAIR']
+        if any(r['method'] == 'MODEL_COMPACT_REPAIR' for r in rows):
+            methods.append('MODEL_COMPACT_REPAIR')
         paired = [seed for seed in sorted({r['seed'] for r in rows})
                   if all((seed, method) in groups for method in methods)]
         wins = losses = 0
         for seed in paired:
-            direct, full = [groups[seed, method] for method in methods]
+            direct, full = [groups[seed, method] for method in methods[:2]]
             wins += bool(full['success'] and not direct['success'])
             losses += bool(direct['success'] and not full['success'])
         discordant = wins + losses
@@ -39,6 +41,7 @@ def analyze(root):
                 'recovery_calls': len(calls),
                 'recovery_tokens': sum(a.get('total_tokens', 0) for a in calls),
                 'recovery_latency_ms': sum(a.get('latency_ms') or 0 for a in calls),
+                'recovery_prompt_characters': sum(len(json.dumps(a.get('request', {}))) for a in calls),
                 'rejected_recovery_candidates': sum(not a['accepted'] for a in calls),
                 'failures': [{'seed': r['seed'], 'error': r.get('error')} for r in subset if not r['success']]}
     return {'scope': 'exploratory_not_confirmatory', 'conditions': result}

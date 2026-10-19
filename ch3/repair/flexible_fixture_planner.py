@@ -122,12 +122,13 @@ class FlexibleFixturePlanner:
 
     def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True,
                  update_on_deviation=False, execution_contract=False, max_tokens=1024,
-                 enable_thinking=None, execution_diagnostics=False):
+                 enable_thinking=None, execution_diagnostics=False, compact_feedback=False):
         if max_tokens <= 0:
             raise ValueError('max_tokens must be positive')
         self.max_tokens = max_tokens
         self.enable_thinking = enable_thinking
         self.execution_diagnostics = execution_diagnostics
+        self.compact_feedback = compact_feedback
         self.client, self.recovery, self.shared = client, recovery, shared
         self.error_feedback = error_feedback
         self.audit = []
@@ -180,6 +181,21 @@ class FlexibleFixturePlanner:
             result['execution_diagnostic'] = (
                 diagnostic_feedback(feedback) if self.error_feedback and feedback
                 and feedback.get('error_code') == 'OBSERVED_GOAL_NOT_SATISFIED' else None)
+        # Keep the common task/state contract identical, including initial
+        # prompts. Only diagnostics differ; old targets never become commands.
+        if self.compact_feedback and self.error_feedback and feedback:
+            if feedback.get('error_code') == 'OBSERVED_GOAL_NOT_SATISFIED':
+                result['execution_diagnostic'] = dict(
+                    event='released_off_goal', state_already_updated=True,
+                    directive='Use current object goals, not the historical failed target. No failed-object priority.')
+            elif rejection:
+                result['rejected_candidate_review'] = dict(
+                    candidate_executed=False,
+                    error_code=feedback.get('error_code'),
+                    constraint_details={k: deepcopy(feedback[k]) for k in (
+                        'transfer_index', 'object_id', 'target_id', 'occupying_objects',
+                        'unmet_goal_facts', 'required_transfers', 'remaining_transfers') if k in feedback},
+                    directive='Regenerate the complete suffix from unchanged current observations.')
         return result
 
     def protected(self):

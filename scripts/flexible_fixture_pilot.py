@@ -16,6 +16,8 @@ if __name__=='__main__':
         help='OpenAI-compatible model used for live planning/recovery (recorded in protocol)')
     p.add_argument('--seeds',type=int,nargs='+',default=[55,56,57])
     p.add_argument('--max-tokens',type=int,default=4096)
+    p.add_argument('--disable-thinking',action='store_true',
+        help='Explicitly disable provider thinking for both methods; changes inference protocol')
     p.add_argument('--update-goals',action='store_true')
     p.add_argument('--compare-feedback',action='store_true',help='Matched direct replan versus error-feedback replan')
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
@@ -41,7 +43,9 @@ if __name__=='__main__':
         goal_update_timing=('after_supported_second_delivery_deviation' if args.difficulty=='hard'
             else 'after_first_supported_delivery' if args.update_goals else None),
         update='swap both requested destinations' if args.update_goals or args.difficulty=='hard' else None,
-        actual_model=True,model=args.model,max_tokens=args.max_tokens,shared_initial_candidate=True,episode_resets=1,
+        actual_model=True,model=args.model,max_tokens=args.max_tokens,
+        enable_thinking=False if args.disable_thinking else None,
+        shared_initial_candidate=True,episode_resets=1,
         initial_y_spread_m=.025,pick_contact_offset_m=.03,
         backend='fixed_pick_place',max_total_transfers=4,max_repair_calls=2,
         protocol_version='flexible_feedback_v8' if args.repair_contract_v7 else 'flexible_feedback_v6',compare_feedback=args.compare_feedback,
@@ -73,7 +77,8 @@ if __name__=='__main__':
                 print(f'[flexible-fixture] seed={seed} method={method} start',flush=True)
                 planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,
                     error_feedback=method!='MODEL_DIRECT_REPLAN',update_on_deviation=args.difficulty=='hard',
-                    execution_contract=args.repair_contract_v7,max_tokens=args.max_tokens)
+                    execution_contract=args.repair_contract_v7,max_tokens=args.max_tokens,
+                    enable_thinking=False if args.disable_thinking else None)
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
                     controlled_place_offset=.045 if args.execution_deviation else 0.,

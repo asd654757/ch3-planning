@@ -121,10 +121,12 @@ class FlexibleFixturePlanner:
     long_task = False
 
     def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True,
-                 update_on_deviation=False, execution_contract=False, max_tokens=1024):
+                 update_on_deviation=False, execution_contract=False, max_tokens=1024,
+                 enable_thinking=None):
         if max_tokens <= 0:
             raise ValueError('max_tokens must be positive')
         self.max_tokens = max_tokens
+        self.enable_thinking = enable_thinking
         self.client, self.recovery, self.shared = client, recovery, shared
         self.error_feedback = error_feedback
         self.audit = []
@@ -261,9 +263,10 @@ class FlexibleFixturePlanner:
                 item.update(content=saved['content'], total_tokens=0, shared_candidate=True)
             else:
                 item['actual_model_calls']=1
+                options = {} if self.enable_thinking is None else {'enable_thinking': self.enable_thinking}
                 response=self.client.complete(system_prompt='Return only a JSON OBJECT with the top-level key "actions". '
                     'Never return a bare array. Satisfy the current task and backend contract.',
-                    user_prompt=json.dumps(prompt),image_path=image_path,temperature=.1,seed=0,max_tokens=self.max_tokens,json_mode=False)
+                    user_prompt=json.dumps(prompt),image_path=image_path,temperature=.1,seed=0,max_tokens=self.max_tokens,json_mode=False,**options)
                 # Preserve provenance needed to distinguish a real model call from
                 # a replay/shared candidate in comparative experiments.  These
                 # fields are metadata only and are never shown to the planner.

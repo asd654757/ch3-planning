@@ -141,6 +141,7 @@ class DashScopeVLMClient:
         max_tokens: int = 1024,
         seed: Optional[int] = None,
         json_mode: bool = True,
+        enable_thinking: Optional[bool] = None,
     ) -> VLMResponse:
         payload: dict[str, Any] = {
             "model": self.model,
@@ -163,6 +164,8 @@ class DashScopeVLMClient:
             payload["response_format"] = {"type": "json_object"}
         if seed is not None:
             payload["seed"] = int(seed)
+        if enable_thinking is not None:
+            payload['enable_thinking'] = enable_thinking
 
         started = time.perf_counter_ns()
         try:

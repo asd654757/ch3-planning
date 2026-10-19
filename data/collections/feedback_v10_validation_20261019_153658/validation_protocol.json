@@ -1,0 +1,52 @@
+{
+  "version": "feedback_v10_heldout_layout_validation",
+  "seeds": [
+    600,
+    601,
+    602,
+    603,
+    604,
+    605,
+    606,
+    607,
+    608,
+    609,
+    610,
+    611,
+    612,
+    613,
+    614,
+    615,
+    616,
+    617,
+    618,
+    619
+  ],
+  "conditions": [
+    "medium",
+    "hard"
+  ],
+  "expected_episodes": 120,
+  "model": "deepseek-v4.1-flash",
+  "enable_thinking": false,
+  "max_tokens": 4096,
+  "max_noninitial_requests": 2,
+  "git_commit": "a4f1076615d66768deb1c207b3fa5fa5f82ee3d6",
+  "source_sha256": {
+    "ch3/repair/flexible_fixture_planner.py": "6eba74844c062599c6af0f19f2e72534c8d08d34922b1139f2d7f5d91efd61eb",
+    "scripts/flexible_fixture_pilot.py": "d12a484152f39c00ab8c09f0da27a4a69fdd14788a2be65d8a27ce96adf5335d",
+    "scripts/persistent_reference_sequence.py": "51a470033e609c1dfe344fc08dbf7cb0bbae6ae234a240ce4ad0c3acefed2537",
+    "ch3/execution/multiobject_scene.py": "5d2b644662de0775505dbfaf5acff6bff9613680f7c1e90dfd8e8f6749c14be1",
+    "ch3/vlm/client.py": "8552bcbdc528b05f2cf7ce284de380041f35d1af36e8012f8c99cf3ab902a510"
+  },
+  "primary_comparison": "compact versus legacy feedback recovery tokens and calls, with all task outcomes",
+  "secondary_comparison": "compact versus strong direct replanning, reported separately",
+  "scope": "new layouts, same restricted two-object task families; no broad generalization claim",
+  "rules": [
+    "No feedback edits during run. No winner-based exclusions or reruns.",
+    "Include API, parse, validation and physical failures.",
+    "Costs exclude shared initial generation; do not compare raw asymmetric API totals.",
+    "Success ties do not establish noninferiority. No latency superiority claim.",
+    "Repeated prompt structures limit independent-task statistical interpretation."
+  ]
+}

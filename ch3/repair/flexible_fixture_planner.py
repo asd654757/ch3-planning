@@ -198,6 +198,45 @@ class FlexibleFixturePlanner:
                     directive='Regenerate the complete suffix from unchanged current observations.')
         return result
 
+    def choose_goal_observation(self, image_path, *, evidence, remaining_observations):
+        """Acquire evidence, not actions: no stale state or truth is supplied here.
+
+        Uses the SAME noninitial call budget as remaining-plan generation. The
+        evidence-only schema deliberately cannot assert task completion.
+        """
+        if evidence.get('status') != 'unknown' or remaining_observations != 1:
+            raise ValueError('unsupported_goal_observation_request')
+        if sum(a['phase'] != 'initial' for a in self.audit) >= 2:
+            return 'stop'
+        prompt = dict(task='Choose observe or stop for unresolved post-release goal evidence.',
+            evidence=deepcopy(evidence), remaining_observations=remaining_observations,
+            available_observation='Repeat open-hand retreat probe and capture two fresh RGB frames.',
+            limitations='Observation may remain unknown; do not assume task success or infer a location.',
+            output_schema={'decision': 'observe or stop'})
+        if self.compact_feedback:
+            prompt['summary'] = dict(goal_status='unknown', completion_authorized=False,
+                instruction='Acquire evidence before committing to completion or a recovery action.')
+        item = dict(phase='observation_decision', request=deepcopy(prompt),
+            actual_model_calls=1, accepted=False)
+        self.audit.append(item)
+        try:
+            options = {} if self.enable_thinking is None else {'enable_thinking': self.enable_thinking}
+            response = self.client.complete(system_prompt='Return only a JSON object with decision.',
+                user_prompt=json.dumps(prompt), image_path=image_path, temperature=.1,
+                seed=0, max_tokens=self.max_tokens, json_mode=False, **options)
+            item.update(content=response.content, total_tokens=response.total_tokens,
+                response_model=getattr(response, 'model', None),
+                request_id=getattr(response, 'request_id', None),
+                latency_ms=getattr(response, 'latency_ms', None))
+            parsed = json.loads(response.content)
+            if set(parsed) != {'decision'} or parsed['decision'] not in {'observe', 'stop'}:
+                raise ValueError('invalid_observation_decision')
+            item.update(accepted=True, decision=parsed['decision'])
+            return parsed['decision']
+        except Exception as exc:
+            item['error'] = type(exc).__name__ + ': ' + str(exc)
+            return 'stop'
+
     def protected(self):
         completed_objects = {obj for obj,_ in self.history}
         return {obj for obj in completed_objects if self.state.location_of(obj)==self.goals[obj]}

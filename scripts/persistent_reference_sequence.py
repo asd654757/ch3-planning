@@ -13,8 +13,10 @@ os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
 def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
-        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0):
+        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0, goal_reobserve_budget=0):
     import numpy as np
+    if goal_reobserve_budget not in (0, 1):
+        raise ValueError('invalid_goal_reobserve_budget')
     if controlled_place_offset not in (0., .045):
         raise ValueError('unsupported_controlled_place_offset')
     if deviation_transfer_index not in (0,1):
@@ -35,7 +37,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                   truth_usage='scoring_only_not_targeting_or_authorization',
                   reference_sequence=['blue_to_return_region', 'yellow_to_green_region'],
                   protected_displacement_limit_m=.015, episode_step_limit=1000,
-                  reobserve_budget=reobserve_budget, destination_observations=[],
+                  reobserve_budget=reobserve_budget, goal_reobserve_budget=goal_reobserve_budget, destination_observations=[],
                   pick_contact_offset_m=pick_contact_offset, feedback_v2=feedback_v2,
                   initial_y_spread_m=initial_y_spread)
     report['controlled_first_place_x_offset_m']=controlled_place_offset
@@ -313,6 +315,17 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 if feedback_v2:
                     observed = check_observed_goal(records, region)
                     report['events'][-1]['observed_goal'] = observed
+                    if observed['status'] == 'unknown' and goal_reobserve_budget and flexible:
+                        from ch3.execution.goal_reobservation import resolve_goal_evidence
+                        def acquire_goal_evidence():
+                            new_records, _ = probe(stage+'_goal_extra_observation', color, -1.)
+                            return check_observed_goal(new_records, region)
+                        observed = resolve_goal_evidence(observed, budget=goal_reobserve_budget,
+                            decide=lambda evidence, budget: model_planner.choose_goal_observation(
+                                out/f'{stage}_release_1.png', evidence=evidence,
+                                remaining_observations=budget),
+                            observe=acquire_goal_evidence,
+                            emit=lambda event: report['events'].append(dict(stage=stage, **event)))
                     if observed['status'] == 'unknown':
                         raise ValueError('observed_goal_unknown_no_completion')
                     if observed['status'] == 'not_satisfied':

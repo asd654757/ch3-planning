@@ -24,6 +24,8 @@ if __name__=='__main__':
         help='Preferred comparison: direct replanning versus compact feedback only; excludes legacy')
     p.add_argument('--compare-feedback-formats',action='store_true',
         help='Matched direct, legacy diagnostic, compact diagnostic; shared initial candidate')
+    p.add_argument('--goal-reobserve-budget', type=int, choices=[0,1], default=0,
+        help='Optional bounded model-requested extra RGB probe on unknown goal evidence')
     p.add_argument('--update-goals',action='store_true')
     p.add_argument('--compare-feedback',action='store_true',help='Matched direct replan versus error-feedback replan')
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
@@ -77,6 +79,8 @@ if __name__=='__main__':
         update_on_deviation=args.difficulty=='hard',
         scope=('controlled_off_goal_execution_recovery_not_natural_failure' if args.execution_deviation
             else 'task_update_replanning_pilot_not_natural_execution_failure_recovery'))
+    protocol['goal_reobserve_budget'] = args.goal_reobserve_budget
+    protocol['observation_calls_share_repair_budget'] = True
     protocol['execution_diagnostics'] = args.execution_diagnostics
     if args.execution_diagnostics:
         protocol['protocol_version'] = 'flexible_feedback_v9_diagnostic_ablation'
@@ -121,7 +125,8 @@ if __name__=='__main__':
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
                     controlled_place_offset=.045 if args.execution_deviation else 0.,
-                    deviation_transfer_index=1 if args.difficulty else 0)
+                    deviation_transfer_index=1 if args.difficulty else 0,
+                    goal_reobserve_budget=args.goal_reobserve_budget)
                 row.update(method=method,scope=protocol['scope'])
                 f.write(json.dumps(row)+'\n');f.flush();rows.append(row)
                 print(json.dumps(dict(seed=seed,method=method,success=row['success'],model_calls=row['model_calls'],

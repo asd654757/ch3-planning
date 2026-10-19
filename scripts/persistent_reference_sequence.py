@@ -417,8 +417,8 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 report['model_recovery_enabled'] = model_planner.recovery
                 report['execution_unknown_policy'] = 'stop_not_fabricate_current_state'
             if env is not None:
-            report['runtime_episode_reset_count'] = int(getattr(env, '_ch3_reset_count', report['episode_resets']))
-            env.close()
+                report['runtime_episode_reset_count'] = int(getattr(env, '_ch3_reset_count', report['episode_resets']))
+                env.close()
             (out / 'summary.json').write_text(json.dumps(report, indent=2))
     return report
 

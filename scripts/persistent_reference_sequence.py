@@ -314,11 +314,14 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                     raise ValueError('release_not_supported')
                 if feedback_v2:
                     observed = check_observed_goal(records, region)
+                    goal_evidence_image = out/f'{stage}_release_1.png'
                     report['events'][-1]['observed_goal'] = observed
                     if observed['status'] == 'unknown' and goal_reobserve_budget and flexible:
                         from ch3.execution.goal_reobservation import resolve_goal_evidence
                         def acquire_goal_evidence():
+                            nonlocal goal_evidence_image
                             new_records, _ = probe(stage+'_goal_extra_observation', color, -1.)
+                            goal_evidence_image = out/f'{stage}_goal_extra_observation_1.png'
                             return check_observed_goal(new_records, region)
                         observed = resolve_goal_evidence(observed, budget=goal_reobserve_budget,
                             decide=lambda evidence, budget: model_planner.choose_goal_observation(
@@ -332,7 +335,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                         if flexible:
                             if not execution_recovery:
                                 raise ValueError('observed_goal_not_satisfied')
-                            repaired=model_planner.released_object_repair(out/f'{stage}_release_1.png',
+                            repaired=model_planner.released_object_repair(goal_evidence_image,
                                 object_id=obj,release=release,observed_goal=observed)
                             # Failed transfer was physically attempted, not a
                             # completed delivery. Append complete model suffix;

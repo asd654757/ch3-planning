@@ -1,0 +1,174 @@
+{
+  "seed": 510,
+  "scope": "live_model_planning_persistent_execution_restricted_fixture",
+  "episode_resets": 1,
+  "model_calls": 1,
+  "success": false,
+  "events": [],
+  "truth_usage": "scoring_only_not_targeting_or_authorization",
+  "reference_sequence": [
+    "blue_to_return_region",
+    "yellow_to_green_region"
+  ],
+  "protected_displacement_limit_m": 0.015,
+  "episode_step_limit": 1800,
+  "reobserve_budget": 2,
+  "destination_observations": [],
+  "pick_contact_offset_m": 0.03,
+  "feedback_v2": true,
+  "initial_y_spread_m": 0.025,
+  "controlled_first_place_x_offset_m": 0.045,
+  "controlled_place_deviation": {
+    "transfer_index": 0,
+    "x_offset_m": 0.045
+  },
+  "region_references": {
+    "green_region": [
+      0.004302184605424239,
+      0.8362303471873848,
+      0.008
+    ],
+    "return_region": [
+      -0.1443203934601362,
+      0.7864995845226197,
+      0.008
+    ]
+  },
+  "failure_stage": "model_initial_planning",
+  "error": "ValueError: flexible_initial_plan_rejected",
+  "model_audit": [
+    {
+      "request": {
+        "protocol": "execution_contract_v8",
+        "task": "Generate a COMPLETE remaining plan, not a patch to an earlier plan.",
+        "objects": [
+          {
+            "id": "blue_candidate",
+            "location": "table",
+            "goal": "return_region",
+            "protected": false
+          },
+          {
+            "id": "yellow_candidate",
+            "location": "table",
+            "goal": "green_region",
+            "protected": false
+          }
+        ],
+        "state_source": "controlled_fixture_updated_by_supported_RGB_release",
+        "hand": "empty",
+        "regions": [
+          "green_region",
+          "return_region"
+        ],
+        "rules": [
+          "Each transfer is adjacent pick(object) then place(same object, target).",
+          "Before placing, no OTHER cube may occupy that region. Evaluate occupancy after each transfer.",
+          "All objects must finish at their listed CURRENT goals and the hand must be empty.",
+          "Never move protected objects. The candidate below was not executed and is not current state."
+        ],
+        "budget": {
+          "remaining_transfers": 4,
+          "max_actions": 8
+        },
+        "rejected_candidate_review": null,
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "integer starting at 1",
+              "skill": "pick or place",
+              "object_id": "object id",
+              "target_id": "region id for place; omit for pick"
+            }
+          ]
+        }
+      },
+      "local_feedback_evidence": null,
+      "feedback_protocol": "execution_contract_v8",
+      "image_sha256": "0f68a57264b6da09b7fe7223f745a845b3c2ffdf6a25e7d3e52a65c268da7b3c",
+      "actual_model_calls": 0,
+      "accepted": false,
+      "phase": "initial",
+      "content": "",
+      "total_tokens": 0,
+      "shared_candidate": true,
+      "rejection": {
+        "error_code": "MODEL_OR_PARSE_FAILURE",
+        "error_type": "JSONDecodeError",
+        "rejected_output": ""
+      }
+    },
+    {
+      "request": {
+        "protocol": "execution_contract_v8",
+        "task": "Generate a COMPLETE remaining plan, not a patch to an earlier plan.",
+        "objects": [
+          {
+            "id": "blue_candidate",
+            "location": "table",
+            "goal": "return_region",
+            "protected": false
+          },
+          {
+            "id": "yellow_candidate",
+            "location": "table",
+            "goal": "green_region",
+            "protected": false
+          }
+        ],
+        "state_source": "controlled_fixture_updated_by_supported_RGB_release",
+        "hand": "empty",
+        "regions": [
+          "green_region",
+          "return_region"
+        ],
+        "rules": [
+          "Each transfer is adjacent pick(object) then place(same object, target).",
+          "Before placing, no OTHER cube may occupy that region. Evaluate occupancy after each transfer.",
+          "All objects must finish at their listed CURRENT goals and the hand must be empty.",
+          "Never move protected objects. The candidate below was not executed and is not current state."
+        ],
+        "budget": {
+          "remaining_transfers": 4,
+          "max_actions": 8
+        },
+        "rejected_candidate_review": null,
+        "output_schema": {
+          "actions": [
+            {
+              "step_id": "integer starting at 1",
+              "skill": "pick or place",
+              "object_id": "object id",
+              "target_id": "region id for place; omit for pick"
+            }
+          ]
+        }
+      },
+      "local_feedback_evidence": {
+        "error_code": "MODEL_OR_PARSE_FAILURE",
+        "error_type": "JSONDecodeError",
+        "rejected_output": ""
+      },
+      "feedback_protocol": "execution_contract_v8",
+      "image_sha256": "0f68a57264b6da09b7fe7223f745a845b3c2ffdf6a25e7d3e52a65c268da7b3c",
+      "actual_model_calls": 1,
+      "accepted": false,
+      "phase": "initial_plan_correction",
+      "content": "",
+      "total_tokens": 1551,
+      "response_model": "deepseek-v4.1-flash",
+      "response_id": "chatcmpl-571a8c6e-459d-946d-895f-61ec8df2552b",
+      "request_id": null,
+      "latency_ms": 15361,
+      "finish_reason": "length",
+      "rejection": {
+        "error_code": "MODEL_OR_PARSE_FAILURE",
+        "error_type": "JSONDecodeError",
+        "rejected_output": ""
+      }
+    }
+  ],
+  "model_recovery_enabled": true,
+  "execution_unknown_policy": "stop_not_fabricate_current_state",
+  "runtime_episode_reset_count": 1
+}

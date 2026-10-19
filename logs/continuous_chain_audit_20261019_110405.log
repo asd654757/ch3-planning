@@ -1,0 +1,6 @@
+[flexible-fixture] seed=510 method=MODEL_DIRECT_REPLAN start
+{"seed": 510, "method": "MODEL_DIRECT_REPLAN", "success": false, "model_calls": 2, "error": "ValueError: flexible_initial_plan_rejected"}
+[flexible-fixture] seed=510 method=MODEL_CONSTRAINT_REPAIR start
+{"seed": 510, "method": "MODEL_CONSTRAINT_REPAIR", "success": false, "model_calls": 1, "error": "ValueError: flexible_initial_plan_rejected"}
+{"completed_episodes": 2, "actual_model_calls": 3, "methods": {"MODEL_DIRECT_REPLAN": {"episodes": 1, "successes": 0, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 0}, "MODEL_CONSTRAINT_REPAIR": {"episodes": 1, "successes": 0, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 0}}}
+[chain-audit] PROCESS_EXIT=0

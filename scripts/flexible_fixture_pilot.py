@@ -20,6 +20,8 @@ if __name__=='__main__':
         help='Explicitly disable provider thinking for both methods; changes inference protocol')
     p.add_argument('--execution-diagnostics',action='store_true',
         help='v9 ablation: retain observed execution diagnostic separately from rejected candidates')
+    p.add_argument('--compare-compact-direct',action='store_true',
+        help='Preferred comparison: direct replanning versus compact feedback only; excludes legacy')
     p.add_argument('--compare-feedback-formats',action='store_true',
         help='Matched direct, legacy diagnostic, compact diagnostic; shared initial candidate')
     p.add_argument('--update-goals',action='store_true')
@@ -34,9 +36,13 @@ if __name__=='__main__':
         p.error('--max-tokens must be positive')
     if args.execution_diagnostics and not args.repair_contract_v7:
         p.error('--execution-diagnostics requires --execution-contract')
-    if args.compare_feedback_formats:
+    if args.compare_compact_direct and args.compare_feedback_formats:
+        p.error('compact/direct comparison cannot include legacy formats')
+    if args.compare_compact_direct and args.include_no_repair:
+        p.error('compact/direct comparison contains exactly two methods')
+    if args.compare_feedback_formats or args.compare_compact_direct:
         if not args.repair_contract_v7:
-            p.error('--compare-feedback-formats requires --execution-contract')
+            p.error('feedback format comparisons require --execution-contract')
         args.execution_diagnostics = True
         args.compare_feedback = True
     if args.difficulty:
@@ -77,6 +83,11 @@ if __name__=='__main__':
     if args.compare_feedback_formats:
         protocol['protocol_version'] = 'feedback_format_v10_development'
         protocol['method_order'] = 'cyclic_by_seed_modulo_three'
+    if args.compare_compact_direct:
+        protocol['protocol_version'] = 'compact_direct_v11_accurate_state_control'
+        protocol['method_order'] = 'alternating_by_seed_parity'
+        protocol['legacy_feedback_excluded'] = True
+        protocol['scope'] += '; accurate-state control only, not history-dependent recovery evidence'
     (args.output_dir/'protocol.json').write_text(json.dumps(protocol,indent=2))
     client=DashScopeVLMClient(env_path=args.env_file,model=args.model,timeout=60,max_retries=0)
     rows=[]
@@ -95,6 +106,10 @@ if __name__=='__main__':
                     ('MODEL_COMPACT_REPAIR',True)]
                 shift=seed%3
                 methods=methods[shift:]+methods[:shift]
+            if args.compare_compact_direct:
+                methods=[('MODEL_DIRECT_REPLAN',True),('MODEL_COMPACT_REPAIR',True)]
+                if seed%2:
+                    methods.reverse()
             for method,recovery in methods:
                 print(f'[flexible-fixture] seed={seed} method={method} start',flush=True)
                 planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,

@@ -122,11 +122,12 @@ class FlexibleFixturePlanner:
 
     def __init__(self, client, *, recovery, shared, update_goals=False, error_feedback=True,
                  update_on_deviation=False, execution_contract=False, max_tokens=1024,
-                 enable_thinking=None):
+                 enable_thinking=None, execution_diagnostics=False):
         if max_tokens <= 0:
             raise ValueError('max_tokens must be positive')
         self.max_tokens = max_tokens
         self.enable_thinking = enable_thinking
+        self.execution_diagnostics = execution_diagnostics
         self.client, self.recovery, self.shared = client, recovery, shared
         self.error_feedback = error_feedback
         self.audit = []
@@ -158,7 +159,7 @@ class FlexibleFixturePlanner:
                 candidate=deepcopy(feedback['rejected_candidate']),
                 violations={k:deepcopy(v) for k,v in feedback.items()
                     if k not in {'rejected_candidate','predicted_final_facts','rejected_output'}})
-        return dict(protocol='execution_contract_v8',
+        result = dict(protocol='execution_contract_v8',
             task='Generate a COMPLETE remaining plan, not a patch to an earlier plan.',
             objects=[dict(id=obj, location=self.state.location_of(obj), goal=self.goals[obj],
                 protected=obj in self.protected()) for obj in sorted(MOVABLE)],
@@ -174,6 +175,12 @@ class FlexibleFixturePlanner:
             rejected_candidate_review=rejection,
             output_schema={'actions':[dict(step_id='integer starting at 1',skill='pick or place',
                 object_id='object id',target_id='region id for place; omit for pick')]})
+        if self.execution_diagnostics:
+            result['protocol'] = 'execution_contract_v9_diagnostic_ablation'
+            result['execution_diagnostic'] = (
+                diagnostic_feedback(feedback) if self.error_feedback and feedback
+                and feedback.get('error_code') == 'OBSERVED_GOAL_NOT_SATISFIED' else None)
+        return result
 
     def protected(self):
         completed_objects = {obj for obj,_ in self.history}

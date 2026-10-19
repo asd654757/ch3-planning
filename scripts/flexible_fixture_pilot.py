@@ -18,6 +18,8 @@ if __name__=='__main__':
     p.add_argument('--max-tokens',type=int,default=4096)
     p.add_argument('--disable-thinking',action='store_true',
         help='Explicitly disable provider thinking for both methods; changes inference protocol')
+    p.add_argument('--execution-diagnostics',action='store_true',
+        help='v9 ablation: retain observed execution diagnostic separately from rejected candidates')
     p.add_argument('--update-goals',action='store_true')
     p.add_argument('--compare-feedback',action='store_true',help='Matched direct replan versus error-feedback replan')
     p.add_argument('--execution-deviation',action='store_true',help='First place target offset; RGB-triggered off-goal recovery')
@@ -28,6 +30,8 @@ if __name__=='__main__':
     args=p.parse_args()
     if args.max_tokens <= 0:
         p.error('--max-tokens must be positive')
+    if args.execution_diagnostics and not args.repair_contract_v7:
+        p.error('--execution-diagnostics requires --execution-contract')
     if args.difficulty:
         args.execution_deviation=True
         args.compare_feedback=True
@@ -60,6 +64,9 @@ if __name__=='__main__':
         update_on_deviation=args.difficulty=='hard',
         scope=('controlled_off_goal_execution_recovery_not_natural_failure' if args.execution_deviation
             else 'task_update_replanning_pilot_not_natural_execution_failure_recovery'))
+    protocol['execution_diagnostics'] = args.execution_diagnostics
+    if args.execution_diagnostics:
+        protocol['protocol_version'] = 'flexible_feedback_v9_diagnostic_ablation'
     (args.output_dir/'protocol.json').write_text(json.dumps(protocol,indent=2))
     client=DashScopeVLMClient(env_path=args.env_file,model=args.model,timeout=60,max_retries=0)
     rows=[]
@@ -78,7 +85,8 @@ if __name__=='__main__':
                 planner=FlexibleFixturePlanner(client,recovery=recovery,shared=shared,update_goals=args.update_goals,
                     error_feedback=method!='MODEL_DIRECT_REPLAN',update_on_deviation=args.difficulty=='hard',
                     execution_contract=args.repair_contract_v7,max_tokens=args.max_tokens,
-                    enable_thinking=False if args.disable_thinking else None)
+                    enable_thinking=False if args.disable_thinking else None,
+                    execution_diagnostics=args.execution_diagnostics)
                 row=run(seed,args.output_dir/f'seed_{seed}'/method,reobserve_budget=2,model_planner=planner,
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
                     controlled_place_offset=.045 if args.execution_deviation else 0.,

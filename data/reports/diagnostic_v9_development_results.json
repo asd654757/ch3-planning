@@ -1,0 +1,59 @@
+{
+  "scope": "exploratory_not_confirmatory",
+  "conditions": {
+    "medium": {
+      "episodes": 12,
+      "complete_pairs": 6,
+      "full_only_success": 0,
+      "direct_only_success": 0,
+      "exploratory_exact_mcnemar_p": 1.0,
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 3498,
+          "recovery_latency_ms": 12860,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        },
+        "MODEL_CONSTRAINT_REPAIR": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 4368,
+          "recovery_latency_ms": 11996,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        }
+      }
+    },
+    "hard": {
+      "episodes": 12,
+      "complete_pairs": 6,
+      "full_only_success": 0,
+      "direct_only_success": 0,
+      "exploratory_exact_mcnemar_p": 1.0,
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 6,
+          "recovery_tokens": 3798,
+          "recovery_latency_ms": 19891,
+          "rejected_recovery_candidates": 0,
+          "failures": []
+        },
+        "MODEL_CONSTRAINT_REPAIR": {
+          "episodes": 6,
+          "successes": 6,
+          "recovery_calls": 12,
+          "recovery_tokens": 9958,
+          "recovery_latency_ms": 27846,
+          "rejected_recovery_candidates": 6,
+          "failures": []
+        }
+      }
+    }
+  }
+}

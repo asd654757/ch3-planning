@@ -210,6 +210,9 @@ class FlexibleFixturePlanner:
             return 'stop'
         prompt = dict(task='Choose observe or stop for unresolved post-release goal evidence.',
             evidence=deepcopy(evidence), remaining_observations=remaining_observations,
+            executed_history=deepcopy(self.history),
+            history_scope='Past supported deliveries, not a certificate of the unresolved current goal.',
+            current_goals=deepcopy(self.goals),
             available_observation='Repeat open-hand retreat probe and capture two fresh RGB frames.',
             limitations='Observation may remain unknown; do not assume task success or infer a location.',
             output_schema={'decision': 'observe or stop'})
@@ -217,6 +220,7 @@ class FlexibleFixturePlanner:
             prompt['summary'] = dict(goal_status='unknown', completion_authorized=False,
                 instruction='Acquire evidence before committing to completion or a recovery action.')
         item = dict(phase='observation_decision', request=deepcopy(prompt),
+            image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=1, accepted=False)
         self.audit.append(item)
         try:

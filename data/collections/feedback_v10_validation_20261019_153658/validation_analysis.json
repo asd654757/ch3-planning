@@ -1,0 +1,602 @@
+{
+  "scope": "held_out_layouts_not_new_task_semantics",
+  "conditions": {
+    "medium": {
+      "expected_episodes": 60,
+      "completed_episodes": 60,
+      "complete": true,
+      "missing": [],
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "completed": 20,
+          "successes": 20,
+          "recovery_cost": {
+            "calls": 20,
+            "tokens": 11600,
+            "rejections": 0
+          },
+          "failures": []
+        },
+        "MODEL_CONSTRAINT_REPAIR": {
+          "completed": 20,
+          "successes": 20,
+          "recovery_cost": {
+            "calls": 20,
+            "tokens": 14578,
+            "rejections": 0
+          },
+          "failures": []
+        },
+        "MODEL_COMPACT_REPAIR": {
+          "completed": 20,
+          "successes": 20,
+          "recovery_cost": {
+            "calls": 20,
+            "tokens": 12400,
+            "rejections": 0
+          },
+          "failures": []
+        }
+      },
+      "comparisons": {
+        "compact_vs_MODEL_DIRECT_REPLAN": {
+          "paired_layouts": 20,
+          "compact_only_success": 0,
+          "reference_only_success": 0,
+          "exact_mcnemar_p_unadjusted": 1.0,
+          "per_seed_cost_deltas": [
+            {
+              "seed": 600,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 601,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 602,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 603,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 604,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 605,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 606,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 607,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 608,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 609,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 610,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 611,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 612,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 613,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 614,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 615,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 616,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 617,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 618,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 619,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            }
+          ],
+          "note": "Negative deltas favor compact. Report costs with success; no noninferiority claim from ties."
+        },
+        "compact_vs_MODEL_CONSTRAINT_REPAIR": {
+          "paired_layouts": 20,
+          "compact_only_success": 0,
+          "reference_only_success": 0,
+          "exact_mcnemar_p_unadjusted": 1.0,
+          "per_seed_cost_deltas": [
+            {
+              "seed": 600,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 601,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 602,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 603,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 604,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 605,
+              "calls": 0,
+              "tokens": -126,
+              "rejections": 0
+            },
+            {
+              "seed": 606,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 607,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 608,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 609,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 610,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 611,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 612,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 613,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 614,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 615,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 616,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 617,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 618,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            },
+            {
+              "seed": 619,
+              "calls": 0,
+              "tokens": -108,
+              "rejections": 0
+            }
+          ],
+          "note": "Negative deltas favor compact. Report costs with success; no noninferiority claim from ties."
+        }
+      }
+    },
+    "hard": {
+      "expected_episodes": 60,
+      "completed_episodes": 60,
+      "complete": true,
+      "missing": [],
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "completed": 20,
+          "successes": 20,
+          "recovery_cost": {
+            "calls": 20,
+            "tokens": 12660,
+            "rejections": 0
+          },
+          "failures": []
+        },
+        "MODEL_CONSTRAINT_REPAIR": {
+          "completed": 20,
+          "successes": 20,
+          "recovery_cost": {
+            "calls": 40,
+            "tokens": 32960,
+            "rejections": 20
+          },
+          "failures": []
+        },
+        "MODEL_COMPACT_REPAIR": {
+          "completed": 20,
+          "successes": 20,
+          "recovery_cost": {
+            "calls": 20,
+            "tokens": 13460,
+            "rejections": 0
+          },
+          "failures": []
+        }
+      },
+      "comparisons": {
+        "compact_vs_MODEL_DIRECT_REPLAN": {
+          "paired_layouts": 20,
+          "compact_only_success": 0,
+          "reference_only_success": 0,
+          "exact_mcnemar_p_unadjusted": 1.0,
+          "per_seed_cost_deltas": [
+            {
+              "seed": 600,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 601,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 602,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 603,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 604,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 605,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 606,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 607,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 608,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 609,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 610,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 611,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 612,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 613,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 614,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 615,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 616,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 617,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 618,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            },
+            {
+              "seed": 619,
+              "calls": 0,
+              "tokens": 40,
+              "rejections": 0
+            }
+          ],
+          "note": "Negative deltas favor compact. Report costs with success; no noninferiority claim from ties."
+        },
+        "compact_vs_MODEL_CONSTRAINT_REPAIR": {
+          "paired_layouts": 20,
+          "compact_only_success": 0,
+          "reference_only_success": 0,
+          "exact_mcnemar_p_unadjusted": 1.0,
+          "per_seed_cost_deltas": [
+            {
+              "seed": 600,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 601,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 602,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 603,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 604,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 605,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 606,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 607,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 608,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 609,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 610,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 611,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 612,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 613,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 614,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 615,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 616,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 617,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 618,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            },
+            {
+              "seed": 619,
+              "calls": -1,
+              "tokens": -975,
+              "rejections": -1
+            }
+          ],
+          "note": "Negative deltas favor compact. Report costs with success; no noninferiority claim from ties."
+        }
+      }
+    }
+  },
+  "complete": true
+}

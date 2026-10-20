@@ -1,0 +1,33 @@
+{
+  "protocol": "shared_recovery_evidence_v1",
+  "seeds": [
+    790,
+    791,
+    792,
+    793,
+    794
+  ],
+  "conditions": [
+    "medium",
+    "hard"
+  ],
+  "expected_episodes": 20,
+  "model": "deepseek-v4.1-flash",
+  "max_tokens": 4096,
+  "enable_thinking": false,
+  "git_commit": "5a9aa783f30adc9a02975b9e92237c4bb2d5750c",
+  "source_sha256": {
+    "ch3/repair/flexible_fixture_planner.py": "923ac8c0456c61c582c2352ad43a2bc42728b4f8a2f9b4c0b217a9351d834486",
+    "scripts/flexible_fixture_pilot.py": "8e057768d163205442807d0bad0675698a59993016ff6516c2bfa6166aebb388",
+    "scripts/persistent_reference_sequence.py": "80287d601d0c4cbb567fcd22846a8756fea785202a4c19b6ac6ba07df209239f",
+    "ch3/vlm/client.py": "8552bcbdc528b05f2cf7ce284de380041f35d1af36e8012f8c99cf3ab902a510"
+  },
+  "rules": [
+    "No result-based seed exclusion or prompt edits during run.",
+    "Same raw evidence, gates, controller and noninitial call budget.",
+    "No history necessity claim; hard includes controlled user goal update.",
+    "Formal expansion is not conditional on a favorable method gap.",
+    "Retain API, parsing, validation and physical failures."
+  ],
+  "formal_ready": false
+}

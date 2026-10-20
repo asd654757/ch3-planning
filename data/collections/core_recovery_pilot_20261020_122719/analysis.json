@@ -1,0 +1,59 @@
+{
+  "conditions": {
+    "medium": {
+      "complete": true,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": [],
+      "reset_violations": [],
+      "evidence_missing": [],
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "episodes": 5,
+          "successes": 5,
+          "recovery_calls": 5,
+          "recovery_tokens": 5691,
+          "candidate_rejections": 0,
+          "failures": []
+        },
+        "MODEL_COMPACT_REPAIR": {
+          "episodes": 5,
+          "successes": 5,
+          "recovery_calls": 5,
+          "recovery_tokens": 5891,
+          "candidate_rejections": 0,
+          "failures": []
+        }
+      }
+    },
+    "hard": {
+      "complete": true,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": [],
+      "reset_violations": [],
+      "evidence_missing": [],
+      "methods": {
+        "MODEL_DIRECT_REPLAN": {
+          "episodes": 5,
+          "successes": 5,
+          "recovery_calls": 10,
+          "recovery_tokens": 13467,
+          "candidate_rejections": 5,
+          "failures": []
+        },
+        "MODEL_COMPACT_REPAIR": {
+          "episodes": 5,
+          "successes": 5,
+          "recovery_calls": 10,
+          "recovery_tokens": 14052,
+          "candidate_rejections": 5,
+          "failures": []
+        }
+      }
+    }
+  },
+  "technical_gate_passed": true,
+  "formal_ready": false,
+  "note": "Human trace review required. No superiority, equivalence or history-necessity conclusion from this gate."
+}

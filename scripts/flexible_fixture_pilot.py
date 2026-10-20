@@ -1,5 +1,7 @@
 """Real model plans and remaining-goal repair in the existing persistent scene."""
 import argparse
+import hashlib
+import subprocess
 import json
 from pathlib import Path
 
@@ -83,6 +85,15 @@ if __name__=='__main__':
         update_on_deviation=args.difficulty=='hard',
         scope=('controlled_off_goal_execution_recovery_not_natural_failure' if args.execution_deviation
             else 'task_update_replanning_pilot_not_natural_execution_failure_recovery'))
+    if args.occlusion_observation:
+        files = ['ch3/repair/flexible_fixture_planner.py','scripts/persistent_reference_sequence.py',
+            'ch3/execution/occlusion_fixture.py','ch3/execution/multiview_evidence.py',
+            'scripts/flexible_fixture_pilot.py']
+        protocol['source_sha256'] = {f: hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in files}
+        protocol['git_commit'] = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+        protocol['observation_inference_protocol'] = 'observation_json_object_v2'
+        protocol['entry_observation_consumes_noninitial_budget'] = True
+        protocol['scope'] = 'known_fixture_controlled_occlusion_and_execution_deviation_not_open_world'
     protocol['occlusion_observation'] = args.occlusion_observation
     protocol['camera_scope'] = 'fixed multiview sensing, not robot head motion'
     protocol['goal_reobserve_budget'] = args.goal_reobserve_budget

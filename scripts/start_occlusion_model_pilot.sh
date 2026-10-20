@@ -16,7 +16,7 @@ setsid -f bash -c '
  echo $$ >/tmp/occlusion_model_pilot_pid
  "$1" -u scripts/flexible_fixture_pilot.py --env-file "$2" --output-dir "$3" \
    --model deepseek-v4.1-flash --disable-thinking --max-tokens 4096 \
-   --seeds 750 751 752 753 754 --difficulty medium --execution-contract \
+   --seeds 760 761 762 763 764 --difficulty medium --execution-contract \
    --compare-compact-direct --occlusion-observation
  rc=$?; echo "[occlusion-model-pilot] PROCESS_EXIT=$rc"; exit "$rc"
 ' bash "$python" "$env_file" "$out" >"$log" 2>&1 </dev/null

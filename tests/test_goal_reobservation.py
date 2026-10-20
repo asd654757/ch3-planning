@@ -41,6 +41,7 @@ def test_live_decision_schema_and_shared_call_budget(tmp_path):
     from ch3.repair.flexible_fixture_planner import FlexibleFixturePlanner
     class Client:
         def complete(self, **kwargs):
+            assert kwargs['json_mode'] is True
             request=json.loads(kwargs['user_prompt'])
             assert request['evidence']['status']=='unknown'
             assert 'current_facts' not in request

@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "missing": [],
+  "duplicates": [],
+  "unexpected": [],
+  "methods": {
+    "MODEL_DIRECT_REPLAN": {
+      "episodes": 5,
+      "successes": 5,
+      "acquisition_requests": 5,
+      "acquisitions_resolved": 5,
+      "recovery_calls": 10,
+      "recovery_tokens": 5025,
+      "errors": {},
+      "resets": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "MODEL_COMPACT_REPAIR": {
+      "episodes": 5,
+      "successes": 4,
+      "acquisition_requests": 5,
+      "acquisitions_resolved": 4,
+      "recovery_calls": 9,
+      "recovery_tokens": 5247,
+      "errors": {
+        "ValueError: entry_observation_unresolved_safe_stop": 1
+      },
+      "resets": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "formal_ready": false,
+  "note": "Pilot completion is not superiority or readiness. Review physical and evidence failures before formal freeze."
+}

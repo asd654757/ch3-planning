@@ -223,6 +223,7 @@ class FlexibleFixturePlanner:
             prompt['summary'] = dict(observation_status='unknown', completion_authorized=False,
                 instruction='Acquire evidence before committing to completion or a recovery action.')
         item = dict(phase='observation_decision', request=deepcopy(prompt),
+            inference_protocol='observation_json_object_v2',
             image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),
             actual_model_calls=1, accepted=False)
         self.audit.append(item)
@@ -230,7 +231,7 @@ class FlexibleFixturePlanner:
             options = {} if self.enable_thinking is None else {'enable_thinking': self.enable_thinking}
             response = self.client.complete(system_prompt='Return only a JSON object with decision.',
                 user_prompt=json.dumps(prompt), image_path=image_path, temperature=.1,
-                seed=0, max_tokens=self.max_tokens, json_mode=False, **options)
+                seed=0, max_tokens=self.max_tokens, json_mode=True, **options)
             item.update(content=response.content, total_tokens=response.total_tokens,
                 response_model=getattr(response, 'model', None),
                 request_id=getattr(response, 'request_id', None),

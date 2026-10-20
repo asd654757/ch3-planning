@@ -55,3 +55,28 @@ chain. The cause is not yet isolated: topview-specific holding evidence versus
 actual grasp/controller/screen interference. Do not disable holding checks or
 attribute this to physical collision without diagnosis. Next diagnostic retains
 same seeds and topview but omits screen to isolate the camera/backend interaction.
+
+## Camera/backend diagnosis follow-up
+
+Topview without screen also fails both original seeds 740–741 at first holding
+check. Saved topview holding frames contain insufficient blue color evidence in
+both samples. Thus screen collision is not a sufficient explanation; do not
+classify these as proven physical grasp failures.
+
+Added existing fixed oblique camera `corner` as a registered alternative. Across
+seeds 730–732 the blocked scene has 349/336/333 blue pixels in this camera; camera2
+remains blocked. This feasibility batch is recorded at
+`data/collections/occlusion_oblique_20261020_103959/view_check.json`.
+
+Screen-present execution from `corner` at fixed seeds 740–741 achieved 1/2 success:
+740 completed, 741 stopped at the SECOND blue pick with holding_not_supported.
+Source: `data/collections/occlusion_corner_execution_20261020_104124/check_summary.json`.
+No parse, evidence or scoring threshold was weakened. This is partial controller
+feasibility, not readiness for formal experiments; retain both outcomes.
+
+The next required interface is view-specific evidence acquisition: location/goal
+frames and holding frames need not use the same camera, but each must retain its
+camera identity, matching calibration, raw samples and freshness. Do not mix
+pixels from different cameras in co-motion/stability calculations; do not let a
+visible object imply holding. Both methods must have the same registered views.
+No new paid model batch is justified before this interface is physically checked.

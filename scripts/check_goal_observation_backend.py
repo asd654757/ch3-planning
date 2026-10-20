@@ -27,7 +27,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--physical-screen',action='store_true')
-    parser.add_argument('--observation-camera',choices=['corner2','topview'],default='corner2')
+    parser.add_argument('--observation-camera',choices=['corner2','topview','corner'],default='corner2')
     parser.add_argument('--goal-budgets',type=int,nargs='+',choices=[0,1],default=[1])
     parser.add_argument('--seeds',type=int,nargs='+',default=[700,701])
     args=parser.parse_args()

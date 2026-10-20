@@ -7,7 +7,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 SCREEN = {'position': (.24, .46, .32), 'half_size': (.012, .14, .19)}
-VIEWS = ('corner2', 'topview')
+VIEWS = ('corner2', 'topview', 'corner')
 
 
 def add_observation_screen(scene_path: Path):

@@ -15,7 +15,7 @@ os.environ.setdefault('MUJOCO_GL', 'egl')
 def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
         feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0, goal_reobserve_budget=0, physical_screen=False, observation_camera="corner2"):
     import numpy as np
-    if observation_camera not in ('corner2', 'topview'):
+    if observation_camera not in ('corner2', 'topview', 'corner'):
         raise ValueError('unsupported_observation_camera')
     if goal_reobserve_budget not in (0, 1):
         raise ValueError('invalid_goal_reobserve_budget')

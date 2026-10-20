@@ -13,7 +13,7 @@ os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
 def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
-        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0, goal_reobserve_budget=0, physical_screen=False, observation_camera="corner2"):
+        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0, goal_reobserve_budget=0, physical_screen=False, observation_camera="corner2", multiview_holding=False, entry_occlusion_observation=False):
     import numpy as np
     if observation_camera not in ('corner2', 'topview', 'corner'):
         raise ValueError('unsupported_observation_camera')
@@ -76,6 +76,19 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             controller = FixedPickPlaceController(env, pick_contact_offset=pick_contact_offset)
             contract = BackendContract(controller.backend, frozenset({'pick', 'place'}), frozenset({'right'}), 'mujoco_world')
 
+            evidence_cameras = tuple(dict.fromkeys([observation_camera, 'corner2', 'corner']))
+            report['multiview_holding'] = multiview_holding
+            report['evidence_frame_log'] = []
+
+            def capture_view(name, camera):
+                from ch3.execution.occlusion_fixture import render_fixed_view
+                rgb = render_fixed_view(env, camera)
+                filename = f'{name}_{camera}.png'
+                Image.fromarray(np.flip(rgb, (0, 1))).save(out / filename)
+                report['evidence_frame_log'].append(dict(camera=camera, image=filename,
+                    simulation_time=float(env.data.time)))
+                return rgb
+
             def frame(name):
                 rgb = np.asarray(env.render()).copy()
                 Image.fromarray(np.flip(rgb, (0, 1))).save(out / f'{name}.png')
@@ -101,7 +114,20 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                         p = pixel(rgb, color)
                     except ValueError:
                         p = None
-                    records.append(dict(target_pixel=p, hand_pixel=project_point(calibration, env.get_endeff_pos())))
+                    record = dict(target_pixel=p, hand_pixel=project_point(calibration, env.get_endeff_pos()))
+                    if multiview_holding and grip > 0:
+                        record['views'] = {}
+                        for camera in evidence_cameras:
+                            view = capture_view(f'{name}_{i}', camera)
+                            camera_calibration = fixed_mujoco_calibration(env.model, env.data,
+                                camera=camera, width=480, height=480)
+                            try:
+                                target_pixel = pixel(view, color)
+                            except ValueError:
+                                target_pixel = None
+                            record['views'][camera] = dict(target_pixel=target_pixel,
+                                hand_pixel=project_point(camera_calibration, env.get_endeff_pos()))
+                    records.append(record)
                 return records, rgb
 
             # Static fixture assumption: reference captured BEFORE object/hand occlusion.
@@ -126,6 +152,34 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 return observed_goal(positions, references[region_id].position[:2])
 
             executable = None
+            if entry_occlusion_observation:
+                if not (physical_screen and flexible and observation_camera == 'corner'):
+                    raise ValueError('entry_observation_requires_screen_and_registered_alternate')
+                blocked = capture_view('entry_primary', 'corner2')
+                missing = []
+                for object_id, color in [('blue_candidate','blue'),('yellow_candidate','yellow')]:
+                    try:
+                        pixel(blocked, color)
+                    except ValueError:
+                        missing.append(object_id)
+                evidence = dict(status='unknown' if missing else 'visible',
+                    camera='corner2', missing_visual_candidates=missing,
+                    reason='insufficient_registered_color_evidence',
+                    source='RGB_not_simulator_object_truth')
+                report['entry_observation'] = evidence
+                if missing:
+                    decision = model_planner.choose_goal_observation(out/'entry_primary_corner2.png',
+                        evidence=evidence, remaining_observations=1,
+                        observation_context=dict(stage='initial_localization',
+                            available_observation='Capture registered fixed alternate camera corner without stepping simulation.',
+                            scope='Camera selection, not physical robot camera motion.'))
+                    report['entry_observation_decision'] = decision
+                    if decision != 'observe':
+                        raise ValueError('entry_observation_unresolved_safe_stop')
+                    alternate = capture_view('entry_alternate', 'corner')
+                    for color in ['blue', 'yellow']:
+                        pixel(alternate, color)
+                    report['entry_observation_resolved'] = True
             if model_planner is not None:
                 stage = 'model_initial_planning'
                 frame('model_initial')
@@ -157,6 +211,14 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 print(f'[reference-sequence] seed={seed} stage={stage}', flush=True)
                 rgb = frame(stage)
                 initial = pixel(rgb, color)
+                initial_view_pixels = {}
+                if multiview_holding:
+                    for camera in evidence_cameras:
+                        view = capture_view(stage+'_prepick', camera)
+                        try:
+                            initial_view_pixels[camera] = pixel(view, color)
+                        except ValueError:
+                            initial_view_pixels[camera] = None
                 oid = stage
                 source = visual_binding(calibration, object_id=obj, observation_id=oid, pixel=initial,
                                         plane_z=source_heights.get(obj, .02))
@@ -229,6 +291,9 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
                 if not recovered_holding:
                     records, rgb = probe(stage+'_holding', color, 1.)
                     held = holding_evidence(initial, [r['target_pixel'] for r in records], [r['hand_pixel'] for r in records])
+                if multiview_holding and not recovered_holding:
+                    from ch3.execution.multiview_evidence import holding_from_views
+                    held = holding_from_views(initial_view_pixels, records)
                 report['events'][-1]['holding'] = held
                 if held['status'] != 'holding_supported':
                     raise ValueError('holding_not_supported')

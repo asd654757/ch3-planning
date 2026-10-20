@@ -26,6 +26,8 @@ class FixtureClient:
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--entry-occlusion-observation',action='store_true')
+    parser.add_argument('--multiview-holding',action='store_true')
     parser.add_argument('--physical-screen',action='store_true')
     parser.add_argument('--observation-camera',choices=['corner2','topview','corner'],default='corner2')
     parser.add_argument('--goal-budgets',type=int,nargs='+',choices=[0,1],default=[1])
@@ -42,7 +44,9 @@ def main():
             result=run(seed,args.output/f'seed_{seed}_budget_{budget}',model_planner=planner,
                 reobserve_budget=2,pick_contact_offset=.03,feedback_v2=True,
                 execution_recovery=True,controlled_place_offset=.045,goal_reobserve_budget=budget,
-                physical_screen=args.physical_screen,observation_camera=args.observation_camera)
+                physical_screen=args.physical_screen,observation_camera=args.observation_camera,
+                multiview_holding=args.multiview_holding,
+                entry_occlusion_observation=args.entry_occlusion_observation)
             row=dict(seed=seed,goal_reobserve_budget=budget,success=result['success'],error=result.get('error'),
                 evidence_kind='physical_simulation_with_scripted_fixture_plans',actual_api_calls=0,
                 episode_resets=result.get('episode_resets'),

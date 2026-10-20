@@ -24,6 +24,8 @@ if __name__=='__main__':
         help='Preferred comparison: direct replanning versus compact feedback only; excludes legacy')
     p.add_argument('--compare-feedback-formats',action='store_true',
         help='Matched direct, legacy diagnostic, compact diagnostic; shared initial candidate')
+    p.add_argument('--occlusion-observation',action='store_true',
+        help='Physical screen; model chooses initial alternate view; multiview holding; development only')
     p.add_argument('--goal-reobserve-budget', type=int, choices=[0,1], default=0,
         help='Optional bounded model-requested extra RGB probe on unknown goal evidence')
     p.add_argument('--update-goals',action='store_true')
@@ -34,6 +36,8 @@ if __name__=='__main__':
     p.add_argument('--execution-contract', '--repair-contract-v7', dest='repair_contract_v7',
         action='store_true',help='Versioned execution contract; current protocol v8 (legacy flag is an alias)')
     args=p.parse_args()
+    if args.occlusion_observation and not args.compare_compact_direct:
+        p.error('--occlusion-observation requires --compare-compact-direct')
     if args.max_tokens <= 0:
         p.error('--max-tokens must be positive')
     if args.execution_diagnostics and not args.repair_contract_v7:
@@ -79,6 +83,8 @@ if __name__=='__main__':
         update_on_deviation=args.difficulty=='hard',
         scope=('controlled_off_goal_execution_recovery_not_natural_failure' if args.execution_deviation
             else 'task_update_replanning_pilot_not_natural_execution_failure_recovery'))
+    protocol['occlusion_observation'] = args.occlusion_observation
+    protocol['camera_scope'] = 'fixed multiview sensing, not robot head motion'
     protocol['goal_reobserve_budget'] = args.goal_reobserve_budget
     protocol['observation_calls_share_repair_budget'] = True
     protocol['execution_diagnostics'] = args.execution_diagnostics
@@ -126,7 +132,11 @@ if __name__=='__main__':
                     pick_contact_offset=.03,feedback_v2=True,execution_recovery=args.execution_deviation,
                     controlled_place_offset=.045 if args.execution_deviation else 0.,
                     deviation_transfer_index=1 if args.difficulty else 0,
-                    goal_reobserve_budget=args.goal_reobserve_budget)
+                    goal_reobserve_budget=args.goal_reobserve_budget,
+                    physical_screen=args.occlusion_observation,
+                    observation_camera='corner' if args.occlusion_observation else 'corner2',
+                    multiview_holding=args.occlusion_observation,
+                    entry_occlusion_observation=args.occlusion_observation)
                 row.update(method=method,scope=protocol['scope'])
                 f.write(json.dumps(row)+'\n');f.flush();rows.append(row)
                 print(json.dumps(dict(seed=seed,method=method,success=row['success'],model_calls=row['model_calls'],

@@ -198,7 +198,7 @@ class FlexibleFixturePlanner:
                     directive='Regenerate the complete suffix from unchanged current observations.')
         return result
 
-    def choose_goal_observation(self, image_path, *, evidence, remaining_observations):
+    def choose_goal_observation(self, image_path, *, evidence, remaining_observations, observation_context=None):
         """Acquire evidence, not actions: no stale state or truth is supplied here.
 
         Uses the SAME noninitial call budget as remaining-plan generation. The
@@ -208,16 +208,19 @@ class FlexibleFixturePlanner:
             raise ValueError('unsupported_goal_observation_request')
         if sum(a['phase'] != 'initial' for a in self.audit) >= 2:
             return 'stop'
-        prompt = dict(task='Choose observe or stop for unresolved post-release goal evidence.',
+        context = observation_context or dict(stage='post_release_goal',
+            available_observation='Repeat open-hand retreat probe and capture two fresh RGB frames.')
+        prompt = dict(task='Choose observe or stop for unresolved observation evidence.',
+            observation_context=deepcopy(context),
             evidence=deepcopy(evidence), remaining_observations=remaining_observations,
             executed_history=deepcopy(self.history),
             history_scope='Past supported deliveries, not a certificate of the unresolved current goal.',
             current_goals=deepcopy(self.goals),
-            available_observation='Repeat open-hand retreat probe and capture two fresh RGB frames.',
+            available_observation=context['available_observation'],
             limitations='Observation may remain unknown; do not assume task success or infer a location.',
             output_schema={'decision': 'observe or stop'})
         if self.compact_feedback:
-            prompt['summary'] = dict(goal_status='unknown', completion_authorized=False,
+            prompt['summary'] = dict(observation_status='unknown', completion_authorized=False,
                 instruction='Acquire evidence before committing to completion or a recovery action.')
         item = dict(phase='observation_decision', request=deepcopy(prompt),
             image_sha256=hashlib.sha256(image_path.read_bytes()).hexdigest(),

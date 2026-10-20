@@ -13,8 +13,10 @@ os.environ.setdefault('MUJOCO_GL', 'egl')
 
 
 def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery=False, pick_contact_offset=.015,
-        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0, goal_reobserve_budget=0):
+        feedback_v2=False, initial_y_spread=.025, controlled_place_offset=0., deviation_transfer_index=0, goal_reobserve_budget=0, physical_screen=False, observation_camera="corner2"):
     import numpy as np
+    if observation_camera not in ('corner2', 'topview'):
+        raise ValueError('unsupported_observation_camera')
     if goal_reobserve_budget not in (0, 1):
         raise ValueError('invalid_goal_reobserve_budget')
     if controlled_place_offset not in (0., .045):
@@ -49,7 +51,13 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             xml = Path(tmp) / 'scene.xml'
             build_scene_xml(Path(full_V3_path_for('sawyer_xyz/sawyer_pick_place_v3.xml')), xml,
                             hide_goal_marker=True, add_return_region=True)
+            if physical_screen:
+                from ch3.execution.occlusion_fixture import add_observation_screen
+                add_observation_screen(xml)
             env = make_scene(xml, seed=seed, initial_y_spread=initial_y_spread)
+            env.mujoco_renderer.camera_id = int(env.model.camera(observation_camera).id)
+            report['physical_screen'] = physical_screen
+            report['observation_camera'] = observation_camera
             # make_scene performs the sole reset for this run.  Keep both the
             # declared protocol value and a runtime counter so the report does
             # not rely only on a handwritten constant.
@@ -64,7 +72,7 @@ def run(seed, out, *, reobserve_budget=0, model_planner=None, execution_recovery
             report['episode_step_limit'] = env.max_path_length
             for _ in range(30):
                 env.step(np.array([0., 0., 0., -1.]))
-            calibration = fixed_mujoco_calibration(env.model, env.data, camera='corner2', width=480, height=480)
+            calibration = fixed_mujoco_calibration(env.model, env.data, camera=observation_camera, width=480, height=480)
             controller = FixedPickPlaceController(env, pick_contact_offset=pick_contact_offset)
             contract = BackendContract(controller.backend, frozenset({'pick', 'place'}), frozenset({'right'}), 'mujoco_world')
 

@@ -44,3 +44,9 @@ recovery claim. Do not expand perception to rescue a null planning comparison.
 ## Status
 Shared-evidence unit tests added and passed. No live-model batch started by this
 change; physical-alternative gate is still pending. This is not formal-ready.
+
+## Completed gate update
+See `data/reports/core_recovery_readiness_20261020.md` for completed zero-API
+physical checks and live paired pilot. Technical replication readiness passed;
+compact superiority did not. All 20 pilot episodes succeeded, with equal calls
+and more compact tokens. Keep historical/null evidence, not just favorable runs.

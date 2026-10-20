@@ -79,6 +79,7 @@ if __name__=='__main__':
         goal_feedback=('isolated_unexecuted_candidate_and_violations_no_predicted_state'
             if args.repair_contract_v7 else 'diagnostic_category_and_count_no_candidate_or_predicted_state'),
         remaining_goals_available_to_both=True,
+        shared_recovery_evidence_protocol='shared_recovery_evidence_v1',
         shared_acceptance_gate=True,failed_candidate_retry='up to remaining noninitial budget',
         controlled_place_offset_m=.045 if args.execution_deviation else 0.,
         difficulty=args.difficulty,deviation_transfer_index=1 if args.difficulty else 0,

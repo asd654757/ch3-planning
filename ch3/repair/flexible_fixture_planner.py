@@ -173,6 +173,18 @@ class FlexibleFixturePlanner:
                 'Never move protected objects. The candidate below was not executed and is not current state.'],
             budget=dict(remaining_transfers=4-self.attempted_transfers,
                 max_actions=2*(4-self.attempted_transfers)),
+            # Shared raw evidence survives the contract snapshot projection.
+            # Diagnostics may summarize it, but may not give one method more facts.
+            recovery_evidence=dict(
+                protocol='shared_recovery_evidence_v1',
+                supported_deliveries=deepcopy(self.history),
+                goal_updates=deepcopy(self.goal_updates),
+                execution_deviations=deepcopy(self.execution_deviations),
+                local_feedback={k: deepcopy(v) for k, v in (feedback or {}).items()
+                    if k not in {'predicted_final_facts', 'rejected_output'}},
+                semantics='Deliveries and deviations are observed execution evidence. '
+                    'Rejected candidates were not executed; predictions are not observations. '
+                    'Past deliveries do not certify the current goal after a goal update.'),
             rejected_candidate_review=rejection,
             output_schema={'actions':[dict(step_id='integer starting at 1',skill='pick or place',
                 object_id='object id',target_id='region id for place; omit for pick')]})

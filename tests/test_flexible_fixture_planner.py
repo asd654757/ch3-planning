@@ -355,3 +355,45 @@ def test_occupied_rejection_feedback_is_concrete_not_a_rewritten_plan():
     assert result['violated_precondition']==dict(object_id='yellow_candidate',
         target_id='return_region',occupying_objects=['blue_candidate'])
     assert 'rejected_candidate' not in result and 'predicted_final_facts' not in result
+
+
+def test_contract_snapshot_preserves_shared_raw_history_without_predicted_truth():
+    from copy import deepcopy
+    snapshots = []
+    feedback = dict(error_code='GOAL_NOT_SATISFIED',
+        rejected_candidate={'actions': []}, predicted_final_facts=['not_an_observation'],
+        rejected_output='untrusted model prose')
+    for compact in (False, True):
+        planner = FlexibleFixturePlanner(None, recovery=True, shared={},
+            execution_contract=True, execution_diagnostics=True,
+            compact_feedback=compact, update_goals=True)
+        planner.observe_release('blue_candidate', 'return_region')
+        planner.execution_deviations.append(dict(object_id='yellow_candidate',
+            observed_goal={'status': 'not_satisfied'},
+            release={'status': 'release_supported'}))
+        before = deepcopy(planner.state.facts())
+        snapshot = planner.planning_snapshot(feedback)
+        evidence = snapshot['recovery_evidence']
+        assert evidence['supported_deliveries'] == [('blue_candidate', 'return_region')]
+        assert evidence['goal_updates'][0]['new_goals']['blue_candidate'] == 'green_region'
+        assert evidence['execution_deviations'][0]['object_id'] == 'yellow_candidate'
+        assert 'predicted_final_facts' not in evidence['local_feedback']
+        assert 'rejected_output' not in evidence['local_feedback']
+        assert planner.state.facts() == before
+        evidence['supported_deliveries'].clear()
+        assert planner.history == [('blue_candidate', 'return_region')]
+        snapshots.append(planner.planning_snapshot(feedback))
+    assert snapshots[0]['recovery_evidence'] == snapshots[1]['recovery_evidence']
+    assert snapshots[0]['objects'] == snapshots[1]['objects']
+
+
+def test_contract_raw_rejection_is_shared_even_without_derived_error_feedback():
+    planner = FlexibleFixturePlanner(None, recovery=True, shared={},
+        execution_contract=True, error_feedback=False)
+    feedback = dict(error_code='DESTINATION_OCCUPIED', candidate_executed=False,
+        rejected_candidate={'actions': []}, occupying_objects=['yellow_candidate'])
+    snapshot = planner.planning_snapshot(feedback)
+    assert snapshot['rejected_candidate_review'] is None
+    assert snapshot['recovery_evidence']['local_feedback'] == feedback
+    assert planner.history == []
+    assert planner.state.location_of('yellow_candidate') != 'green_region'

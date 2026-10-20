@@ -25,7 +25,7 @@ def test_legacy_snapshot_remains_unchanged():
     assert 'execution_diagnostic' not in planner.planning_snapshot()
 
 
-def test_compact_initial_is_shared_and_old_target_is_not_repeated():
+def test_compact_initial_is_shared_and_old_target_is_historical_not_directive():
     plain = FlexibleFixturePlanner(None, recovery=True, shared={},
         execution_contract=True, execution_diagnostics=True)
     compact = FlexibleFixturePlanner(None, recovery=True, shared={},
@@ -35,7 +35,9 @@ def test_compact_initial_is_shared_and_old_target_is_not_repeated():
         attempted_action={'target_id': 'obsolete_target'}, observation={})
     import json
     snapshot = compact.planning_snapshot(event)
-    assert 'obsolete_target' not in json.dumps(snapshot)
+    assert 'obsolete_target' not in json.dumps(snapshot['execution_diagnostic'])
+    assert snapshot['recovery_evidence']['local_feedback'] == event
+    assert snapshot['recovery_evidence'] == plain.planning_snapshot(event)['recovery_evidence']
     assert snapshot['objects'] == plain.planning_snapshot(event)['objects']
 
 

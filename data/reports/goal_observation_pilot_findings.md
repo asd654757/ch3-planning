@@ -18,3 +18,9 @@ not an LLM method advantage. No new formal model run follows automatically.
 An extra probe includes elapsed time and open-hand motion; any benefit cannot yet
 be attributed exclusively to information rather than settling/contact. Successful
 backend findings alone will not establish a need for explicit compact diagnostics.
+
+Backend exposure check completed: all 12/12 episodes succeeded, zero initial UNKNOWN
+checks across all six seed pairs. Source: `data/collections/goal_observation_exposure_20261020_095024`. This second
+fixed batch also fails to expose ambiguity. Stop expanding identical release-offset
+conditions. A genuinely ambiguous sensing condition requires a separately documented
+physical observation change, not hidden relabeling or outcome-based seed selection.

@@ -1,0 +1,111 @@
+{
+  "seed": 753,
+  "scope": "live_model_planning_persistent_execution_restricted_fixture",
+  "episode_resets": 1,
+  "model_calls": 1,
+  "success": false,
+  "events": [],
+  "truth_usage": "scoring_only_not_targeting_or_authorization",
+  "reference_sequence": [
+    "blue_to_return_region",
+    "yellow_to_green_region"
+  ],
+  "protected_displacement_limit_m": 0.015,
+  "episode_step_limit": 1800,
+  "reobserve_budget": 2,
+  "goal_reobserve_budget": 0,
+  "destination_observations": [],
+  "pick_contact_offset_m": 0.03,
+  "feedback_v2": true,
+  "initial_y_spread_m": 0.025,
+  "controlled_first_place_x_offset_m": 0.045,
+  "controlled_place_deviation": {
+    "transfer_index": 1,
+    "x_offset_m": 0.045
+  },
+  "physical_screen": true,
+  "observation_camera": "corner",
+  "multiview_holding": true,
+  "evidence_frame_log": [
+    {
+      "camera": "corner2",
+      "image": "entry_primary_corner2.png",
+      "simulation_time": 0.9999999999999897
+    }
+  ],
+  "region_references": {
+    "green_region": [
+      -0.00706165903253566,
+      0.8324209773120641,
+      0.008
+    ],
+    "return_region": [
+      -0.1564262881090785,
+      0.7823447440364156,
+      0.008
+    ]
+  },
+  "entry_observation": {
+    "status": "unknown",
+    "camera": "corner2",
+    "missing_visual_candidates": [
+      "blue_candidate"
+    ],
+    "reason": "insufficient_registered_color_evidence",
+    "source": "RGB_not_simulator_object_truth"
+  },
+  "entry_observation_decision": "stop",
+  "failure_stage": "setup",
+  "error": "ValueError: entry_observation_unresolved_safe_stop",
+  "model_audit": [
+    {
+      "phase": "observation_decision",
+      "request": {
+        "task": "Choose observe or stop for unresolved observation evidence.",
+        "observation_context": {
+          "stage": "initial_localization",
+          "available_observation": "Capture registered fixed alternate camera corner without stepping simulation.",
+          "scope": "Camera selection, not physical robot camera motion."
+        },
+        "evidence": {
+          "status": "unknown",
+          "camera": "corner2",
+          "missing_visual_candidates": [
+            "blue_candidate"
+          ],
+          "reason": "insufficient_registered_color_evidence",
+          "source": "RGB_not_simulator_object_truth"
+        },
+        "remaining_observations": 1,
+        "executed_history": [],
+        "history_scope": "Past supported deliveries, not a certificate of the unresolved current goal.",
+        "current_goals": {
+          "blue_candidate": "return_region",
+          "yellow_candidate": "green_region"
+        },
+        "available_observation": "Capture registered fixed alternate camera corner without stepping simulation.",
+        "limitations": "Observation may remain unknown; do not assume task success or infer a location.",
+        "output_schema": {
+          "decision": "observe or stop"
+        },
+        "summary": {
+          "observation_status": "unknown",
+          "completion_authorized": false,
+          "instruction": "Acquire evidence before committing to completion or a recovery action."
+        }
+      },
+      "image_sha256": "f079cd86bd0401b3064685aa0435f094137e8425c5553fdfb34423859a6a6bbf",
+      "actual_model_calls": 1,
+      "accepted": false,
+      "content": "Based on the image provided, here is a detailed description of the scene:\n\n**Overall Setting:**\nThe image depicts a 3D-rendered simulation environment. The scene is set on a light gray, tiled floor with a subtle grid pattern, suggesting a virtual or testing space.\n\n**Main Elements:**\n\n1.  **Robotic Arm:**\n    *   On the left side of the image, there is a prominent, articulated robotic arm.\n    *   It is colored a deep, glossy red.\n    *   The arm consists of several segments connected by joints, allowing for complex movement. It is mounted on a sturdy base.\n    *   The arm is positioned so that its end effector (the \"hand\" or tool at the end) is hovering over a table.\n\n2.  **Table:**\n    *   In the center of the scene is a rectangular table.\n    *   The tabletop has a realistic wood grain texture, featuring varying shades of brown.\n    *   The table is supported by a simple frame with four visible legs, which appear to be made of a light-colored material, possibly metal or wood.\n\n3.  **Objects on the Table:**\n    *   **Gray Block:** A solid, rectangular gray block stands upright on the table. It is positioned near the center, slightly towards the back.\n    *   **Green Object:** To the right of the gray block, there is a smaller, bright green object. It appears to be a small, flat piece or a simple geometric shape resting on the table surface.\n\n**Lighting and Shadows:**\n*   The scene is well-lit, likely by a simulated overhead light source.\n*   This lighting creates distinct, soft shadows cast by the robotic arm, the table legs, and the objects on the table onto the floor and the table surface itself, adding depth and realism to the rendering.\n\n**Potential Context:**\nThe image looks like a screenshot from a robotics simulation software (such as Gazebo, PyBullet, or similar). It is likely being used to test or develop control algorithms for the robotic arm, such as pick-and-place tasks involving the gray and green objects.",
+      "total_tokens": 891,
+      "response_model": "deepseek-v4.1-flash",
+      "request_id": null,
+      "latency_ms": 6118,
+      "error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+    }
+  ],
+  "model_recovery_enabled": true,
+  "execution_unknown_policy": "stop_not_fabricate_current_state",
+  "runtime_episode_reset_count": 1
+}

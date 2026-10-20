@@ -1,0 +1,76 @@
+[flexible-fixture] seed=750 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=750 stage=transfer_0_blue_pick
+[reference-sequence] seed=750 stage=transfer_0_blue_place
+[reference-sequence] seed=750 stage=transfer_1_yellow_pick
+[reference-sequence] seed=750 stage=transfer_1_yellow_place
+[reference-sequence] seed=750 stage=transfer_2_yellow_pick
+[reference-sequence] seed=750 stage=transfer_2_yellow_place
+{"seed": 750, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=750 method=MODEL_COMPACT_REPAIR start
+[reference-sequence] seed=750 stage=transfer_0_blue_pick
+[reference-sequence] seed=750 stage=transfer_0_blue_place
+[reference-sequence] seed=750 stage=transfer_1_yellow_pick
+[reference-sequence] seed=750 stage=transfer_1_yellow_place
+[reference-sequence] seed=750 stage=transfer_2_yellow_pick
+[reference-sequence] seed=750 stage=transfer_2_yellow_place
+{"seed": 750, "method": "MODEL_COMPACT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=751 method=MODEL_COMPACT_REPAIR start
+[reference-sequence] seed=751 stage=transfer_0_blue_pick
+[reference-sequence] seed=751 stage=transfer_0_blue_place
+[reference-sequence] seed=751 stage=transfer_1_yellow_pick
+[reference-sequence] seed=751 stage=transfer_1_yellow_place
+[reference-sequence] seed=751 stage=transfer_2_yellow_pick
+[reference-sequence] seed=751 stage=transfer_2_yellow_place
+{"seed": 751, "method": "MODEL_COMPACT_REPAIR", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=751 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=751 stage=transfer_0_blue_pick
+[reference-sequence] seed=751 stage=transfer_0_blue_place
+[reference-sequence] seed=751 stage=transfer_1_yellow_pick
+[reference-sequence] seed=751 stage=transfer_1_yellow_place
+[reference-sequence] seed=751 stage=transfer_2_yellow_pick
+[reference-sequence] seed=751 stage=transfer_2_yellow_place
+{"seed": 751, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=752 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=752 stage=transfer_0_blue_pick
+[reference-sequence] seed=752 stage=transfer_0_blue_place
+[reference-sequence] seed=752 stage=transfer_1_yellow_pick
+[reference-sequence] seed=752 stage=transfer_1_yellow_place
+[reference-sequence] seed=752 stage=transfer_2_yellow_pick
+[reference-sequence] seed=752 stage=transfer_2_yellow_place
+{"seed": 752, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=752 method=MODEL_COMPACT_REPAIR start
+[reference-sequence] seed=752 stage=transfer_0_blue_pick
+[reference-sequence] seed=752 stage=transfer_0_blue_place
+[reference-sequence] seed=752 stage=transfer_1_yellow_pick
+[reference-sequence] seed=752 stage=transfer_1_yellow_place
+[reference-sequence] seed=752 stage=transfer_2_yellow_pick
+[reference-sequence] seed=752 stage=transfer_2_yellow_place
+{"seed": 752, "method": "MODEL_COMPACT_REPAIR", "success": true, "model_calls": 2, "error": null}
+[flexible-fixture] seed=753 method=MODEL_COMPACT_REPAIR start
+{"seed": 753, "method": "MODEL_COMPACT_REPAIR", "success": false, "model_calls": 1, "error": "ValueError: entry_observation_unresolved_safe_stop"}
+[flexible-fixture] seed=753 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=753 stage=transfer_0_blue_pick
+[reference-sequence] seed=753 stage=transfer_0_blue_place
+[reference-sequence] seed=753 stage=transfer_1_yellow_pick
+[reference-sequence] seed=753 stage=transfer_1_yellow_place
+[reference-sequence] seed=753 stage=transfer_2_yellow_pick
+[reference-sequence] seed=753 stage=transfer_2_yellow_place
+{"seed": 753, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=754 method=MODEL_DIRECT_REPLAN start
+[reference-sequence] seed=754 stage=transfer_0_blue_pick
+[reference-sequence] seed=754 stage=transfer_0_blue_place
+[reference-sequence] seed=754 stage=transfer_1_yellow_pick
+[reference-sequence] seed=754 stage=transfer_1_yellow_place
+[reference-sequence] seed=754 stage=transfer_2_yellow_pick
+[reference-sequence] seed=754 stage=transfer_2_yellow_place
+{"seed": 754, "method": "MODEL_DIRECT_REPLAN", "success": true, "model_calls": 3, "error": null}
+[flexible-fixture] seed=754 method=MODEL_COMPACT_REPAIR start
+[reference-sequence] seed=754 stage=transfer_0_blue_pick
+[reference-sequence] seed=754 stage=transfer_0_blue_place
+[reference-sequence] seed=754 stage=transfer_1_yellow_pick
+[reference-sequence] seed=754 stage=transfer_1_yellow_place
+[reference-sequence] seed=754 stage=transfer_2_yellow_pick
+[reference-sequence] seed=754 stage=transfer_2_yellow_place
+{"seed": 754, "method": "MODEL_COMPACT_REPAIR", "success": true, "model_calls": 2, "error": null}
+{"completed_episodes": 10, "actual_model_calls": 24, "methods": {"MODEL_DIRECT_REPLAN": {"episodes": 5, "successes": 5, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 5}, "MODEL_COMPACT_REPAIR": {"episodes": 5, "successes": 4, "accepted_remaining_repairs": 0, "accepted_execution_repairs": 4}}}
+[occlusion-model-pilot] PROCESS_EXIT=0

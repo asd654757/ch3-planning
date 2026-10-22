@@ -28,6 +28,25 @@ def audit(path):
         attempts = [e for e in rows if e['event'] == 'model_attempt']
         summary = next((e for e in rows if e['event'] == 'session_summary'), None)
         local = []
+        current_sequence = None
+        consumed_sequence = None
+        uncertain_sequence = None
+        for event in rows:
+            if event['event'] == 'observation':
+                current_sequence = event['sequence']
+            elif event['event'] == 'execution_uncertain':
+                uncertain_sequence = event['sequence']
+            elif event['event'] == 'execution':
+                seq = event['observation_sequence']
+                if seq != current_sequence or seq == consumed_sequence:
+                    local.append('execution_without_fresh_observation')
+                if uncertain_sequence is not None:
+                    if (current_sequence is None or
+                            current_sequence <= uncertain_sequence or
+                            seq != current_sequence):
+                        local.append('unknown_receipt_blind_retry')
+                    uncertain_sequence = None
+                consumed_sequence = seq
         obs_by_seq = {e['sequence']: e for e in observations}
         if len(obs_by_seq) != len(observations):
             local.append('duplicate_observation_sequence')
@@ -69,7 +88,9 @@ def audit(path):
         m['uncertain_execution_events'] += sum(e['event'] == 'execution_uncertain' for e in rows)
         if summary and summary.get('confirmed_complete'):
             last_obs = max(observations, key=lambda e: e['sequence']) if observations else {}
-            m['positive_completion_evidence'] += all(v.get('value') == 'true' for v in last_obs.get('goal_evidence', {}).values())
+            evidence = last_obs.get('goal_evidence', {})
+            m['positive_completion_evidence'] += bool(evidence) and all(
+                v.get('value') == 'true' for v in evidence.values())
         m['violations'].update(local)
         if local:
             violations.append(dict(seed=seed, method=method, violations=local))

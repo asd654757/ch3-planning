@@ -25,3 +25,34 @@ def test_complete_records_do_not_auto_authorize_formal(tmp_path):
     (directory/'episodes.jsonl').write_text('\n'.join(json.dumps(r) for r in rows))
     result=analyze(tmp_path)
     assert result['technical_gate_passed'] and not result['formal_ready']
+
+
+def test_paired_analysis_reports_discordance_costs_and_small_sample_warning():
+    from scripts.analyze_core_recovery_pilot import paired_summary
+
+    rows = [
+        dict(seed=1, method=METHODS[0], success=False,
+             model_audit=[dict(phase='execution_repair', actual_model_calls=2,
+                               total_tokens=100)],
+             events=[dict(execution=dict(steps=10))]),
+        dict(seed=1, method=METHODS[1], success=True,
+             model_audit=[dict(phase='execution_repair', actual_model_calls=1,
+                               total_tokens=120)],
+             events=[dict(execution=dict(steps=8))]),
+        dict(seed=2, method=METHODS[0], success=True,
+             model_audit=[dict(phase='execution_repair', actual_model_calls=1,
+                               total_tokens=80)],
+             events=[dict(execution=dict(steps=9))]),
+        dict(seed=2, method=METHODS[1], success=True,
+             model_audit=[dict(phase='execution_repair', actual_model_calls=1,
+                               total_tokens=70)],
+             events=[dict(execution=dict(steps=9))]),
+    ]
+    result = paired_summary(rows)
+    assert result['paired_n'] == 2
+    assert result['success_pairs'] == dict(direct_only_success=0,
+        compact_only_success=1, discordant_pairs=1, exact_two_sided_p=1.0)
+    assert result['costs']['recovery_calls']['compact_minus_direct'] == [-1, 0]
+    assert result['costs']['recovery_tokens']['compact_minus_direct'] == [20, -10]
+    assert result['costs']['physical_control_steps']['compact_minus_direct'] == [-2, 0]
+    assert result['inferential_status'] == 'descriptive_only_small_paired_sample'

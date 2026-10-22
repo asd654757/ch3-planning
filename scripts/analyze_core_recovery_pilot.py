@@ -24,10 +24,14 @@ def exact_mcnemar(success_pairs):
 
 def paired_summary(rows):
     """Summarize method contrasts using seed as the matched unit."""
-    indexed = {(r['seed'], r['method']): r for r in rows}
-    seeds = sorted({r['seed'] for r in rows
-                    if (r['seed'], METHODS[0]) in indexed
-                    and (r['seed'], METHODS[1]) in indexed})
+    grouped = {}
+    for row in rows:
+        grouped.setdefault((row['seed'], row['method']), []).append(row)
+    duplicate_keys = sorted(key for key, values in grouped.items() if len(values) > 1)
+    indexed = {key: values[0] for key, values in grouped.items() if len(values) == 1}
+    seeds = sorted({seed for seed, method in indexed
+                    if (seed, METHODS[0]) in indexed
+                    and (seed, METHODS[1]) in indexed})
     pairs = [(indexed[(seed, METHODS[0])], indexed[(seed, METHODS[1])])
              for seed in seeds]
     success_pairs = [(bool(d['success']), bool(c['success'])) for d, c in pairs]
@@ -68,6 +72,8 @@ def paired_summary(rows):
         compact_minus_direct_successes=compact_successes-direct_successes,
         success_pairs=exact_mcnemar(success_pairs), outcome_summary=outcome,
         costs=cost_differences, inferential_status=inferential_status,
+        duplicate_keys=[list(key) for key in duplicate_keys],
+        excluded_duplicate_seeds=sorted({key[0] for key in duplicate_keys}),
         warning='A nonsignificant paired test is not evidence of equivalence or noninferiority.')
 
 

@@ -56,3 +56,20 @@ def test_paired_analysis_reports_discordance_costs_and_small_sample_warning():
     assert result['costs']['recovery_tokens']['compact_minus_direct'] == [20, -10]
     assert result['costs']['physical_control_steps']['compact_minus_direct'] == [-2, 0]
     assert result['inferential_status'] == 'descriptive_only_small_paired_sample'
+
+
+def test_paired_analysis_excludes_duplicate_method_records_instead_of_overwriting():
+    from scripts.analyze_core_recovery_pilot import paired_summary
+
+    rows = [
+        dict(seed=1, method=METHODS[0], success=True),
+        dict(seed=1, method=METHODS[0], success=False),
+        dict(seed=1, method=METHODS[1], success=True),
+        dict(seed=2, method=METHODS[0], success=True),
+        dict(seed=2, method=METHODS[1], success=False),
+    ]
+    result = paired_summary(rows)
+    assert result['paired_seeds'] == [2]
+    assert result['paired_n'] == 1
+    assert result['duplicate_keys'] == [[1, METHODS[0]]]
+    assert result['excluded_duplicate_seeds'] == [1]

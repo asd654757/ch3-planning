@@ -1,0 +1,49 @@
+{
+  "evidence_kind": "controlled_interface_ablation_not_physical_or_model_performance",
+  "changed_mechanism": "positive goal evidence requirement only",
+  "cases": [
+    {
+      "condition": "missing_evidence",
+      "method": "FULL",
+      "status": "need_observation",
+      "model_calls": 0,
+      "unsupported_completion": false
+    },
+    {
+      "condition": "missing_evidence",
+      "method": "WITHOUT_POSITIVE_EVIDENCE",
+      "status": "complete",
+      "model_calls": 0,
+      "unsupported_completion": true
+    },
+    {
+      "condition": "unknown_evidence",
+      "method": "FULL",
+      "status": "need_observation",
+      "model_calls": 0,
+      "unsupported_completion": false
+    },
+    {
+      "condition": "unknown_evidence",
+      "method": "WITHOUT_POSITIVE_EVIDENCE",
+      "status": "complete",
+      "model_calls": 0,
+      "unsupported_completion": true
+    },
+    {
+      "condition": "positive_evidence_control",
+      "method": "FULL",
+      "status": "complete",
+      "model_calls": 0,
+      "unsupported_completion": false
+    },
+    {
+      "condition": "positive_evidence_control",
+      "method": "WITHOUT_POSITIVE_EVIDENCE",
+      "status": "complete",
+      "model_calls": 0,
+      "unsupported_completion": false
+    }
+  ],
+  "interpretation": "Demonstrates evidence-gate necessity by construction under incomplete evidence; not an estimate of real observation errors or robot success improvement."
+}

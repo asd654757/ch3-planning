@@ -1,0 +1,119 @@
+{
+  "evidence_kind": "synthetic_algorithm_diagnostic_only",
+  "cases": [
+    {
+      "case": "informative_observation",
+      "decision": {
+        "action": "observe",
+        "observation_id": "synthetic:obs-0",
+        "values": {
+          "stop": 0.0,
+          "observe": 0.69,
+          "replan": 0.49999999999999994
+        },
+        "reason": "maximum_model_value",
+        "model_provenance": "synthetic_hand_set_NOT_calibrated_NOT_empirical",
+        "depth": 2
+      },
+      "fixed_replan_model_value": 0.49999999999999994,
+      "observe_once_model_value": 0.69,
+      "value_kind": "synthetic_expected_utility_NOT_measured_success"
+    },
+    {
+      "case": "uninformative_observation",
+      "decision": {
+        "action": "replan",
+        "observation_id": "synthetic:obs-0",
+        "values": {
+          "stop": 0.0,
+          "observe": 0.44999999999999996,
+          "replan": 0.49999999999999994
+        },
+        "reason": "maximum_model_value",
+        "model_provenance": "synthetic_hand_set_NOT_calibrated_NOT_empirical",
+        "depth": 2
+      },
+      "fixed_replan_model_value": 0.49999999999999994,
+      "observe_once_model_value": 0.44999999999999996,
+      "value_kind": "synthetic_expected_utility_NOT_measured_success"
+    },
+    {
+      "case": "known_ready",
+      "decision": {
+        "action": "continue",
+        "observation_id": "synthetic:obs-0",
+        "values": {
+          "stop": 0.0,
+          "continue": 0.9299999999999999,
+          "observe": 0.8799999999999999,
+          "replan": 0.49999999999999994
+        },
+        "reason": "maximum_model_value",
+        "model_provenance": "synthetic_hand_set_NOT_calibrated_NOT_empirical",
+        "depth": 2
+      },
+      "fixed_replan_model_value": 0.49999999999999994,
+      "observe_once_model_value": 0.9299999999999999,
+      "value_kind": "synthetic_expected_utility_NOT_measured_success"
+    },
+    {
+      "case": "known_retryable",
+      "decision": {
+        "action": "retry",
+        "observation_id": "synthetic:obs-0",
+        "values": {
+          "stop": 0.0,
+          "observe": 0.5,
+          "retry": 0.7425,
+          "replan": 0.49999999999999994
+        },
+        "reason": "maximum_model_value",
+        "model_provenance": "synthetic_hand_set_NOT_calibrated_NOT_empirical",
+        "depth": 2
+      },
+      "fixed_replan_model_value": 0.49999999999999994,
+      "observe_once_model_value": 0.7425,
+      "value_kind": "synthetic_expected_utility_NOT_measured_success"
+    },
+    {
+      "case": "time_only_for_one_action",
+      "decision": {
+        "action": "replan",
+        "observation_id": "synthetic:obs-0",
+        "values": {
+          "stop": 0.0,
+          "observe": -0.05,
+          "replan": 0.49999999999999994
+        },
+        "reason": "maximum_model_value",
+        "model_provenance": "synthetic_hand_set_NOT_calibrated_NOT_empirical",
+        "depth": 2
+      },
+      "fixed_replan_model_value": 0.49999999999999994,
+      "observe_once_model_value": -0.05,
+      "value_kind": "synthetic_expected_utility_NOT_measured_success"
+    },
+    {
+      "case": "unmodelled_hypothesis",
+      "decision": {
+        "action": "stop",
+        "observation_id": "synthetic:obs-0",
+        "values": {
+          "stop": 0.0
+        },
+        "reason": "unsupported_hypothesis",
+        "model_provenance": "synthetic_hand_set_NOT_calibrated_NOT_empirical",
+        "depth": 2
+      },
+      "fixed_replan_model_value": 0.0,
+      "observe_once_model_value": 0.0,
+      "value_kind": "synthetic_expected_utility_NOT_measured_success"
+    }
+  ],
+  "limitations": [
+    "Hand-set probabilities; no calibration or empirical superiority.",
+    "No model API calls, simulator execution or supervisor integration.",
+    "Fixed controls are arithmetic checks, not tuned research baselines.",
+    "Runtime completion always requires independent goal evidence."
+  ]
+}

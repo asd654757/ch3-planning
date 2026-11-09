@@ -73,3 +73,15 @@ v3三个方法恢复控制步数合计均3116，36个配对单元逐一相同。
 - 完整项目测试：`PYTHONPATH=. python -m pytest -q`，481项通过。
   首次未设置PYTHONPATH时4个既有CLI子进程测试导入失败；按项目环境重跑通过，
   未为此修改既有CLI或测试。
+
+## 后续开发更新：接触后重抓入口已补齐
+
+`scripts/pilot_joint_regrasp.py`在新seed1010–1012的normal/released/precontact
+三条件上完成9次实际运行，均完成任务。夹爪间距不再被当作空手证据；重抓使用
+单一候选物体封闭假设下的联合门控，改变世界后重新绑定图像、抓取后重新验证。
+这解决了上文“接触后重抓入口缺失”的工程问题，不改变v2/v3的原始记录和比较结论。
+
+新9次没有规划/规则方法对照，一个明确规则已经足够组织这些恢复，所以仍未证明前瞻
+优势。新增证据契约规划原型也尚未在线控制。详见
+`docs/certificate_recovery_research_audit_20261109.md`及
+`data/reports/joint_regrasp_dev_20261109/report.md`。最终完整回归491项通过。

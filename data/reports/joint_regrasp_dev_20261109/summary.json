@@ -1,0 +1,58 @@
+{
+  "assigned": 9,
+  "completed": 9,
+  "successes": 9,
+  "recovery_control_steps": 2454,
+  "api_calls": 0,
+  "resets_per_episode": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "aperture_only_empty_claims": 0,
+  "holding_case_regrasp_authorizations": 0,
+  "by_case": {
+    "normal": {
+      "success": 3,
+      "assigned": 3,
+      "recovery_steps": [
+        183,
+        182,
+        182
+      ],
+      "routes": [
+        "preserve_verified_grasp"
+      ]
+    },
+    "released": {
+      "success": 3,
+      "assigned": 3,
+      "recovery_steps": [
+        319,
+        317,
+        317
+      ],
+      "routes": [
+        "regrasp_then_verified_continue"
+      ]
+    },
+    "precontact": {
+      "success": 3,
+      "assigned": 3,
+      "recovery_steps": [
+        320,
+        317,
+        317
+      ],
+      "routes": [
+        "regrasp_then_verified_continue"
+      ]
+    }
+  }
+}

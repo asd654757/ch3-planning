@@ -1,0 +1,410 @@
+{
+  "seed": 932,
+  "case": "persistent",
+  "method": "calibrate",
+  "status": "complete",
+  "decisions": [
+    {
+      "index": 0,
+      "state": "post_pick/unknown/0",
+      "observation_id": "actual:0",
+      "allowed": [
+        "observe",
+        "stop"
+      ],
+      "action": "observe",
+      "values": null,
+      "budget_before": {
+        "observations": 4,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 10000
+      },
+      "label": "unknown",
+      "actual_cost": {
+        "observations": 1,
+        "commands": 0,
+        "model_calls": 0,
+        "time_units": 20
+      }
+    },
+    {
+      "index": 1,
+      "state": "post_pick/unknown/1",
+      "observation_id": "actual:1",
+      "allowed": [
+        "observe",
+        "stop"
+      ],
+      "action": "observe",
+      "values": null,
+      "budget_before": {
+        "observations": 3,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 9980
+      },
+      "label": "unknown",
+      "actual_cost": {
+        "observations": 1,
+        "commands": 0,
+        "model_calls": 0,
+        "time_units": 19
+      }
+    },
+    {
+      "index": 2,
+      "state": "post_pick/unknown/2",
+      "observation_id": "actual:2",
+      "allowed": [
+        "observe",
+        "stop"
+      ],
+      "action": "observe",
+      "values": null,
+      "budget_before": {
+        "observations": 2,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 9961
+      },
+      "label": "unknown",
+      "actual_cost": {
+        "observations": 1,
+        "commands": 0,
+        "model_calls": 0,
+        "time_units": 19
+      }
+    },
+    {
+      "index": 3,
+      "state": "post_pick/unknown/3",
+      "observation_id": "actual:3",
+      "allowed": [
+        "stop"
+      ],
+      "action": "stop",
+      "values": null,
+      "budget_before": {
+        "observations": 1,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 9942
+      }
+    }
+  ],
+  "api_calls": 0,
+  "task_success": false,
+  "model_used": "none",
+  "public_family": "post_pick",
+  "initial_budget": {
+    "observations": 4,
+    "commands": 2,
+    "model_calls": 0,
+    "time_units": 10000
+  },
+  "recovery_control_steps": 58,
+  "remaining_budget": {
+    "observations": 1,
+    "commands": 2,
+    "model_calls": 0,
+    "time_units": 9942
+  },
+  "events": [
+    {
+      "action": "initial_pick",
+      "receipt": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 97,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 21,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.14
+            ],
+            "final_hand_position": [
+              -0.10786843986181092,
+              0.6892140862937683,
+              0.14135750780761375
+            ],
+            "position_error": [
+              0.010376649176783062,
+              -0.008450686422002862,
+              0.0013575078076137337
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 1,
+            "steps": 23,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.03500000000000002
+            ],
+            "final_hand_position": [
+              -0.11815528526926272,
+              0.704076689439887,
+              0.04823658360322185
+            ],
+            "position_error": [
+              8.980376933126477e-05,
+              0.006411916724115785,
+              0.01323658360322183
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.03500000000000002
+            ],
+            "final_hand_position": [
+              -0.11871134186440734,
+              0.699101582874087,
+              0.04601355823854507
+            ],
+            "position_error": [
+              -0.0004662528258133486,
+              0.00143681015831576,
+              0.011013558238545051
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.17
+            ],
+            "final_hand_position": [
+              -0.11919310137900704,
+              0.6920494091916998,
+              0.15806396987440258
+            ],
+            "position_error": [
+              -0.0009480123404130569,
+              -0.005615363524071437,
+              -0.011936030125597435
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          }
+        ]
+      }
+    },
+    {
+      "action": "observe",
+      "explicit_steps": 20,
+      "wall_seconds": 0.04893980175256729
+    },
+    {
+      "action": "observe",
+      "explicit_steps": 19,
+      "wall_seconds": 0.046197615563869476
+    },
+    {
+      "action": "observe",
+      "explicit_steps": 19,
+      "wall_seconds": 0.04566348344087601
+    }
+  ],
+  "observations": [
+    {
+      "id": "probe:0",
+      "label": "unknown",
+      "holding": {
+        "status": "unknown",
+        "reason": "insufficient_visual_evidence"
+      },
+      "samples": [
+        {
+          "target_pixel": null,
+          "destination_pixel": null,
+          "hand_pixel": [
+            235.62195023989648,
+            237.27520757107527
+          ]
+        },
+        {
+          "target_pixel": null,
+          "destination_pixel": null,
+          "hand_pixel": [
+            230.50935629887726,
+            234.07339140784987
+          ]
+        }
+      ],
+      "options": {
+        "allowed": [
+          "stop",
+          "observe"
+        ],
+        "continuation_guard": {
+          "action": "observe_again",
+          "reason": "holding_not_supported",
+          "observation_id": "probe:0",
+          "observed_facts": [],
+          "fixture_assumptions": [],
+          "validator_valid": null,
+          "predicted_goal_satisfied": null
+        },
+        "retry_guard": {
+          "authorized": false,
+          "reason": "outside_precontact_scope",
+          "state_source": "controlled_initial_fixture_plus_precontact_trace_and_rgb",
+          "empty_hand_visually_estimated": false
+        },
+        "retry_authorized": false,
+        "precontact_probe_preserved": false,
+        "replan_available": false,
+        "scope": "known_fixture_options_not_general_empty_hand_estimation"
+      }
+    },
+    {
+      "id": "probe:1",
+      "label": "unknown",
+      "holding": {
+        "status": "unknown",
+        "reason": "insufficient_visual_evidence"
+      },
+      "samples": [
+        {
+          "target_pixel": null,
+          "destination_pixel": null,
+          "hand_pixel": [
+            230.49464045976944,
+            233.9903561805379
+          ]
+        },
+        {
+          "target_pixel": null,
+          "destination_pixel": null,
+          "hand_pixel": [
+            235.20429414973256,
+            236.9222223241402
+          ]
+        }
+      ],
+      "options": {
+        "allowed": [
+          "stop",
+          "observe"
+        ],
+        "continuation_guard": {
+          "action": "observe_again",
+          "reason": "holding_not_supported",
+          "observation_id": "probe:1",
+          "observed_facts": [],
+          "fixture_assumptions": [],
+          "validator_valid": null,
+          "predicted_goal_satisfied": null
+        },
+        "retry_guard": {
+          "authorized": false,
+          "reason": "outside_precontact_scope",
+          "state_source": "controlled_initial_fixture_plus_precontact_trace_and_rgb",
+          "empty_hand_visually_estimated": false
+        },
+        "retry_authorized": false,
+        "precontact_probe_preserved": false,
+        "replan_available": false,
+        "scope": "known_fixture_options_not_general_empty_hand_estimation"
+      }
+    },
+    {
+      "id": "probe:2",
+      "label": "unknown",
+      "holding": {
+        "status": "unknown",
+        "reason": "insufficient_visual_evidence"
+      },
+      "samples": [
+        {
+          "target_pixel": null,
+          "destination_pixel": null,
+          "hand_pixel": [
+            235.27992951102303,
+            236.98777468116214
+          ]
+        },
+        {
+          "target_pixel": null,
+          "destination_pixel": null,
+          "hand_pixel": [
+            230.56571898808795,
+            234.0610070357466
+          ]
+        }
+      ],
+      "options": {
+        "allowed": [
+          "stop",
+          "observe"
+        ],
+        "continuation_guard": {
+          "action": "observe_again",
+          "reason": "holding_not_supported",
+          "observation_id": "probe:2",
+          "observed_facts": [],
+          "fixture_assumptions": [],
+          "validator_valid": null,
+          "predicted_goal_satisfied": null
+        },
+        "retry_guard": {
+          "authorized": false,
+          "reason": "outside_precontact_scope",
+          "state_source": "controlled_initial_fixture_plus_precontact_trace_and_rgb",
+          "empty_hand_visually_estimated": false
+        },
+        "retry_authorized": false,
+        "precontact_probe_preserved": false,
+        "replan_available": false,
+        "scope": "known_fixture_options_not_general_empty_hand_estimation"
+      }
+    }
+  ],
+  "episode_resets": 1,
+  "phase_steps": {
+    "prefix": 127,
+    "observe": 58,
+    "terminal_scoring": 10
+  },
+  "wall_seconds": 0.3951711878180504
+}

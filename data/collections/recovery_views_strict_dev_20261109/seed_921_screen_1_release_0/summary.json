@@ -1,0 +1,539 @@
+{
+  "seed": 921,
+  "screen": true,
+  "controlled_release": false,
+  "status": "complete_audit",
+  "rounds": [
+    {
+      "index": 0,
+      "captures": [
+        {
+          "corner2": {
+            "blue": null,
+            "green": [
+              193.0,
+              208.0
+            ],
+            "hand": [
+              241.58202710975257,
+              235.47296148705834
+            ],
+            "image_sha256": "c3d7f0c4fbf0f36f7412bbe13307615b59abe45826c73995d24cb915cd9b0dcf",
+            "render_seconds": 0.0012094751000404358
+          },
+          "topview": {
+            "blue": null,
+            "green": [
+              239.5,
+              107.5
+            ],
+            "hand": [
+              186.37954283168148,
+              169.5695384982309
+            ],
+            "image_sha256": "fa58ed595337796a3453294741c7baf21b2055e54781f00cb5da1aa51852cc68",
+            "render_seconds": 0.001184798777103424
+          },
+          "corner": {
+            "blue": [
+              265.0,
+              218.0
+            ],
+            "green": [
+              273.0,
+              199.0
+            ],
+            "hand": [
+              262.4700253418922,
+              227.7415527376369
+            ],
+            "image_sha256": "715035d9bcf36e124f8f5dc3964c7c5d2c254424d20976faa0e9c7131095e4bf",
+            "render_seconds": 0.0012160763144493103
+          }
+        },
+        {
+          "corner2": {
+            "blue": null,
+            "green": [
+              193.0,
+              208.0
+            ],
+            "hand": [
+              236.51077730092632,
+              232.28205594120894
+            ],
+            "image_sha256": "c4021cc5bc5461f2dbf0e8af77b0e854b9bbc934d326383fe340f64e25532c83",
+            "render_seconds": 0.0011497288942337036
+          },
+          "topview": {
+            "blue": null,
+            "green": [
+              239.5,
+              107.5
+            ],
+            "hand": [
+              202.4378984416768,
+              168.26048488056063
+            ],
+            "image_sha256": "7898f0d5579228b8b62538b25618957074c69c1b62b5f8f0465bcfad60cfb41b",
+            "render_seconds": 0.0012043938040733337
+          },
+          "corner": {
+            "blue": [
+              252.5,
+              221.0
+            ],
+            "green": [
+              273.0,
+              199.0
+            ],
+            "hand": [
+              253.02427903787924,
+              230.34430138628676
+            ],
+            "image_sha256": "974f6046495e41059faa0e73d3c39af19094e88af52db3f83cbb40f866b88ed1",
+            "render_seconds": 0.0011957064270973206
+          }
+        }
+      ],
+      "evidence": {
+        "corner2": {
+          "holding": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence"
+          },
+          "nonfollowing": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence",
+            "empty_hand_supported": false,
+            "retry_authorized": false,
+            "observed_facts": []
+          },
+          "continuation": {
+            "action": "observe_again",
+            "reason": "holding_not_supported",
+            "observation_id": "round:0:corner2",
+            "observed_facts": [],
+            "fixture_assumptions": [],
+            "validator_valid": null,
+            "predicted_goal_satisfied": null
+          }
+        },
+        "topview": {
+          "holding": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence"
+          },
+          "nonfollowing": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence",
+            "empty_hand_supported": false,
+            "retry_authorized": false,
+            "observed_facts": []
+          },
+          "continuation": {
+            "action": "observe_again",
+            "reason": "holding_not_supported",
+            "observation_id": "round:0:topview",
+            "observed_facts": [],
+            "fixture_assumptions": [],
+            "validator_valid": null,
+            "predicted_goal_satisfied": null
+          }
+        },
+        "corner": {
+          "holding": {
+            "status": "holding_supported",
+            "reason": "target_displacement_and_hand_comotion",
+            "displacement_px": 44.263416045307665,
+            "hand_motion_px": 9.797776470598997,
+            "target_motion_px": 12.854960132182441,
+            "offset_drift_px": 3.0799795901271727,
+            "max_target_hand_distance_px": 10.064721631065053
+          },
+          "nonfollowing": {
+            "status": "unknown",
+            "reason": "positive_holding_evidence",
+            "empty_hand_supported": false,
+            "retry_authorized": false,
+            "observed_facts": [],
+            "max_initial_drift_px": 44.263416045307665,
+            "max_target_motion_px": 12.854960132182441,
+            "hand_motion_px": 9.797776470598997,
+            "min_target_hand_distance_px": 9.35899764436984
+          },
+          "continuation": {
+            "action": "execute_remaining",
+            "reason": "remaining_plan_validated",
+            "observation_id": "round:0:corner",
+            "observed_facts": [
+              "holding(right, blue_candidate)"
+            ],
+            "fixture_assumptions": [
+              "on(green_region, table)"
+            ],
+            "validator_valid": true,
+            "predicted_goal_satisfied": true
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "captures": [
+        {
+          "corner2": {
+            "blue": null,
+            "green": [
+              193.0,
+              208.0
+            ],
+            "hand": [
+              236.494963513177,
+              232.19248745281394
+            ],
+            "image_sha256": "e5c328087d12afd3df6d53f609a13121672caeae3db4196f6d7adece760c5d4c",
+            "render_seconds": 0.0011819899082183838
+          },
+          "topview": {
+            "blue": null,
+            "green": [
+              239.5,
+              107.5
+            ],
+            "hand": [
+              202.67243216911075,
+              168.38806356823986
+            ],
+            "image_sha256": "a1eebd81bcf8efaf1853b8f3ea7f3235f81d85a72d1155193a9423400a198d2f",
+            "render_seconds": 0.0011996924877166748
+          },
+          "corner": {
+            "blue": [
+              252.0,
+              221.0
+            ],
+            "green": [
+              273.0,
+              199.0
+            ],
+            "hand": [
+              252.8050073543229,
+              230.31826081484454
+            ],
+            "image_sha256": "80a168941e4ce2acbaceb8b3ed552289bcce3cfda3e69e2a550821e5581ea8cd",
+            "render_seconds": 0.0011908262968063354
+          }
+        },
+        {
+          "corner2": {
+            "blue": null,
+            "green": [
+              193.0,
+              208.0
+            ],
+            "hand": [
+              241.14675625484824,
+              235.14224770667417
+            ],
+            "image_sha256": "fe2fb6167203640e4fa44cfc74ea97d28fda93cb44f4ad876620b537cfcdb679",
+            "render_seconds": 0.001081705093383789
+          },
+          "topview": {
+            "blue": null,
+            "green": [
+              239.5,
+              107.5
+            ],
+            "hand": [
+              186.92881770050965,
+              168.99903765442383
+            ],
+            "image_sha256": "16774bc4e99f90d74fe0ac2a349d3c4662631b766421729c5a96eb10f1f4a657",
+            "render_seconds": 0.0012193992733955383
+          },
+          "corner": {
+            "blue": [
+              261.0,
+              218.0
+            ],
+            "green": [
+              273.0,
+              199.0
+            ],
+            "hand": [
+              262.5533342612665,
+              227.28270676495532
+            ],
+            "image_sha256": "58ed0ea7c56738a01102346ffd85490bc13d4fec93117f5a7643b839bfa5d429",
+            "render_seconds": 0.0012080669403076172
+          }
+        }
+      ],
+      "evidence": {
+        "corner2": {
+          "holding": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence"
+          },
+          "nonfollowing": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence",
+            "empty_hand_supported": false,
+            "retry_authorized": false,
+            "observed_facts": []
+          },
+          "continuation": {
+            "action": "observe_again",
+            "reason": "holding_not_supported",
+            "observation_id": "round:1:corner2",
+            "observed_facts": [],
+            "fixture_assumptions": [],
+            "validator_valid": null,
+            "predicted_goal_satisfied": null
+          }
+        },
+        "topview": {
+          "holding": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence"
+          },
+          "nonfollowing": {
+            "status": "unknown",
+            "reason": "insufficient_visual_evidence",
+            "empty_hand_supported": false,
+            "retry_authorized": false,
+            "observed_facts": []
+          },
+          "continuation": {
+            "action": "observe_again",
+            "reason": "holding_not_supported",
+            "observation_id": "round:1:topview",
+            "observed_facts": [],
+            "fixture_assumptions": [],
+            "validator_valid": null,
+            "predicted_goal_satisfied": null
+          }
+        },
+        "corner": {
+          "holding": {
+            "status": "holding_supported",
+            "reason": "target_displacement_and_hand_comotion",
+            "displacement_px": 40.049968789001575,
+            "hand_motion_px": 10.210017917439702,
+            "target_motion_px": 9.486832980505138,
+            "offset_drift_px": 0.7491710419652687,
+            "max_target_hand_distance_px": 9.41177412666558
+          },
+          "nonfollowing": {
+            "status": "unknown",
+            "reason": "positive_holding_evidence",
+            "empty_hand_supported": false,
+            "retry_authorized": false,
+            "observed_facts": [],
+            "max_initial_drift_px": 44.384682042344295,
+            "max_target_motion_px": 9.486832980505138,
+            "hand_motion_px": 10.210017917439702,
+            "min_target_hand_distance_px": 9.352968590451969
+          },
+          "continuation": {
+            "action": "execute_remaining",
+            "reason": "remaining_plan_validated",
+            "observation_id": "round:1:corner",
+            "observed_facts": [
+              "holding(right, blue_candidate)"
+            ],
+            "fixture_assumptions": [
+              "on(green_region, table)"
+            ],
+            "validator_valid": true,
+            "predicted_goal_satisfied": true
+          }
+        }
+      }
+    }
+  ],
+  "api_calls": 0,
+  "scope": "multiview_development_feasibility_not_policy_performance",
+  "initial_views": {
+    "corner2": {
+      "blue": null,
+      "green": [
+        193.0,
+        208.0
+      ],
+      "hand": [
+        238.2315641680656,
+        227.40090248744596
+      ],
+      "image_sha256": "e7685fc8c9c95e93e7abe0a66fbcff415026d7a1007d69b6349bad8a61b7998d",
+      "render_seconds": 0.07575684785842896
+    },
+    "topview": {
+      "blue": [
+        192.0,
+        173.5
+      ],
+      "green": [
+        239.5,
+        107.5
+      ],
+      "hand": [
+        239.12203727991013,
+        194.31097250152843
+      ],
+      "image_sha256": "f4e9e966120e52d7f46c3d2c25c53740239984d49c54bddf6c96e5489d8e55f0",
+      "render_seconds": 0.0012342408299446106
+    },
+    "corner": {
+      "blue": [
+        263.0,
+        178.0
+      ],
+      "green": [
+        273.0,
+        199.0
+      ],
+      "hand": [
+        213.55646091437052,
+        245.46423676987763
+      ],
+      "image_sha256": "28d9c861776004e5896c27f756fc8c8c87fec8f56e9f0f281965acd28152821b",
+      "render_seconds": 0.0012112557888031006
+    }
+  },
+  "pick_receipt": {
+    "completed": true,
+    "reason": "waypoints_completed_not_grasp_verified",
+    "steps": 94,
+    "trace": [
+      {
+        "phase": 0,
+        "steps": 20,
+        "waypoint_reached": true,
+        "target_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.14
+        ],
+        "final_hand_position": [
+          -0.1098967316343537,
+          0.6597496844877092,
+          0.14232116761648342
+        ],
+        "position_error": [
+          0.011857202357165975,
+          -0.007376171425000466,
+          0.002321167616483405
+        ],
+        "binding_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.020000000000000018
+        ],
+        "binding_source": "visual_estimate",
+        "observation_id": "initial"
+      },
+      {
+        "phase": 1,
+        "steps": 21,
+        "waypoint_reached": true,
+        "target_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.03500000000000002
+        ],
+        "final_hand_position": [
+          -0.12045760733751466,
+          0.6737905129609235,
+          0.04804534325028105
+        ],
+        "position_error": [
+          0.0012963266540050172,
+          0.00666465704821384,
+          0.013045343250281033
+        ],
+        "binding_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.020000000000000018
+        ],
+        "binding_source": "visual_estimate",
+        "observation_id": "initial"
+      },
+      {
+        "phase": 2,
+        "steps": 35,
+        "waypoint_reached": true,
+        "target_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.03500000000000002
+        ],
+        "final_hand_position": [
+          -0.1221133900071008,
+          0.668044631215188,
+          0.046015147502853876
+        ],
+        "position_error": [
+          -0.00035945601558111384,
+          0.000918775302478303,
+          0.011015147502853859
+        ],
+        "binding_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.020000000000000018
+        ],
+        "binding_source": "visual_estimate",
+        "observation_id": "initial"
+      },
+      {
+        "phase": 3,
+        "steps": 18,
+        "waypoint_reached": true,
+        "target_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.17
+        ],
+        "final_hand_position": [
+          -0.12284492549390381,
+          0.6614254837504953,
+          0.1578453281028469
+        ],
+        "position_error": [
+          -0.0010909915023841338,
+          -0.005700372162214418,
+          -0.012154671897153108
+        ],
+        "binding_position": [
+          -0.12175393399151968,
+          0.6671258559127097,
+          0.020000000000000018
+        ],
+        "binding_source": "visual_estimate",
+        "observation_id": "initial"
+      }
+    ]
+  },
+  "evaluation_only": {
+    "pick_height_m": 0.1317096197673173,
+    "after_release_height_m": 0.1317096197673173,
+    "release_realized": null,
+    "task_success_measured": false
+  },
+  "episode_resets": 1,
+  "control_steps": {
+    "setup": 30,
+    "initial_pick": 94,
+    "probe_0": 20,
+    "probe_1": 19
+  },
+  "render_seconds": {
+    "corner2": 0.08037974685430527,
+    "topview": 0.0060425251722335815,
+    "corner": 0.006021931767463684
+  },
+  "total_wall_seconds": 1.4450501427054405
+}

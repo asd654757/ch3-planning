@@ -1,0 +1,405 @@
+{
+  "seed": 940,
+  "case": "normal",
+  "method": "rule",
+  "status": "complete",
+  "decisions": [
+    {
+      "index": 0,
+      "state": "post_pick/unknown/0",
+      "observation_id": "actual:0",
+      "allowed": [
+        "observe",
+        "stop"
+      ],
+      "action": "observe",
+      "values": null,
+      "budget_before": {
+        "observations": 4,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 425
+      },
+      "label": "ready",
+      "actual_cost": {
+        "observations": 1,
+        "commands": 0,
+        "model_calls": 0,
+        "time_units": 20
+      }
+    },
+    {
+      "index": 1,
+      "state": "ready",
+      "observation_id": "actual:1",
+      "allowed": [
+        "continue",
+        "observe",
+        "stop"
+      ],
+      "action": "continue",
+      "values": null,
+      "budget_before": {
+        "observations": 3,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 405
+      },
+      "label": "execution_finished",
+      "actual_cost": {
+        "observations": 0,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 133
+      }
+    }
+  ],
+  "api_calls": 0,
+  "task_success": true,
+  "model_used": "/root/autodl-tmp/ch3-planning/data/collections/budgeted_recovery_pilot_20261109/calibration",
+  "public_family": "post_pick",
+  "initial_budget": {
+    "observations": 4,
+    "commands": 2,
+    "model_calls": 0,
+    "time_units": 425
+  },
+  "recovery_control_steps": 153,
+  "remaining_budget": {
+    "observations": 3,
+    "commands": 1,
+    "model_calls": 0,
+    "time_units": 272
+  },
+  "events": [
+    {
+      "action": "initial_pick",
+      "receipt": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 96,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 21,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.14
+            ],
+            "final_hand_position": [
+              -0.10986980764439465,
+              0.6743274625777422,
+              0.14131822236988484
+            ],
+            "position_error": [
+              0.010079738881811948,
+              -0.007151818468473126,
+              0.001318222369884825
+            ],
+            "binding_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 1,
+            "steps": 22,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.03500000000000002
+            ],
+            "final_hand_position": [
+              -0.1191901498614562,
+              0.6880129131241723,
+              0.04791085238513593
+            ],
+            "position_error": [
+              0.000759396664750403,
+              0.006533632077956986,
+              0.01291085238513591
+            ],
+            "binding_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.03500000000000002
+            ],
+            "final_hand_position": [
+              -0.12039283344194353,
+              0.6825742887499681,
+              0.0460108399282565
+            ],
+            "position_error": [
+              -0.0004432869157369318,
+              0.001095007703752704,
+              0.01101083992825648
+            ],
+            "binding_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.17
+            ],
+            "final_hand_position": [
+              -0.12097157495903271,
+              0.6758122558379649,
+              0.15794805144376978
+            ],
+            "position_error": [
+              -0.0010220284328261164,
+              -0.005667025208250465,
+              -0.012051948556230235
+            ],
+            "binding_position": [
+              -0.1199495465262066,
+              0.6814792810462154,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          }
+        ]
+      }
+    },
+    {
+      "action": "observe",
+      "explicit_steps": 20,
+      "wall_seconds": 0.20295080542564392
+    },
+    {
+      "action": "place",
+      "receipt": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 103,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 28,
+            "waypoint_reached": true,
+            "target_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.158
+            ],
+            "final_hand_position": [
+              0.008456093756210979,
+              0.8210158733390347,
+              0.16058445564247054
+            ],
+            "position_error": [
+              0.0016022308764451192,
+              -0.014261628194665477,
+              0.0025844556424705345
+            ],
+            "binding_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.008000000000000007
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "probe:0"
+          },
+          {
+            "phase": 1,
+            "steps": 21,
+            "waypoint_reached": true,
+            "target_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.053000000000000005
+            ],
+            "final_hand_position": [
+              0.00790838670720001,
+              0.8351499665599255,
+              0.06720357460320509
+            ],
+            "position_error": [
+              0.0010545238274341506,
+              -0.00012753497377471223,
+              0.01420357460320508
+            ],
+            "binding_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.008000000000000007
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "probe:0"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.053000000000000005
+            ],
+            "final_hand_position": [
+              0.00673711934875173,
+              0.8408411256043865,
+              0.058695069286484325
+            ],
+            "position_error": [
+              -0.00011674353101412925,
+              0.005563624070686335,
+              0.005695069286484319
+            ],
+            "binding_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.008000000000000007
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "probe:0"
+          },
+          {
+            "phase": 3,
+            "steps": 19,
+            "waypoint_reached": true,
+            "target_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.158
+            ],
+            "final_hand_position": [
+              0.0061245995772371735,
+              0.8441013537345946,
+              0.1485856834227719
+            ],
+            "position_error": [
+              -0.0007292633025286861,
+              0.008823852200894433,
+              -0.009414316577228105
+            ],
+            "binding_position": [
+              0.00685386287976586,
+              0.8352775015337002,
+              0.008000000000000007
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "probe:0"
+          }
+        ]
+      }
+    },
+    {
+      "action": "continue",
+      "explicit_steps": 133,
+      "wall_seconds": 0.0778307318687439
+    }
+  ],
+  "observations": [
+    {
+      "id": "probe:0",
+      "label": "ready",
+      "holding": {
+        "status": "holding_supported",
+        "reason": "target_displacement_and_hand_comotion",
+        "displacement_px": 17.46424919657298,
+        "hand_motion_px": 6.012549256616047,
+        "target_motion_px": 5.408326913195984,
+        "offset_drift_px": 0.6240964785803195,
+        "max_target_hand_distance_px": 5.767932241428129
+      },
+      "samples": [
+        {
+          "target_pixel": [
+            236.5,
+            231.0
+          ],
+          "destination_pixel": [
+            194.0,
+            208.5
+          ],
+          "hand_pixel": [
+            238.75419335767538,
+            236.30920470955098
+          ]
+        },
+        {
+          "target_pixel": [
+            232.0,
+            228.0
+          ],
+          "destination_pixel": [
+            194.0,
+            208.5
+          ],
+          "hand_pixel": [
+            233.66195539554508,
+            233.11235296130346
+          ]
+        }
+      ],
+      "options": {
+        "allowed": [
+          "stop",
+          "observe",
+          "continue"
+        ],
+        "continuation_guard": {
+          "action": "execute_remaining",
+          "reason": "remaining_plan_validated",
+          "observation_id": "probe:0",
+          "observed_facts": [
+            "holding(right, blue_candidate)"
+          ],
+          "fixture_assumptions": [
+            "on(green_region, table)"
+          ],
+          "validator_valid": true,
+          "predicted_goal_satisfied": true
+        },
+        "retry_guard": {
+          "authorized": false,
+          "reason": "outside_precontact_scope",
+          "state_source": "controlled_initial_fixture_plus_precontact_trace_and_rgb",
+          "empty_hand_visually_estimated": false
+        },
+        "retry_authorized": false,
+        "precontact_probe_preserved": false,
+        "replan_available": false,
+        "scope": "known_fixture_options_not_general_empty_hand_estimation"
+      }
+    }
+  ],
+  "episode_resets": 1,
+  "phase_steps": {
+    "prefix": 126,
+    "observe": 20,
+    "continue": 133,
+    "terminal_scoring": 10
+  },
+  "wall_seconds": 0.5259596630930901
+}

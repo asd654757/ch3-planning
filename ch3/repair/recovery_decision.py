@@ -6,7 +6,7 @@ Hypotheses describe only the recovery-relevant, explicitly modelled state.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import isclose, isfinite
 from typing import Callable
 
@@ -82,10 +82,19 @@ class RecoveryModel:
     leaf_success: dict[str, float]
     provenance: str
     leaf_provenance: str
+    # Shared PUBLIC evidence-label projection for hypothetical search only.
+    # Runtime updates still require freshly checked actual guard permissions.
+    observation_permissions: dict[str, frozenset[str]] = field(default_factory=dict)
+    # Declared lower bound on resources needed beyond the search boundary.
+    leaf_min_resources: dict[str, Budget] = field(default_factory=dict)
 
     def __post_init__(self):
         if not self.provenance.strip() or not self.leaf_provenance.strip():
             raise ValueError("model and horizon-value provenance required")
+        if any(mask - set(ACTIONS) for mask in self.observation_permissions.values()):
+            raise ValueError("invalid observation permission projection")
+        if self.leaf_min_resources.keys() - self.leaf_success.keys():
+            raise ValueError("unknown leaf resource state")
         if not self.leaf_success or any(not isfinite(p) or not 0 <= p <= 1
                                        for p in self.leaf_success.values()):
             raise ValueError("leaf success estimates must be in [0, 1]")
@@ -139,8 +148,8 @@ class RecoveryDecisionPlanner:
 
     Success reward is 1, failure/stop reward is 0; costs are in those units.
     Values are model predictions, NOT evidence of physical completion. Common
-    guards retain authority. Future permissions conservatively inherit current
-    permissions (no unimplemented sensing-to-permission oracle).
+    guards retain authority. A declared public evidence-label projection may
+    update hypothetical permissions; it never updates actual execution guards.
     """
 
     def __init__(self, model: RecoveryModel, *, depth: int = 2):
@@ -178,7 +187,8 @@ class RecoveryDecisionPlanner:
         for (label, terminal), (mass, states) in sorted(groups.items()):
             posterior = None if terminal else Context(
                 context.observation_id + "/predicted:" + label,
-                {s: p / mass for s, p in states.items()}, remaining, context.enabled)
+                {s: p / mass for s, p in states.items()}, remaining,
+                self.model.observation_permissions.get(label, context.enabled))
             result.append((label, mass, terminal, posterior))
         return tuple(result)
 
@@ -194,7 +204,9 @@ class RecoveryDecisionPlanner:
                     future = float(terminal == "success")
                 elif depth == 1:
                     # No free success after all physical resources are exhausted.
-                    future = (sum(p * self.model.leaf_success[s] for s, p in posterior.belief.items())
+                    future = (sum(p * self.model.leaf_success[s]
+                                  for s, p in posterior.belief.items()
+                                  if posterior.budget.spend(self.model.leaf_min_resources.get(s, Budget(0,0,0,0))) is not None)
                               if self.admissible(posterior) != ("stop",) else 0.0)
                 else:
                     branch_values = self._values(posterior, depth - 1, continuation)

@@ -30,13 +30,15 @@ def unknown(family, count):
     return f"{family}/unknown/{count}"
 
 
-def fixed_rule(ctx, allowed, threshold):
+def fixed_rule(ctx, allowed, threshold, minima=None):
     for action in ("continue", "retry"):
         if action in allowed:
             return action
     state = next(iter(ctx.belief))
     if "/unknown/" not in state:
         return "stop"  # Known-ready but resources/guard do not allow execution.
+    if minima and state in minima and ctx.budget.spend(minima[state]) is None:
+        return "stop"
     count = int(state.rsplit("/",1)[-1])
     return "observe" if count < threshold and "observe" in allowed else "stop"
 
@@ -64,7 +66,7 @@ def run_episode(seed, case, output, *, model=None, caps=None, budget=None, metho
             allowed = {a for a in enabled if a == "stop" or remaining.spend(costs[a]) is not None}
             ctx = Context(f"actual:{i}", {state: 1.}, remaining, frozenset(allowed))
             if method in {"calibrate", "rule"}:
-                action = fixed_rule(ctx, allowed, rule_limit)
+                action = fixed_rule(ctx, allowed, rule_limit, model.leaf_min_resources if model else None)
                 values = None
             else:
                 decision = planner.choose(ctx)
@@ -117,6 +119,7 @@ def fit_model(rows, provenance):
     if not rows or any(r["status"] != "complete" for r in rows):
         raise ValueError("complete failure-inclusive calibration records required")
     counts = defaultdict(lambda: defaultdict(int))
+    duration_counts = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     outcomes = defaultdict(lambda: [0, 0])
     leaf = defaultdict(lambda: [0, 0])
     max_steps = defaultdict(int)
@@ -130,6 +133,7 @@ def fit_model(rows, provenance):
             max_steps[action] = max(max_steps[action], event["actual_cost"]["time_units"])
             if action == "observe":
                 counts[state][event["label"]] += 1
+                duration_counts[state][event["label"]][event["actual_cost"]["time_units"]] += 1
             else:
                 outcomes[action][0] += int(row["task_success"])
                 outcomes[action][1] += 1
@@ -154,11 +158,25 @@ def fit_model(rows, provenance):
                 continue  # Never silently fill unobserved histories.
             # Jeffreys smoothing is explicit, not a claim of calibrated confidence.
             p = (counts[state][positive]+.5)/(n+1)
-            obs_transitions[state] = (Branch(p, positive, next_state=positive),
-                                      Branch(1-p, "unknown", next_state=unknown(family,k+1)))
+            durations = duration_counts[state]
+            pooled = defaultdict(int)
+            for bucket in durations.values():
+                for duration, count in bucket.items():
+                    pooled[duration] += count
+            branches = []
+            for label, probability in ((positive,p),("unknown",1-p)):
+                # For an unobserved smoothed outcome, explicitly use the pooled
+                # duration prior; no pilot data or fabricated timing is fitted.
+                bucket = durations[label] or pooled
+                total = sum(bucket.values())
+                for duration,count in sorted(bucket.items()):
+                    branches.append(Branch(probability*count/total,label,
+                        next_state=positive if label == positive else unknown(family,k+1),
+                        resources=Budget(1,0,0,duration)))
+            obs_transitions[state] = tuple(branches)
             finish = caps["retry"] if family == "precontact" else caps["continue"]
             minima[state] = Budget(caps["observe"].observations+finish.observations,
-                                  finish.commands, 0, caps["observe"].time_units+finish.time_units)
+                                  finish.commands, 0, min(pooled)+finish.time_units)
     actions = {"observe": ActionModel(caps["observe"], 0., obs_transitions)}
     for action, state in (("continue","ready"), ("retry","retry_ready")):
         good, n = outcomes[action]
@@ -171,6 +189,7 @@ def fit_model(rows, provenance):
         permissions, minima)
     return model, caps, {"transition_counts": dict(counts), "macro_success_counts": dict(outcomes),
                          "leaf_counts": dict(leaf), "observed_max_steps": dict(max_steps),
+                         "observation_duration_counts": dict(duration_counts),
                          "smoothing": "Jeffreys Beta(0.5,0.5); not uncertainty-robust",
                          "no_hidden_case_features": True}
 
@@ -180,7 +199,7 @@ def choose_rule_limit(model, caps, budgets):
     scores = {}
     for threshold in range(4):
         def rule(ctx, allowed):
-            return fixed_rule(ctx, allowed, threshold)
+            return fixed_rule(ctx, allowed, threshold, model.leaf_min_resources)
         scores[threshold] = sum((4 if f == "post_pick" else 1)*planner.evaluate_policy(
             Context("tune", {unknown(f,0):1.}, b, frozenset({"observe","stop"})),rule)
             for f in FAMILIES for b in budgets)
@@ -194,11 +213,14 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--calibration", type=Path,
                         help="Reuse complete, fixed development records; never pilot/evaluation records.")
+    parser.add_argument("--pilot-seeds",type=int,nargs="+",default=list(PILOT_SEEDS))
     args = parser.parse_args()
+    if len(set(args.pilot_seeds)) != len(args.pilot_seeds) or not set(args.pilot_seeds) <= {940,941,942,943}:
+        parser.error("pilot seeds must be unique within development reservation 940..943")
     args.output.mkdir(parents=True, exist_ok=False)
     source_files = [Path(__file__), Path("ch3/repair/budgeted_recovery_fixture.py"),
                     Path("ch3/repair/recovery_decision.py")]
-    manifest = {"development_seeds": DEVELOPMENT_SEEDS, "pilot_seeds": PILOT_SEEDS,
+    manifest = {"development_seeds": DEVELOPMENT_SEEDS, "pilot_seeds": args.pilot_seeds,
         "cases": CASES, "methods": ["rule","depth1","depth2"],
         "scope": "controlled_sensor_dropout_development_pilot_NOT_formal_NOT_LLM_comparison",
         "reused_calibration": str(args.calibration.resolve()) if args.calibration else None,
@@ -238,7 +260,7 @@ def main():
         raise TypeError(type(obj).__name__)
     (args.output/"frozen_model.json").write_text(json.dumps(frozen,indent=2,default=encode))
     results=[]
-    for seed in PILOT_SEEDS:
+    for seed in args.pilot_seeds:
         for case in CASES:
             for bi,budget in enumerate(budgets):
                 methods=["rule","depth1","depth2"]

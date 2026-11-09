@@ -39,6 +39,7 @@ class Branch:
     observation: str
     next_state: str | None = None
     terminal: str | None = None
+    resources: Budget | None = None
 
     def __post_init__(self):
         if not isfinite(self.probability) or not 0 < self.probability <= 1:
@@ -69,6 +70,8 @@ class ActionModel:
             # A sensor label may not silently encode hidden terminal status.
             labels = {}
             for branch in branches:
+                if branch.resources is not None and self.resources.spend(branch.resources) is None:
+                    raise ValueError("branch resource use exceeds admission cap")
                 if branch.observation in labels and labels[branch.observation] != branch.terminal:
                     raise ValueError("ambiguous terminal observation")
                 labels[branch.observation] = branch.terminal
@@ -176,15 +179,18 @@ class RecoveryDecisionPlanner:
             if prior == 0:
                 continue
             for branch in spec.transitions[state]:
-                key = (branch.observation, branch.terminal)
+                # Actual duration is observable and may affect both posterior
+                # and remaining budget. Do not replace it with the admission cap.
+                key = (branch.observation, branch.terminal, branch.resources or spec.resources)
                 mass, states = groups.setdefault(key, [0.0, {}])
                 weight = prior * branch.probability
                 groups[key][0] = mass + weight
                 if branch.next_state is not None:
                     states[branch.next_state] = states.get(branch.next_state, 0) + weight
         result = []
-        remaining = context.budget.spend(spec.resources)
-        for (label, terminal), (mass, states) in sorted(groups.items()):
+        for (label, terminal, resources), (mass, states) in sorted(
+                groups.items(), key=lambda item: (item[0][0], item[0][1] or "", item[0][2].values())):
+            remaining = context.budget.spend(resources)
             posterior = None if terminal else Context(
                 context.observation_id + "/predicted:" + label,
                 {s: p / mass for s, p in states.items()}, remaining,
@@ -220,7 +226,7 @@ class RecoveryDecisionPlanner:
         return values
 
     def update(self, context: Context, action: str, *, observation: str,
-               observation_id: str, enabled: frozenset[str]) -> Context:
+               observation_id: str, enabled: frozenset[str], actual_cost: Budget | None = None) -> Context:
         """Condition on an ACTUALLY acquired observation, not a predicted branch.
 
         Caller supplies a fresh observation binding and freshly checked guard
@@ -228,12 +234,19 @@ class RecoveryDecisionPlanner:
         """
         if not observation_id or observation_id == context.observation_id:
             raise ValueError("fresh actual observation id required")
+        matches = []
         for label, _, terminal, posterior in self.outcomes(context, action):
             if posterior is not None and label == observation:
-                return Context(observation_id, posterior.belief, posterior.budget, enabled)
+                if actual_cost is None or context.budget.spend(actual_cost) == posterior.budget:
+                    matches.append(posterior)
             if terminal is not None:
                 # Terminal evidence remains the independent supervisor's job.
                 continue
+        if len(matches) == 1:
+            posterior = matches[0]
+            return Context(observation_id, posterior.belief, posterior.budget, enabled)
+        if len(matches) > 1:
+            raise ValueError("ambiguous observation duration; actual_cost required")
         raise ValueError("unmodelled or terminal observation; obtain evidence and stop/rebuild model")
 
     @staticmethod

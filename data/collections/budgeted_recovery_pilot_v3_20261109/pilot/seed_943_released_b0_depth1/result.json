@@ -1,0 +1,176 @@
+{
+  "seed": 943,
+  "case": "released",
+  "method": "depth1",
+  "status": "complete",
+  "decisions": [
+    {
+      "index": 0,
+      "state": "released/unknown/0",
+      "observation_id": "actual:0",
+      "allowed": [
+        "observe",
+        "stop"
+      ],
+      "action": "stop",
+      "values": {
+        "stop": 0.0,
+        "observe": 0.0
+      },
+      "budget_before": {
+        "observations": 4,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 168
+      }
+    }
+  ],
+  "api_calls": 0,
+  "task_success": false,
+  "model_used": "/root/autodl-tmp/ch3-planning/data/collections/budgeted_recovery_pilot_20261109/calibration",
+  "public_family": "released",
+  "initial_budget": {
+    "observations": 4,
+    "commands": 2,
+    "model_calls": 0,
+    "time_units": 168
+  },
+  "recovery_control_steps": 0,
+  "remaining_budget": {
+    "observations": 4,
+    "commands": 2,
+    "model_calls": 0,
+    "time_units": 168
+  },
+  "events": [
+    {
+      "action": "initial_pick",
+      "receipt": {
+        "completed": true,
+        "reason": "waypoints_completed_not_grasp_verified",
+        "steps": 97,
+        "trace": [
+          {
+            "phase": 0,
+            "steps": 21,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.14
+            ],
+            "final_hand_position": [
+              -0.10786843986181092,
+              0.6892140862937683,
+              0.14135750780761375
+            ],
+            "position_error": [
+              0.010376649176783062,
+              -0.008450686422002862,
+              0.0013575078076137337
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 1,
+            "steps": 23,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.03500000000000002
+            ],
+            "final_hand_position": [
+              -0.11815528526926272,
+              0.704076689439887,
+              0.04823658360322185
+            ],
+            "position_error": [
+              8.980376933126477e-05,
+              0.006411916724115785,
+              0.01323658360322183
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 2,
+            "steps": 35,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.03500000000000002
+            ],
+            "final_hand_position": [
+              -0.11869660277545063,
+              0.699099503253162,
+              0.04601562281376605
+            ],
+            "position_error": [
+              -0.00045151373685664575,
+              0.0014347305373907382,
+              0.01101562281376603
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          },
+          {
+            "phase": 3,
+            "steps": 18,
+            "waypoint_reached": true,
+            "target_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.17
+            ],
+            "final_hand_position": [
+              -0.11919859845445034,
+              0.6920682610378843,
+              0.15806582153767948
+            ],
+            "position_error": [
+              -0.0009535094158563545,
+              -0.005596511677886884,
+              -0.011934178462320533
+            ],
+            "binding_position": [
+              -0.11824508903859399,
+              0.6976647727157712,
+              0.020000000000000018
+            ],
+            "binding_source": "visual_estimate",
+            "observation_id": "initial"
+          }
+        ]
+      }
+    },
+    {
+      "action": "open_and_settle",
+      "steps": 30
+    }
+  ],
+  "observations": [],
+  "episode_resets": 1,
+  "phase_steps": {
+    "prefix": 157,
+    "terminal_scoring": 10
+  },
+  "wall_seconds": 0.20429379492998123
+}

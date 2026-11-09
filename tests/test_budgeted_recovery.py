@@ -54,3 +54,31 @@ def test_permission_model_requires_known_action_names():
 def test_rule_stops_when_ready_but_budget_does_not_allow_execution():
     ctx=Context("actual:1",{"ready":1.},Budget(0,0,0,0),frozenset({"stop"}))
     assert fixed_rule(ctx,("stop",),3)=="stop"
+
+
+def test_outcome_duration_can_leave_enough_budget_despite_larger_admission_cap():
+    model=sensing_model()
+    model=replace(model,actions={**model.actions,"observe":ActionModel(Budget(1,0,0,3),0,{
+        "unknown":(Branch(1,"positive_rgb",next_state="ready",resources=Budget(1,0,0,1)),)})})
+    planner=RecoveryDecisionPlanner(model)
+    ctx=Context("actual:0",{"unknown":1.},Budget(1,1,0,3),frozenset({"observe","stop"}))
+    assert planner.choose(ctx).action=="observe"
+    updated=planner.update(ctx,"observe",observation="positive_rgb",observation_id="actual:1",
+                           enabled=frozenset({"continue","stop"}),actual_cost=Budget(1,0,0,1))
+    assert updated.budget.time_units==2
+
+
+def test_identical_sensor_labels_require_actual_duration_when_budgets_differ():
+    model=sensing_model()
+    model=replace(model,actions={**model.actions,"observe":ActionModel(Budget(1,0,0,3),0,{
+        "unknown":(Branch(.5,"positive_rgb",next_state="ready",resources=Budget(1,0,0,1)),
+                   Branch(.5,"positive_rgb",next_state="ready",resources=Budget(1,0,0,2)))})})
+    planner=RecoveryDecisionPlanner(model)
+    ctx=Context("actual:0",{"unknown":1.},Budget(1,1,0,4),frozenset({"observe","stop"}))
+    with pytest.raises(ValueError,match="duration"):
+        planner.update(ctx,"observe",observation="positive_rgb",observation_id="actual:1",enabled=ctx.enabled)
+
+
+def test_rule_has_the_same_budget_completion_information():
+    ctx=Context("actual:0",{"post_pick/unknown/0":1.},Budget(3,1,0,5),frozenset({"observe","stop"}))
+    assert fixed_rule(ctx,("observe","stop"),3,{"post_pick/unknown/0":Budget(1,1,0,6)})=="stop"

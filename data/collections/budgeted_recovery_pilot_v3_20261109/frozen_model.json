@@ -1,0 +1,669 @@
+{
+  "caps": {
+    "observe": {
+      "observations": 1,
+      "commands": 0,
+      "model_calls": 0,
+      "time_units": 35
+    },
+    "continue": {
+      "observations": 0,
+      "commands": 1,
+      "model_calls": 0,
+      "time_units": 168
+    },
+    "retry": {
+      "observations": 1,
+      "commands": 2,
+      "model_calls": 0,
+      "time_units": 320
+    }
+  },
+  "budgets": [
+    {
+      "observations": 4,
+      "commands": 2,
+      "model_calls": 0,
+      "time_units": 168
+    },
+    {
+      "observations": 4,
+      "commands": 2,
+      "model_calls": 0,
+      "time_units": 238
+    },
+    {
+      "observations": 4,
+      "commands": 2,
+      "model_calls": 0,
+      "time_units": 425
+    }
+  ],
+  "rule_threshold": 3,
+  "rule_tuning_model_values": {
+    "0": 0.0,
+    "1": 2.393028846153846,
+    "2": 5.214609374999999,
+    "3": 7.201445312500001
+  },
+  "statistics": {
+    "transition_counts": {
+      "post_pick/unknown/0": {
+        "ready": 3,
+        "unknown": 9
+      },
+      "post_pick/unknown/1": {
+        "ready": 3,
+        "unknown": 6
+      },
+      "post_pick/unknown/2": {
+        "ready": 3,
+        "unknown": 3
+      },
+      "precontact/unknown/0": {
+        "unknown": 3,
+        "retry_ready": 0
+      },
+      "precontact/unknown/1": {
+        "retry_ready": 3
+      },
+      "released/unknown/0": {
+        "unknown": 3,
+        "ready": 0
+      },
+      "released/unknown/1": {
+        "unknown": 3,
+        "ready": 0
+      },
+      "released/unknown/2": {
+        "unknown": 3,
+        "ready": 0
+      },
+      "precontact/unknown/2": {}
+    },
+    "macro_success_counts": {
+      "continue": [
+        9,
+        9
+      ],
+      "retry": [
+        3,
+        3
+      ]
+    },
+    "leaf_counts": {
+      "post_pick/unknown/0": [
+        9,
+        12
+      ],
+      "ready": [
+        9,
+        9
+      ],
+      "post_pick/unknown/1": [
+        6,
+        9
+      ],
+      "post_pick/unknown/2": [
+        3,
+        6
+      ],
+      "post_pick/unknown/3": [
+        0,
+        3
+      ],
+      "precontact/unknown/0": [
+        3,
+        3
+      ],
+      "precontact/unknown/1": [
+        3,
+        3
+      ],
+      "retry_ready": [
+        3,
+        3
+      ],
+      "released/unknown/0": [
+        0,
+        3
+      ],
+      "released/unknown/1": [
+        0,
+        3
+      ],
+      "released/unknown/2": [
+        0,
+        3
+      ],
+      "released/unknown/3": [
+        0,
+        3
+      ],
+      "precontact/unknown/3": [
+        0,
+        0
+      ],
+      "precontact/unknown/2": [
+        0,
+        0
+      ]
+    },
+    "observed_max_steps": {
+      "observe": 28,
+      "continue": 134,
+      "retry": 256
+    },
+    "observation_duration_counts": {
+      "post_pick/unknown/0": {
+        "ready": {
+          "20": 3
+        },
+        "unknown": {
+          "20": 9
+        }
+      },
+      "post_pick/unknown/1": {
+        "ready": {
+          "19": 3
+        },
+        "unknown": {
+          "19": 6
+        }
+      },
+      "post_pick/unknown/2": {
+        "ready": {
+          "19": 3
+        },
+        "unknown": {
+          "19": 3
+        }
+      },
+      "precontact/unknown/0": {
+        "unknown": {
+          "26": 1,
+          "27": 1,
+          "28": 1
+        },
+        "retry_ready": {}
+      },
+      "precontact/unknown/1": {
+        "retry_ready": {
+          "20": 3
+        },
+        "unknown": {}
+      },
+      "released/unknown/0": {
+        "unknown": {
+          "18": 3
+        },
+        "ready": {}
+      },
+      "released/unknown/1": {
+        "unknown": {
+          "19": 3
+        },
+        "ready": {}
+      },
+      "released/unknown/2": {
+        "unknown": {
+          "18": 2,
+          "19": 1
+        },
+        "ready": {}
+      }
+    },
+    "smoothing": "Jeffreys Beta(0.5,0.5); not uncertainty-robust",
+    "no_hidden_case_features": true
+  },
+  "model": {
+    "actions": {
+      "observe": {
+        "resources": {
+          "observations": 1,
+          "commands": 0,
+          "model_calls": 0,
+          "time_units": 35
+        },
+        "loss": 0.0,
+        "transitions": {
+          "post_pick/unknown/0": [
+            {
+              "probability": 0.2692307692307692,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 20
+              }
+            },
+            {
+              "probability": 0.7307692307692308,
+              "observation": "unknown",
+              "next_state": "post_pick/unknown/1",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 20
+              }
+            }
+          ],
+          "post_pick/unknown/1": [
+            {
+              "probability": 0.3499999999999999,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            },
+            {
+              "probability": 0.65,
+              "observation": "unknown",
+              "next_state": "post_pick/unknown/2",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            }
+          ],
+          "post_pick/unknown/2": [
+            {
+              "probability": 0.5,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            },
+            {
+              "probability": 0.5,
+              "observation": "unknown",
+              "next_state": "post_pick/unknown/3",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            }
+          ],
+          "precontact/unknown/0": [
+            {
+              "probability": 0.041666666666666664,
+              "observation": "retry_ready",
+              "next_state": "retry_ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 26
+              }
+            },
+            {
+              "probability": 0.041666666666666664,
+              "observation": "retry_ready",
+              "next_state": "retry_ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 27
+              }
+            },
+            {
+              "probability": 0.041666666666666664,
+              "observation": "retry_ready",
+              "next_state": "retry_ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 28
+              }
+            },
+            {
+              "probability": 0.2916666666666667,
+              "observation": "unknown",
+              "next_state": "precontact/unknown/1",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 26
+              }
+            },
+            {
+              "probability": 0.2916666666666667,
+              "observation": "unknown",
+              "next_state": "precontact/unknown/1",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 27
+              }
+            },
+            {
+              "probability": 0.2916666666666667,
+              "observation": "unknown",
+              "next_state": "precontact/unknown/1",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 28
+              }
+            }
+          ],
+          "precontact/unknown/1": [
+            {
+              "probability": 0.875,
+              "observation": "retry_ready",
+              "next_state": "retry_ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 20
+              }
+            },
+            {
+              "probability": 0.125,
+              "observation": "unknown",
+              "next_state": "precontact/unknown/2",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 20
+              }
+            }
+          ],
+          "released/unknown/0": [
+            {
+              "probability": 0.125,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 18
+              }
+            },
+            {
+              "probability": 0.875,
+              "observation": "unknown",
+              "next_state": "released/unknown/1",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 18
+              }
+            }
+          ],
+          "released/unknown/1": [
+            {
+              "probability": 0.125,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            },
+            {
+              "probability": 0.875,
+              "observation": "unknown",
+              "next_state": "released/unknown/2",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            }
+          ],
+          "released/unknown/2": [
+            {
+              "probability": 0.08333333333333333,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 18
+              }
+            },
+            {
+              "probability": 0.041666666666666664,
+              "observation": "ready",
+              "next_state": "ready",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            },
+            {
+              "probability": 0.5833333333333334,
+              "observation": "unknown",
+              "next_state": "released/unknown/3",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 18
+              }
+            },
+            {
+              "probability": 0.2916666666666667,
+              "observation": "unknown",
+              "next_state": "released/unknown/3",
+              "terminal": null,
+              "resources": {
+                "observations": 1,
+                "commands": 0,
+                "model_calls": 0,
+                "time_units": 19
+              }
+            }
+          ]
+        }
+      },
+      "continue": {
+        "resources": {
+          "observations": 0,
+          "commands": 1,
+          "model_calls": 0,
+          "time_units": 168
+        },
+        "loss": 0.0,
+        "transitions": {
+          "ready": [
+            {
+              "probability": 0.95,
+              "observation": "model_terminal_success",
+              "next_state": null,
+              "terminal": "success",
+              "resources": null
+            },
+            {
+              "probability": 0.050000000000000044,
+              "observation": "model_terminal_failure",
+              "next_state": null,
+              "terminal": "failure",
+              "resources": null
+            }
+          ]
+        }
+      },
+      "retry": {
+        "resources": {
+          "observations": 1,
+          "commands": 2,
+          "model_calls": 0,
+          "time_units": 320
+        },
+        "loss": 0.0,
+        "transitions": {
+          "retry_ready": [
+            {
+              "probability": 0.875,
+              "observation": "model_terminal_success",
+              "next_state": null,
+              "terminal": "success",
+              "resources": null
+            },
+            {
+              "probability": 0.125,
+              "observation": "model_terminal_failure",
+              "next_state": null,
+              "terminal": "failure",
+              "resources": null
+            }
+          ]
+        }
+      }
+    },
+    "leaf_success": {
+      "precontact/unknown/3": 0.0,
+      "released/unknown/1": 0.125,
+      "released/unknown/0": 0.125,
+      "post_pick/unknown/3": 0.125,
+      "precontact/unknown/2": 0.0,
+      "released/unknown/2": 0.125,
+      "released/unknown/3": 0.125,
+      "post_pick/unknown/0": 0.7307692307692307,
+      "post_pick/unknown/1": 0.65,
+      "precontact/unknown/1": 0.875,
+      "ready": 0.95,
+      "retry_ready": 0.875,
+      "precontact/unknown/0": 0.875,
+      "post_pick/unknown/2": 0.5
+    },
+    "provenance": "/root/autodl-tmp/ch3-planning/data/collections/budgeted_recovery_pilot_20261109/calibration",
+    "leaf_provenance": "Jeffreys-smoothed development rule-3 continuation; common to depth1/depth2; budget lower bound enforced",
+    "observation_permissions": {
+      "ready": [
+        "continue",
+        "stop"
+      ],
+      "retry_ready": [
+        "retry",
+        "stop"
+      ],
+      "unknown": [
+        "observe",
+        "stop"
+      ]
+    },
+    "leaf_min_resources": {
+      "ready": {
+        "observations": 0,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 168
+      },
+      "retry_ready": {
+        "observations": 1,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 320
+      },
+      "post_pick/unknown/0": {
+        "observations": 1,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 188
+      },
+      "post_pick/unknown/1": {
+        "observations": 1,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 187
+      },
+      "post_pick/unknown/2": {
+        "observations": 1,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 187
+      },
+      "precontact/unknown/0": {
+        "observations": 2,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 346
+      },
+      "precontact/unknown/1": {
+        "observations": 2,
+        "commands": 2,
+        "model_calls": 0,
+        "time_units": 340
+      },
+      "released/unknown/0": {
+        "observations": 1,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 186
+      },
+      "released/unknown/1": {
+        "observations": 1,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 187
+      },
+      "released/unknown/2": {
+        "observations": 1,
+        "commands": 1,
+        "model_calls": 0,
+        "time_units": 186
+      }
+    }
+  },
+  "primary_outcome": "independent_terminal_task_success",
+  "limitations": [
+    "Small-sample empirical hazard, not validated probability calibration.",
+    "Fault persistence indexed by acquisition count, not continuous physical time.",
+    "Fixed threshold is model-tuned; no claim of best possible rule/tree.",
+    "No LLM direct-replanning baseline or open-world evaluation."
+  ]
+}

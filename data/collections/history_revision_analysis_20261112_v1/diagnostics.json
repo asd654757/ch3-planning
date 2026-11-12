@@ -1,0 +1,1108 @@
+[
+  {
+    "id": "heldout-retarget-1",
+    "family": "retarget",
+    "status": "ready",
+    "snapshot": "a0e2d5ca7b29632d0fbb4e978c5a407fa350b40fbec0b8c61e8dacba6bcc9aad",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-cancel_dependency-1",
+    "family": "cancel_dependency",
+    "status": "ready",
+    "snapshot": "fa207aa899b7445b4ea5b87e0de9e356bd6c904f084fc083010d16b58c8c25df",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-past_order-1",
+    "family": "past_order",
+    "status": "conflict",
+    "snapshot": "c168a690e5f7da58f36b2b557fc4cefa768be5986e123c2eed8b8b5ee7526e8d",
+    "horizon": 8,
+    "conflict_core": [
+      "order",
+      "va",
+      "vb"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": true,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "va"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "vb"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "prospective_restart",
+        "changed_ids": [
+          "vb"
+        ],
+        "proposed": {
+          "version": 2,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "vb__restart_v2",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "order",
+                "kind": "before",
+                "first": "va",
+                "second": "vb__restart_v2"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-uncertain_order-1",
+    "family": "uncertain_order",
+    "status": "need_observation",
+    "snapshot": "d3e3152bbf23fc8e9f993e1725bf1238ee46cb9d75a0c8243cd225fcbffa596d",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [
+      2
+    ],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-restart-1",
+    "family": "restart",
+    "status": "ready",
+    "snapshot": "3c851a879c7b35e1dea59b43e41bc0b94131ce71e68c01f48082ad211b7fe289",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-held_prohibition-1",
+    "family": "held_prohibition",
+    "status": "conflict",
+    "snapshot": "57cf12f79df9d6bdd7960a942fd3831da54d8959a73cf0462172638415be94d6",
+    "horizon": 8,
+    "conflict_core": [
+      "ga",
+      "new_protect"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "new_protect"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "ga",
+                "kind": "at",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-capacity-1",
+    "family": "capacity",
+    "status": "conflict",
+    "snapshot": "5bbe78c2daf5cdb38e1baf1797e4d8903f158395d6f5b8a8a6893142664346cf",
+    "horizon": 8,
+    "conflict_core": [
+      "ga",
+      "gb"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "ga"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "gb",
+                "kind": "at",
+                "object": "blue",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "gb"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "ga",
+                "kind": "at",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-lift_protection-1",
+    "family": "lift_protection",
+    "status": "ready",
+    "snapshot": "b1e209bee5efa4aa3cc96cfccad1acb8497e949e92b837047ae2c74d46ad790e",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-protect_completed-1",
+    "family": "protect_completed",
+    "status": "ready",
+    "snapshot": "66c29c48a47c08ec576e3d8717ce1c0f95fc5f9f2e084df32102556ece9cc377",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-cancel_past_prohibition-1",
+    "family": "cancel_past_prohibition",
+    "status": "ready",
+    "snapshot": "57f194da9c377be2477f362b5dd1fe3bbb9b0d8aa7ca1b644be240791c5b33a9",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-changed_waypoint_order-1",
+    "family": "changed_waypoint_order",
+    "status": "conflict",
+    "snapshot": "efc0c705498216bf67b89cd973e66841f7a0e2ce7d441d9a4bf5c7d581209589",
+    "horizon": 8,
+    "conflict_core": [
+      "order",
+      "va",
+      "vb"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": true,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "va"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "vb"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "return"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "return"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "prospective_restart",
+        "changed_ids": [
+          "vb"
+        ],
+        "proposed": {
+          "version": 2,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "return"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "vb__restart_v2",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "order",
+                "kind": "before",
+                "first": "va",
+                "second": "vb__restart_v2"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-repeat_one-1",
+    "family": "repeat_one",
+    "status": "ready",
+    "snapshot": "82076e0f24c4d20fb54597f6e0b3ef7c28afb80524003e8f73a1210fe67eecb4",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-retarget-2",
+    "family": "retarget",
+    "status": "ready",
+    "snapshot": "7a4ece04b72e6200d49b04b100957dadda3880790c0b280c23352a690b2c7446",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-cancel_dependency-2",
+    "family": "cancel_dependency",
+    "status": "ready",
+    "snapshot": "2336c2240e867f2cc2b0d9486667c7c804f6783ffc28c62cf425057de5281ee6",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-past_order-2",
+    "family": "past_order",
+    "status": "conflict",
+    "snapshot": "b1af0a83f934851f8559786a813b2a1af474e3edffe0844f4c7a9ed2cd0b595a",
+    "horizon": 8,
+    "conflict_core": [
+      "order",
+      "va",
+      "vb"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": true,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "va"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "vb"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "prospective_restart",
+        "changed_ids": [
+          "vb"
+        ],
+        "proposed": {
+          "version": 2,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "vb__restart_v2",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "order",
+                "kind": "before",
+                "first": "va",
+                "second": "vb__restart_v2"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-uncertain_order-2",
+    "family": "uncertain_order",
+    "status": "need_observation",
+    "snapshot": "6e9c69ae9e5946f64edfb2242d2ad4b61ab8d242123fb96bea70d608aad31ccf",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [
+      2
+    ],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-restart-2",
+    "family": "restart",
+    "status": "ready",
+    "snapshot": "2d22eb5ea1dba72e974b277c3c5db6ce3147b8ca8d28e9cda64d2d137b76314f",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-held_prohibition-2",
+    "family": "held_prohibition",
+    "status": "conflict",
+    "snapshot": "3f5cdd852020981d17a0ada19aa44f4a75cca9480c54fd3c32e484a185b4a535",
+    "horizon": 8,
+    "conflict_core": [
+      "ga",
+      "new_protect"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "new_protect"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "ga",
+                "kind": "at",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-capacity-2",
+    "family": "capacity",
+    "status": "conflict",
+    "snapshot": "fcc18a8d97f903c8a45e898940e2ab9d0bbd216becb3e55848156d16d700f088",
+    "horizon": 8,
+    "conflict_core": [
+      "ga",
+      "gb"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "ga"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "gb",
+                "kind": "at",
+                "object": "yellow",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "gb"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "ga",
+                "kind": "at",
+                "object": "blue",
+                "target": "return"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-lift_protection-2",
+    "family": "lift_protection",
+    "status": "ready",
+    "snapshot": "d0f2057d29716200320d16081e8700ffb5ee47a538d180f07572b6c6d69b6285",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-protect_completed-2",
+    "family": "protect_completed",
+    "status": "ready",
+    "snapshot": "376fc02c2f33cb6065ebb22d9b4e951cc49f218ad7b518ccbd31e26085c4e27e",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-cancel_past_prohibition-2",
+    "family": "cancel_past_prohibition",
+    "status": "ready",
+    "snapshot": "71e874fda4694c0dcda33fe47ec51a26c65876ece11a8295c312dc9d4f49e754",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  },
+  {
+    "id": "heldout-changed_waypoint_order-2",
+    "family": "changed_waypoint_order",
+    "status": "conflict",
+    "snapshot": "409133f6ddfcb23cb823e59ea1f2f94a6e745a2e7992a34b8593e6213f39d827",
+    "horizon": 8,
+    "conflict_core": [
+      "order",
+      "va",
+      "vb"
+    ],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": true,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": [
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "va"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order",
+          "vb"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "blue",
+                "target": "green"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "relax_requirement",
+        "changed_ids": [
+          "order"
+        ],
+        "proposed": {
+          "version": 1,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "blue",
+                "target": "green"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "vb",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 0
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      },
+      {
+        "kind": "prospective_restart",
+        "changed_ids": [
+          "vb"
+        ],
+        "proposed": {
+          "version": 2,
+          "obligations": [
+            {
+              "clause": {
+                "id": "va",
+                "kind": "visit",
+                "object": "blue",
+                "target": "green"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "vb__restart_v2",
+                "kind": "visit",
+                "object": "yellow",
+                "target": "green"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "order",
+                "kind": "before",
+                "first": "va",
+                "second": "vb__restart_v2"
+              },
+              "since": 8
+            },
+            {
+              "clause": {
+                "id": "empty",
+                "kind": "empty"
+              },
+              "since": 0
+            }
+          ]
+        },
+        "original_task_satisfied": false,
+        "requires_explicit_revision": true
+      }
+    ]
+  },
+  {
+    "id": "heldout-repeat_one-2",
+    "family": "repeat_one",
+    "status": "ready",
+    "snapshot": "7599a0541535ab2d751ac3589a1e2bb09463380be20b1d095bde6c6ab1e481a8",
+    "horizon": 8,
+    "conflict_core": [],
+    "core_definition": "deletion_minimal_under_dependency_closed_removal",
+    "historical_violation_in_all_evidence_worlds": false,
+    "query_old_event_ids": [],
+    "query_source": "archived_event_evidence_or_user_scope_clarification",
+    "repair_options": []
+  }
+]

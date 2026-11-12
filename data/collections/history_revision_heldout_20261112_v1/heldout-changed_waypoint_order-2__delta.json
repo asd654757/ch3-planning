@@ -1,0 +1,81 @@
+{
+  "id": "heldout-changed_waypoint_order-2",
+  "family": "changed_waypoint_order",
+  "method": "delta",
+  "gold_status": "conflict",
+  "system_prompt": "You translate a natural-language incremental task update in a bounded robot domain.\nINITIAL_TASK is the entire accepted task, including unmentioned requirements. Preserve them unless the update changes/cancels them. Do NOT silently weaken infeasible requirements. Do not output plans or predict feasibility: a shared checker handles that after translation.\nObjects blue/yellow. Targets table/green/return. One hand, region green/return capacity one, table unlimited. Evidence is a partial append-only event ledger; current state is a separate fresh observation. Unknown events are NOT confirmed physical occurrences. You may not edit history or use gold labels.\nClause kinds: at(object,target) final position; empty no fields final empty hand; forbid(object) forbids all pick/place actions on that object after activation; visit(object,target) requires a place event after activation; before(first,second) references two visit clause IDs and requires their FIRST qualifying events in that order.\nKeep existing IDs for unchanged clauses. An unchanged ID and content preserves activation time, even for full translation. New/changed clause content starts AFTER current history cursor. New before clauses can reference existing visit clauses: these retain original anchors, so already happened events can conflict with a new order. Never rewrite history to fix this.\nTo require doing the SAME visit AGAIN from now: REMOVE old visit, ADD visit with a NEW ID (e.g. va_again), and update any relevant before references. Replacing with identical ID+content does NOT reset time. New forbid is prospective; old unrelated events do not violate it. Explicitly cancelling an old prohibition removes that clause but never deletes events.\nReturn only the specified JSON schema, using version/snapshot from input. Clause fields other than id/kind that do not apply must be omitted or null. Do not include since: activation is assigned by the program. Any nonconflicting ID may be chosen for new clauses. Source quotes establish provenance only.\n",
+  "user_prompt": "{\"INITIAL_INSTRUCTION\": \"已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。\", \"INITIAL_TASK\": [{\"clause\": {\"id\": \"va\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"return\"}, \"since\": 0}, {\"clause\": {\"id\": \"vb\", \"kind\": \"visit\", \"object\": \"yellow\", \"target\": \"green\"}, \"since\": 0}, {\"clause\": {\"id\": \"order\", \"kind\": \"before\", \"first\": \"va\", \"second\": \"vb\"}, \"since\": 0}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 0}], \"UPDATE\": \"仅修订蓝块的必经位置为绿色区并从现在计算；原先的先后顺序继续约束两项必经条款，黄块仍沿用旧记录。\", \"CURRENT_OBSERVED_STATE\": {\"blue\": \"table\", \"yellow\": \"table\", \"holding\": null}, \"HISTORY\": [{\"seq\": 1, \"kind\": \"pick\", \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 2, \"kind\": \"place\", \"object\": \"blue\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 3, \"kind\": \"pick\", \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 4, \"kind\": \"place\", \"object\": \"blue\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 5, \"kind\": \"pick\", \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 6, \"kind\": \"place\", \"object\": \"yellow\", \"target\": \"green\", \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 7, \"kind\": \"pick\", \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 8, \"kind\": \"place\", \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}], \"observation_id\": \"obs-682bd79ac8dc1b5e\", \"version\": 0, \"snapshot\": \"409133f6ddfcb23cb823e59ea1f2f94a6e745a2e7992a34b8593e6213f39d827\", \"cursor\": 8, \"OUTPUT_INSTRUCTION\": \"Return only edits (add/replace/remove). Each edit has id, quote (exact substring of UPDATE), and clause (null for remove). Unedited clauses are preserved by the program. Include dependent edits when necessary.\", \"OUTPUT_SCHEMA\": {\"$defs\": {\"Clause\": {\"additionalProperties\": false, \"properties\": {\"id\": {\"minLength\": 1, \"title\": \"Id\", \"type\": \"string\"}, \"kind\": {\"enum\": [\"at\", \"empty\", \"forbid\", \"visit\", \"before\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Object\"}, \"target\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}, \"first\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"First\"}, \"second\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Second\"}}, \"required\": [\"id\", \"kind\"], \"title\": \"Clause\", \"type\": \"object\"}, \"Edit\": {\"additionalProperties\": false, \"properties\": {\"op\": {\"enum\": [\"add\", \"replace\", \"remove\"], \"title\": \"Op\", \"type\": \"string\"}, \"id\": {\"title\": \"Id\", \"type\": \"string\"}, \"quote\": {\"minLength\": 1, \"title\": \"Quote\", \"type\": \"string\"}, \"clause\": {\"anyOf\": [{\"$ref\": \"#/$defs/Clause\"}, {\"type\": \"null\"}], \"default\": null}}, \"required\": [\"op\", \"id\", \"quote\"], \"title\": \"Edit\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"edits\": {\"items\": {\"$ref\": \"#/$defs/Edit\"}, \"title\": \"Edits\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"edits\"], \"title\": \"Patch\", \"type\": \"object\"}}",
+  "content": "{\"version\":0,\"snapshot\":\"409133f6ddfcb23cb823e59ea1f2f94a6e745a2e7992a34b8593e6213f39d827\",\"edits\":[{\"op\":\"remove\",\"id\":\"va\",\"quote\":\"仅修订蓝块的必经位置为绿色区并从现在计算\",\"clause\":null},{\"op\":\"add\",\"id\":\"va_green\",\"quote\":\"仅修订蓝块的必经位置为绿色区并从现在计算\",\"clause\":{\"id\":\"va_green\",\"kind\":\"visit\",\"object\":\"blue\",\"target\":\"green\"}},{\"op\":\"replace\",\"id\":\"order\",\"quote\":\"原先的先后顺序继续约束两项必经条款\",\"clause\":{\"id\":\"order\",\"kind\":\"before\",\"first\":\"va_green\",\"second\":\"vb\"}}]}",
+  "model": "deepseek-v4.1-flash",
+  "latency_ms": 5055,
+  "prompt_tokens": 1544,
+  "completion_tokens": 172,
+  "total_tokens": 1716,
+  "finish_reason": "stop",
+  "request_id": null,
+  "response_id": "chatcmpl-e286015a-9a5c-902e-a530-76bbca23e9f9",
+  "proposed": {
+    "version": 1,
+    "obligations": [
+      {
+        "clause": {
+          "id": "vb",
+          "kind": "visit",
+          "object": "yellow",
+          "target": "green"
+        },
+        "since": 0
+      },
+      {
+        "clause": {
+          "id": "order",
+          "kind": "before",
+          "first": "va_green",
+          "second": "vb"
+        },
+        "since": 8
+      },
+      {
+        "clause": {
+          "id": "empty",
+          "kind": "empty"
+        },
+        "since": 0
+      },
+      {
+        "clause": {
+          "id": "va_green",
+          "kind": "visit",
+          "object": "blue",
+          "target": "green"
+        },
+        "since": 8
+      }
+    ]
+  },
+  "decision": {
+    "status": "conflict",
+    "plan": [],
+    "history_alternatives": 1,
+    "feasible_alternatives": 0,
+    "horizon": 8,
+    "disputed_events": [],
+    "violated_clauses": [
+      "order"
+    ]
+  },
+  "score": {
+    "semantic_exact": true,
+    "status_correct": true,
+    "valid_gold_suffix": false,
+    "preserved": 2,
+    "preservation_total": 3,
+    "unsafe_ready": false,
+    "end_to_end": true,
+    "affected_ids": [
+      "order",
+      "va",
+      "va_green"
+    ]
+  }
+}

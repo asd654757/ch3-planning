@@ -1,0 +1,1399 @@
+[
+  {
+    "id": "dev-retarget-0",
+    "family": "retarget",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "把蓝色块的最终目的地改为返回区，其他照旧。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "gb",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "protect",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [],
+      "observation_id": "dev-retarget-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "ga",
+            "kind": "at",
+            "object": "blue",
+            "target": "return"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "gb",
+            "kind": "at",
+            "object": "yellow",
+            "target": "table"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "protect",
+            "kind": "forbid",
+            "object": "yellow"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "ready"
+  },
+  {
+    "id": "dev-cancel_dependency-0",
+    "family": "cancel_dependency",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "取消蓝色块经过绿色区的要求，并取消相关先后顺序；黄色块的必经点和空手要求保留。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "va",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "vb",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "va",
+              "second": "vb"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [],
+      "observation_id": "dev-cancel_dependency-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "vb",
+            "kind": "visit",
+            "object": "yellow",
+            "target": "return"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "ready"
+  },
+  {
+    "id": "dev-past_order-0",
+    "family": "past_order",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "补充：原记录中的这两个首次放置必须先蓝后黄。按原记录判断，不许通过重做替代。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "va",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "vb",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-past_order-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "va",
+            "kind": "visit",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "vb",
+            "kind": "visit",
+            "object": "yellow",
+            "target": "return"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "order",
+            "kind": "before",
+            "first": "va",
+            "second": "vb"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "conflict"
+  },
+  {
+    "id": "dev-uncertain_order-0",
+    "family": "uncertain_order",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "原有两次必经放置必须先蓝后黄。首次事件按记录判，未确认不能当作确认，也不许重置起点。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "va",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "vb",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "unknown",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-uncertain_order-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "va",
+            "kind": "visit",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "vb",
+            "kind": "visit",
+            "object": "yellow",
+            "target": "return"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "order",
+            "kind": "before",
+            "first": "va",
+            "second": "vb"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "need_observation"
+  },
+  {
+    "id": "dev-restart-0",
+    "family": "restart",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "从现在重新做必经放置：先把蓝块放入绿色区，再把黄块放入返回区。以前做过的不算本轮，两项旧必经要求替换为新一轮；最终都回桌面且空手。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "va",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "vb",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "table"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "gb",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-restart-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "va_again",
+            "kind": "visit",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "vb_again",
+            "kind": "visit",
+            "object": "yellow",
+            "target": "return"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "order",
+            "kind": "before",
+            "first": "va_again",
+            "second": "vb_again"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "ga",
+            "kind": "at",
+            "object": "blue",
+            "target": "table"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "gb",
+            "kind": "at",
+            "object": "yellow",
+            "target": "table"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "ready"
+  },
+  {
+    "id": "dev-held_prohibition-0",
+    "family": "held_prohibition",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "从现在起禁止再操作蓝块。其他任务要求不变。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "table",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-held_prohibition-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "ga",
+            "kind": "at",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "new_protect",
+            "kind": "forbid",
+            "object": "blue"
+          },
+          "since": 1
+        }
+      ]
+    },
+    "gold_status": "conflict"
+  },
+  {
+    "id": "dev-capacity-0",
+    "family": "capacity",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "黄块最终也放到绿色区。蓝块的目的地和空手要求不变。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "gb",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [],
+      "observation_id": "dev-capacity-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "ga",
+            "kind": "at",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "gb",
+            "kind": "at",
+            "object": "yellow",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "conflict"
+  },
+  {
+    "id": "dev-lift_protection-0",
+    "family": "lift_protection",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "取消不能操作黄块的限制，允许临时挪动它；所有最终位置和空手要求不变。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "gb",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "protect",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "green",
+        "holding": "blue"
+      },
+      "history": [],
+      "observation_id": "dev-lift_protection-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "ga",
+            "kind": "at",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "gb",
+            "kind": "at",
+            "object": "yellow",
+            "target": "table"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "ready"
+  },
+  {
+    "id": "dev-protect_completed-0",
+    "family": "protect_completed",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "蓝块已经放好，从现在起不许再操作它；其他要求保留。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "gb",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-protect_completed-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "ga",
+            "kind": "at",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "gb",
+            "kind": "at",
+            "object": "yellow",
+            "target": "return"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "new_protect",
+            "kind": "forbid",
+            "object": "blue"
+          },
+          "since": 2
+        }
+      ]
+    },
+    "gold_status": "ready"
+  },
+  {
+    "id": "dev-cancel_past_prohibition-0",
+    "family": "cancel_past_prohibition",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "撤销不能操作蓝块的条款；执行记录保留，最后仍须空手。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "protect",
+              "kind": "forbid",
+              "object": "blue"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-cancel_past_prohibition-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "ready"
+  },
+  {
+    "id": "dev-changed_waypoint_order-0",
+    "family": "changed_waypoint_order",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "把蓝块的必经点从绿色区改为返回区。这项新必经要求从现在生效，但原有先蓝后黄及其他要求不变，黄的必经条款不重置。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "va",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "vb",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "va",
+              "second": "vb"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-changed_waypoint_order-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "va",
+            "kind": "visit",
+            "object": "blue",
+            "target": "return"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "vb",
+            "kind": "visit",
+            "object": "yellow",
+            "target": "return"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "order",
+            "kind": "before",
+            "first": "va",
+            "second": "vb"
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "conflict"
+  },
+  {
+    "id": "dev-repeat_one-0",
+    "family": "repeat_one",
+    "split": "dev",
+    "initial_instruction": "已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。",
+    "update": "此前的蓝块放置不计这一次。将旧必经条款替换为从现在再次把蓝块放入绿色区，最后空手。",
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "va",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "symbolic-fixture"
+        }
+      ],
+      "observation_id": "dev-repeat_one-0"
+    },
+    "gold": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "va_again",
+            "kind": "visit",
+            "object": "blue",
+            "target": "green"
+          },
+          "since": 8
+        },
+        {
+          "clause": {
+            "id": "empty",
+            "kind": "empty"
+          },
+          "since": 0
+        }
+      ]
+    },
+    "gold_status": "ready"
+  }
+]

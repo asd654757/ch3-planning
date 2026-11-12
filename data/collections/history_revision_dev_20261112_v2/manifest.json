@@ -1,0 +1,178 @@
+{
+  "created_utc": "2026-11-12T11:54:11.261666+00:00",
+  "split": "dev",
+  "model": "deepseek-v4.1-flash",
+  "methods": [
+    "delta",
+    "full",
+    "full_sliced"
+  ],
+  "calls_planned": 36,
+  "temperature": 0.1,
+  "seed": 0,
+  "max_tokens": 4096,
+  "max_retries": 0,
+  "workers": 2,
+  "horizon": 8,
+  "source_hashes": {
+    "scripts/benchmark_history_revision.py": "ba219a61c306910e658c870e273b1d742feeda181fdeb1f75123d9969ef0736d",
+    "ch3/revision/__init__.py": "c9182337a7c91d66fb7d147736d7ed32fdc8910e80e6dbe2ae26f4359dc4613a",
+    "ch3/revision/cases.py": "7c234b6de4de6fd4658fa2fc29477dfbe62ac285bc0063b6edbd3cfe178fbe66",
+    "ch3/revision/evaluation.py": "1ef8bda008bc709973cd684d17ca5b9a31099b9838ccce2181d52643a58ced09",
+    "ch3/revision/history.py": "bf8365290da96922316c0fa45bb7ac0d1e1a11ac51cd2d7ed00789ada04d86b9",
+    "ch3/revision/model.py": "0a0715dedc4e95ad3162233e4d7b4990d99a81960bbb1960b1bdbc862a236577",
+    "ch3/vlm/client.py": "8552bcbdc528b05f2cf7ce284de380041f35d1af36e8012f8c99cf3ab902a510",
+    "ch3/vlm/task_semantics.py": "38f09cf3b367bd6aa5d09f7e55c002e7736839a3ed11ceffb5c3a2140f2da8b8",
+    "docs/history_revision_protocol_20261112.md": "495e199ae5f53c6855c165dc0a4bb94ad58f58e469c7183ad93e260b3b37f662"
+  },
+  "cases_sha256": "9a89f967edd814555da8293a2a6177876982bfd69f91a32f3a6d1353436a9112",
+  "call_order": [
+    [
+      "dev-protect_completed-0",
+      "full"
+    ],
+    [
+      "dev-protect_completed-0",
+      "delta"
+    ],
+    [
+      "dev-changed_waypoint_order-0",
+      "full_sliced"
+    ],
+    [
+      "dev-capacity-0",
+      "full"
+    ],
+    [
+      "dev-lift_protection-0",
+      "delta"
+    ],
+    [
+      "dev-repeat_one-0",
+      "full"
+    ],
+    [
+      "dev-cancel_dependency-0",
+      "full"
+    ],
+    [
+      "dev-cancel_past_prohibition-0",
+      "delta"
+    ],
+    [
+      "dev-protect_completed-0",
+      "full_sliced"
+    ],
+    [
+      "dev-retarget-0",
+      "full"
+    ],
+    [
+      "dev-held_prohibition-0",
+      "delta"
+    ],
+    [
+      "dev-repeat_one-0",
+      "full_sliced"
+    ],
+    [
+      "dev-past_order-0",
+      "full"
+    ],
+    [
+      "dev-retarget-0",
+      "full_sliced"
+    ],
+    [
+      "dev-restart-0",
+      "full"
+    ],
+    [
+      "dev-restart-0",
+      "full_sliced"
+    ],
+    [
+      "dev-past_order-0",
+      "delta"
+    ],
+    [
+      "dev-changed_waypoint_order-0",
+      "delta"
+    ],
+    [
+      "dev-lift_protection-0",
+      "full_sliced"
+    ],
+    [
+      "dev-uncertain_order-0",
+      "delta"
+    ],
+    [
+      "dev-cancel_dependency-0",
+      "full_sliced"
+    ],
+    [
+      "dev-restart-0",
+      "delta"
+    ],
+    [
+      "dev-past_order-0",
+      "full_sliced"
+    ],
+    [
+      "dev-uncertain_order-0",
+      "full_sliced"
+    ],
+    [
+      "dev-retarget-0",
+      "delta"
+    ],
+    [
+      "dev-cancel_past_prohibition-0",
+      "full"
+    ],
+    [
+      "dev-uncertain_order-0",
+      "full"
+    ],
+    [
+      "dev-held_prohibition-0",
+      "full_sliced"
+    ],
+    [
+      "dev-repeat_one-0",
+      "delta"
+    ],
+    [
+      "dev-cancel_dependency-0",
+      "delta"
+    ],
+    [
+      "dev-lift_protection-0",
+      "full"
+    ],
+    [
+      "dev-capacity-0",
+      "full_sliced"
+    ],
+    [
+      "dev-held_prohibition-0",
+      "full"
+    ],
+    [
+      "dev-cancel_past_prohibition-0",
+      "full_sliced"
+    ],
+    [
+      "dev-changed_waypoint_order-0",
+      "full"
+    ],
+    [
+      "dev-capacity-0",
+      "delta"
+    ]
+  ],
+  "scope": "symbolic_author_built_12_families",
+  "gold_in_prompt": false,
+  "physical_execution": false
+}

@@ -111,4 +111,4 @@ PYTHONPATH=. /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python scripts/analyz
 PYTHONPATH=. /root/autodl-tmp/.venvs/metaworld-lerobot/bin/python scripts/bridge_history_revision.py --output data/collections/history_revision_bridge_reproduction
 ```
 
-本轮最终完整项目测试：**617 passed**，新增 126 项。覆盖原子修订、过期绑定、依赖引用、生效边界、未知证据、搜索剪枝、金标准评分、冲突核复核、必要查询和待解决事务。所有模型尝试及物理桥接均在执行前保存所用源码及摘要；调用时源码未修改，后续分析使用独立版本留档。没有提交或推送 Git 改动。
+本轮最终完整项目测试：**617 passed**，新增 126 项。覆盖原子修订、过期绑定、依赖引用、生效边界、未知证据、搜索剪枝、金标准评分、冲突核复核、必要查询和待解决事务。完成的模型对照及物理桥接均在执行前保存所用源码及摘要；调用时源码未修改，后续分析使用独立版本留档。本轮未主动执行 Git 提交或推送；环境自动备份已生成 `38485a7` 检查点。

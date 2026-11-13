@@ -1,0 +1,171 @@
+{
+  "id": "dev-protect_completed-0",
+  "family": "protect_completed",
+  "experiment": "E2",
+  "method": "direct",
+  "gold_status": "ready",
+  "attempts": [
+    {
+      "index": 1,
+      "system_prompt": "You translate a natural-language incremental task update in a bounded robot domain.\nINITIAL_TASK is the entire accepted task, including unmentioned requirements. Preserve them unless the update changes/cancels them. Do NOT silently weaken infeasible requirements. Also decide feasibility and generate a complete remaining action suffix yourself.\nObjects blue/yellow. Targets table/green/return. One hand, region green/return capacity one, table unlimited. Evidence is a partial append-only event ledger; current state is a separate fresh observation. Unknown events are NOT confirmed physical occurrences. You may not edit history or use gold labels.\nClause kinds: at(object,target) final position; empty no fields final empty hand; forbid(object) forbids all pick/place actions on that object after activation; visit(object,target) requires a place event after activation; before(first,second) references two visit clause IDs and requires their FIRST qualifying events in that order.\nKeep existing IDs for unchanged clauses. An unchanged ID and content preserves activation time, even for full translation. New/changed clause content starts AFTER current history cursor. New before clauses can reference existing visit clauses: these retain original anchors, so already happened events can conflict with a new order. Never rewrite history to fix this.\nTo require doing the SAME visit AGAIN from now: REMOVE old visit, ADD visit with a NEW ID (e.g. va_again), and update any relevant before references. Replacing with identical ID+content does NOT reset time. New forbid is prospective; old unrelated events do not violate it. Explicitly cancelling an old prohibition removes that clause but never deletes events.\nReturn only the specified JSON schema, using version/snapshot from input. Clause fields other than id/kind that do not apply must be omitted or null. Do not include since: activation is assigned by the program. Any nonconflicting ID may be chosen for new clauses. Source quotes establish provenance only.\n",
+      "user_prompt": "{\"INITIAL_INSTRUCTION\": \"已接受的任务由 INITIAL_TASK 完整给出，条款均从记录开始时生效。\", \"INITIAL_TASK\": [{\"clause\": {\"id\": \"ga\", \"kind\": \"at\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 0}, {\"clause\": {\"id\": \"gb\", \"kind\": \"at\", \"object\": \"yellow\", \"target\": \"return\"}, \"since\": 0}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 0}], \"UPDATE\": \"蓝块已经放好，从现在起不许再操作它；其他要求保留。\", \"CURRENT_OBSERVED_STATE\": {\"blue\": \"green\", \"yellow\": \"table\", \"holding\": null}, \"HISTORY\": [{\"seq\": 1, \"kind\": \"pick\", \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}, {\"seq\": 2, \"kind\": \"place\", \"object\": \"blue\", \"target\": \"green\", \"evidence\": \"confirmed\", \"observation_id\": \"symbolic-fixture\"}], \"observation_id\": \"obs-53d252a29ace3143\", \"version\": 0, \"snapshot\": \"4c33a635bc2d8a6d28d7679c22a22f6eecb57ed9ac9e9a32938b8fc9ab9a0c2a\", \"cursor\": 2, \"OUTPUT_INSTRUCTION\": \"Return COMPLETE revised clauses, status and actions. Same contract anchoring rules apply. ready requires a legal suffix satisfying all requirements under EVERY possible history. An empty ready suffix is valid if already done. conflict means no history alternative has a legal suffix within RECOVERY_ACTION_LIMIT. need_observation means no common suffix but at least one history alternative is feasible. For either non-ready status return actions: []. Do not silently weaken an impossible task. pick has target null; place needs a target. Replaying stale suffixes without current prerequisites is invalid. You may copy/reuse valid old actions.\", \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}, \"Clause\": {\"additionalProperties\": false, \"properties\": {\"id\": {\"minLength\": 1, \"title\": \"Id\", \"type\": \"string\"}, \"kind\": {\"enum\": [\"at\", \"empty\", \"forbid\", \"visit\", \"before\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Object\"}, \"target\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}, \"first\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"First\"}, \"second\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Second\"}}, \"required\": [\"id\", \"kind\"], \"title\": \"Clause\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"clauses\": {\"items\": {\"$ref\": \"#/$defs/Clause\"}, \"title\": \"Clauses\", \"type\": \"array\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"clauses\", \"status\", \"actions\"], \"title\": \"DirectOutput\", \"type\": \"object\"}, \"OLD_PREDICTED_SUFFIX_NOT_EXECUTED\": [{\"kind\": \"pick\", \"object\": \"yellow\", \"target\": null}, {\"kind\": \"place\", \"object\": \"yellow\", \"target\": \"return\"}], \"RECOVERY_ACTION_LIMIT\": 8, \"MODEL_REQUEST_LIMIT\": 2, \"FEEDBACK\": null}",
+      "content": "{\"version\": 0, \"snapshot\": \"4c33a635bc2d8a6d28d7679c22a22f6eecb57ed9ac9e9a32938b8fc9ab9a0c2a\", \"clauses\": [{\"id\": \"ga\", \"kind\": \"at\", \"object\": \"blue\", \"target\": \"green\"}, {\"id\": \"gb\", \"kind\": \"at\", \"object\": \"yellow\", \"target\": \"return\"}, {\"id\": \"empty\", \"kind\": \"empty\"}, {\"id\": \"fb\", \"kind\": \"forbid\", \"object\": \"blue\"}], \"status\": \"ready\", \"actions\": [{\"kind\": \"pick\", \"object\": \"yellow\", \"target\": null}, {\"kind\": \"place\", \"object\": \"yellow\", \"target\": \"return\"}]}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 1896,
+      "prompt_tokens": 1487,
+      "completion_tokens": 191,
+      "total_tokens": 1678,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-dee3deb8-c6ed-9fa8-bec0-c694b76b7a4b",
+      "program_ms": 1.087784767150879,
+      "proposed": {
+        "version": 1,
+        "obligations": [
+          {
+            "clause": {
+              "id": "ga",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "gb",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "fb",
+              "kind": "forbid",
+              "object": "blue"
+            },
+            "since": 2
+          }
+        ]
+      },
+      "decision": {
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 3,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 4,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          }
+        ],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "route": "DIRECT_PROPOSAL",
+      "score": {
+        "semantic_exact": true,
+        "status_correct": true,
+        "valid_gold_suffix": true,
+        "preserved": 3,
+        "preservation_total": 3,
+        "unsafe_ready": false,
+        "end_to_end": true,
+        "affected_ids": [
+          "fb"
+        ]
+      },
+      "rejection": null
+    }
+  ],
+  "accepted": true,
+  "tokens": 1678,
+  "score": {
+    "semantic_exact": true,
+    "status_correct": true,
+    "valid_gold_suffix": true,
+    "preserved": 3,
+    "preservation_total": 3,
+    "unsafe_ready": false,
+    "end_to_end": true,
+    "affected_ids": [
+      "fb"
+    ]
+  },
+  "route": "DIRECT_PROPOSAL",
+  "dispatch": {
+    "dispatched_actions": 2,
+    "trace": [
+      {
+        "command": {
+          "step_id": 1,
+          "skill": "pick",
+          "object_id": "yellow_candidate",
+          "target_id": null,
+          "arm": "right"
+        },
+        "observed_event": {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "controlled-symbolic-observation-3"
+        },
+        "observed_state": {
+          "blue": "green",
+          "yellow": "hand",
+          "holding": "yellow"
+        }
+      },
+      {
+        "command": {
+          "step_id": 1,
+          "skill": "place",
+          "object_id": "yellow_candidate",
+          "target_id": "return_region",
+          "arm": "right"
+        },
+        "observed_event": {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "controlled-symbolic-observation-4"
+        },
+        "observed_state": {
+          "blue": "green",
+          "yellow": "return",
+          "holding": null
+        }
+      }
+    ],
+    "initial_ledger_preserved": true,
+    "task_complete": true,
+    "physical_execution": false
+  },
+  "calls": 1,
+  "first_pass": true
+}

@@ -1,0 +1,186 @@
+{
+  "created_utc": "2026-11-13T04:11:44.013647+00:00",
+  "scope": "development_only_4_recovery_8_reused_semantic_cases",
+  "physical_execution": false,
+  "model": "deepseek-v4.1-flash",
+  "methods": [
+    "direct",
+    "full_solver",
+    "patch_routed"
+  ],
+  "case_count": 12,
+  "max_calls": 72,
+  "max_tokens_per_call": 4096,
+  "max_calls_per_case_method": 2,
+  "horizon": 8,
+  "temperature": 0.1,
+  "seed": 0,
+  "transport_retries": 0,
+  "workers": 2,
+  "source_hashes": {
+    "scripts/benchmark_revision_recovery_pilot.py": "18424f942f2ee7bb4162538e29b900a95ad94e2be61516032ba5317fb514c30c",
+    "ch3/revision/__init__.py": "c9182337a7c91d66fb7d147736d7ed32fdc8910e80e6dbe2ae26f4359dc4613a",
+    "ch3/revision/cases.py": "50d4caa35222e2241a2da8e7ce0d6e01b77cedf1cc8dd27bbe40e9354a6f5687",
+    "ch3/revision/diagnosis.py": "83100091fd943d25afdfc5b703f47895b989b92223ad378aa9f53cf12350c586",
+    "ch3/revision/evaluation.py": "a60d5513e7559080418be1574469cc2b7d01c53da1a6f1df54f52be9d3fcfe8a",
+    "ch3/revision/history.py": "77810a6ea345bab4615b6ee18ff69e6d5821cc2a77d01a1968902d6fb9db8c8f",
+    "ch3/revision/model.py": "0a0715dedc4e95ad3162233e4d7b4990d99a81960bbb1960b1bdbc862a236577",
+    "ch3/revision/recovery_pilot.py": "c128021109c89d6c07083324848b301c51b1fce9905ef6f138388732d252dd4d",
+    "ch3/revision/runtime.py": "51debe5e4c0605b0b05f70db24ce62e71e9066bf3b1c71c3ed84c97e4935e700",
+    "ch3/revision/session.py": "9e98998cfe30a68bdd3012a4547b19be591618219ffca5a00d43323047a3262f",
+    "ch3/vlm/client.py": "8552bcbdc528b05f2cf7ce284de380041f35d1af36e8012f8c99cf3ab902a510",
+    "ch3/vlm/task_semantics.py": "38f09cf3b367bd6aa5d09f7e55c002e7736839a3ed11ceffb5c3a2140f2da8b8",
+    "docs/revision_recovery_development_protocol_20261113.md": "ab9cb29c64d578c3cb86016f694ca4aa8b968ffb51e2e7042c94872a7cea7935",
+    "tests/test_revision_recovery_pilot.py": "17ca62d989acdf86f61d739a8c8fa9db14f443d096d9d7042ab493926d34436a"
+  },
+  "cases_sha256": "e7e084c01a0a2321852f29b8885781450e743e32377045eb77da6194ac70363b",
+  "order": [
+    [
+      "dev-restart-0",
+      "patch_routed"
+    ],
+    [
+      "dev-cancel_dependency-0",
+      "full_solver"
+    ],
+    [
+      "recovery-dev-already_done",
+      "patch_routed"
+    ],
+    [
+      "dev-uncertain_order-0",
+      "full_solver"
+    ],
+    [
+      "dev-held_prohibition-0",
+      "full_solver"
+    ],
+    [
+      "dev-held_prohibition-0",
+      "direct"
+    ],
+    [
+      "dev-past_order-0",
+      "direct"
+    ],
+    [
+      "dev-cancel_dependency-0",
+      "patch_routed"
+    ],
+    [
+      "recovery-dev-blocker",
+      "patch_routed"
+    ],
+    [
+      "dev-protect_completed-0",
+      "patch_routed"
+    ],
+    [
+      "recovery-dev-blocker",
+      "full_solver"
+    ],
+    [
+      "recovery-dev-already_done",
+      "full_solver"
+    ],
+    [
+      "dev-protect_completed-0",
+      "full_solver"
+    ],
+    [
+      "dev-repeat_one-0",
+      "direct"
+    ],
+    [
+      "dev-cancel_dependency-0",
+      "direct"
+    ],
+    [
+      "dev-retarget-0",
+      "patch_routed"
+    ],
+    [
+      "recovery-dev-normal",
+      "full_solver"
+    ],
+    [
+      "dev-past_order-0",
+      "full_solver"
+    ],
+    [
+      "recovery-dev-effect_lost",
+      "direct"
+    ],
+    [
+      "dev-retarget-0",
+      "full_solver"
+    ],
+    [
+      "dev-retarget-0",
+      "direct"
+    ],
+    [
+      "dev-uncertain_order-0",
+      "direct"
+    ],
+    [
+      "recovery-dev-effect_lost",
+      "full_solver"
+    ],
+    [
+      "dev-uncertain_order-0",
+      "patch_routed"
+    ],
+    [
+      "dev-restart-0",
+      "direct"
+    ],
+    [
+      "dev-repeat_one-0",
+      "patch_routed"
+    ],
+    [
+      "recovery-dev-normal",
+      "direct"
+    ],
+    [
+      "recovery-dev-blocker",
+      "direct"
+    ],
+    [
+      "recovery-dev-normal",
+      "patch_routed"
+    ],
+    [
+      "dev-restart-0",
+      "full_solver"
+    ],
+    [
+      "dev-protect_completed-0",
+      "direct"
+    ],
+    [
+      "dev-held_prohibition-0",
+      "patch_routed"
+    ],
+    [
+      "recovery-dev-effect_lost",
+      "patch_routed"
+    ],
+    [
+      "dev-repeat_one-0",
+      "full_solver"
+    ],
+    [
+      "dev-past_order-0",
+      "patch_routed"
+    ],
+    [
+      "recovery-dev-already_done",
+      "direct"
+    ]
+  ],
+  "gold_in_prompt": false,
+  "solver_shared_with_full_baseline": true,
+  "online_extra_observations": 0
+}

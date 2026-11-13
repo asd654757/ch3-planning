@@ -1,0 +1,670 @@
+[
+  {
+    "id": "recovery-dev-normal",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 1,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-2"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "table",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "recovery-dev-effect_lost",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 2,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 2,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-2"
+          },
+          "observed_state": {
+            "blue": "hand",
+            "yellow": "table",
+            "holding": "blue"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 3,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-3"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "table",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "recovery-dev-blocker",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 5,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "table",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-2"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "green",
+            "holding": null
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 3,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-3"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "hand",
+            "holding": "yellow"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 4,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-4"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "return",
+            "holding": null
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 5,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-5"
+          },
+          "observed_state": {
+            "blue": "hand",
+            "yellow": "return",
+            "holding": "blue"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 6,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-6"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "return",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "recovery-dev-already_done",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 0,
+      "trace": [],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-retarget-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 2,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 1,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-1"
+          },
+          "observed_state": {
+            "blue": "hand",
+            "yellow": "table",
+            "holding": "blue"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-2"
+          },
+          "observed_state": {
+            "blue": "return",
+            "yellow": "table",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-cancel_dependency-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 2,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 1,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-1"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "hand",
+            "holding": "yellow"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 2,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-2"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "return",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-past_order-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 0,
+      "trace": [],
+      "ledger_unchanged": true,
+      "task_complete": false,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-uncertain_order-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 0,
+      "trace": [],
+      "ledger_unchanged": true,
+      "task_complete": false,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-restart-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 8,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 9,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-9"
+          },
+          "observed_state": {
+            "blue": "hand",
+            "yellow": "table",
+            "holding": "blue"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 10,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-10"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "table",
+            "holding": null
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 11,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-11"
+          },
+          "observed_state": {
+            "blue": "hand",
+            "yellow": "table",
+            "holding": "blue"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "table",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 12,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-12"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "table",
+            "holding": null
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 13,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-13"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "hand",
+            "holding": "yellow"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 14,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-14"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "return",
+            "holding": null
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 15,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-15"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "hand",
+            "holding": "yellow"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "table",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 16,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-16"
+          },
+          "observed_state": {
+            "blue": "table",
+            "yellow": "table",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-held_prohibition-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 0,
+      "trace": [],
+      "ledger_unchanged": true,
+      "task_complete": false,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-protect_completed-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 2,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "yellow_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 3,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-3"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "hand",
+            "holding": "yellow"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "yellow_candidate",
+            "target_id": "return_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 4,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-4"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "return",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  },
+  {
+    "id": "dev-repeat_one-0",
+    "status_matches": true,
+    "dispatch": {
+      "dispatched_actions": 2,
+      "trace": [
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "pick",
+            "object_id": "blue_candidate",
+            "target_id": null,
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 9,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-9"
+          },
+          "observed_state": {
+            "blue": "hand",
+            "yellow": "table",
+            "holding": "blue"
+          }
+        },
+        {
+          "command": {
+            "step_id": 1,
+            "skill": "place",
+            "object_id": "blue_candidate",
+            "target_id": "green_region",
+            "arm": "right"
+          },
+          "observed_event": {
+            "seq": 10,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "controlled-symbolic-observation-10"
+          },
+          "observed_state": {
+            "blue": "green",
+            "yellow": "table",
+            "holding": null
+          }
+        }
+      ],
+      "initial_ledger_preserved": true,
+      "task_complete": true,
+      "physical_execution": false
+    }
+  }
+]

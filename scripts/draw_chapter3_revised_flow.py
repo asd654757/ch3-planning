@@ -69,6 +69,8 @@ class Diagram:
         # Keep a text-editable SVG as an additional authoring source.
         with matplotlib.rc_context({"svg.fonttype": "none"}):
             self.fig.savefig(output/f"{stem}_editable.svg", facecolor="white")
+        for svg in output.glob(f"{stem}*.svg"):
+            svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines())+"\n")
         plt.close(self.fig)
 
 
@@ -79,16 +81,16 @@ def main_flow(font, output):
     d.box("task", .28, .884, .34, .061, "自然语言任务 / 用户新指令", "blue", size=12.5)
     d.box("obs", .72, .884, .34, .061, "RGB、机器人状态与执行回执", "gray", size=12.5)
     labels = [
-        ("semantics", .785, "① 任务语义与版本管理\n明确目标、过程要求及生效范围", "teal", True),
+        ("semantics", .785, "① LLM 语义解析与修订候选\n程序管理任务版本及生效范围", "teal", True),
         ("state", .677, "② 当前状态与执行历史维护\n区分有证据支持、未知与反证", "blue", False),
-        ("check", .569, "③ 修订影响与历史一致性判定\n保留未改要求，检查有界可完成性", "teal", True),
-        ("repair", .461, "④ ROUTED 剩余任务恢复\n局部后缀修复 → 必要时从当前状态重规划", "blue", False),
+        ("check", .569, "③ 修订影响与历史一致性判定\n保留未声明修改项，检查有界可完成性", "teal", True),
+        ("repair", .461, "④ ROUTED：剩余任务恢复\n有效后缀复用；否则 LLM 局部修复\n必要时从当前状态重规划（预算内）", "blue", False),
         ("validate", .353, "⑤ 多层校验与执行绑定\n对象、技能、状态、目标及版本", "blue", False),
         ("execute", .245, "⑥ 编译后调用固定执行器\n执行单步技能，不依据预测宣告成功", "gray", False),
         ("confirm", .137, "⑦ 执行后证据确认\n核对实际效果，判断当前任务是否完成", "blue", False),
     ]
     for name, y, label, color, dashed in labels:
-        d.box(name, .49, y, .39, .072, label, color, dashed, size=12)
+        d.box(name, .49, y, .39, .072, label, color, dashed, size=11.2 if name == "repair" else 12)
     for a, b in zip([x[0] for x in labels[:-1]], [x[0] for x in labels[1:]]):
         d.connect(a, b)
     d.arrow([d.point("task", "bottom"), (.28, .785), d.point("semantics", "left")])
@@ -97,8 +99,8 @@ def main_flow(font, output):
     d.text(.575, .299, "通过", 10, COLORS["blue_edge"])
     d.box("query", .85, .621, .23, .084, "证据不足\n相关证据查询 / 旧记录核查", "amber", True, size=11)
     d.box("conflict", .85, .452, .23, .084, "历史或要求冲突\n暂停，给出冲突与修订选项", "teal", True, size=11)
-    d.arrow([d.point("check", "right"), (.719, .569), (.719, .621), d.point("query", "left")], color=COLORS["amber_edge"])
-    d.arrow([d.point("check", "right"), (.719, .569), (.719, .452), d.point("conflict", "left")], color=COLORS["teal_edge"])
+    d.arrow([d.point("check", "right"), d.point("query", "left")], color=COLORS["amber_edge"])
+    d.arrow([d.point("check", "right"), d.point("conflict", "left")], color=COLORS["teal_edge"])
     d.arrow([d.point("query", "right"), (.983, .621), (.983, .719), (.72, .719), (.72, .677), d.point("state", "right")], color=COLORS["amber_edge"])
     d.text(.847, .736, "能补齐：更新证据；否则暂停澄清", 9.3, COLORS["amber_edge"])
     d.arrow([d.point("conflict", "right"), (.994, .452), (.994, .785), d.point("semantics", "right")], color=COLORS["teal_edge"], dashed=True)
@@ -135,9 +137,9 @@ def comparison(font, output):
     ]
     ours = [
         ("o1", .827, "任务 / 新指令＋当前观测＋执行历史", "gray"),
-        ("o2", .713, "任务版本＋有证据的当前状态", "blue"),
+        ("o2", .713, "LLM 语义候选＋任务版本＋证据状态", "blue"),
         ("o3", .599, "影响范围＋历史一致性 / 可完成性", "teal"),
-        ("o4", .485, "ROUTED：修复后缀 / 必要时重规划", "blue"),
+        ("o4", .485, "复用有效后缀 / LLM 修复或重规划", "blue"),
         ("o5", .371, "契约校验 → 固定执行器", "blue"),
         ("o6", .257, "执行后确认 → 完成或更新状态", "teal"),
         ("o7", .132, "证据不足 / 冲突：查询、澄清或暂停", "amber"),
@@ -153,6 +155,8 @@ def comparison(font, output):
     d.text(.454, .237, "失败", 9, COLORS["blue_edge"], rotation=90)
     d.arrow([d.point("p7", "left"), (.05, .132), (.05, .713), d.point("p2", "left")])
     d.text(.034, .42, "修正建模后重新求解", 9.5, COLORS["blue_edge"], rotation=90)
+    d.arrow([d.point("p6", "right"), (.443, .257), (.443, .485), d.point("p4", "right")], color=COLORS["teal_edge"], dashed=True)
+    d.text(.431, .489, "状态推进 / 下一子目标", 9, COLORS["teal_edge"], rotation=90)
     d.arrow([d.point("o3", "right"), (.974, .599), (.974, .132), d.point("o7", "right")], color=COLORS["amber_edge"])
     d.text(.989, .36, "无法直接继续", 9, COLORS["amber_edge"], rotation=90)
     d.arrow([d.point("o7", "left"), (.55, .132), (.55, .713), d.point("o2", "left")], color=COLORS["amber_edge"])
@@ -169,7 +173,7 @@ MAIN_MERMAID = """flowchart TD
     O[RGB、机器人状态与执行回执] --> S[当前状态与只读执行历史]
     C --> S
     S --> H{修订影响、历史一致性与有界可完成性}
-    H -->|可完成| R[ROUTED：修复剩余后缀；必要时从当前状态重规划]
+    H -->|可完成| R[ROUTED：复用有效后缀；必要时调用LLM修复或从当前状态重规划]
     H -->|证据不足| Q[相关证据查询或旧记录核查]
     H -->|冲突| P[暂停并报告冲突与可选修订]
     Q -->|得到新证据| S

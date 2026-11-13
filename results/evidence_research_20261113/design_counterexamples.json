@@ -1,0 +1,60 @@
+{
+  "scope": "six_author_built_design_counterexamples",
+  "physical_trials": 0,
+  "model_calls": 0,
+  "training": false,
+  "not_evidence_of_new_method_superiority": true,
+  "examples": [
+    {
+      "id": "irrelevant_information",
+      "entropy_bits": {
+        "irrelevant_context": 3.0,
+        "task_fact": 1.0
+      },
+      "entropy_greedy_total_cost": 2,
+      "exact_decision_cost": 1.0,
+      "lesson": "More world information need not reduce decision cost."
+    },
+    {
+      "id": "unequal_query_cost",
+      "both_query_cardinalities": 1,
+      "costs": {
+        "expensive": 10,
+        "cheap": 1
+      },
+      "exact_first_query": "cheap",
+      "lesson": "Minimum number of queries is not minimum acquisition cost."
+    },
+    {
+      "id": "adaptive_branching",
+      "smallest_fixed_query_set_cost": 2,
+      "exact_adaptive_expected_cost": 1.5,
+      "lesson": "A first negative answer can make the second test unnecessary."
+    },
+    {
+      "id": "overlapping_valid_decisions",
+      "arbitrary_canonical_decisions": [
+        "A",
+        "B",
+        "B"
+      ],
+      "common_valid_decisions": [
+        "B"
+      ],
+      "necessary_queries": 0,
+      "lesson": "Different selected plans do not imply that evidence must be queried."
+    },
+    {
+      "id": "pairwise_agreement_is_insufficient",
+      "every_pair_has_common_decision": true,
+      "global_common_decisions": [],
+      "decision_without_more_evidence": "unresolved",
+      "lesson": "Pairwise compatibility is insufficient for an overlapping decision region."
+    },
+    {
+      "id": "unavailable_or_uninformative_evidence",
+      "outcome": "unresolved",
+      "lesson": "Neither absent archives nor unknown answers provide a truth label."
+    }
+  ]
+}

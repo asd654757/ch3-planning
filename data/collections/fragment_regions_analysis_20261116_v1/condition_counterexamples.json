@@ -1,0 +1,160 @@
+[
+  {
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "c0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "c1",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [],
+      "observation_id": "counterexample"
+    },
+    "status": "ready",
+    "plan": [
+      {
+        "seq": 1,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "table",
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 5,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 6,
+        "kind": "place",
+        "object": "yellow",
+        "target": "table",
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 7,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      },
+      {
+        "seq": 8,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      }
+    ],
+    "plan_length": 8,
+    "learned_conflict_match": false
+  },
+  {
+    "snapshot": {
+      "contract": {
+        "version": 0,
+        "obligations": [
+          {
+            "clause": {
+              "id": "c0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 0
+          },
+          {
+            "clause": {
+              "id": "c1",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 0
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "hand",
+        "holding": "yellow"
+      },
+      "history": [],
+      "observation_id": "counterexample"
+    },
+    "status": "ready",
+    "plan": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "table",
+        "evidence": "confirmed",
+        "observation_id": "symbolic-fixture"
+      }
+    ],
+    "plan_length": 1,
+    "learned_conflict_match": false
+  }
+]

@@ -1,0 +1,65 @@
+{
+  "n": 384,
+  "methods": {
+    "fixed": {
+      "source_processing_ms": 570.6901326775551,
+      "full_task_backend_calls": 333,
+      "learning_oracle_calls": 0,
+      "new_patterns": 0,
+      "three_object_patterns": 0,
+      "origins": {
+        "backend": 333,
+        "certified_core": 50,
+        "independent_action_bound": 1
+      },
+      "statuses": {
+        "ready": 275,
+        "conflict": 109
+      },
+      "preparation_ms": 8525.878302752972
+    },
+    "learned": {
+      "source_processing_ms": 19113.19999396801,
+      "full_task_backend_calls": 295,
+      "learning_oracle_calls": 9220,
+      "new_patterns": 8,
+      "three_object_patterns": 4,
+      "origins": {
+        "backend": 295,
+        "certified_core": 88,
+        "independent_action_bound": 1
+      },
+      "statuses": {
+        "ready": 275,
+        "conflict": 109
+      },
+      "preparation_ms": 27068.388164043427
+    }
+  },
+  "initial_common_certification_calls": 6222,
+  "initial_common_build_ms": 7935.906119644642,
+  "lower_bound_build_ms": 1.408301293849945,
+  "shared_memo_keys": 333,
+  "target_files_read": false,
+  "source_learning_once": true,
+  "unchanged_algorithms": {
+    "history.decide": true,
+    "history._search": true,
+    "history.monitor": true,
+    "history.successors": true,
+    "history.possible_histories": true,
+    "regions.canonical": true,
+    "regions.minimize": true,
+    "regions.certify_region": true,
+    "regions.assignments": true,
+    "regions.task_mask": true,
+    "bank.__init__": true,
+    "bank.match": true,
+    "bank.combine": true,
+    "bank.verified": true,
+    "bank.evidence": true,
+    "session.resolve": true
+  },
+  "model_calls": 0,
+  "physical_execution": false
+}

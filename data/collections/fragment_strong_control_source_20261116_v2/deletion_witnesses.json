@@ -1,0 +1,490 @@
+[
+  {
+    "source_id": "grid-05007",
+    "source_state": {
+      "blue": "green",
+      "yellow": "hand",
+      "holding": "yellow"
+    },
+    "pattern": {
+      "atoms": [
+        {
+          "kind": "at",
+          "object": "?o0",
+          "target": "?t0"
+        },
+        {
+          "kind": "visit",
+          "object": "?o0",
+          "target": "?t1"
+        },
+        {
+          "kind": "visit",
+          "object": "?o1",
+          "target": "?t1"
+        }
+      ],
+      "variables": [
+        [
+          "?o0",
+          "object"
+        ],
+        [
+          "?o1",
+          "object"
+        ],
+        [
+          "?t0",
+          "target"
+        ],
+        [
+          "?t1",
+          "target"
+        ]
+      ],
+      "horizon": 8
+    },
+    "core": [
+      {
+        "kind": "at",
+        "object": "yellow",
+        "target": "table"
+      },
+      {
+        "kind": "visit",
+        "object": "blue",
+        "target": "green"
+      },
+      {
+        "kind": "visit",
+        "object": "yellow",
+        "target": "green"
+      }
+    ],
+    "certification_and_deletion_oracle_calls": 159,
+    "deletion_witnesses": [
+      {
+        "removed_atom": {
+          "kind": "at",
+          "object": "yellow",
+          "target": "table"
+        },
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 5,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 6,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 7,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "visit",
+          "object": "blue",
+          "target": "green"
+        },
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 5,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 6,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 7,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "visit",
+          "object": "yellow",
+          "target": "green"
+        },
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_id": "grid-03511",
+    "source_state": {
+      "blue": "green",
+      "yellow": "return",
+      "holding": null
+    },
+    "pattern": {
+      "atoms": [
+        {
+          "kind": "at",
+          "object": "?o0",
+          "target": "?t0"
+        },
+        {
+          "kind": "visit",
+          "object": "?o0",
+          "target": "?t1"
+        },
+        {
+          "kind": "visit",
+          "object": "?o1",
+          "target": "?t0"
+        }
+      ],
+      "variables": [
+        [
+          "?o0",
+          "object"
+        ],
+        [
+          "?o1",
+          "object"
+        ],
+        [
+          "?t0",
+          "target"
+        ],
+        [
+          "?t1",
+          "target"
+        ]
+      ],
+      "horizon": 8
+    },
+    "core": [
+      {
+        "kind": "at",
+        "object": "blue",
+        "target": "green"
+      },
+      {
+        "kind": "visit",
+        "object": "blue",
+        "target": "return"
+      },
+      {
+        "kind": "visit",
+        "object": "yellow",
+        "target": "green"
+      }
+    ],
+    "certification_and_deletion_oracle_calls": 159,
+    "deletion_witnesses": [
+      {
+        "removed_atom": {
+          "kind": "at",
+          "object": "blue",
+          "target": "green"
+        },
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 5,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 6,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "visit",
+          "object": "blue",
+          "target": "return"
+        },
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 5,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 6,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 7,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 8,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "visit",
+          "object": "yellow",
+          "target": "green"
+        },
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 5,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 6,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      }
+    ]
+  }
+]

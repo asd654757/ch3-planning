@@ -1,0 +1,57 @@
+{
+  "n": 768,
+  "methods": {
+    "fixed": {
+      "median_query_ms": 1134.8106637597084,
+      "preparation_ms": 17701.441176235676,
+      "total_algorithm_ms_estimate": 18836.251839995384,
+      "target_backend_calls": 435,
+      "source_backend_calls": 333,
+      "initial_certification_calls": 6222,
+      "learning_oracle_calls": 0,
+      "reload_certification_calls": 6222
+    },
+    "learned": {
+      "median_query_ms": 835.6778025627136,
+      "preparation_ms": 54932.047709822655,
+      "total_algorithm_ms_estimate": 55767.72551238537,
+      "target_backend_calls": 369,
+      "source_backend_calls": 295,
+      "initial_certification_calls": 6222,
+      "learning_oracle_calls": 9220,
+      "reload_certification_calls": 15402
+    }
+  },
+  "groups": {
+    "heldout-small": {
+      "n": 384,
+      "fixed_backend": 331,
+      "learned_backend": 284,
+      "statuses": {
+        "conflict": 125,
+        "ready": 259
+      }
+    },
+    "heldout-large": {
+      "n": 384,
+      "fixed_backend": 104,
+      "learned_backend": 85,
+      "statuses": {
+        "conflict": 307,
+        "ready": 77
+      }
+    }
+  },
+  "additional_backend_calls_avoided": 66,
+  "reference_statuses": {
+    "conflict": 432,
+    "ready": 336
+  },
+  "false_rejections": 0,
+  "source_target_canonical_overlap": 0,
+  "source_learning_once": true,
+  "target_learning": false,
+  "target_cache_growth": false,
+  "model_calls": 0,
+  "physical_execution": false
+}

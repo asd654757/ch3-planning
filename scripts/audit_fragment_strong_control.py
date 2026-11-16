@@ -66,8 +66,13 @@ def train(output):
     prior_manifest = json.loads((PRIOR / "manifest.json").read_text())
     for name, expected in prior_manifest["frozen_artifact_hashes"].items():
         assert digest(PRIOR / name) == expected, name
-    patterns = [read_pattern(p) for p in json.loads((PRIOR / "learned_patterns.json").read_text())]
-    assert len(patterns) == 1, "the protocol supplies the single already discovered budget core"
+    budget_patterns = [read_pattern(p) for p in json.loads((PRIOR / "learned_patterns.json").read_text())]
+    assert len(budget_patterns) == 1, "the protocol supplies the single already discovered budget core"
+    seed_patterns = [read_pattern(p) for p in json.loads((PRIOR / "seed_patterns.json").read_text())]
+    # Supply ALL previously available knowledge. The old seed cores can be
+    # semantically redundant through common feature closure while still having
+    # different compiled conjunctions; table equality alone cannot prove that.
+    patterns = [*seed_patterns, *budget_patterns]
     start = perf_counter()
     cases = load_cases(SOURCE)
     random.Random(11661).shuffle(cases)
@@ -135,6 +140,7 @@ def train(output):
     write(output / "source_memo.json", memo)
     write(output / "deletion_witnesses.json", witnesses)
     summary = {"n": len(cases), "compiled_fixed_equals_previous_learned": condition_equal,
+               "prior_seed_patterns_also_supplied_to_fixed": len(seed_patterns),
                "new_patterns": len(learned), "baseline_actual_backend_calls": baseline_calls,
                "learner_backend_requests_under_shared_observations": learner_calls,
                "core_oracle_calls_including_fixed_certification": oracle.calls,

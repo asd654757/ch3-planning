@@ -1,0 +1,36 @@
+{
+  "n": 56774,
+  "coverage": {
+    "fixed": {
+      "rule_hits": 44878,
+      "cache_hits_after_rule": 1983,
+      "backend_calls": 9913
+    },
+    "learned": {
+      "rule_hits": 45226,
+      "cache_hits_after_rule": 1971,
+      "backend_calls": 9577
+    }
+  },
+  "additional_backend_calls_avoided": 336,
+  "source_cache_target_overlaps": 1983,
+  "boundary_cases": 48,
+  "false_rejections": 0,
+  "timing": {
+    "fixed": {
+      "median_query_ms": 16757.36166536808,
+      "preparation_ms": 2819.378189742565,
+      "median_total_ms": 19576.739855110645
+    },
+    "learned": {
+      "median_query_ms": 15789.911732077599,
+      "preparation_ms": 4321.739263832569,
+      "median_total_ms": 20111.650995910168
+    }
+  },
+  "timing_skipped_if_no_additional_coverage": false,
+  "retrospective": true,
+  "target_learning": false,
+  "model_calls": 0,
+  "physical_execution": false
+}

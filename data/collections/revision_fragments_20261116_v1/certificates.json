@@ -1,0 +1,455 @@
+[
+  {
+    "pattern_sha256": "060997984448c725372a8a2660d161294cd8e5d01ac812f4c7a647457c7fb15f",
+    "semantics_sha256": "1f6285be7fac5286c8a8c77c8d75a6602785bccc85e59a2b5a48f5403d44f58b",
+    "scope": "existing_two_object_one_hand_unit_capacity_domain_only",
+    "horizon": 8,
+    "all_bindings": [
+      {
+        "binding": {
+          "?o0": "blue",
+          "?o1": "yellow",
+          "?r0": "green"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "blue",
+          "?o1": "yellow",
+          "?r0": "return"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?o1": "blue",
+          "?r0": "green"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?o1": "blue",
+          "?r0": "return"
+        },
+        "checked_states": 3
+      }
+    ],
+    "deletion_witnesses_first_binding": [
+      {
+        "removed_atom": {
+          "kind": "at",
+          "object": "blue",
+          "target": "green"
+        },
+        "state": {
+          "blue": "table",
+          "yellow": "green",
+          "holding": null
+        },
+        "plan": []
+      },
+      {
+        "removed_atom": {
+          "kind": "forbid",
+          "object": "blue",
+          "target": ""
+        },
+        "state": {
+          "blue": "table",
+          "yellow": "green",
+          "holding": null
+        },
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "yellow",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "loc",
+          "object": "yellow",
+          "target": "green"
+        },
+        "state": {
+          "blue": "green",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": []
+      }
+    ],
+    "oracle_calls": 19,
+    "inclusion_minimal": true
+  },
+  {
+    "pattern_sha256": "0604277736ca12e674003e2550169d1bba97a6718a7197a618d30bbf938e3925",
+    "semantics_sha256": "1f6285be7fac5286c8a8c77c8d75a6602785bccc85e59a2b5a48f5403d44f58b",
+    "scope": "existing_two_object_one_hand_unit_capacity_domain_only",
+    "horizon": 8,
+    "all_bindings": [
+      {
+        "binding": {
+          "?o0": "blue",
+          "?r0": "green",
+          "?r1": "return"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "blue",
+          "?r0": "return",
+          "?r1": "green"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?r0": "green",
+          "?r1": "return"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?r0": "return",
+          "?r1": "green"
+        },
+        "checked_states": 3
+      }
+    ],
+    "deletion_witnesses_first_binding": [
+      {
+        "removed_atom": {
+          "kind": "at",
+          "object": "blue",
+          "target": "green"
+        },
+        "state": {
+          "blue": "return",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": []
+      },
+      {
+        "removed_atom": {
+          "kind": "forbid",
+          "object": "blue",
+          "target": ""
+        },
+        "state": {
+          "blue": "return",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "loc",
+          "object": "blue",
+          "target": "return"
+        },
+        "state": {
+          "blue": "green",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": []
+      }
+    ],
+    "oracle_calls": 19,
+    "inclusion_minimal": true
+  },
+  {
+    "pattern_sha256": "4c444b5531af2c2512f3ebf6e9fd98ef95408f2e8e14cd1863808aad56ba28bb",
+    "semantics_sha256": "1f6285be7fac5286c8a8c77c8d75a6602785bccc85e59a2b5a48f5403d44f58b",
+    "scope": "existing_two_object_one_hand_unit_capacity_domain_only",
+    "horizon": 8,
+    "all_bindings": [
+      {
+        "binding": {
+          "?o0": "blue",
+          "?o1": "yellow",
+          "?r0": "green"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "blue",
+          "?o1": "yellow",
+          "?r0": "return"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?o1": "blue",
+          "?r0": "green"
+        },
+        "checked_states": 3
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?o1": "blue",
+          "?r0": "return"
+        },
+        "checked_states": 3
+      }
+    ],
+    "deletion_witnesses_first_binding": [
+      {
+        "removed_atom": {
+          "kind": "forbid",
+          "object": "blue",
+          "target": ""
+        },
+        "state": {
+          "blue": "green",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 3,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 4,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "loc",
+          "object": "blue",
+          "target": "green"
+        },
+        "state": {
+          "blue": "table",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "visit",
+          "object": "yellow",
+          "target": "green"
+        },
+        "state": {
+          "blue": "green",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": []
+      }
+    ],
+    "oracle_calls": 15,
+    "inclusion_minimal": true
+  },
+  {
+    "pattern_sha256": "77547656ad6a2639da064b483831cb60887057bec385e7f39965d4deb9c635db",
+    "semantics_sha256": "1f6285be7fac5286c8a8c77c8d75a6602785bccc85e59a2b5a48f5403d44f58b",
+    "scope": "existing_two_object_one_hand_unit_capacity_domain_only",
+    "horizon": 8,
+    "all_bindings": [
+      {
+        "binding": {
+          "?o0": "blue",
+          "?o1": "yellow",
+          "?r0": "green"
+        },
+        "checked_states": 13
+      },
+      {
+        "binding": {
+          "?o0": "blue",
+          "?o1": "yellow",
+          "?r0": "return"
+        },
+        "checked_states": 13
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?o1": "blue",
+          "?r0": "green"
+        },
+        "checked_states": 13
+      },
+      {
+        "binding": {
+          "?o0": "yellow",
+          "?o1": "blue",
+          "?r0": "return"
+        },
+        "checked_states": 13
+      }
+    ],
+    "deletion_witnesses_first_binding": [
+      {
+        "removed_atom": {
+          "kind": "at",
+          "object": "blue",
+          "target": "green"
+        },
+        "state": {
+          "blue": "table",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "yellow",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      },
+      {
+        "removed_atom": {
+          "kind": "at",
+          "object": "yellow",
+          "target": "green"
+        },
+        "state": {
+          "blue": "table",
+          "yellow": "table",
+          "holding": null
+        },
+        "plan": [
+          {
+            "seq": 1,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          },
+          {
+            "seq": 2,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "symbolic-fixture"
+          }
+        ]
+      }
+    ],
+    "oracle_calls": 54,
+    "inclusion_minimal": true
+  }
+]

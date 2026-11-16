@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-11-16T11:28:53.044142+00:00",
+  "phase": "development",
+  "source_hashes": {
+    "scripts/benchmark_fragment_regions.py": "3ab7606cd450d29c5264ad6150d2b0dc975e8d8b07b3ec3d20f7d06616b7255a",
+    "ch3/revision/fragment_regions.py": "ed41ee9b57e5cef3c941a7058ed14dee30c4e3286b3b8ce4450362da93820088",
+    "ch3/revision/fragments.py": "86cd975ce6d192a2dd50d17b97cbce14c468d3977bd847f3e8df77ba94d76181",
+    "ch3/revision/history.py": "77810a6ea345bab4615b6ee18ff69e6d5821cc2a77d01a1968902d6fb9db8c8f",
+    "scripts/benchmark_revision_fragments.py": "251cd783f1e6e98b30a329d0b5037b88bc72b815c61c451e3714f4e31b3f1b81",
+    "tests/test_fragment_regions.py": "92b3ade0f35125afc6bbb69a130ca422c6d6af4af435095d252765b77c8d219c",
+    "docs/fragment_regions_protocol_20261116.md": "27f056b2786f17bab86baeb2276bd3dba44f4e627b9a380477cf4fc770e9e1c2"
+  },
+  "frozen_artifact_hashes": {
+    "calibration_cases.json": "caa276ddb4c61918b5af768b4b6f38db684a110b14b9cbe29a1463ab9b8f41de",
+    "training.json": "c8f1f652b67838aae392f4dab32ff8290769b02bdbe3ee2246b6bf93e5e30f06",
+    "calibration_trace.json": "114f37c911599802261caf8c711e59ea4fb0b9c67e96d5475531c7e5429c374f",
+    "seed_patterns.json": "b66d094ed5bd583e4be03a256826dcff56b3dd9c156c7c47e42a5782b53db3e4",
+    "learned_patterns.json": "80525d9282108cb388c9f243b6d90a13ffebac6b1d6a34c2fabc157317f028b4",
+    "expert_certificates.json": "c237cea3834a00a62cb7c48e3eebc3f6486deb3dce15e8f68331ab054b0a133a",
+    "seed_certificates.json": "7c4ffd977ec559d5902851a7a36441cda1073aba0dd2ae88bb25f3f97cd3c9d0",
+    "learned_certificates.json": "aa03ba7cea796d51b248ea6482c8bc4726a99c2c009d5ce5dc5a90986f8d7fb7",
+    "cases.json": "f3f88e062b929094d78d9b4f39b4cca86ffa33e7092ca02662b90728a090e5d4"
+  },
+  "prior_development_cases_sha256": "dcfc473356054fd4f40570175f7bf096bcd11fbffe8bd0b59d0248162e67ad5c",
+  "repeats": 1,
+  "frozen_training": null,
+  "bank_recertification_ms": {},
+  "training": {
+    "full_preparation_ms": 571.3709443807602,
+    "expert_preparation_ms": 191.80749356746674,
+    "instrumented_core_oracle_calls": 831,
+    "calibration_backend_calls": 157,
+    "calibration_cases": 256,
+    "initial_patterns": 3,
+    "new_calibration_patterns": 1,
+    "verified_model_rejections": 55,
+    "scope": "existing finite development cases; backend infeasibility is not a physical execution failure"
+  },
+  "validation_labels_available_to_training": false,
+  "timing": "single-process serial; whole-pass timers; rotating method order; shuffled identical query orders",
+  "model_calls": 0,
+  "physical_execution": false
+}

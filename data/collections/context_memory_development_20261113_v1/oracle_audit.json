@@ -1,0 +1,242 @@
+[
+  {
+    "id": "development-00",
+    "expected_status": "ready",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 17,
+      "selected_records": 4,
+      "selected_record_ids": [
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination"
+      ],
+      "selected_memory_ids": [],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-01",
+    "expected_status": "ready",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 24,
+      "selected_records": 5,
+      "selected_record_ids": [
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination"
+      ],
+      "selected_memory_ids": [
+        "occupied_destination"
+      ],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-02",
+    "expected_status": "conflict",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 28,
+      "selected_records": 5,
+      "selected_record_ids": [
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination"
+      ],
+      "selected_memory_ids": [
+        "occupied_destination"
+      ],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-03",
+    "expected_status": "ready",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 31,
+      "selected_records": 5,
+      "selected_record_ids": [
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination"
+      ],
+      "selected_memory_ids": [],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-04",
+    "expected_status": "conflict",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 25,
+      "selected_records": 13,
+      "selected_record_ids": [
+        "event:13",
+        "event:14",
+        "event:15",
+        "event:16",
+        "event:17",
+        "event:18",
+        "event:19",
+        "event:20",
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "uncertain_first_event",
+        "occupied_destination"
+      ],
+      "selected_memory_ids": [],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-05",
+    "expected_status": "need_observation",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 29,
+      "selected_records": 13,
+      "selected_record_ids": [
+        "event:17",
+        "event:18",
+        "event:19",
+        "event:20",
+        "event:21",
+        "event:22",
+        "event:23",
+        "event:24",
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination",
+        "uncertain_first_event"
+      ],
+      "selected_memory_ids": [
+        "uncertain_first_event"
+      ],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-06",
+    "expected_status": "ready",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 33,
+      "selected_records": 5,
+      "selected_record_ids": [
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination",
+        "uncertain_first_event"
+      ],
+      "selected_memory_ids": [],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  },
+  {
+    "id": "development-07",
+    "expected_status": "ready",
+    "label_matches": true,
+    "filtered_monitor_equivalent": true,
+    "inputs_match_except_selection": true,
+    "joint_selection": {
+      "all_records": 33,
+      "selected_records": 5,
+      "selected_record_ids": [
+        "occupancy:green",
+        "occupancy:return",
+        "state:blue",
+        "state:holding",
+        "state:yellow"
+      ],
+      "retrieved_memory_ids": [
+        "occupied_destination"
+      ],
+      "selected_memory_ids": [],
+      "inapplicable_memory_count": 0,
+      "extra_records_from_memory": [],
+      "joint_context_equals_strong_dependency_filter": true,
+      "all_task_clauses_preserved": true
+    },
+    "physical_execution": false
+  }
+]

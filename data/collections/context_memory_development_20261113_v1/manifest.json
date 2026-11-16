@@ -1,0 +1,215 @@
+{
+  "created_utc": "2026-11-13T15:28:20.300720+00:00",
+  "user_timezone": "Asia/Shanghai",
+  "split": "development",
+  "model": "deepseek-v4.1-flash",
+  "methods": [
+    "full",
+    "filtered",
+    "full_memory",
+    "filtered_memory",
+    "joint"
+  ],
+  "instance_method_pairs": 40,
+  "max_api_calls": 80,
+  "max_calls_per_pair": 2,
+  "max_tokens_per_call": 2048,
+  "temperature": 0.1,
+  "seed": 0,
+  "enable_thinking": false,
+  "transport_retries": 0,
+  "workers": 2,
+  "source_hashes": {
+    "scripts/benchmark_context_memory.py": "b7dbb199eca4d86179d6fe267229f00724fc78d714fd3eeddd76a1f8df26adb6",
+    "ch3/context_memory/__init__.py": "2cda1e164c69c9424bf987c995786ac67d7cbe6efdbea34dfa2965e086dc56f4",
+    "ch3/context_memory/cases.py": "2c1a814dc58b3f6094b054b3c7104c2a4b4451830c3a2a873288aec65f206b9f",
+    "ch3/context_memory/core.py": "f262a173a227ee7c16b75d8593c895243ffde091919dbdab16b72adcae402969",
+    "ch3/revision/__init__.py": "c9182337a7c91d66fb7d147736d7ed32fdc8910e80e6dbe2ae26f4359dc4613a",
+    "ch3/revision/cases.py": "50d4caa35222e2241a2da8e7ce0d6e01b77cedf1cc8dd27bbe40e9354a6f5687",
+    "ch3/revision/diagnosis.py": "83100091fd943d25afdfc5b703f47895b989b92223ad378aa9f53cf12350c586",
+    "ch3/revision/evaluation.py": "a60d5513e7559080418be1574469cc2b7d01c53da1a6f1df54f52be9d3fcfe8a",
+    "ch3/revision/feedback.py": "b3faf7461bd5d3c781e4418bedf177c5836e85af9d53330162f55158baffc985",
+    "ch3/revision/history.py": "77810a6ea345bab4615b6ee18ff69e6d5821cc2a77d01a1968902d6fb9db8c8f",
+    "ch3/revision/model.py": "0a0715dedc4e95ad3162233e4d7b4990d99a81960bbb1960b1bdbc862a236577",
+    "ch3/revision/recovery_pilot.py": "c128021109c89d6c07083324848b301c51b1fce9905ef6f138388732d252dd4d",
+    "ch3/revision/runtime.py": "51debe5e4c0605b0b05f70db24ce62e71e9066bf3b1c71c3ed84c97e4935e700",
+    "ch3/revision/session.py": "9e98998cfe30a68bdd3012a4547b19be591618219ffca5a00d43323047a3262f",
+    "ch3/vlm/client.py": "8552bcbdc528b05f2cf7ce284de380041f35d1af36e8012f8c99cf3ab902a510",
+    "ch3/vlm/task_semantics.py": "38f09cf3b367bd6aa5d09f7e55c002e7736839a3ed11ceffb5c3a2140f2da8b8",
+    "ch3/schema/model_plan.py": "27fcf794063af0df0001b3cdf1ec1333370386de1a715753379934192c64f443",
+    "scripts/benchmark_revision_recovery_pilot.py": "0dddf9546aa81839a50f241a14cd873c3671809d7b3c710029fde09fdb465f6a",
+    "scripts/analyze_history_revision.py": "898f085978700a40f3bb23a83bbeaec95195a6b33df1e60c661e3fadfa17719c",
+    "tests/test_context_memory.py": "421c7d89b6e22453495a347ef77c262285e65e43787491f76df7535de19a6552",
+    "docs/context_memory_development_protocol_20261113.md": "734c563424555d0ccd853e85cdc8cc4193c084977cac0f3acbebace1308c009d"
+  },
+  "cases_sha256": "5c76ba894b3d36f9ecc9fa847bac6b8b34da09bcd39c2781f1e766d77059ce75",
+  "memory_sha256": "3d1c4ffff901b0406281d3f8d49ce52e7fa05645a7c0941d8443722b329bdb24",
+  "initial_prompts_sha256": "75085a9da8b5a813973101b210a5a8f96d824b32bfc806810dc54219b275cc4b",
+  "order": [
+    [
+      "development-03",
+      "full"
+    ],
+    [
+      "development-01",
+      "full"
+    ],
+    [
+      "development-01",
+      "full_memory"
+    ],
+    [
+      "development-04",
+      "full_memory"
+    ],
+    [
+      "development-07",
+      "joint"
+    ],
+    [
+      "development-00",
+      "full_memory"
+    ],
+    [
+      "development-03",
+      "filtered"
+    ],
+    [
+      "development-04",
+      "filtered_memory"
+    ],
+    [
+      "development-00",
+      "filtered_memory"
+    ],
+    [
+      "development-00",
+      "joint"
+    ],
+    [
+      "development-06",
+      "filtered_memory"
+    ],
+    [
+      "development-01",
+      "filtered_memory"
+    ],
+    [
+      "development-06",
+      "full_memory"
+    ],
+    [
+      "development-07",
+      "full"
+    ],
+    [
+      "development-01",
+      "filtered"
+    ],
+    [
+      "development-03",
+      "joint"
+    ],
+    [
+      "development-06",
+      "filtered"
+    ],
+    [
+      "development-02",
+      "filtered"
+    ],
+    [
+      "development-04",
+      "joint"
+    ],
+    [
+      "development-07",
+      "filtered"
+    ],
+    [
+      "development-02",
+      "full"
+    ],
+    [
+      "development-02",
+      "filtered_memory"
+    ],
+    [
+      "development-00",
+      "filtered"
+    ],
+    [
+      "development-00",
+      "full"
+    ],
+    [
+      "development-05",
+      "full"
+    ],
+    [
+      "development-04",
+      "full"
+    ],
+    [
+      "development-07",
+      "filtered_memory"
+    ],
+    [
+      "development-03",
+      "full_memory"
+    ],
+    [
+      "development-06",
+      "full"
+    ],
+    [
+      "development-05",
+      "filtered"
+    ],
+    [
+      "development-04",
+      "filtered"
+    ],
+    [
+      "development-05",
+      "joint"
+    ],
+    [
+      "development-02",
+      "full_memory"
+    ],
+    [
+      "development-05",
+      "full_memory"
+    ],
+    [
+      "development-01",
+      "joint"
+    ],
+    [
+      "development-03",
+      "filtered_memory"
+    ],
+    [
+      "development-07",
+      "full_memory"
+    ],
+    [
+      "development-02",
+      "joint"
+    ],
+    [
+      "development-05",
+      "filtered_memory"
+    ],
+    [
+      "development-06",
+      "joint"
+    ]
+  ],
+  "physical_execution": false,
+  "experience_entries": 2,
+  "memory_abstractions": "human_authored",
+  "gold_in_prompt": false,
+  "method_boundary": "joint_equals_strong_dependency_filter_plus_applicability_gating_in_these_cases"
+}

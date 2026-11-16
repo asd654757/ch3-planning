@@ -1,0 +1,119 @@
+[
+  {
+    "input": "data/collections/context_memory_development_20261113_v1",
+    "all_archive_hashes_valid": true,
+    "loaded_own_frozen_core": true,
+    "first_prompts_and_selection_reproduced": true,
+    "candidate_attempts_replayed": 57,
+    "accepted_dispatch_reproduced": true,
+    "summary": {
+      "full": {
+        "n": 8,
+        "first_correct": 4,
+        "final_correct": 8,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 12,
+        "tokens": 28995,
+        "selected_context_records": 220,
+        "selected_memories": 0,
+        "unsafe_ready_proposals": 4
+      },
+      "filtered": {
+        "n": 8,
+        "first_correct": 4,
+        "final_correct": 7,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 12,
+        "tokens": 16382,
+        "selected_context_records": 55,
+        "selected_memories": 0,
+        "unsafe_ready_proposals": 5
+      },
+      "full_memory": {
+        "n": 8,
+        "first_correct": 5,
+        "final_correct": 7,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 11,
+        "tokens": 28077,
+        "selected_context_records": 220,
+        "selected_memories": 11,
+        "unsafe_ready_proposals": 4
+      },
+      "filtered_memory": {
+        "n": 8,
+        "first_correct": 5,
+        "final_correct": 8,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 11,
+        "tokens": 16372,
+        "selected_context_records": 55,
+        "selected_memories": 11,
+        "unsafe_ready_proposals": 3
+      },
+      "joint": {
+        "n": 8,
+        "first_correct": 5,
+        "final_correct": 7,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 11,
+        "tokens": 15311,
+        "selected_context_records": 55,
+        "selected_memories": 3,
+        "unsafe_ready_proposals": 4
+      }
+    },
+    "identical_initial_prompt_pairs": [
+      {
+        "id": "development-00",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-01",
+        "reference": "filtered_memory",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-02",
+        "reference": "filtered_memory",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-03",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-04",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": true
+      },
+      {
+        "id": "development-06",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-07",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      }
+    ],
+    "raw_results_sha256": "00906253f568e0fee6fea9e73813c9e9ff5cef46b17c0497c3b8716613364adb",
+    "raw_data_modified": false,
+    "method_identifiability": "joint_context_equals_dependency_context; remaining distinction is experience gating"
+  }
+]

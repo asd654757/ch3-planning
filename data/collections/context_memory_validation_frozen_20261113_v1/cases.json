@@ -1,0 +1,4762 @@
+[
+  {
+    "id": "validation-00",
+    "split": "validation",
+    "family": "protected_bystander",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "protect_yellow",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 12
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7f79d84caeb95a62"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-d8c7b2837d259c37"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c569ba9b95359a0b"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-3f5009ec55cc70e8"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0a3a81bd257006b6"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-47affc0bd5c22d42"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-83d7832fd2621301"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-2f4337fd9827dafd"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-a8e07173ae4f2e3e"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-b233b4bcd6b3e259"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-798fcd155792c381"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-d178baf63ef99fc2"
+        }
+      ],
+      "observation_id": "obs-8945b2f02d8885c7"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 12,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-01",
+    "split": "validation",
+    "family": "partial_completion",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "protect_blue",
+              "kind": "forbid",
+              "object": "blue"
+            },
+            "since": 19
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 16
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "hand",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3bbf229ab59c2dd6"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5f182d2bbec957f3"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f4e6a1a3c90e5e79"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-030ef8c49b491b88"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7d961ff16498c942"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-51a40e202de7b7d9"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-4ac633f1d346c9ff"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-659fe04d4c0e9fb9"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9254f501f3477d45"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5fce62ad2076f945"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-331c7fd060eff5cf"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-87c67d33b4968262"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b8f87da584d66452"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-a2743b4c97d2d937"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3d6628d11bf8ff6d"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-6e85e64a63b0c070"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0dca10b5f2db41b9"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-3bbd490b6e7f9bd2"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-af4eba294bbe5a0f"
+        }
+      ],
+      "observation_id": "obs-c6564216f6df8e6b"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 16,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-02",
+    "split": "validation",
+    "family": "blocked_new_order",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 23
+          },
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 23
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_yellow",
+              "second": "visit_blue"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "return",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-10fdb397ec23b527"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-4e134a2de2d60110"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5f708a5f67acd279"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-2c2e413ab3bcb758"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b57567ca144cda83"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-f018edf4c47acec4"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-1c7299a6eb21e364"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-1afe4d19acc8e404"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d79d43ff9a879fce"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-2f73746e69e288a6"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-55516a753b68dafa"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-735ae13436ddcdd1"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-fe8cfa99d799f6df"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5ca6b496e280c973"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9c8bbd51cab9720b"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-e8502d2cde117db6"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-67b0b5a97f5567e9"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-09025a78d0ded34c"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e120404a2d1296d8"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-97ff7650ad340961"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-054d7cbabe092076"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-fb0c86a8a65d9475"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-16a1de816975968b"
+        }
+      ],
+      "observation_id": "obs-77cc561f6edb7b81"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 20,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-03",
+    "split": "validation",
+    "family": "unreachable_protected_goal",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "protect_blue",
+              "kind": "forbid",
+              "object": "blue"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 24
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5b7abe6563b94a50"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-47059c46c934e619"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7aff31b18c26410b"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-5f15190d4ba972cf"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9824b7c0248dd76a"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-087e6a739c31d5bd"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5d20b65a0798cf0b"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-d60203ceaa0d3e71"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f64597e94245d8b1"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-71b1dec09802336a"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-bf63bcbb2e38f0b4"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-e136b19d57dc3099"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-80974cd05da6f9c3"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c2fbce99e938f6c5"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-909160bf05087e6f"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-b1e00e011084366e"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f38a075350c6304f"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-7f3d17f0b1fb9561"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-385c219b0e3760c8"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-2cb9a433db4ae44d"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-150ea9c1fc73daaf"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-ded5bdbfbad3d46d"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0dd07c4ed3d7205d"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-4a81d2730d6c1848"
+        }
+      ],
+      "observation_id": "obs-f5e0be12afe00463"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "conflict",
+    "background_events": 24,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-04",
+    "split": "validation",
+    "family": "swap_with_waypoint",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "table"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_blue",
+              "second": "visit_yellow"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 12
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "return",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-71ca6bff13d8b796"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-ceafebfa48fdab1f"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7bfc566744245d2c"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-2cd6c974a02b4207"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-46e1cc38a1b7b377"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-040f66a4cd7a90b4"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-eb2516208041ede7"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-f9a47c72f811ab9d"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-da20586a92269c8b"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-fec94989e24fccaf"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-088a83610d8f59e4"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-47503b0e001175b2"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2028f171cc08bb49"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-a86820e25d682f30"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5250dd57fe6077cd"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-69976e22598701b8"
+        }
+      ],
+      "observation_id": "obs-fdbf4096da744e8b"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 12,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-05",
+    "split": "validation",
+    "family": "protected_swap",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "protect_blue",
+              "kind": "forbid",
+              "object": "blue"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 16
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "return",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-1bcb1e97bdafcb28"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c07774a6559c8c9f"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5c62f3bc23b1fc35"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-0315b16691c25063"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-29f33fac6e33a491"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-4d498241b250fa05"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6fbd938ef3d774f8"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-2524e8fd2f69ab3c"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9a8a75d03260c742"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-36efee1ac59eb069"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-a28c57d8ef029132"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-b5dfcfd15a481d36"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-10ea10cca4580a9e"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-bc12fcc11b711f1c"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-41de7034587e78c6"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-77cd57e4f62c16c9"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c1692325eec484b1"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-7e14c219e3babf3a"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-690dbf44e446bf67"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-0192c035096b3c3f"
+        }
+      ],
+      "observation_id": "obs-20a12a903dd71161"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "conflict",
+    "background_events": 16,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-06",
+    "split": "validation",
+    "family": "uncertain_but_robust_suffix",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_blue",
+              "second": "visit_yellow"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-a2a7b4b6efed3bbf"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-2fce88f57dc4fc70"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b0d1ba14b5cea9e7"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-92b8adbc325c298f"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6b40584d45f001b5"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-a2e48f42ce2fa363"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f447649ed061e814"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-83bcb6e081727ab7"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-47679912fa511a4c"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-251d98456e725547"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6382533ea15e2ecf"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-3be3a75e83728584"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-03c09ebb6a9091d0"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-841963a12a49f04c"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b9cdb5926f92713e"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-45c332809d99942b"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0aed7efe3407c2fe"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-4cfdbbdd3987489f"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-8a316611df070a0a"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-7d4f13385811afa2"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-48cb6d1e268c6a63"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-bd455c91d9f020c4"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0a442a22a3b69de0"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-84bef6cd7b37e9b4"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0cc4d387dafdf52a"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "unknown",
+          "observation_id": "obs-fd07b03743f882b6"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9fa7f291f9016f75"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-830fe335f0323261"
+        }
+      ],
+      "observation_id": "obs-3547f339d0237af8"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 20,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-07",
+    "split": "validation",
+    "family": "two_unknown_order",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_blue",
+              "second": "visit_yellow"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 24
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-12afb8ff8394c381"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-a8bf814f29c733a4"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-ae4008ea7b4f4588"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-0dfb19b5892f5693"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-a32ca7af2cd09552"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5bab6b4bb66cb844"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-09519f1bb8be169b"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-5913bcc9ad8b5758"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e0310bf4ef069e77"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-016e0edf47a17dca"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c8992ee07793939b"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a5e8bb063fd94462"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-368e3036e6c212f9"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c194985acdfe6620"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-83358e5d8718723b"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-fd92ed1595e2501d"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-39bf886fdb8ac9a8"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-ec58982854768817"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b5008a8f9afc5e16"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-27b8f137b30e03ff"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-32a4fc61ef7cdc0a"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-a1b0037904246d44"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c1d40818aba5b036"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-8cd45ed50fa37236"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f4c01a38cd88b8ec"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "unknown",
+          "observation_id": "obs-9d28032fd612d41d"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-11809d2090f8287e"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-0f345efe2d03f223"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-bb81b3398c67c9ac"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "unknown",
+          "observation_id": "obs-129b81a9bc582fc2"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-ebc10de66ae91c70"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-aa992c1b0c4294be"
+        }
+      ],
+      "observation_id": "obs-b5298ba2bff33997"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "need_observation",
+    "background_events": 24,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-08",
+    "split": "validation",
+    "family": "old_order_not_active",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 12
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d632839a072c8748"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c9bc71b3362f261c"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-923ed5f88f8f3cad"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-b6fdc4f64a804e17"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b783be8f185a3dff"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-26270b62e3cdbd1a"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-500f5f52f12c3aac"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-8de60fe21bcdb59b"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-8b474230964ab4a6"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-328d9a230dda716b"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-1850d304a48f44b7"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-ced9b7e85871def6"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-8765035d43e4897d"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "unknown",
+          "observation_id": "obs-b110bd52fa506d74"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-aa59e211f295ff59"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-dcdcb29656195145"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-45dc3b2b499fe928"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-ebc9b5e585afb7d3"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-aede4a413f59b616"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-294f864af9c5dd4d"
+        }
+      ],
+      "observation_id": "obs-d01bc42982a467f1"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 12,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-09",
+    "split": "validation",
+    "family": "one_scope_restarted",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_blue",
+              "second": "visit_yellow"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 16
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d397279063bf349a"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-3b2c45b0b5ed5268"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b73125040d5c96bc"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-d7c379faf20471b6"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-531a355732b010a7"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-0d8d019d5087b568"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9c8c6c76723b61f5"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a85bba310e06f0ca"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b02bafd375b5b8b2"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5e5c4e59a33f0570"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7440bb91823f747f"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-d9984398eec9fd4f"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-166d2c614c9a2c71"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-e9e70c0d0a5b5795"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3667a09b72fc125c"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-7a064e8572baa522"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b6e16ac8c9c172af"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-5e81b38173106c55"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-8c447fd980c46089"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-d7fc490ff0309376"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b8babff613251e96"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-0ddf8769049eb728"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-1bde7c3923b0c23d"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-7b52787b3d889add"
+        }
+      ],
+      "observation_id": "obs-5d452bdd214541bb"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "conflict",
+    "background_events": 16,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-10",
+    "split": "validation",
+    "family": "held_object_protected",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "protect_yellow",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 21
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "hand",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3d8d6fe24dd9a5dc"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-72314de6bd9c98ed"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-129406edd99b18cf"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-aa2d99646e0205b1"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-18a585cf985d8677"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-d5c38bf1af24645c"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-ed25e5985bd2af45"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-076b60fea7041279"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b894ebb38bcdd924"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-e2c5f2ef5d1fd300"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9feb041012ae03d1"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-e14ff850877578a7"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-aee4f98dcdc860f4"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-b94f0c56be06f73e"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e9b365106b02b7a8"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a6b10f7da7d18337"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f50133b3ff2ef965"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-1d2163cdc9a83c9d"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2bc3bf58db15d854"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-1ca1584adc9445bc"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b8fd1fda26748684"
+        }
+      ],
+      "observation_id": "obs-1ed9dee18f82a554"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "conflict",
+    "background_events": 20,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-11",
+    "split": "validation",
+    "family": "uncertain_visit_repeatable",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "protect_yellow",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 28
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 24
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-ccf6d68eb5fe860c"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5d4f07df893c40f9"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c3585a7f08b74138"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-9ba131e001f0f4e7"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-04d1a200c600d105"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-ff9ce39c6ed01993"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d585bc2210aac99e"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-0156fe7c3c60c420"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9cb6dd569251986c"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-e43cd095a0cb64c7"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-cecfffd1f09128c2"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-aed4d4017e64b65d"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6bc6c36b227e3b5b"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-41fd7f98010a4daf"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d7c0193b764364f7"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-5921b7dda9b8ab41"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-383ca216449f73de"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-9ae005d83e16d378"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6a72793e11da12f2"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-f3454365d78592db"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7fa12d6c5604fe52"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-69f0db80676a2c35"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-fa74825aa1a7e7fc"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-eee45820f2655f3c"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c6713d5cc91f72ad"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "unknown",
+          "observation_id": "obs-0f585b85ea1ce2d5"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-61eca554fd1ab316"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-362514d8f17480fd"
+        }
+      ],
+      "observation_id": "obs-29253b65019b2493"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 24,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-12",
+    "split": "validation",
+    "family": "completed_with_unknown_past",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 12
+          }
+        ]
+      },
+      "state": {
+        "blue": "return",
+        "yellow": "green",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e1a5e5abd5bddd98"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-075c014c8ed71099"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c1f809c048d7b1d6"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-f2149083e638f59e"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f3cacac7f163678d"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-911676aef5927092"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-978d7e615d43ad2d"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-259c982edfbc9296"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2d2cfd7d95ee42ba"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-b3e31c8b2d6f976d"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d64de3f9e0b8acd3"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-1916ec7f6fcab699"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6715d073f453fdc6"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "unknown",
+          "observation_id": "obs-f0d8d7c05de46299"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-20136b8333a6887e"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-92ef9e36f98cc0a7"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6989fcfe603dfabe"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-1fced82528ff271a"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-334af4b3247cba87"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-b7db24c204326c09"
+        }
+      ],
+      "observation_id": "obs-8f8f5da30c51412d"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 12,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-13",
+    "split": "validation",
+    "family": "held_table_delivery",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "table"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "protect_yellow",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 17
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 16
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "table",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-29f99b519c6f9cb5"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c3bb88367738112b"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-bcc5a27c5b63f711"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-862f233ca1efd959"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0f41132cd33755a3"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-372ea098e0de4650"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-45d0b926f8cdb503"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-768dc6addd47ba48"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-40687014b1d5ffe8"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-3e624acd02f5a014"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5875760c79e15ec3"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-0a47d72a44635dfe"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e33fbb36a952c372"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-da030e69c5bdfd47"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-923caaa9b21dc476"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-c58f35c33bd58914"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-38cfb4b8314c6bcd"
+        }
+      ],
+      "observation_id": "obs-eb8e32f122ee4e0f"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 16,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-14",
+    "split": "validation",
+    "family": "blocked_waypoint",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "waypoint",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 23
+          },
+          {
+            "clause": {
+              "id": "finish",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 23
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "waypoint",
+              "second": "finish"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "return",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2a62e6966b146c76"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-bdca40e4802234a7"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-72fe59e46c5ef012"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a03ee569cca4ab7d"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c7906d52361bd480"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-d2148795388df7b9"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c9e53c9a1c65bbd1"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-40e4c76c53ad6420"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-64df737308a64320"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-de8f27da134a2adb"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-4286db53dee72460"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-bcacaebe113addbc"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b31449e58a8a35ee"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-6fa77441b3a44460"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d5bef7e15775fd10"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-aff48eafc8cd313e"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-d19a830a5892ff9c"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-4222a7f97f6da70b"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-84f37b3ec9993773"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-35c76f1abc459f3a"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-288e663ba3138088"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-cf0b53e2ef52e2a4"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-fb337bd0c40d82ab"
+        }
+      ],
+      "observation_id": "obs-72251cf06078bb9f"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 20,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-15",
+    "split": "validation",
+    "family": "protected_waypoint_blocker",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "protect_yellow",
+              "kind": "forbid",
+              "object": "yellow"
+            },
+            "since": 27
+          },
+          {
+            "clause": {
+              "id": "waypoint",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return"
+            },
+            "since": 27
+          },
+          {
+            "clause": {
+              "id": "finish",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 27
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "waypoint",
+              "second": "finish"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 24
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "return",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-306270cdaa7e662c"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-26d4123224e4386c"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-fe9f3b6d65738b5e"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-774d32296ebe4d0e"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-87e80cb9ce4ee20d"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-cb2a5469a925649f"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3644a2e9d255c119"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-50ba97413c6812d8"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b29c62ef3fdf18d1"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-b80ca3d74cc5d495"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-a62a0ead19395b30"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-33386e916de6a148"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-66cdac3bcdb734d1"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-7e9937ebe2e1a605"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-eae4d61bd710b130"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-bfe6185128c19f75"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-425adbad9c9ccf08"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-6e1f57dc0e5492db"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2c635d06754cdaba"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a5db748ff3709353"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5f17429b98ac408e"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-b1e77488a6ce4fd9"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e40d8c85ab37f8d9"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-24795a8b5bd5859e"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-099bb7c45b762971"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-eae2d11561d681c5"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f464da34a373af5d"
+        }
+      ],
+      "observation_id": "obs-1c8b9b73eb78fe65"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "conflict",
+    "background_events": 24,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-16",
+    "split": "validation",
+    "family": "completed_protected_goal",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table"
+            },
+            "since": 12
+          },
+          {
+            "clause": {
+              "id": "protect_blue",
+              "kind": "forbid",
+              "object": "blue"
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 12
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-94be925b33a9b80f"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-bcfa8c6bcc42cb8c"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-985b9b9a7eaf84af"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-f111b16c522fcc23"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-971c9b0403f37185"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-984547b117548f68"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c9fd02490279b2e3"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a14a7612628bac79"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-164cb1eec39dcf28"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-ff4186b89c6cbc34"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c1b4aeb8a5ffd8af"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-f6a9f19f7165ca58"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c3af985d83b97575"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-949e04f9f5d88401"
+        }
+      ],
+      "observation_id": "obs-db9fee25f2cda7bf"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 12,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-17",
+    "split": "validation",
+    "family": "movable_blocker_no_extra_goal",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 19
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 19
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_blue",
+              "second": "visit_yellow"
+            },
+            "since": 16
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 16
+          }
+        ]
+      },
+      "state": {
+        "blue": "return",
+        "yellow": "hand",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-32dc86205426709d"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-2611bbe8db0f85c3"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2d4162d401d1edac"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-3878e59c43dd837f"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3c8115c6ef804ed6"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c06a34d6ed1dfe4a"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7e5fc8a807c051da"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-b6b86f806a5e42a0"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-0cd1d52b6c14ee11"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-6e21f4b87aafe265"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2c1eb7fefb9339a2"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-0eb45aba538fecf8"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-9579142e7178492d"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-2853cbfcc27b741e"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f988482b879d7263"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-3a89f514d3a8d9db"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f3a9668c8dc3a681"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-5e757a39a644663b"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2dcecd3a92eb03d5"
+        }
+      ],
+      "observation_id": "obs-463b734a49edddf2"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "ready",
+    "background_events": 16,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-18",
+    "split": "validation",
+    "family": "unknown_first_visit",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "visit_blue",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "visit_yellow",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "order",
+              "kind": "before",
+              "first": "visit_blue",
+              "second": "visit_yellow"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-b2c379a77845fc21"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-2c16e55b581ec90d"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-4b65b65e4f1fcb05"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-434210799b26aedb"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7658cbcb473ecf3f"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-e89b33d30c03aefa"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-dccf3ee2a3f12363"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-3669fcbd23fec513"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-04939dec9e754715"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-ce5355478f797656"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-35604e26d9595514"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-38865988001c2f88"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-f7cf75c37ee4e8d7"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-36b75cd9a0fd4838"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-6e4f1443e40111c8"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-eddd2ef72d21e997"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-876c1e1bb4f4f975"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c145e31e2df58ad8"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-8ec2c100ccb8ce53"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-6d3780c07ef5675c"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-7fd9634881cbe77b"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "unknown",
+          "observation_id": "obs-94794fac5d53c5d4"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-95d035c062fc34b3"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-4ff2030e17e4e5ca"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-2071c4bc88d07af9"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-1925c2171d76f1ce"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c5092b9c84df7fc8"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-a17a86c75c54d71e"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-ea63e67f4901c764"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "obs-b9538d88bf8fef44"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-ef0f65941c327f14"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-16f583191717db00"
+        }
+      ],
+      "observation_id": "obs-ee3686d5d997a87e"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "need_observation",
+    "background_events": 20,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  },
+  {
+    "id": "validation-19",
+    "split": "validation",
+    "family": "capacity_conflict",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "goal_blue",
+              "kind": "at",
+              "object": "blue",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "goal_yellow",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green"
+            },
+            "since": 24
+          },
+          {
+            "clause": {
+              "id": "empty",
+              "kind": "empty"
+            },
+            "since": 24
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-c4009134375c3a6d"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-c6263c9e4767be59"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-84430f72edbf59c5"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-185d9caf7902c899"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-28cf7eef7ee1d2b4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-d773479d08bb39bb"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-fe92f30c15b7b8c5"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-e9cd7f0647311d03"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-5e155981a8c849e0"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-cdd6b43c46b11199"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-e286b3ed99e30f78"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-1f9b18077ac189cf"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3d4e8fc4d5a69008"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-b2a19e593057104d"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-8b2f82b6262119ad"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-c90b021ec7913aa5"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-3b90a5cdb72cc8b2"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-edb15976a1a91ae9"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-421a6af42803bb0f"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-56ec075b323d753a"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-dcd306fee0ab4d1e"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "obs-e0f9006e087b3792"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "obs-00d01634e2cc0416"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "obs-fb5d71f60d526c6d"
+        }
+      ],
+      "observation_id": "obs-7e1d85fddd470a95"
+    },
+    "instruction": "完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。",
+    "expected_status": "conflict",
+    "background_events": 24,
+    "annotation_source": "author_assigned_before_model_calls",
+    "data_scope": "synthetic_symbolic_two_object_domain"
+  }
+]

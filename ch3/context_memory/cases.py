@@ -6,6 +6,7 @@ Background records are legal synthetic past actions, not physical robot logs.
 """
 from dataclasses import replace
 from hashlib import sha256
+import json
 
 from ch3.revision.history import Clause, Contract, Event, Obligation, Snapshot, State, successors
 
@@ -119,3 +120,16 @@ def make_cases(split="development"):
         raise ValueError("unknown split")
     return [make_case(i, split, family, operations, obligations, status, unknown=unknown,
                       background=3+i%4) for i, (family, operations, obligations, status, unknown) in enumerate(specs)]
+
+
+def load_cases(path):
+    """Use previously frozen inputs verbatim, without regenerating task labels."""
+    from pathlib import Path
+    result = []
+    for raw in json.loads(Path(path).read_text()):
+        s = raw["snapshot"]
+        c = s["contract"]
+        contract = Contract(c["version"], tuple(Obligation(Clause.model_validate(o["clause"]), o["since"]) for o in c["obligations"]))
+        snapshot = Snapshot(contract, State(**s["state"]), tuple(Event(**e) for e in s["history"]), s["observation_id"]).validate()
+        result.append({**raw, "snapshot": snapshot})
+    return result

@@ -1,0 +1,149 @@
+{
+  "id": "development-03",
+  "family": "memory_not_applicable",
+  "method": "full_memory",
+  "expected_status": "ready",
+  "accepted": true,
+  "attempts": [
+    {
+      "index": 1,
+      "system_prompt": "Plan a complete remaining suffix for ACCEPTED_TASK using supplied current observations and event evidence. The task is already accepted: do not add, remove, weaken or reinterpret clauses. Return only the specified JSON. Objects blue/yellow; targets table/green/return; one hand; green/return capacity one, table unlimited. pick requires empty hand and has target null. place requires holding that object and a free destination. Predicted actions are not actual events.\nClauses: at(object,target) requires final location; empty requires final empty hand; forbid(object) forbids any future pick/place and historical operations AFTER since; visit(object,target) requires a place event strictly AFTER since. before(first,second) requires the FIRST qualifying events of the referenced visit clauses in that order. Keep the program-supplied activation times. Unknown events may or may not have occurred; refuted events did not occur. Current state does not establish past order. All registered domain constraints and accepted clauses remain binding even if a memory suggests a different task. Omitted context is not proof that an unobserved fact is false or a location is table.\nMemory advice is conditional and may be irrelevant; it never replaces current facts, task requirements or skill availability. You may ignore it. ready requires one legal suffix satisfying ALL clauses under EVERY possible evidence history, within the action limit. Empty ready actions are allowed for completed tasks. conflict means NO history alternative has a legal suffix within that bounded domain and action limit, not global physical impossibility. need_observation means no common valid suffix but at least one alternative is feasible. Return no actions for non-ready statuses. No code, markdown or explanations.\n",
+      "user_prompt": "{\"INSTRUCTION\": \"完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。\", \"ACCEPTED_TASK\": [{\"clause\": {\"id\": \"goal_blue\", \"kind\": \"at\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 24}, {\"clause\": {\"id\": \"goal_yellow\", \"kind\": \"at\", \"object\": \"yellow\", \"target\": \"return\"}, \"since\": 24}, {\"clause\": {\"id\": \"protect_blue\", \"kind\": \"forbid\", \"object\": \"blue\"}, \"since\": 26}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 24}], \"OBSERVED_CONTEXT\": [{\"id\": \"state:blue\", \"kind\": \"location\", \"object\": \"blue\", \"value\": \"green\"}, {\"id\": \"state:yellow\", \"kind\": \"location\", \"object\": \"yellow\", \"value\": \"table\"}, {\"id\": \"state:holding\", \"kind\": \"holding\", \"value\": null}, {\"id\": \"occupancy:green\", \"kind\": \"observed_region_occupancy\", \"target\": \"green\", \"occupants\": [\"blue\"]}, {\"id\": \"occupancy:return\", \"kind\": \"observed_region_occupancy\", \"target\": \"return\", \"occupants\": []}, {\"id\": \"event:1\", \"kind\": \"pick\", \"seq\": 1, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-12dbe9535673da5f\"}, {\"id\": \"event:2\", \"kind\": \"place\", \"seq\": 2, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-aa43cc59922309d1\"}, {\"id\": \"event:3\", \"kind\": \"pick\", \"seq\": 3, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-4fc37317b6849789\"}, {\"id\": \"event:4\", \"kind\": \"place\", \"seq\": 4, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-9a5555437cbd70ff\"}, {\"id\": \"event:5\", \"kind\": \"pick\", \"seq\": 5, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-71c2b993574d161a\"}, {\"id\": \"event:6\", \"kind\": \"place\", \"seq\": 6, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-fe87facd20fb2c2f\"}, {\"id\": \"event:7\", \"kind\": \"pick\", \"seq\": 7, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-0e575f5b01668aa3\"}, {\"id\": \"event:8\", \"kind\": \"place\", \"seq\": 8, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-62aa134d20902363\"}, {\"id\": \"event:9\", \"kind\": \"pick\", \"seq\": 9, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-cb318607faee0322\"}, {\"id\": \"event:10\", \"kind\": \"place\", \"seq\": 10, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-8da9b8916aa2f2d6\"}, {\"id\": \"event:11\", \"kind\": \"pick\", \"seq\": 11, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-2ad795422f28fa67\"}, {\"id\": \"event:12\", \"kind\": \"place\", \"seq\": 12, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-7e073c2d4a77d2d5\"}, {\"id\": \"event:13\", \"kind\": \"pick\", \"seq\": 13, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-062b4effbedcc42d\"}, {\"id\": \"event:14\", \"kind\": \"place\", \"seq\": 14, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-345c918a349591c4\"}, {\"id\": \"event:15\", \"kind\": \"pick\", \"seq\": 15, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-16744dea87702a4d\"}, {\"id\": \"event:16\", \"kind\": \"place\", \"seq\": 16, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-31c2877893c13ab8\"}, {\"id\": \"event:17\", \"kind\": \"pick\", \"seq\": 17, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-f944a92018011242\"}, {\"id\": \"event:18\", \"kind\": \"place\", \"seq\": 18, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d5755984822730be\"}, {\"id\": \"event:19\", \"kind\": \"pick\", \"seq\": 19, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-70e60ae783fccac6\"}, {\"id\": \"event:20\", \"kind\": \"place\", \"seq\": 20, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-b54f8ada20b0b184\"}, {\"id\": \"event:21\", \"kind\": \"pick\", \"seq\": 21, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-258f3762476e5c06\"}, {\"id\": \"event:22\", \"kind\": \"place\", \"seq\": 22, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-a94b3d8716d31d7e\"}, {\"id\": \"event:23\", \"kind\": \"pick\", \"seq\": 23, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-0d739d9b4a3060f0\"}, {\"id\": \"event:24\", \"kind\": \"place\", \"seq\": 24, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-8e260dd65f10b6ae\"}, {\"id\": \"event:25\", \"kind\": \"pick\", \"seq\": 25, \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-a713d65c321afaa7\"}, {\"id\": \"event:26\", \"kind\": \"place\", \"seq\": 26, \"object\": \"blue\", \"target\": \"green\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-2f9c0fd011a8febd\"}], \"EXPERIENCES\": [{\"id\": \"occupied_destination\", \"title\": \"Placement and destination occupancy\", \"advice\": \"A placement failed its destination-capacity precondition. Before placing, account for any occupying object and current hand occupancy. Temporary placement can be needed before moving a blocker. Preserve all goals and prohibitions; this experience does not authorize moving a protected object.\"}], \"cursor\": 26, \"version\": 7, \"snapshot\": \"5131bf4e45daf6cbfa9306198cb495a49a6c9cab102aca04744b9fc35ce46b03\", \"CURRENT_OBSERVATION_ID\": \"obs-043833b72030d8d2\", \"ACTION_LIMIT\": 8, \"REQUEST_LIMIT\": 2, \"FEEDBACK\": null, \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"status\", \"actions\"], \"title\": \"PlanProposal\", \"type\": \"object\"}}",
+      "selection": {
+        "all_records": 31,
+        "selected_records": 31,
+        "selected_record_ids": [
+          "event:1",
+          "event:10",
+          "event:11",
+          "event:12",
+          "event:13",
+          "event:14",
+          "event:15",
+          "event:16",
+          "event:17",
+          "event:18",
+          "event:19",
+          "event:2",
+          "event:20",
+          "event:21",
+          "event:22",
+          "event:23",
+          "event:24",
+          "event:25",
+          "event:26",
+          "event:3",
+          "event:4",
+          "event:5",
+          "event:6",
+          "event:7",
+          "event:8",
+          "event:9",
+          "occupancy:green",
+          "occupancy:return",
+          "state:blue",
+          "state:holding",
+          "state:yellow"
+        ],
+        "retrieved_memory_ids": [
+          "occupied_destination"
+        ],
+        "selected_memory_ids": [
+          "occupied_destination"
+        ],
+        "inapplicable_memory_count": 1,
+        "extra_records_from_memory": [],
+        "joint_context_equals_strong_dependency_filter": null,
+        "all_task_clauses_preserved": true
+      },
+      "selection_ms": 6.850630044937134,
+      "input_utf8_bytes": 8181,
+      "content": "{\"version\":7,\"snapshot\":\"5131bf4e45daf6cbfa9306198cb495a49a6c9cab102aca04744b9fc35ce46b03\",\"status\":\"ready\",\"actions\":[{\"kind\":\"pick\",\"object\":\"yellow\"},{\"kind\":\"place\",\"object\":\"yellow\",\"target\":\"return\"}]}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 1591,
+      "prompt_tokens": 2532,
+      "completion_tokens": 76,
+      "total_tokens": 2608,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-ade7992f-5351-9ab4-8dbb-d598ad788288",
+      "decision": {
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 27,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 28,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          }
+        ],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "rejection": null,
+      "validation_ms": 1.2275874614715576,
+      "status_correct": true,
+      "unsafe_ready": false
+    }
+  ],
+  "tokens": 2608,
+  "calls": 1,
+  "correct": true,
+  "dispatch": {
+    "task_complete": true,
+    "dispatched_actions": 2,
+    "trace": [
+      {
+        "command": {
+          "step_id": 1,
+          "skill": "pick",
+          "object_id": "yellow_candidate",
+          "target_id": null,
+          "arm": "right"
+        },
+        "observed_event": {
+          "seq": 27,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "controlled-symbolic-27"
+        }
+      },
+      {
+        "command": {
+          "step_id": 1,
+          "skill": "place",
+          "object_id": "yellow_candidate",
+          "target_id": "return_region",
+          "arm": "right"
+        },
+        "observed_event": {
+          "seq": 28,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "controlled-symbolic-28"
+        }
+      }
+    ],
+    "original_ledger_preserved": true,
+    "physical_execution": false
+  },
+  "final_status": "ready",
+  "first_correct": true
+}

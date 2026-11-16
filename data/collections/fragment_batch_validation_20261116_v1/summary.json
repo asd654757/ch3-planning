@@ -1,0 +1,53 @@
+{
+  "n": 768,
+  "methods": {
+    "fixed": {
+      "median_query_ms": 1697.503998875618,
+      "median_target_preparation_ms": 343.19887310266495,
+      "median_total_algorithm_ms_estimate": 2833.0067694187164,
+      "target_backend_calls": 435
+    },
+    "learned": {
+      "median_query_ms": 1236.8670254945755,
+      "median_target_preparation_ms": 1028.5548120737076,
+      "median_total_algorithm_ms_estimate": 3312.429718673229,
+      "target_backend_calls": 369
+    }
+  },
+  "groups": {
+    "fixed": {
+      "heldout-large": {
+        "n": 384,
+        "backend_calls": 104
+      },
+      "heldout-small": {
+        "n": 384,
+        "backend_calls": 331
+      }
+    },
+    "learned": {
+      "heldout-large": {
+        "n": 384,
+        "backend_calls": 85
+      },
+      "heldout-small": {
+        "n": 384,
+        "backend_calls": 284
+      }
+    }
+  },
+  "all_statuses_match_old_full_backend": true,
+  "target_learning": false,
+  "target_cache_growth": false,
+  "retrospective_implementation_replay": true,
+  "model_calls": 0,
+  "physical_execution": false,
+  "target_calls_saved": 66,
+  "query_reduction_percent": 27.136134800634125,
+  "full_cost_reduction_percent": -16.92276045471229,
+  "paired_full_cost_saved_ms": [
+    -805.0883114337921,
+    -479.4229492545128,
+    -420.25551944971085
+  ]
+}

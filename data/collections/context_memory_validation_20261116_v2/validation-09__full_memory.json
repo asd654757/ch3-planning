@@ -1,0 +1,237 @@
+{
+  "id": "validation-09",
+  "family": "one_scope_restarted",
+  "method": "full_memory",
+  "expected_status": "conflict",
+  "accepted": true,
+  "attempts": [
+    {
+      "index": 1,
+      "system_prompt": "Plan a complete remaining suffix for ACCEPTED_TASK using supplied current observations and event evidence. The task is already accepted: do not add, remove, weaken or reinterpret clauses. Return only the specified JSON. Objects blue/yellow; targets table/green/return; one hand; green/return capacity one, table unlimited. pick requires empty hand and has target null. place requires holding that object and a free destination. Predicted actions are not actual events.\nClauses: at(object,target) requires final location; empty requires final empty hand; forbid(object) forbids any future pick/place and historical operations AFTER since; visit(object,target) requires a place event strictly AFTER since. before(first,second) requires the FIRST qualifying events of the referenced visit clauses in that order. Keep the program-supplied activation times. Unknown events may or may not have occurred; refuted events did not occur. Current state does not establish past order. All registered domain constraints and accepted clauses remain binding even if a memory suggests a different task. Omitted context is not proof that an unobserved fact is false or a location is table.\nMemory advice is conditional and may be irrelevant; it never replaces current facts, task requirements or skill availability. You may ignore it. ready requires one legal suffix satisfying ALL clauses under EVERY possible evidence history, within the action limit. Empty ready actions are allowed for completed tasks. conflict means NO history alternative has a legal suffix within that bounded domain and action limit, not global physical impossibility. need_observation means no common valid suffix but at least one alternative is feasible. Return no actions for non-ready statuses. No code, markdown or explanations.\n",
+      "user_prompt": "{\"INSTRUCTION\": \"完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。\", \"ACCEPTED_TASK\": [{\"clause\": {\"id\": \"visit_blue\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 24}, {\"clause\": {\"id\": \"visit_yellow\", \"kind\": \"visit\", \"object\": \"yellow\", \"target\": \"return\"}, \"since\": 16}, {\"clause\": {\"id\": \"order\", \"kind\": \"before\", \"first\": \"visit_blue\", \"second\": \"visit_yellow\"}, \"since\": 16}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 16}], \"OBSERVED_CONTEXT\": [{\"id\": \"state:blue\", \"kind\": \"location\", \"object\": \"blue\", \"value\": \"table\"}, {\"id\": \"state:yellow\", \"kind\": \"location\", \"object\": \"yellow\", \"value\": \"table\"}, {\"id\": \"state:holding\", \"kind\": \"holding\", \"value\": null}, {\"id\": \"occupancy:green\", \"kind\": \"observed_region_occupancy\", \"target\": \"green\", \"occupants\": []}, {\"id\": \"occupancy:return\", \"kind\": \"observed_region_occupancy\", \"target\": \"return\", \"occupants\": []}, {\"id\": \"event:1\", \"kind\": \"pick\", \"seq\": 1, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-d397279063bf349a\"}, {\"id\": \"event:2\", \"kind\": \"place\", \"seq\": 2, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-3b2c45b0b5ed5268\"}, {\"id\": \"event:3\", \"kind\": \"pick\", \"seq\": 3, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b73125040d5c96bc\"}, {\"id\": \"event:4\", \"kind\": \"place\", \"seq\": 4, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d7c379faf20471b6\"}, {\"id\": \"event:5\", \"kind\": \"pick\", \"seq\": 5, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-531a355732b010a7\"}, {\"id\": \"event:6\", \"kind\": \"place\", \"seq\": 6, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-0d8d019d5087b568\"}, {\"id\": \"event:7\", \"kind\": \"pick\", \"seq\": 7, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-9c8c6c76723b61f5\"}, {\"id\": \"event:8\", \"kind\": \"place\", \"seq\": 8, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-a85bba310e06f0ca\"}, {\"id\": \"event:9\", \"kind\": \"pick\", \"seq\": 9, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b02bafd375b5b8b2\"}, {\"id\": \"event:10\", \"kind\": \"place\", \"seq\": 10, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-5e5c4e59a33f0570\"}, {\"id\": \"event:11\", \"kind\": \"pick\", \"seq\": 11, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-7440bb91823f747f\"}, {\"id\": \"event:12\", \"kind\": \"place\", \"seq\": 12, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d9984398eec9fd4f\"}, {\"id\": \"event:13\", \"kind\": \"pick\", \"seq\": 13, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-166d2c614c9a2c71\"}, {\"id\": \"event:14\", \"kind\": \"place\", \"seq\": 14, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-e9e70c0d0a5b5795\"}, {\"id\": \"event:15\", \"kind\": \"pick\", \"seq\": 15, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-3667a09b72fc125c\"}, {\"id\": \"event:16\", \"kind\": \"place\", \"seq\": 16, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-7a064e8572baa522\"}, {\"id\": \"event:17\", \"kind\": \"pick\", \"seq\": 17, \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b6e16ac8c9c172af\"}, {\"id\": \"event:18\", \"kind\": \"place\", \"seq\": 18, \"object\": \"blue\", \"target\": \"green\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-5e81b38173106c55\"}, {\"id\": \"event:19\", \"kind\": \"pick\", \"seq\": 19, \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-8c447fd980c46089\"}, {\"id\": \"event:20\", \"kind\": \"place\", \"seq\": 20, \"object\": \"blue\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d7fc490ff0309376\"}, {\"id\": \"event:21\", \"kind\": \"pick\", \"seq\": 21, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b8babff613251e96\"}, {\"id\": \"event:22\", \"kind\": \"place\", \"seq\": 22, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-0ddf8769049eb728\"}, {\"id\": \"event:23\", \"kind\": \"pick\", \"seq\": 23, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-1bde7c3923b0c23d\"}, {\"id\": \"event:24\", \"kind\": \"place\", \"seq\": 24, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-7b52787b3d889add\"}], \"EXPERIENCES\": [{\"id\": \"uncertain_first_event\", \"title\": \"Unknown history and first-visit order\", \"advice\": \"Unknown historical placement evidence caused an incorrect conflict/ready claim. Evaluate all evidence alternatives for first-visit ordering. Repeating an action cannot replace an earlier first event. Respect each visit's activation time; request evidence only when no common valid suffix exists and some alternatives remain feasible.\"}, {\"id\": \"occupied_destination\", \"title\": \"Placement and destination occupancy\", \"advice\": \"A placement failed its destination-capacity precondition. Before placing, account for any occupying object and current hand occupancy. Temporary placement can be needed before moving a blocker. Preserve all goals and prohibitions; this experience does not authorize moving a protected object.\"}], \"cursor\": 24, \"version\": 7, \"snapshot\": \"1ea9767a18735d73f2b95f768187cabf2f0cc0bb4abebcbea372277feb8baae5\", \"CURRENT_OBSERVATION_ID\": \"obs-5d452bdd214541bb\", \"ACTION_LIMIT\": 8, \"REQUEST_LIMIT\": 2, \"FEEDBACK\": null, \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"status\", \"actions\"], \"title\": \"PlanProposal\", \"type\": \"object\"}}",
+      "selection": {
+        "all_records": 29,
+        "selected_records": 29,
+        "selected_record_ids": [
+          "event:1",
+          "event:10",
+          "event:11",
+          "event:12",
+          "event:13",
+          "event:14",
+          "event:15",
+          "event:16",
+          "event:17",
+          "event:18",
+          "event:19",
+          "event:2",
+          "event:20",
+          "event:21",
+          "event:22",
+          "event:23",
+          "event:24",
+          "event:3",
+          "event:4",
+          "event:5",
+          "event:6",
+          "event:7",
+          "event:8",
+          "event:9",
+          "occupancy:green",
+          "occupancy:return",
+          "state:blue",
+          "state:holding",
+          "state:yellow"
+        ],
+        "retrieved_memory_ids": [
+          "uncertain_first_event",
+          "occupied_destination"
+        ],
+        "selected_memory_ids": [
+          "uncertain_first_event",
+          "occupied_destination"
+        ],
+        "inapplicable_memory_count": 1,
+        "extra_records_from_memory": [],
+        "joint_context_equals_strong_dependency_filter": null,
+        "all_task_clauses_preserved": true
+      },
+      "selection_ms": 6.539188325405121,
+      "input_utf8_bytes": 8328,
+      "content": "{\"version\":7,\"snapshot\":\"1ea9767a18735d73f2b95f768187cabf2f0cc0bb4abebcbea372277feb8baae5\",\"status\":\"ready\",\"actions\":[{\"kind\":\"pick\",\"object\":\"blue\"},{\"kind\":\"place\",\"object\":\"blue\",\"target\":\"green\"},{\"kind\":\"pick\",\"object\":\"blue\"},{\"kind\":\"place\",\"object\":\"blue\",\"target\":\"table\"},{\"kind\":\"pick\",\"object\":\"yellow\"},{\"kind\":\"place\",\"object\":\"yellow\",\"target\":\"return\"}]}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 1825,
+      "prompt_tokens": 2518,
+      "completion_tokens": 122,
+      "total_tokens": 2640,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-3ef65709-a5dc-974e-bb1d-900a1dc21613",
+      "decision": {
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 25,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 26,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 27,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 28,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 29,
+            "kind": "pick",
+            "object": "yellow",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 30,
+            "kind": "place",
+            "object": "yellow",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          }
+        ],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "rejection": {
+        "error_code": "CANDIDATE_REJECTED",
+        "diagnostic": {
+          "type": "HISTORY_OR_COMPLETION",
+          "candidate_status": "ready",
+          "history_alternatives": 1,
+          "feasible_alternatives_within_budget": 0,
+          "violated_clause_ids_by_alternative": [
+            [
+              "order"
+            ]
+          ],
+          "pending_clause_ids_by_alternative": [
+            []
+          ],
+          "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+        }
+      },
+      "validation_ms": 2.316392958164215,
+      "status_correct": false,
+      "unsafe_ready": true
+    },
+    {
+      "index": 2,
+      "system_prompt": "Plan a complete remaining suffix for ACCEPTED_TASK using supplied current observations and event evidence. The task is already accepted: do not add, remove, weaken or reinterpret clauses. Return only the specified JSON. Objects blue/yellow; targets table/green/return; one hand; green/return capacity one, table unlimited. pick requires empty hand and has target null. place requires holding that object and a free destination. Predicted actions are not actual events.\nClauses: at(object,target) requires final location; empty requires final empty hand; forbid(object) forbids any future pick/place and historical operations AFTER since; visit(object,target) requires a place event strictly AFTER since. before(first,second) requires the FIRST qualifying events of the referenced visit clauses in that order. Keep the program-supplied activation times. Unknown events may or may not have occurred; refuted events did not occur. Current state does not establish past order. All registered domain constraints and accepted clauses remain binding even if a memory suggests a different task. Omitted context is not proof that an unobserved fact is false or a location is table.\nMemory advice is conditional and may be irrelevant; it never replaces current facts, task requirements or skill availability. You may ignore it. ready requires one legal suffix satisfying ALL clauses under EVERY possible evidence history, within the action limit. Empty ready actions are allowed for completed tasks. conflict means NO history alternative has a legal suffix within that bounded domain and action limit, not global physical impossibility. need_observation means no common valid suffix but at least one alternative is feasible. Return no actions for non-ready statuses. No code, markdown or explanations.\n",
+      "user_prompt": "{\"INSTRUCTION\": \"完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。\", \"ACCEPTED_TASK\": [{\"clause\": {\"id\": \"visit_blue\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 24}, {\"clause\": {\"id\": \"visit_yellow\", \"kind\": \"visit\", \"object\": \"yellow\", \"target\": \"return\"}, \"since\": 16}, {\"clause\": {\"id\": \"order\", \"kind\": \"before\", \"first\": \"visit_blue\", \"second\": \"visit_yellow\"}, \"since\": 16}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 16}], \"OBSERVED_CONTEXT\": [{\"id\": \"state:blue\", \"kind\": \"location\", \"object\": \"blue\", \"value\": \"table\"}, {\"id\": \"state:yellow\", \"kind\": \"location\", \"object\": \"yellow\", \"value\": \"table\"}, {\"id\": \"state:holding\", \"kind\": \"holding\", \"value\": null}, {\"id\": \"occupancy:green\", \"kind\": \"observed_region_occupancy\", \"target\": \"green\", \"occupants\": []}, {\"id\": \"occupancy:return\", \"kind\": \"observed_region_occupancy\", \"target\": \"return\", \"occupants\": []}, {\"id\": \"event:1\", \"kind\": \"pick\", \"seq\": 1, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-d397279063bf349a\"}, {\"id\": \"event:2\", \"kind\": \"place\", \"seq\": 2, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-3b2c45b0b5ed5268\"}, {\"id\": \"event:3\", \"kind\": \"pick\", \"seq\": 3, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b73125040d5c96bc\"}, {\"id\": \"event:4\", \"kind\": \"place\", \"seq\": 4, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d7c379faf20471b6\"}, {\"id\": \"event:5\", \"kind\": \"pick\", \"seq\": 5, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-531a355732b010a7\"}, {\"id\": \"event:6\", \"kind\": \"place\", \"seq\": 6, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-0d8d019d5087b568\"}, {\"id\": \"event:7\", \"kind\": \"pick\", \"seq\": 7, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-9c8c6c76723b61f5\"}, {\"id\": \"event:8\", \"kind\": \"place\", \"seq\": 8, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-a85bba310e06f0ca\"}, {\"id\": \"event:9\", \"kind\": \"pick\", \"seq\": 9, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b02bafd375b5b8b2\"}, {\"id\": \"event:10\", \"kind\": \"place\", \"seq\": 10, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-5e5c4e59a33f0570\"}, {\"id\": \"event:11\", \"kind\": \"pick\", \"seq\": 11, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-7440bb91823f747f\"}, {\"id\": \"event:12\", \"kind\": \"place\", \"seq\": 12, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d9984398eec9fd4f\"}, {\"id\": \"event:13\", \"kind\": \"pick\", \"seq\": 13, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-166d2c614c9a2c71\"}, {\"id\": \"event:14\", \"kind\": \"place\", \"seq\": 14, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-e9e70c0d0a5b5795\"}, {\"id\": \"event:15\", \"kind\": \"pick\", \"seq\": 15, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-3667a09b72fc125c\"}, {\"id\": \"event:16\", \"kind\": \"place\", \"seq\": 16, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-7a064e8572baa522\"}, {\"id\": \"event:17\", \"kind\": \"pick\", \"seq\": 17, \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b6e16ac8c9c172af\"}, {\"id\": \"event:18\", \"kind\": \"place\", \"seq\": 18, \"object\": \"blue\", \"target\": \"green\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-5e81b38173106c55\"}, {\"id\": \"event:19\", \"kind\": \"pick\", \"seq\": 19, \"object\": \"blue\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-8c447fd980c46089\"}, {\"id\": \"event:20\", \"kind\": \"place\", \"seq\": 20, \"object\": \"blue\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-d7fc490ff0309376\"}, {\"id\": \"event:21\", \"kind\": \"pick\", \"seq\": 21, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-b8babff613251e96\"}, {\"id\": \"event:22\", \"kind\": \"place\", \"seq\": 22, \"object\": \"yellow\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-0ddf8769049eb728\"}, {\"id\": \"event:23\", \"kind\": \"pick\", \"seq\": 23, \"object\": \"yellow\", \"target\": null, \"evidence\": \"confirmed\", \"observation_id\": \"obs-1bde7c3923b0c23d\"}, {\"id\": \"event:24\", \"kind\": \"place\", \"seq\": 24, \"object\": \"yellow\", \"target\": \"table\", \"evidence\": \"confirmed\", \"observation_id\": \"obs-7b52787b3d889add\"}], \"EXPERIENCES\": [{\"id\": \"uncertain_first_event\", \"title\": \"Unknown history and first-visit order\", \"advice\": \"Unknown historical placement evidence caused an incorrect conflict/ready claim. Evaluate all evidence alternatives for first-visit ordering. Repeating an action cannot replace an earlier first event. Respect each visit's activation time; request evidence only when no common valid suffix exists and some alternatives remain feasible.\"}, {\"id\": \"occupied_destination\", \"title\": \"Placement and destination occupancy\", \"advice\": \"A placement failed its destination-capacity precondition. Before placing, account for any occupying object and current hand occupancy. Temporary placement can be needed before moving a blocker. Preserve all goals and prohibitions; this experience does not authorize moving a protected object.\"}], \"cursor\": 24, \"version\": 7, \"snapshot\": \"1ea9767a18735d73f2b95f768187cabf2f0cc0bb4abebcbea372277feb8baae5\", \"CURRENT_OBSERVATION_ID\": \"obs-5d452bdd214541bb\", \"ACTION_LIMIT\": 8, \"REQUEST_LIMIT\": 2, \"FEEDBACK\": {\"error_code\": \"CANDIDATE_REJECTED\", \"diagnostic\": {\"type\": \"HISTORY_OR_COMPLETION\", \"candidate_status\": \"ready\", \"history_alternatives\": 1, \"feasible_alternatives_within_budget\": 0, \"violated_clause_ids_by_alternative\": [[\"order\"]], \"pending_clause_ids_by_alternative\": [[]], \"interpretation\": \"Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed.\"}, \"rejected_candidate_not_executed\": \"{\\\"version\\\":7,\\\"snapshot\\\":\\\"1ea9767a18735d73f2b95f768187cabf2f0cc0bb4abebcbea372277feb8baae5\\\",\\\"status\\\":\\\"ready\\\",\\\"actions\\\":[{\\\"kind\\\":\\\"pick\\\",\\\"object\\\":\\\"blue\\\"},{\\\"kind\\\":\\\"place\\\",\\\"object\\\":\\\"blue\\\",\\\"target\\\":\\\"green\\\"},{\\\"kind\\\":\\\"pick\\\",\\\"object\\\":\\\"blue\\\"},{\\\"kind\\\":\\\"place\\\",\\\"object\\\":\\\"blue\\\",\\\"target\\\":\\\"table\\\"},{\\\"kind\\\":\\\"pick\\\",\\\"object\\\":\\\"yellow\\\"},{\\\"kind\\\":\\\"place\\\",\\\"object\\\":\\\"yellow\\\",\\\"target\\\":\\\"return\\\"}]}\"}, \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"status\", \"actions\"], \"title\": \"PlanProposal\", \"type\": \"object\"}}",
+      "selection": {
+        "all_records": 29,
+        "selected_records": 29,
+        "selected_record_ids": [
+          "event:1",
+          "event:10",
+          "event:11",
+          "event:12",
+          "event:13",
+          "event:14",
+          "event:15",
+          "event:16",
+          "event:17",
+          "event:18",
+          "event:19",
+          "event:2",
+          "event:20",
+          "event:21",
+          "event:22",
+          "event:23",
+          "event:24",
+          "event:3",
+          "event:4",
+          "event:5",
+          "event:6",
+          "event:7",
+          "event:8",
+          "event:9",
+          "occupancy:green",
+          "occupancy:return",
+          "state:blue",
+          "state:holding",
+          "state:yellow"
+        ],
+        "retrieved_memory_ids": [
+          "uncertain_first_event",
+          "occupied_destination"
+        ],
+        "selected_memory_ids": [
+          "uncertain_first_event",
+          "occupied_destination"
+        ],
+        "inapplicable_memory_count": 1,
+        "extra_records_from_memory": [],
+        "joint_context_equals_strong_dependency_filter": null,
+        "all_task_clauses_preserved": true
+      },
+      "selection_ms": 5.821011960506439,
+      "input_utf8_bytes": 9250,
+      "content": "{\"version\":7,\"snapshot\":\"1ea9767a18735d73f2b95f768187cabf2f0cc0bb4abebcbea372277feb8baae5\",\"status\":\"conflict\",\"actions\":[]}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 1342,
+      "prompt_tokens": 2809,
+      "completion_tokens": 57,
+      "total_tokens": 2866,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-d26d0623-52fb-9a8e-b885-47ffb1b32085",
+      "decision": {
+        "status": "conflict",
+        "plan": [],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "rejection": null,
+      "validation_ms": 1.3325735926628113,
+      "status_correct": true,
+      "unsafe_ready": false
+    }
+  ],
+  "tokens": 5506,
+  "calls": 2,
+  "correct": true,
+  "dispatch": {
+    "task_complete": false,
+    "dispatched_actions": 0,
+    "physical_execution": false
+  },
+  "final_status": "conflict",
+  "first_correct": false
+}

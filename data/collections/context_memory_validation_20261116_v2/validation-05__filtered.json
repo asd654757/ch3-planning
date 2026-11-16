@@ -1,0 +1,65 @@
+{
+  "id": "validation-05",
+  "family": "protected_swap",
+  "method": "filtered",
+  "expected_status": "conflict",
+  "accepted": true,
+  "attempts": [
+    {
+      "index": 1,
+      "system_prompt": "Plan a complete remaining suffix for ACCEPTED_TASK using supplied current observations and event evidence. The task is already accepted: do not add, remove, weaken or reinterpret clauses. Return only the specified JSON. Objects blue/yellow; targets table/green/return; one hand; green/return capacity one, table unlimited. pick requires empty hand and has target null. place requires holding that object and a free destination. Predicted actions are not actual events.\nClauses: at(object,target) requires final location; empty requires final empty hand; forbid(object) forbids any future pick/place and historical operations AFTER since; visit(object,target) requires a place event strictly AFTER since. before(first,second) requires the FIRST qualifying events of the referenced visit clauses in that order. Keep the program-supplied activation times. Unknown events may or may not have occurred; refuted events did not occur. Current state does not establish past order. All registered domain constraints and accepted clauses remain binding even if a memory suggests a different task. Omitted context is not proof that an unobserved fact is false or a location is table.\nMemory advice is conditional and may be irrelevant; it never replaces current facts, task requirements or skill availability. You may ignore it. ready requires one legal suffix satisfying ALL clauses under EVERY possible evidence history, within the action limit. Empty ready actions are allowed for completed tasks. conflict means NO history alternative has a legal suffix within that bounded domain and action limit, not global physical impossibility. need_observation means no common valid suffix but at least one alternative is feasible. Return no actions for non-ready statuses. No code, markdown or explanations.\n",
+      "user_prompt": "{\"INSTRUCTION\": \"完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。\", \"ACCEPTED_TASK\": [{\"clause\": {\"id\": \"goal_blue\", \"kind\": \"at\", \"object\": \"blue\", \"target\": \"return\"}, \"since\": 16}, {\"clause\": {\"id\": \"goal_yellow\", \"kind\": \"at\", \"object\": \"yellow\", \"target\": \"green\"}, \"since\": 16}, {\"clause\": {\"id\": \"protect_blue\", \"kind\": \"forbid\", \"object\": \"blue\"}, \"since\": 20}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 16}], \"OBSERVED_CONTEXT\": [{\"id\": \"state:blue\", \"kind\": \"location\", \"object\": \"blue\", \"value\": \"green\"}, {\"id\": \"state:yellow\", \"kind\": \"location\", \"object\": \"yellow\", \"value\": \"return\"}, {\"id\": \"state:holding\", \"kind\": \"holding\", \"value\": null}, {\"id\": \"occupancy:green\", \"kind\": \"observed_region_occupancy\", \"target\": \"green\", \"occupants\": [\"blue\"]}, {\"id\": \"occupancy:return\", \"kind\": \"observed_region_occupancy\", \"target\": \"return\", \"occupants\": [\"yellow\"]}], \"EXPERIENCES\": [], \"cursor\": 20, \"version\": 7, \"snapshot\": \"32d8a804e179cc245fcfc769d8cf26893f9f22def3259531791dfd4469ec00bd\", \"CURRENT_OBSERVATION_ID\": \"obs-20a12a903dd71161\", \"ACTION_LIMIT\": 8, \"REQUEST_LIMIT\": 2, \"FEEDBACK\": null, \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"status\", \"actions\"], \"title\": \"PlanProposal\", \"type\": \"object\"}}",
+      "selection": {
+        "all_records": 25,
+        "selected_records": 5,
+        "selected_record_ids": [
+          "occupancy:green",
+          "occupancy:return",
+          "state:blue",
+          "state:holding",
+          "state:yellow"
+        ],
+        "retrieved_memory_ids": [],
+        "selected_memory_ids": [],
+        "inapplicable_memory_count": 0,
+        "extra_records_from_memory": [],
+        "joint_context_equals_strong_dependency_filter": null,
+        "all_task_clauses_preserved": true
+      },
+      "selection_ms": 2.032637596130371,
+      "input_utf8_bytes": 3870,
+      "content": "{\"version\": 7, \"snapshot\": \"32d8a804e179cc245fcfc769d8cf26893f9f22def3259531791dfd4469ec00bd\", \"status\": \"conflict\", \"actions\": []}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 1144,
+      "prompt_tokens": 1039,
+      "completion_tokens": 59,
+      "total_tokens": 1098,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-8f007ae2-652f-9989-9a5b-037690a7fda0",
+      "decision": {
+        "status": "conflict",
+        "plan": [],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "rejection": null,
+      "validation_ms": 2.579234540462494,
+      "status_correct": true,
+      "unsafe_ready": false
+    }
+  ],
+  "tokens": 1098,
+  "calls": 1,
+  "correct": true,
+  "dispatch": {
+    "task_complete": false,
+    "dispatched_actions": 0,
+    "physical_execution": false
+  },
+  "final_status": "conflict",
+  "first_correct": true
+}

@@ -1,0 +1,223 @@
+{
+  "id": "validation-15",
+  "family": "protected_waypoint_blocker",
+  "method": "filtered_memory",
+  "expected_status": "conflict",
+  "accepted": false,
+  "attempts": [
+    {
+      "index": 1,
+      "system_prompt": "Plan a complete remaining suffix for ACCEPTED_TASK using supplied current observations and event evidence. The task is already accepted: do not add, remove, weaken or reinterpret clauses. Return only the specified JSON. Objects blue/yellow; targets table/green/return; one hand; green/return capacity one, table unlimited. pick requires empty hand and has target null. place requires holding that object and a free destination. Predicted actions are not actual events.\nClauses: at(object,target) requires final location; empty requires final empty hand; forbid(object) forbids any future pick/place and historical operations AFTER since; visit(object,target) requires a place event strictly AFTER since. before(first,second) requires the FIRST qualifying events of the referenced visit clauses in that order. Keep the program-supplied activation times. Unknown events may or may not have occurred; refuted events did not occur. Current state does not establish past order. All registered domain constraints and accepted clauses remain binding even if a memory suggests a different task. Omitted context is not proof that an unobserved fact is false or a location is table.\nMemory advice is conditional and may be irrelevant; it never replaces current facts, task requirements or skill availability. You may ignore it. ready requires one legal suffix satisfying ALL clauses under EVERY possible evidence history, within the action limit. Empty ready actions are allowed for completed tasks. conflict means NO history alternative has a legal suffix within that bounded domain and action limit, not global physical impossibility. need_observation means no common valid suffix but at least one alternative is feasible. Return no actions for non-ready statuses. No code, markdown or explanations.\n",
+      "user_prompt": "{\"INSTRUCTION\": \"完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。\", \"ACCEPTED_TASK\": [{\"clause\": {\"id\": \"goal_blue\", \"kind\": \"at\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 24}, {\"clause\": {\"id\": \"protect_yellow\", \"kind\": \"forbid\", \"object\": \"yellow\"}, \"since\": 27}, {\"clause\": {\"id\": \"waypoint\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"return\"}, \"since\": 27}, {\"clause\": {\"id\": \"finish\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 27}, {\"clause\": {\"id\": \"order\", \"kind\": \"before\", \"first\": \"waypoint\", \"second\": \"finish\"}, \"since\": 24}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 24}], \"OBSERVED_CONTEXT\": [{\"id\": \"state:blue\", \"kind\": \"location\", \"object\": \"blue\", \"value\": \"hand\"}, {\"id\": \"state:yellow\", \"kind\": \"location\", \"object\": \"yellow\", \"value\": \"return\"}, {\"id\": \"state:holding\", \"kind\": \"holding\", \"value\": \"blue\"}, {\"id\": \"occupancy:green\", \"kind\": \"observed_region_occupancy\", \"target\": \"green\", \"occupants\": []}, {\"id\": \"occupancy:return\", \"kind\": \"observed_region_occupancy\", \"target\": \"return\", \"occupants\": [\"yellow\"]}], \"EXPERIENCES\": [{\"id\": \"occupied_destination\", \"title\": \"Placement and destination occupancy\", \"advice\": \"A placement failed its destination-capacity precondition. Before placing, account for any occupying object and current hand occupancy. Temporary placement can be needed before moving a blocker. Preserve all goals and prohibitions; this experience does not authorize moving a protected object.\"}, {\"id\": \"uncertain_first_event\", \"title\": \"Unknown history and first-visit order\", \"advice\": \"Unknown historical placement evidence caused an incorrect conflict/ready claim. Evaluate all evidence alternatives for first-visit ordering. Repeating an action cannot replace an earlier first event. Respect each visit's activation time; request evidence only when no common valid suffix exists and some alternatives remain feasible.\"}], \"cursor\": 27, \"version\": 7, \"snapshot\": \"fdc99ec2574d8f83ab8c2df26f93cf47d090d473d490bf00761a48f5ddf122d5\", \"CURRENT_OBSERVATION_ID\": \"obs-1c8b9b73eb78fe65\", \"ACTION_LIMIT\": 8, \"REQUEST_LIMIT\": 2, \"FEEDBACK\": null, \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"status\", \"actions\"], \"title\": \"PlanProposal\", \"type\": \"object\"}}",
+      "selection": {
+        "all_records": 32,
+        "selected_records": 5,
+        "selected_record_ids": [
+          "occupancy:green",
+          "occupancy:return",
+          "state:blue",
+          "state:holding",
+          "state:yellow"
+        ],
+        "retrieved_memory_ids": [
+          "occupied_destination",
+          "uncertain_first_event"
+        ],
+        "selected_memory_ids": [
+          "occupied_destination",
+          "uncertain_first_event"
+        ],
+        "inapplicable_memory_count": 1,
+        "extra_records_from_memory": [],
+        "joint_context_equals_strong_dependency_filter": null,
+        "all_task_clauses_preserved": true
+      },
+      "selection_ms": 3.0279159545898438,
+      "input_utf8_bytes": 4879,
+      "content": "{\"version\": 7, \"snapshot\": \"fdc99ec2574d8f83ab8c2df26f93cf47d090d473d490bf00761a48f5ddf122d5\", \"status\": \"ready\", \"actions\": [{\"kind\": \"place\", \"object\": \"blue\", \"target\": \"return\"}, {\"kind\": \"pick\", \"object\": \"blue\"}, {\"kind\": \"place\", \"object\": \"blue\", \"target\": \"green\"}]}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 1786,
+      "prompt_tokens": 1272,
+      "completion_tokens": 111,
+      "total_tokens": 1383,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-763cf377-3374-9824-9c04-a97ba6db602d",
+      "decision": {
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 28,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 29,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 30,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          }
+        ],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "rejection": {
+        "error_code": "CANDIDATE_REJECTED",
+        "diagnostic": {
+          "type": "ACTION_PRECONDITION",
+          "first_invalid_action": 1,
+          "state_before_action": {
+            "blue": "hand",
+            "yellow": "return",
+            "holding": "blue"
+          },
+          "candidate_action": {
+            "seq": 28,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+        }
+      },
+      "validation_ms": 0.7017701864242554,
+      "status_correct": false,
+      "unsafe_ready": true
+    },
+    {
+      "index": 2,
+      "system_prompt": "Plan a complete remaining suffix for ACCEPTED_TASK using supplied current observations and event evidence. The task is already accepted: do not add, remove, weaken or reinterpret clauses. Return only the specified JSON. Objects blue/yellow; targets table/green/return; one hand; green/return capacity one, table unlimited. pick requires empty hand and has target null. place requires holding that object and a free destination. Predicted actions are not actual events.\nClauses: at(object,target) requires final location; empty requires final empty hand; forbid(object) forbids any future pick/place and historical operations AFTER since; visit(object,target) requires a place event strictly AFTER since. before(first,second) requires the FIRST qualifying events of the referenced visit clauses in that order. Keep the program-supplied activation times. Unknown events may or may not have occurred; refuted events did not occur. Current state does not establish past order. All registered domain constraints and accepted clauses remain binding even if a memory suggests a different task. Omitted context is not proof that an unobserved fact is false or a location is table.\nMemory advice is conditional and may be irrelevant; it never replaces current facts, task requirements or skill availability. You may ignore it. ready requires one legal suffix satisfying ALL clauses under EVERY possible evidence history, within the action limit. Empty ready actions are allowed for completed tasks. conflict means NO history alternative has a legal suffix within that bounded domain and action limit, not global physical impossibility. need_observation means no common valid suffix but at least one alternative is feasible. Return no actions for non-ready statuses. No code, markdown or explanations.\n",
+      "user_prompt": "{\"INSTRUCTION\": \"完成 ACCEPTED_TASK 的全部要求；它是已经确认的完整任务，不修改目标或时间范围。\", \"ACCEPTED_TASK\": [{\"clause\": {\"id\": \"goal_blue\", \"kind\": \"at\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 24}, {\"clause\": {\"id\": \"protect_yellow\", \"kind\": \"forbid\", \"object\": \"yellow\"}, \"since\": 27}, {\"clause\": {\"id\": \"waypoint\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"return\"}, \"since\": 27}, {\"clause\": {\"id\": \"finish\", \"kind\": \"visit\", \"object\": \"blue\", \"target\": \"green\"}, \"since\": 27}, {\"clause\": {\"id\": \"order\", \"kind\": \"before\", \"first\": \"waypoint\", \"second\": \"finish\"}, \"since\": 24}, {\"clause\": {\"id\": \"empty\", \"kind\": \"empty\"}, \"since\": 24}], \"OBSERVED_CONTEXT\": [{\"id\": \"state:blue\", \"kind\": \"location\", \"object\": \"blue\", \"value\": \"hand\"}, {\"id\": \"state:yellow\", \"kind\": \"location\", \"object\": \"yellow\", \"value\": \"return\"}, {\"id\": \"state:holding\", \"kind\": \"holding\", \"value\": \"blue\"}, {\"id\": \"occupancy:green\", \"kind\": \"observed_region_occupancy\", \"target\": \"green\", \"occupants\": []}, {\"id\": \"occupancy:return\", \"kind\": \"observed_region_occupancy\", \"target\": \"return\", \"occupants\": [\"yellow\"]}], \"EXPERIENCES\": [{\"id\": \"occupied_destination\", \"title\": \"Placement and destination occupancy\", \"advice\": \"A placement failed its destination-capacity precondition. Before placing, account for any occupying object and current hand occupancy. Temporary placement can be needed before moving a blocker. Preserve all goals and prohibitions; this experience does not authorize moving a protected object.\"}, {\"id\": \"uncertain_first_event\", \"title\": \"Unknown history and first-visit order\", \"advice\": \"Unknown historical placement evidence caused an incorrect conflict/ready claim. Evaluate all evidence alternatives for first-visit ordering. Repeating an action cannot replace an earlier first event. Respect each visit's activation time; request evidence only when no common valid suffix exists and some alternatives remain feasible.\"}], \"cursor\": 27, \"version\": 7, \"snapshot\": \"fdc99ec2574d8f83ab8c2df26f93cf47d090d473d490bf00761a48f5ddf122d5\", \"CURRENT_OBSERVATION_ID\": \"obs-1c8b9b73eb78fe65\", \"ACTION_LIMIT\": 8, \"REQUEST_LIMIT\": 2, \"FEEDBACK\": {\"error_code\": \"CANDIDATE_REJECTED\", \"diagnostic\": {\"type\": \"ACTION_PRECONDITION\", \"first_invalid_action\": 1, \"state_before_action\": {\"blue\": \"hand\", \"yellow\": \"return\", \"holding\": \"blue\"}, \"candidate_action\": {\"seq\": 28, \"kind\": \"place\", \"object\": \"blue\", \"target\": \"return\", \"evidence\": \"confirmed\", \"observation_id\": \"prediction-only\"}, \"rules\": \"Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity.\"}, \"rejected_candidate_not_executed\": \"{\\\"version\\\": 7, \\\"snapshot\\\": \\\"fdc99ec2574d8f83ab8c2df26f93cf47d090d473d490bf00761a48f5ddf122d5\\\", \\\"status\\\": \\\"ready\\\", \\\"actions\\\": [{\\\"kind\\\": \\\"place\\\", \\\"object\\\": \\\"blue\\\", \\\"target\\\": \\\"return\\\"}, {\\\"kind\\\": \\\"pick\\\", \\\"object\\\": \\\"blue\\\"}, {\\\"kind\\\": \\\"place\\\", \\\"object\\\": \\\"blue\\\", \\\"target\\\": \\\"green\\\"}]}\"}, \"OUTPUT_SCHEMA\": {\"$defs\": {\"Action\": {\"additionalProperties\": false, \"properties\": {\"kind\": {\"enum\": [\"pick\", \"place\"], \"title\": \"Kind\", \"type\": \"string\"}, \"object\": {\"enum\": [\"blue\", \"yellow\"], \"title\": \"Object\", \"type\": \"string\"}, \"target\": {\"anyOf\": [{\"enum\": [\"table\", \"green\", \"return\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Target\"}}, \"required\": [\"kind\", \"object\"], \"title\": \"Action\", \"type\": \"object\"}}, \"additionalProperties\": false, \"properties\": {\"version\": {\"title\": \"Version\", \"type\": \"integer\"}, \"snapshot\": {\"title\": \"Snapshot\", \"type\": \"string\"}, \"status\": {\"enum\": [\"ready\", \"conflict\", \"need_observation\"], \"title\": \"Status\", \"type\": \"string\"}, \"actions\": {\"items\": {\"$ref\": \"#/$defs/Action\"}, \"maxItems\": 8, \"title\": \"Actions\", \"type\": \"array\"}}, \"required\": [\"version\", \"snapshot\", \"status\", \"actions\"], \"title\": \"PlanProposal\", \"type\": \"object\"}}",
+      "selection": {
+        "all_records": 32,
+        "selected_records": 5,
+        "selected_record_ids": [
+          "occupancy:green",
+          "occupancy:return",
+          "state:blue",
+          "state:holding",
+          "state:yellow"
+        ],
+        "retrieved_memory_ids": [
+          "occupied_destination",
+          "uncertain_first_event"
+        ],
+        "selected_memory_ids": [
+          "occupied_destination",
+          "uncertain_first_event"
+        ],
+        "inapplicable_memory_count": 1,
+        "extra_records_from_memory": [],
+        "joint_context_equals_strong_dependency_filter": null,
+        "all_task_clauses_preserved": true
+      },
+      "selection_ms": 1.8984302878379822,
+      "input_utf8_bytes": 5700,
+      "content": "{\"version\": 7, \"snapshot\": \"fdc99ec2574d8f83ab8c2df26f93cf47d090d473d490bf00761a48f5ddf122d5\", \"status\": \"ready\", \"actions\": [{\"kind\": \"place\", \"object\": \"blue\", \"target\": \"table\"}, {\"kind\": \"pick\", \"object\": \"blue\"}, {\"kind\": \"place\", \"object\": \"blue\", \"target\": \"return\"}, {\"kind\": \"pick\", \"object\": \"blue\"}, {\"kind\": \"place\", \"object\": \"blue\", \"target\": \"green\"}]}",
+      "model": "deepseek-v4.1-flash",
+      "latency_ms": 2118,
+      "prompt_tokens": 1526,
+      "completion_tokens": 141,
+      "total_tokens": 1667,
+      "finish_reason": "stop",
+      "request_id": null,
+      "response_id": "chatcmpl-f7198af9-8ced-9e2f-be17-91c0e86927c2",
+      "decision": {
+        "status": "ready",
+        "plan": [
+          {
+            "seq": 28,
+            "kind": "place",
+            "object": "blue",
+            "target": "table",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 29,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 30,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 31,
+            "kind": "pick",
+            "object": "blue",
+            "target": null,
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          {
+            "seq": 32,
+            "kind": "place",
+            "object": "blue",
+            "target": "green",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          }
+        ],
+        "history_alternatives": 0,
+        "feasible_alternatives": 0,
+        "horizon": 8,
+        "disputed_events": [],
+        "violated_clauses": []
+      },
+      "rejection": {
+        "error_code": "CANDIDATE_REJECTED",
+        "diagnostic": {
+          "type": "ACTION_PRECONDITION",
+          "first_invalid_action": 3,
+          "state_before_action": {
+            "blue": "hand",
+            "yellow": "return",
+            "holding": "blue"
+          },
+          "candidate_action": {
+            "seq": 30,
+            "kind": "place",
+            "object": "blue",
+            "target": "return",
+            "evidence": "confirmed",
+            "observation_id": "prediction-only"
+          },
+          "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+        }
+      },
+      "validation_ms": 0.9649619460105896,
+      "status_correct": false,
+      "unsafe_ready": true
+    }
+  ],
+  "tokens": 3050,
+  "calls": 2,
+  "first_correct": false,
+  "correct": false
+}

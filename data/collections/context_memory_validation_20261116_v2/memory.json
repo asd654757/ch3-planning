@@ -1,0 +1,48 @@
+[
+  {
+    "id": "occupied_destination",
+    "title": "Placement and destination occupancy",
+    "tags": "at visit place target holding hand occupied",
+    "advice": "A placement failed its destination-capacity precondition. Before placing, account for any occupying object and current hand occupancy. Temporary placement can be needed before moving a blocker. Preserve all goals and prohibitions; this experience does not authorize moving a protected object.",
+    "abstraction": "human_authored_from_past_verified_candidate_diagnostics",
+    "provenance": [
+      {
+        "path": "data/collections/revision_recovery_model_20261113_v1/results.json",
+        "sha256": "f8f4ce427f646cdd850770d88d8247751614a901c84e7a14436d319b722b860f",
+        "case_id": "recovery-dev-blocker",
+        "method": "direct",
+        "attempt": 1
+      },
+      {
+        "path": "data/collections/revision_recovery_direct_diagnostic_20261113_v2/results.json",
+        "sha256": "b99171706507ab6bd494f3925f444742ace3e45b77cbf4079d70fef1d86b64d4",
+        "case_id": "recovery-dev-blocker",
+        "method": "direct",
+        "attempt": 2
+      }
+    ]
+  },
+  {
+    "id": "uncertain_first_event",
+    "title": "Unknown history and first-visit order",
+    "tags": "before visit history unknown first place order",
+    "advice": "Unknown historical placement evidence caused an incorrect conflict/ready claim. Evaluate all evidence alternatives for first-visit ordering. Repeating an action cannot replace an earlier first event. Respect each visit's activation time; request evidence only when no common valid suffix exists and some alternatives remain feasible.",
+    "abstraction": "human_authored_from_past_verified_candidate_diagnostics",
+    "provenance": [
+      {
+        "path": "data/collections/revision_recovery_model_20261113_v1/results.json",
+        "sha256": "f8f4ce427f646cdd850770d88d8247751614a901c84e7a14436d319b722b860f",
+        "case_id": "dev-uncertain_order-0",
+        "method": "direct",
+        "attempt": 1
+      },
+      {
+        "path": "data/collections/revision_recovery_direct_diagnostic_20261113_v2/results.json",
+        "sha256": "b99171706507ab6bd494f3925f444742ace3e45b77cbf4079d70fef1d86b64d4",
+        "case_id": "dev-uncertain_order-0",
+        "method": "direct",
+        "attempt": 2
+      }
+    ]
+  }
+]

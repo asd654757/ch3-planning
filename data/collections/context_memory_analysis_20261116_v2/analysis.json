@@ -1,0 +1,1665 @@
+[
+  {
+    "input": "data/collections/context_memory_development_20261113_v1",
+    "all_archive_hashes_valid": true,
+    "loaded_own_frozen_core": true,
+    "first_prompts_and_selection_reproduced": true,
+    "candidate_attempts_replayed": 57,
+    "accepted_dispatch_reproduced": true,
+    "summary": {
+      "full": {
+        "n": 8,
+        "first_correct": 4,
+        "final_correct": 8,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 12,
+        "tokens": 28995,
+        "selected_context_records": 220,
+        "selected_memories": 0,
+        "unsafe_ready_proposals": 4
+      },
+      "filtered": {
+        "n": 8,
+        "first_correct": 4,
+        "final_correct": 7,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 12,
+        "tokens": 16382,
+        "selected_context_records": 55,
+        "selected_memories": 0,
+        "unsafe_ready_proposals": 5
+      },
+      "full_memory": {
+        "n": 8,
+        "first_correct": 5,
+        "final_correct": 7,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 11,
+        "tokens": 28077,
+        "selected_context_records": 220,
+        "selected_memories": 11,
+        "unsafe_ready_proposals": 4
+      },
+      "filtered_memory": {
+        "n": 8,
+        "first_correct": 5,
+        "final_correct": 8,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 11,
+        "tokens": 16372,
+        "selected_context_records": 55,
+        "selected_memories": 11,
+        "unsafe_ready_proposals": 3
+      },
+      "joint": {
+        "n": 8,
+        "first_correct": 5,
+        "final_correct": 7,
+        "feasible_cases": 5,
+        "symbolic_completions": 5,
+        "calls": 11,
+        "tokens": 15311,
+        "selected_context_records": 55,
+        "selected_memories": 3,
+        "unsafe_ready_proposals": 4
+      }
+    },
+    "identical_initial_prompt_pairs": [
+      {
+        "id": "development-00",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-01",
+        "reference": "filtered_memory",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-02",
+        "reference": "filtered_memory",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-03",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-04",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": true
+      },
+      {
+        "id": "development-06",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "development-07",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      }
+    ],
+    "paired_joint_vs_reference": {
+      "full": {
+        "first_correct": {
+          "both_correct": 4,
+          "joint_only": 1,
+          "reference_only": 0,
+          "both_failed": 3
+        },
+        "correct": {
+          "both_correct": 7,
+          "joint_only": 0,
+          "reference_only": 1,
+          "both_failed": 0
+        }
+      },
+      "filtered": {
+        "first_correct": {
+          "both_correct": 4,
+          "joint_only": 1,
+          "reference_only": 0,
+          "both_failed": 3
+        },
+        "correct": {
+          "both_correct": 6,
+          "joint_only": 1,
+          "reference_only": 1,
+          "both_failed": 0
+        }
+      },
+      "full_memory": {
+        "first_correct": {
+          "both_correct": 5,
+          "joint_only": 0,
+          "reference_only": 0,
+          "both_failed": 3
+        },
+        "correct": {
+          "both_correct": 7,
+          "joint_only": 0,
+          "reference_only": 0,
+          "both_failed": 1
+        }
+      },
+      "filtered_memory": {
+        "first_correct": {
+          "both_correct": 5,
+          "joint_only": 0,
+          "reference_only": 0,
+          "both_failed": 3
+        },
+        "correct": {
+          "both_correct": 7,
+          "joint_only": 0,
+          "reference_only": 1,
+          "both_failed": 0
+        }
+      }
+    },
+    "final_failures": [
+      {
+        "id": "development-04",
+        "family": "past_order",
+        "method": "full_memory",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          }
+        ]
+      },
+      {
+        "id": "development-02",
+        "family": "protected_blocker",
+        "method": "filtered",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "green",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 24,
+                "kind": "place",
+                "object": "blue",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "protect_yellow"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          }
+        ]
+      },
+      {
+        "id": "development-04",
+        "family": "past_order",
+        "method": "joint",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          }
+        ]
+      }
+    ],
+    "attempt_budget_and_token_totals_verified": true,
+    "attempts_without_usage": [],
+    "raw_results_sha256": "00906253f568e0fee6fea9e73813c9e9ff5cef46b17c0497c3b8716613364adb",
+    "raw_data_modified": false,
+    "method_identifiability": "joint_context_equals_dependency_context; remaining distinction is experience gating"
+  },
+  {
+    "input": "data/collections/context_memory_validation_20261116_v2",
+    "all_archive_hashes_valid": true,
+    "loaded_own_frozen_core": true,
+    "first_prompts_and_selection_reproduced": true,
+    "candidate_attempts_replayed": 136,
+    "accepted_dispatch_reproduced": true,
+    "summary": {
+      "full": {
+        "n": 20,
+        "first_correct": 12,
+        "final_correct": 15,
+        "feasible_cases": 12,
+        "symbolic_completions": 11,
+        "calls": 28,
+        "tokens": 70097,
+        "selected_context_records": 543,
+        "selected_memories": 0,
+        "unsafe_ready_proposals": 13
+      },
+      "filtered": {
+        "n": 20,
+        "first_correct": 14,
+        "final_correct": 16,
+        "feasible_cases": 12,
+        "symbolic_completions": 11,
+        "calls": 26,
+        "tokens": 35134,
+        "selected_context_records": 134,
+        "selected_memories": 0,
+        "unsafe_ready_proposals": 10
+      },
+      "full_memory": {
+        "n": 20,
+        "first_correct": 11,
+        "final_correct": 17,
+        "feasible_cases": 12,
+        "symbolic_completions": 12,
+        "calls": 29,
+        "tokens": 73745,
+        "selected_context_records": 543,
+        "selected_memories": 32,
+        "unsafe_ready_proposals": 11
+      },
+      "filtered_memory": {
+        "n": 20,
+        "first_correct": 13,
+        "final_correct": 17,
+        "feasible_cases": 12,
+        "symbolic_completions": 12,
+        "calls": 27,
+        "tokens": 40063,
+        "selected_context_records": 134,
+        "selected_memories": 32,
+        "unsafe_ready_proposals": 10
+      },
+      "joint": {
+        "n": 20,
+        "first_correct": 13,
+        "final_correct": 16,
+        "feasible_cases": 12,
+        "symbolic_completions": 12,
+        "calls": 27,
+        "tokens": 37923,
+        "selected_context_records": 134,
+        "selected_memories": 10,
+        "unsafe_ready_proposals": 11
+      }
+    },
+    "identical_initial_prompt_pairs": [
+      {
+        "id": "validation-00",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-01",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-03",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-05",
+        "reference": "filtered_memory",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-08",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-10",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-11",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-12",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-13",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-16",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      },
+      {
+        "id": "validation-19",
+        "reference": "filtered",
+        "first_outcome_differs": false,
+        "final_outcome_differs": false
+      }
+    ],
+    "paired_joint_vs_reference": {
+      "full": {
+        "first_correct": {
+          "both_correct": 11,
+          "joint_only": 2,
+          "reference_only": 1,
+          "both_failed": 6
+        },
+        "correct": {
+          "both_correct": 15,
+          "joint_only": 1,
+          "reference_only": 0,
+          "both_failed": 4
+        }
+      },
+      "filtered": {
+        "first_correct": {
+          "both_correct": 13,
+          "joint_only": 0,
+          "reference_only": 1,
+          "both_failed": 6
+        },
+        "correct": {
+          "both_correct": 15,
+          "joint_only": 1,
+          "reference_only": 1,
+          "both_failed": 3
+        }
+      },
+      "full_memory": {
+        "first_correct": {
+          "both_correct": 11,
+          "joint_only": 2,
+          "reference_only": 0,
+          "both_failed": 7
+        },
+        "correct": {
+          "both_correct": 16,
+          "joint_only": 0,
+          "reference_only": 1,
+          "both_failed": 3
+        }
+      },
+      "filtered_memory": {
+        "first_correct": {
+          "both_correct": 13,
+          "joint_only": 0,
+          "reference_only": 0,
+          "both_failed": 7
+        },
+        "correct": {
+          "both_correct": 16,
+          "joint_only": 0,
+          "reference_only": 1,
+          "both_failed": 3
+        }
+      }
+    },
+    "final_failures": [
+      {
+        "id": "validation-19",
+        "family": "capacity_conflict",
+        "method": "filtered",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 4,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 4,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-07",
+        "family": "two_unknown_order",
+        "method": "joint",
+        "expected_status": "need_observation",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-15",
+        "family": "protected_waypoint_blocker",
+        "method": "full_memory",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 3,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-15",
+        "family": "protected_waypoint_blocker",
+        "method": "full",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 3,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-19",
+        "family": "capacity_conflict",
+        "method": "joint",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 4,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-19",
+        "family": "capacity_conflict",
+        "method": "full",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 4,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-07",
+        "family": "two_unknown_order",
+        "method": "filtered",
+        "expected_status": "need_observation",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-19",
+        "family": "capacity_conflict",
+        "method": "full_memory",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 4,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-15",
+        "family": "protected_waypoint_blocker",
+        "method": "filtered",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 3,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-14",
+        "family": "blocked_waypoint",
+        "method": "filtered",
+        "expected_status": "ready",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 24,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 3,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 26,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-09",
+        "family": "one_scope_restarted",
+        "method": "full",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-14",
+        "family": "blocked_waypoint",
+        "method": "full",
+        "expected_status": "ready",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 24,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 24,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-09",
+        "family": "one_scope_restarted",
+        "method": "joint",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "HISTORY_OR_COMPLETION",
+              "candidate_status": "ready",
+              "history_alternatives": 1,
+              "feasible_alternatives_within_budget": 0,
+              "violated_clause_ids_by_alternative": [
+                [
+                  "order"
+                ]
+              ],
+              "pending_clause_ids_by_alternative": [
+                []
+              ],
+              "interpretation": "Check whether every alternative admits one common suffix, some alternatives are feasible, or none is feasible. Unknown events remain unconfirmed."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-07",
+        "family": "two_unknown_order",
+        "method": "full",
+        "expected_status": "need_observation",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-15",
+        "family": "protected_waypoint_blocker",
+        "method": "filtered_memory",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 3,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-15",
+        "family": "protected_waypoint_blocker",
+        "method": "joint",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 1,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 3,
+              "state_before_action": {
+                "blue": "hand",
+                "yellow": "return",
+                "holding": "blue"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "blue",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-07",
+        "family": "two_unknown_order",
+        "method": "filtered_memory",
+        "expected_status": "need_observation",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-19",
+        "family": "capacity_conflict",
+        "method": "filtered_memory",
+        "expected_status": "conflict",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 4,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 28,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "green",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 30,
+                "kind": "place",
+                "object": "yellow",
+                "target": "green",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      },
+      {
+        "id": "validation-07",
+        "family": "two_unknown_order",
+        "method": "full_memory",
+        "expected_status": "need_observation",
+        "calls": 2,
+        "proposed_statuses": [
+          "ready",
+          "ready"
+        ],
+        "errors": [
+          null,
+          null
+        ],
+        "rejections": [
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          },
+          {
+            "error_code": "CANDIDATE_REJECTED",
+            "diagnostic": {
+              "type": "ACTION_PRECONDITION",
+              "first_invalid_action": 6,
+              "state_before_action": {
+                "blue": "return",
+                "yellow": "hand",
+                "holding": "yellow"
+              },
+              "candidate_action": {
+                "seq": 38,
+                "kind": "place",
+                "object": "yellow",
+                "target": "return",
+                "evidence": "confirmed",
+                "observation_id": "prediction-only"
+              },
+              "rules": "Pick requires empty hand; place requires holding that object and a free destination. Table has unlimited capacity."
+            }
+          }
+        ]
+      }
+    ],
+    "attempt_budget_and_token_totals_verified": true,
+    "attempts_without_usage": [
+      {
+        "id": "validation-10",
+        "method": "full_memory",
+        "attempt": 1,
+        "error": {
+          "type": "VLMError",
+          "message": "model_parse_or_dispatch_failed"
+        }
+      }
+    ],
+    "raw_results_sha256": "57debf0023efd03c8700c8a3bb8ea5d4d2761ad060b87e068e56ccf358c5c085",
+    "raw_data_modified": false,
+    "method_identifiability": "joint_context_equals_dependency_context; remaining distinction is experience gating"
+  }
+]

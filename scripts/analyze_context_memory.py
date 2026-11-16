@@ -52,6 +52,9 @@ def analyze(path):
     checked, outcomes = 0, {}
     for row in rows:
         case = cases[row["id"]]
+        assert row["expected_status"] == case["expected_status"]
+        assert row["calls"] == len(row["attempts"]) <= manifest["max_calls_per_pair"]
+        assert row["tokens"] == sum(a.get("total_tokens", 0) for a in row["attempts"])
         system, user, selection = module.prompt(case, row["method"], memory)
         assert system == initial[row["id"], row["method"]]["system"] == row["attempts"][0]["system_prompt"]
         assert user == initial[row["id"], row["method"]]["user"] == row["attempts"][0]["user_prompt"]
@@ -68,8 +71,10 @@ def analyze(path):
             checked += 1
         if row["accepted"]:
             assert final_decision is not None and final_error is None
+            assert row["correct"] == (final_decision.status == case["expected_status"])
             assert canonical(module.symbolic_replay(case["snapshot"], final_decision)) == canonical(row["dispatch"])
         else:
+            assert not row["correct"]
             assert final_decision is None or final_error is not None
             assert "dispatch" not in row
         first = row["attempts"][0]
@@ -96,9 +101,32 @@ def analyze(path):
                 identical.append({"id": case_id, "reference": reference,
                     "first_outcome_differs": outcomes[case_id, reference]["first_correct"] != outcomes[case_id, "joint"]["first_correct"],
                     "final_outcome_differs": outcomes[case_id, reference]["correct"] != outcomes[case_id, "joint"]["correct"]})
+    paired = {}
+    for reference in (m for m in module.METHODS if m != "joint"):
+        paired[reference] = {}
+        for metric in ("first_correct", "correct"):
+            counts = Counter()
+            for case_id in cases:
+                ref = bool(outcomes[case_id, reference][metric])
+                joint = bool(outcomes[case_id, "joint"][metric])
+                counts["both_correct" if ref and joint else "joint_only" if joint
+                       else "reference_only" if ref else "both_failed"] += 1
+            paired[reference][metric] = {k: counts[k] for k in
+                ("both_correct", "joint_only", "reference_only", "both_failed")}
+    failures = [{"id": r["id"], "family": r["family"], "method": r["method"],
+        "expected_status": r["expected_status"], "calls": r["calls"],
+        "proposed_statuses": [a.get("decision", {}).get("status") for a in r["attempts"]],
+        "errors": [a.get("error") for a in r["attempts"]],
+        "rejections": [a.get("rejection") for a in r["attempts"]]}
+        for r in rows if not (r["correct"] and r["accepted"])]
     return {"input": str(path), "all_archive_hashes_valid": True, "loaded_own_frozen_core": True,
         "first_prompts_and_selection_reproduced": True, "candidate_attempts_replayed": checked,
         "accepted_dispatch_reproduced": True, "summary": summary, "identical_initial_prompt_pairs": identical,
+        "paired_joint_vs_reference": paired, "final_failures": failures,
+        "attempt_budget_and_token_totals_verified": True,
+        "attempts_without_usage": [{"id": r["id"], "method": r["method"],
+            "attempt": a["index"], "error": a.get("error")}
+            for r in rows for a in r["attempts"] if a.get("total_tokens") is None],
         "raw_results_sha256": digest(path/"results.json"), "raw_data_modified": False,
         "method_identifiability": "joint_context_equals_dependency_context; remaining distinction is experience gating"}
 
@@ -114,7 +142,9 @@ def main():
     write(args.output/"manifest.json", {"additional_model_calls": 0, "analysis_source_sha256": digest(__file__),
         "total_pairs": sum(sum(m["n"] for m in r["summary"].values()) for r in result),
         "total_calls": sum(sum(m["calls"] for m in r["summary"].values()) for r in result),
-        "total_tokens": sum(sum(m["tokens"] for m in r["summary"].values()) for r in result)})
+        "total_tokens": sum(sum(m["tokens"] for m in r["summary"].values()) for r in result),
+        "attempts_without_usage": sum(len(r["attempts_without_usage"]) for r in result),
+        "token_scope": "provider_reported_usage_only; missing response usage is unknown, not proven zero"})
     for report in result:
         print(json.dumps({"input": report["input"], "replayed": report["candidate_attempts_replayed"], "summary": report["summary"]}))
 

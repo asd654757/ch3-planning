@@ -1,0 +1,135 @@
+{
+  "cases": 187,
+  "outcomes": {
+    "proposal": 186,
+    "no_authorized_repair": 1
+  },
+  "by_stage": {
+    "task_revision": {
+      "cases": 166,
+      "proposals": 165
+    },
+    "post_action_recovery": {
+      "cases": 21,
+      "proposals": 21
+    }
+  },
+  "unpruned_reference_calls": 811,
+  "all_answers_optimal_and_identical": true,
+  "all_retained_obligations_and_history_anchors_unchanged": true,
+  "support_formula_equals_candidate_recheck_at_subsets": 4236,
+  "support_vs_union_cases_with_different_backend_calls": 3,
+  "methods": {
+    "enumerate": {
+      "medians": {
+        "prep_ms": 34.72481667995453,
+        "repair_ms": 2663.6931598186493,
+        "total_ms": 2707.0818543434143
+      },
+      "stats": {
+        "backend_calls": 418,
+        "lower_bound_rejections": 206,
+        "certificate_rejections": 0,
+        "online_core_rejections": 0,
+        "cache_hits": 187,
+        "candidates_considered": 811,
+        "shrink_queries": 0,
+        "candidate_space": 4236,
+        "transferred_conditions": 0
+      }
+    },
+    "online_core": {
+      "medians": {
+        "prep_ms": 24.148359894752502,
+        "repair_ms": 5163.8486832380295,
+        "total_ms": 5187.0915070176125
+      },
+      "stats": {
+        "backend_calls": 1184,
+        "lower_bound_rejections": 165,
+        "certificate_rejections": 0,
+        "online_core_rejections": 311,
+        "cache_hits": 438,
+        "candidates_considered": 811,
+        "shrink_queries": 1287,
+        "candidate_space": 4236,
+        "transferred_conditions": 0
+      }
+    },
+    "transfer_union": {
+      "medians": {
+        "prep_ms": 151.17206424474716,
+        "repair_ms": 3790.230244398117,
+        "total_ms": 3941.402308642864
+      },
+      "stats": {
+        "backend_calls": 841,
+        "lower_bound_rejections": 95,
+        "certificate_rejections": 311,
+        "online_core_rejections": 117,
+        "cache_hits": 255,
+        "candidates_considered": 811,
+        "shrink_queries": 808,
+        "candidate_space": 4236,
+        "transferred_conditions": 200
+      }
+    },
+    "transfer_support": {
+      "medians": {
+        "prep_ms": 150.34672617912292,
+        "repair_ms": 3807.6508566737175,
+        "total_ms": 3957.9975828528404
+      },
+      "stats": {
+        "backend_calls": 828,
+        "lower_bound_rejections": 95,
+        "certificate_rejections": 315,
+        "online_core_rejections": 116,
+        "cache_hits": 255,
+        "candidates_considered": 811,
+        "shrink_queries": 798,
+        "candidate_space": 4236,
+        "transferred_conditions": 200
+      }
+    },
+    "transfer_recheck": {
+      "medians": {
+        "prep_ms": 151.9475355744362,
+        "repair_ms": 3722.463972866535,
+        "total_ms": 3865.369141101837
+      },
+      "stats": {
+        "backend_calls": 828,
+        "lower_bound_rejections": 95,
+        "certificate_rejections": 315,
+        "online_core_rejections": 116,
+        "cache_hits": 255,
+        "candidates_considered": 811,
+        "shrink_queries": 798,
+        "candidate_space": 4236,
+        "transferred_conditions": 0
+      }
+    },
+    "transfer_support_fixed": {
+      "medians": {
+        "prep_ms": 84.25461500883102,
+        "repair_ms": 4614.784501492977,
+        "total_ms": 4682.617574930191
+      },
+      "stats": {
+        "backend_calls": 1037,
+        "lower_bound_rejections": 113,
+        "certificate_rejections": 174,
+        "online_core_rejections": 192,
+        "cache_hits": 351,
+        "candidates_considered": 811,
+        "shrink_queries": 1056,
+        "candidate_space": 4236,
+        "transferred_conditions": 77
+      }
+    }
+  },
+  "model_calls": 0,
+  "physical_execution": false,
+  "source_learning_cost_included": false
+}

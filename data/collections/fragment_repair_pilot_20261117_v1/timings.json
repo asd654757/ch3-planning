@@ -1,0 +1,326 @@
+[
+  {
+    "repeat": 0,
+    "arm": "enumerate",
+    "prep_ms": 34.72481667995453,
+    "repair_ms": 3408.1448763608932,
+    "total_ms": 3442.869693040848,
+    "stats": {
+      "backend_calls": 418,
+      "lower_bound_rejections": 206,
+      "certificate_rejections": 0,
+      "online_core_rejections": 0,
+      "cache_hits": 187,
+      "candidates_considered": 811,
+      "shrink_queries": 0,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 0,
+    "arm": "online_core",
+    "prep_ms": 28.227567672729492,
+    "repair_ms": 6561.919786036015,
+    "total_ms": 6590.147353708744,
+    "stats": {
+      "backend_calls": 1184,
+      "lower_bound_rejections": 165,
+      "certificate_rejections": 0,
+      "online_core_rejections": 311,
+      "cache_hits": 438,
+      "candidates_considered": 811,
+      "shrink_queries": 1287,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 0,
+    "arm": "transfer_union",
+    "prep_ms": 199.67366755008698,
+    "repair_ms": 5281.3743352890015,
+    "total_ms": 5481.048002839088,
+    "stats": {
+      "backend_calls": 841,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 311,
+      "online_core_rejections": 117,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 808,
+      "candidate_space": 4236,
+      "transferred_conditions": 200
+    }
+  },
+  {
+    "repeat": 0,
+    "arm": "transfer_support",
+    "prep_ms": 192.2501027584076,
+    "repair_ms": 5379.990674555302,
+    "total_ms": 5572.240777313709,
+    "stats": {
+      "backend_calls": 828,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 315,
+      "online_core_rejections": 116,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 798,
+      "candidate_space": 4236,
+      "transferred_conditions": 200
+    }
+  },
+  {
+    "repeat": 0,
+    "arm": "transfer_recheck",
+    "prep_ms": 129.8678293824196,
+    "repair_ms": 3722.463972866535,
+    "total_ms": 3852.331802248955,
+    "stats": {
+      "backend_calls": 828,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 315,
+      "online_core_rejections": 116,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 798,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 0,
+    "arm": "transfer_support_fixed",
+    "prep_ms": 84.25461500883102,
+    "repair_ms": 4567.467287182808,
+    "total_ms": 4651.721902191639,
+    "stats": {
+      "backend_calls": 1037,
+      "lower_bound_rejections": 113,
+      "certificate_rejections": 174,
+      "online_core_rejections": 192,
+      "cache_hits": 351,
+      "candidates_considered": 811,
+      "shrink_queries": 1056,
+      "candidate_space": 4236,
+      "transferred_conditions": 77
+    }
+  },
+  {
+    "repeat": 1,
+    "arm": "online_core",
+    "prep_ms": 24.148359894752502,
+    "repair_ms": 5156.239986419678,
+    "total_ms": 5180.38834631443,
+    "stats": {
+      "backend_calls": 1184,
+      "lower_bound_rejections": 165,
+      "certificate_rejections": 0,
+      "online_core_rejections": 311,
+      "cache_hits": 438,
+      "candidates_considered": 811,
+      "shrink_queries": 1287,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 1,
+    "arm": "enumerate",
+    "prep_ms": 24.654127657413483,
+    "repair_ms": 2625.5948320031166,
+    "total_ms": 2650.24895966053,
+    "stats": {
+      "backend_calls": 418,
+      "lower_bound_rejections": 206,
+      "certificate_rejections": 0,
+      "online_core_rejections": 0,
+      "cache_hits": 187,
+      "candidates_considered": 811,
+      "shrink_queries": 0,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 1,
+    "arm": "transfer_support_fixed",
+    "prep_ms": 84.44494754076004,
+    "repair_ms": 4616.26635491848,
+    "total_ms": 4700.71130245924,
+    "stats": {
+      "backend_calls": 1037,
+      "lower_bound_rejections": 113,
+      "certificate_rejections": 174,
+      "online_core_rejections": 192,
+      "cache_hits": 351,
+      "candidates_considered": 811,
+      "shrink_queries": 1056,
+      "candidate_space": 4236,
+      "transferred_conditions": 77
+    }
+  },
+  {
+    "repeat": 1,
+    "arm": "transfer_recheck",
+    "prep_ms": 151.9475355744362,
+    "repair_ms": 3767.2214657068253,
+    "total_ms": 3919.1690012812614,
+    "stats": {
+      "backend_calls": 828,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 315,
+      "online_core_rejections": 116,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 798,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 1,
+    "arm": "transfer_support",
+    "prep_ms": 150.34672617912292,
+    "repair_ms": 3807.6508566737175,
+    "total_ms": 3957.9975828528404,
+    "stats": {
+      "backend_calls": 828,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 315,
+      "online_core_rejections": 116,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 798,
+      "candidate_space": 4236,
+      "transferred_conditions": 200
+    }
+  },
+  {
+    "repeat": 1,
+    "arm": "transfer_union",
+    "prep_ms": 130.3848698735237,
+    "repair_ms": 3782.8873619437218,
+    "total_ms": 3913.2722318172455,
+    "stats": {
+      "backend_calls": 841,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 311,
+      "online_core_rejections": 117,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 808,
+      "candidate_space": 4236,
+      "transferred_conditions": 200
+    }
+  },
+  {
+    "repeat": 2,
+    "arm": "transfer_recheck",
+    "prep_ms": 153.98389846086502,
+    "repair_ms": 3711.385242640972,
+    "total_ms": 3865.369141101837,
+    "stats": {
+      "backend_calls": 828,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 315,
+      "online_core_rejections": 116,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 798,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 2,
+    "arm": "transfer_support_fixed",
+    "prep_ms": 67.8330734372139,
+    "repair_ms": 4614.784501492977,
+    "total_ms": 4682.617574930191,
+    "stats": {
+      "backend_calls": 1037,
+      "lower_bound_rejections": 113,
+      "certificate_rejections": 174,
+      "online_core_rejections": 192,
+      "cache_hits": 351,
+      "candidates_considered": 811,
+      "shrink_queries": 1056,
+      "candidate_space": 4236,
+      "transferred_conditions": 77
+    }
+  },
+  {
+    "repeat": 2,
+    "arm": "enumerate",
+    "prep_ms": 43.388694524765015,
+    "repair_ms": 2663.6931598186493,
+    "total_ms": 2707.0818543434143,
+    "stats": {
+      "backend_calls": 418,
+      "lower_bound_rejections": 206,
+      "certificate_rejections": 0,
+      "online_core_rejections": 0,
+      "cache_hits": 187,
+      "candidates_considered": 811,
+      "shrink_queries": 0,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 2,
+    "arm": "online_core",
+    "prep_ms": 23.242823779582977,
+    "repair_ms": 5163.8486832380295,
+    "total_ms": 5187.0915070176125,
+    "stats": {
+      "backend_calls": 1184,
+      "lower_bound_rejections": 165,
+      "certificate_rejections": 0,
+      "online_core_rejections": 311,
+      "cache_hits": 438,
+      "candidates_considered": 811,
+      "shrink_queries": 1287,
+      "candidate_space": 4236,
+      "transferred_conditions": 0
+    }
+  },
+  {
+    "repeat": 2,
+    "arm": "transfer_union",
+    "prep_ms": 151.17206424474716,
+    "repair_ms": 3790.230244398117,
+    "total_ms": 3941.402308642864,
+    "stats": {
+      "backend_calls": 841,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 311,
+      "online_core_rejections": 117,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 808,
+      "candidate_space": 4236,
+      "transferred_conditions": 200
+    }
+  },
+  {
+    "repeat": 2,
+    "arm": "transfer_support",
+    "prep_ms": 132.63393193483353,
+    "repair_ms": 3735.7655093073845,
+    "total_ms": 3868.399441242218,
+    "stats": {
+      "backend_calls": 828,
+      "lower_bound_rejections": 95,
+      "certificate_rejections": 315,
+      "online_core_rejections": 116,
+      "cache_hits": 255,
+      "candidates_considered": 811,
+      "shrink_queries": 798,
+      "candidate_space": 4236,
+      "transferred_conditions": 200
+    }
+  }
+]

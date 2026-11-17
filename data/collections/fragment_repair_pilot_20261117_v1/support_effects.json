@@ -1,0 +1,855 @@
+[
+  {
+    "id": "execution-017:2:1",
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 3,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r2-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 8
+          },
+          {
+            "clause": {
+              "id": "r2-1",
+              "kind": "at",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 8
+          },
+          {
+            "clause": {
+              "id": "r2-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 8
+          },
+          {
+            "clause": {
+              "id": "r2-3",
+              "kind": "visit",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 8
+          },
+          {
+            "clause": {
+              "id": "r2-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 8
+          },
+          {
+            "clause": {
+              "id": "r2-5",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 8
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "hand",
+        "red": "table",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a5"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a6"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a7"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a8"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r2-a0"
+        }
+      ],
+      "observation_id": "execution-017-r2-a0"
+    },
+    "backend_calls": {
+      "enumerate": 4,
+      "online_core": 11,
+      "transfer_union": 6,
+      "transfer_support": 1,
+      "transfer_recheck": 1,
+      "transfer_support_fixed": 1
+    },
+    "deleted": [
+      "r2-4"
+    ]
+  },
+  {
+    "id": "execution-023:10:1",
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 11,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r10-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 34
+          },
+          {
+            "clause": {
+              "id": "r10-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 34
+          },
+          {
+            "clause": {
+              "id": "r10-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 34
+          },
+          {
+            "clause": {
+              "id": "r10-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 34
+          },
+          {
+            "clause": {
+              "id": "r10-4",
+              "kind": "visit",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 34
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "hand",
+        "red": "table",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a0"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a1"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a2"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a3"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a4"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a5"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a0"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a1"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a2"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a3"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a4"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a5"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a0"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a1"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a2"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a3"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a4"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a5"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r6-a0"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r8-a0"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r8-a1"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r8-a2"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r8-a3"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r8-a4"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r9-a1"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r9-a2"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r9-a3"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r9-a4"
+        },
+        {
+          "seq": 33,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r9-a5"
+        },
+        {
+          "seq": 34,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r9-a6"
+        },
+        {
+          "seq": 35,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r10-a0"
+        }
+      ],
+      "observation_id": "execution-023-r10-a0"
+    },
+    "backend_calls": {
+      "enumerate": 2,
+      "online_core": 5,
+      "transfer_union": 5,
+      "transfer_support": 1,
+      "transfer_recheck": 1,
+      "transfer_support_fixed": 5
+    },
+    "deleted": [
+      "r10-2"
+    ]
+  },
+  {
+    "id": "execution-028:6:1",
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r6-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 28
+          },
+          {
+            "clause": {
+              "id": "r6-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 28
+          },
+          {
+            "clause": {
+              "id": "r6-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 28
+          },
+          {
+            "clause": {
+              "id": "r6-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 28
+          },
+          {
+            "clause": {
+              "id": "r6-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 28
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "table",
+        "red": "green",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r1-a5"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r1-a6"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a0"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a1"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a2"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a3"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a4"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a5"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a6"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r3-a7"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r4-a0"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r4-a1"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r4-a2"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r4-a3"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r4-a4"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r4-a5"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a1"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a2"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a3"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a4"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a5"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a6"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a7"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r5-a8"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-028-r6-a0"
+        }
+      ],
+      "observation_id": "execution-028-r6-a0"
+    },
+    "backend_calls": {
+      "enumerate": 3,
+      "online_core": 5,
+      "transfer_union": 5,
+      "transfer_support": 1,
+      "transfer_recheck": 1,
+      "transfer_support_fixed": 1
+    },
+    "deleted": [
+      "r6-3"
+    ]
+  }
+]

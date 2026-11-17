@@ -1,0 +1,223 @@
+{
+  "suite_sizes": {
+    "execution": 187,
+    "static": 432
+  },
+  "outcomes": {
+    "execution": {
+      "proposal": 186,
+      "no_authorized_repair": 1
+    },
+    "static": {
+      "proposal": 420,
+      "no_authorized_repair": 12
+    }
+  },
+  "all_answers_exact_minimum_and_identical": true,
+  "all_preserved_history_anchors_unchanged": true,
+  "support_equals_recheck_subsets": {
+    "execution": 4236,
+    "static": 8552
+  },
+  "methods": {
+    "execution": {
+      "enumerate": {
+        "stats": {
+          "backend_calls": 418,
+          "lower_bound_rejections": 206,
+          "certificate_rejections": 0,
+          "known_nonready_reuses": 187,
+          "candidates_considered": 811,
+          "candidate_space": 4236,
+          "transferred_conditions": 0
+        },
+        "medians": {
+          "prep_ms": 23.26110005378723,
+          "repair_ms": 2622.961051762104,
+          "total_ms": 2660.4245603084564
+        }
+      },
+      "transfer_union": {
+        "stats": {
+          "backend_calls": 290,
+          "lower_bound_rejections": 104,
+          "certificate_rejections": 230,
+          "known_nonready_reuses": 187,
+          "candidates_considered": 811,
+          "candidate_space": 4236,
+          "transferred_conditions": 200
+        },
+        "medians": {
+          "prep_ms": 128.6955401301384,
+          "repair_ms": 1699.987143278122,
+          "total_ms": 1828.6826834082603
+        }
+      },
+      "transfer_support": {
+        "stats": {
+          "backend_calls": 287,
+          "lower_bound_rejections": 104,
+          "certificate_rejections": 233,
+          "known_nonready_reuses": 187,
+          "candidates_considered": 811,
+          "candidate_space": 4236,
+          "transferred_conditions": 200
+        },
+        "medians": {
+          "prep_ms": 129.545696079731,
+          "repair_ms": 1671.732448041439,
+          "total_ms": 1801.27814412117
+        }
+      },
+      "transfer_recheck": {
+        "stats": {
+          "backend_calls": 287,
+          "lower_bound_rejections": 104,
+          "certificate_rejections": 233,
+          "known_nonready_reuses": 187,
+          "candidates_considered": 811,
+          "candidate_space": 4236,
+          "transferred_conditions": 0
+        },
+        "medians": {
+          "prep_ms": 141.82790368795395,
+          "repair_ms": 1684.4554841518402,
+          "total_ms": 1814.8966655135155
+        }
+      },
+      "transfer_support_fixed": {
+        "stats": {
+          "backend_calls": 357,
+          "lower_bound_rejections": 132,
+          "certificate_rejections": 135,
+          "known_nonready_reuses": 187,
+          "candidates_considered": 811,
+          "candidate_space": 4236,
+          "transferred_conditions": 77
+        },
+        "medians": {
+          "prep_ms": 79.66257631778717,
+          "repair_ms": 2224.2757007479668,
+          "total_ms": 2301.4920130372047
+        }
+      },
+      "transfer_recheck_fixed": {
+        "stats": {
+          "backend_calls": 357,
+          "lower_bound_rejections": 132,
+          "certificate_rejections": 135,
+          "known_nonready_reuses": 187,
+          "candidates_considered": 811,
+          "candidate_space": 4236,
+          "transferred_conditions": 0
+        },
+        "medians": {
+          "prep_ms": 79.13228124380112,
+          "repair_ms": 2244.486153125763,
+          "total_ms": 2321.589693427086
+        }
+      }
+    },
+    "static": {
+      "enumerate": {
+        "stats": {
+          "backend_calls": 1133,
+          "lower_bound_rejections": 448,
+          "certificate_rejections": 0,
+          "known_nonready_reuses": 432,
+          "candidates_considered": 2013,
+          "candidate_space": 8552,
+          "transferred_conditions": 0
+        },
+        "medians": {
+          "prep_ms": 40.66256433725357,
+          "repair_ms": 4015.062913298607,
+          "total_ms": 4055.7254776358604
+        }
+      },
+      "transfer_union": {
+        "stats": {
+          "backend_calls": 596,
+          "lower_bound_rejections": 113,
+          "certificate_rejections": 872,
+          "known_nonready_reuses": 432,
+          "candidates_considered": 2013,
+          "candidate_space": 8552,
+          "transferred_conditions": 903
+        },
+        "medians": {
+          "prep_ms": 148.2580080628395,
+          "repair_ms": 2052.7084320783615,
+          "total_ms": 2200.966440141201
+        }
+      },
+      "transfer_support": {
+        "stats": {
+          "backend_calls": 581,
+          "lower_bound_rejections": 110,
+          "certificate_rejections": 890,
+          "known_nonready_reuses": 432,
+          "candidates_considered": 2013,
+          "candidate_space": 8552,
+          "transferred_conditions": 903
+        },
+        "medians": {
+          "prep_ms": 147.4517211318016,
+          "repair_ms": 2010.0069716572762,
+          "total_ms": 2140.113092958927
+        }
+      },
+      "transfer_recheck": {
+        "stats": {
+          "backend_calls": 581,
+          "lower_bound_rejections": 110,
+          "certificate_rejections": 890,
+          "known_nonready_reuses": 432,
+          "candidates_considered": 2013,
+          "candidate_space": 8552,
+          "transferred_conditions": 0
+        },
+        "medians": {
+          "prep_ms": 146.97091281414032,
+          "repair_ms": 2023.2833325862885,
+          "total_ms": 2170.713923871517
+        }
+      },
+      "transfer_support_fixed": {
+        "stats": {
+          "backend_calls": 766,
+          "lower_bound_rejections": 164,
+          "certificate_rejections": 651,
+          "known_nonready_reuses": 432,
+          "candidates_considered": 2013,
+          "candidate_space": 8552,
+          "transferred_conditions": 359
+        },
+        "medians": {
+          "prep_ms": 67.44519621133804,
+          "repair_ms": 2808.333545923233,
+          "total_ms": 2874.433696269989
+        }
+      },
+      "transfer_recheck_fixed": {
+        "stats": {
+          "backend_calls": 766,
+          "lower_bound_rejections": 164,
+          "certificate_rejections": 651,
+          "known_nonready_reuses": 432,
+          "candidates_considered": 2013,
+          "candidate_space": 8552,
+          "transferred_conditions": 0
+        },
+        "medians": {
+          "prep_ms": 66.04807823896408,
+          "repair_ms": 2835.4877308011055,
+          "total_ms": 2901.333935558796
+        }
+      }
+    }
+  },
+  "source_learning_cost_included": false,
+  "physical_execution": false,
+  "model_calls": 0
+}

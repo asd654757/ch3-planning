@@ -1,0 +1,212 @@
+{
+  "episodes": 32,
+  "requests": 384,
+  "methods": {
+    "standard": {
+      "metrics": {
+        "completed": 223,
+        "repair_searches": 188,
+        "adoptions": 31,
+        "completed_after_adoption": 27,
+        "completed_without_adoption": 196,
+        "action_attempts": 1416,
+        "observed_events": 1358,
+        "action_budget_exhausted": 0,
+        "runtime_backend_calls": 307,
+        "repair_backend_calls": 171,
+        "total_backend_calls": 478,
+        "runtime_origins": {
+          "independent_action_bound": 134,
+          "backend": 307,
+          "reuse_valid_suffix": 1359
+        },
+        "initial_statuses": {
+          "conflict": 167,
+          "ready": 217
+        },
+        "observations": {
+          "foreign_legal_event": 59,
+          "normal": 1299,
+          "no_effect": 58
+        },
+        "decisions_checked": 1831,
+        "repair_searches_checked": 188,
+        "ready_suffixes_checked": 1639,
+        "action_transitions_checked": 1416,
+        "adoptions_checked": 31
+      },
+      "medians": {
+        "prep_ms": 22.702403366565704,
+        "loop_ms": 4604.976072907448,
+        "total_ms": 4627.6784762740135
+      }
+    },
+    "fixed": {
+      "metrics": {
+        "completed": 223,
+        "repair_searches": 188,
+        "adoptions": 31,
+        "completed_after_adoption": 27,
+        "completed_without_adoption": 196,
+        "action_attempts": 1416,
+        "observed_events": 1358,
+        "action_budget_exhausted": 0,
+        "runtime_backend_calls": 290,
+        "repair_backend_calls": 120,
+        "total_backend_calls": 410,
+        "runtime_origins": {
+          "independent_action_bound": 134,
+          "backend": 290,
+          "reuse_valid_suffix": 1359,
+          "certified_core": 17
+        },
+        "initial_statuses": {
+          "conflict": 167,
+          "ready": 217
+        },
+        "observations": {
+          "foreign_legal_event": 59,
+          "normal": 1299,
+          "no_effect": 58
+        },
+        "decisions_checked": 1831,
+        "repair_searches_checked": 188,
+        "ready_suffixes_checked": 1639,
+        "action_transitions_checked": 1416,
+        "adoptions_checked": 31
+      },
+      "medians": {
+        "prep_ms": 61.46281212568283,
+        "loop_ms": 3956.045374274254,
+        "total_ms": 4017.6914036273956
+      }
+    },
+    "source_partial": {
+      "metrics": {
+        "completed": 223,
+        "repair_searches": 188,
+        "adoptions": 31,
+        "completed_after_adoption": 27,
+        "completed_without_adoption": 196,
+        "action_attempts": 1416,
+        "observed_events": 1358,
+        "action_budget_exhausted": 0,
+        "runtime_backend_calls": 275,
+        "repair_backend_calls": 110,
+        "total_backend_calls": 385,
+        "runtime_origins": {
+          "independent_action_bound": 134,
+          "backend": 275,
+          "reuse_valid_suffix": 1359,
+          "certified_core": 32
+        },
+        "initial_statuses": {
+          "conflict": 167,
+          "ready": 217
+        },
+        "observations": {
+          "foreign_legal_event": 59,
+          "normal": 1299,
+          "no_effect": 58
+        },
+        "decisions_checked": 1831,
+        "repair_searches_checked": 188,
+        "ready_suffixes_checked": 1639,
+        "action_transitions_checked": 1416,
+        "adoptions_checked": 31
+      },
+      "medians": {
+        "prep_ms": 141.59651100635529,
+        "loop_ms": 3733.1316396594048,
+        "total_ms": 3879.0758699178696
+      }
+    },
+    "learned": {
+      "metrics": {
+        "completed": 223,
+        "repair_searches": 188,
+        "adoptions": 31,
+        "completed_after_adoption": 27,
+        "completed_without_adoption": 196,
+        "action_attempts": 1416,
+        "observed_events": 1358,
+        "action_budget_exhausted": 0,
+        "runtime_backend_calls": 264,
+        "repair_backend_calls": 87,
+        "total_backend_calls": 351,
+        "runtime_origins": {
+          "independent_action_bound": 134,
+          "backend": 264,
+          "reuse_valid_suffix": 1359,
+          "certified_core": 43
+        },
+        "initial_statuses": {
+          "conflict": 167,
+          "ready": 217
+        },
+        "observations": {
+          "foreign_legal_event": 59,
+          "normal": 1299,
+          "no_effect": 58
+        },
+        "decisions_checked": 1831,
+        "repair_searches_checked": 188,
+        "ready_suffixes_checked": 1639,
+        "action_transitions_checked": 1416,
+        "adoptions_checked": 31
+      },
+      "medians": {
+        "prep_ms": 125.1181811094284,
+        "loop_ms": 3430.2714616060257,
+        "total_ms": 3560.9414726495743
+      }
+    },
+    "no_repair": {
+      "metrics": {
+        "completed": 197,
+        "repair_searches": 0,
+        "adoptions": 0,
+        "completed_after_adoption": 0,
+        "completed_without_adoption": 197,
+        "action_attempts": 1234,
+        "observed_events": 1179,
+        "action_budget_exhausted": 0,
+        "runtime_backend_calls": 264,
+        "repair_backend_calls": 0,
+        "total_backend_calls": 264,
+        "runtime_origins": {
+          "independent_action_bound": 134,
+          "backend": 264,
+          "reuse_valid_suffix": 1183,
+          "certified_core": 37
+        },
+        "initial_statuses": {
+          "conflict": 166,
+          "ready": 218
+        },
+        "observations": {
+          "foreign_legal_event": 52,
+          "normal": 1127,
+          "no_effect": 55
+        },
+        "decisions_checked": 1618,
+        "ready_suffixes_checked": 1431,
+        "action_transitions_checked": 1234
+      },
+      "medians": {
+        "prep_ms": 132.01481103897095,
+        "loop_ms": 1955.7025134563446,
+        "total_ms": 2099.4018241763115
+      }
+    }
+  },
+  "four_same_function_arms_semantic_traces_identical": true,
+  "reference_unique_snapshots": 2233,
+  "repair_optima_independently_checked": 188,
+  "physical_execution": false,
+  "model_calls": 0,
+  "target_learning": false,
+  "target_cache_growth": false,
+  "source_learning_cost_included": false,
+  "timing_scope": "complete_symbolic_supervision_repair_adoption_dispatch_observation_loop"
+}

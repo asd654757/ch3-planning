@@ -1,0 +1,106 @@
+{
+  "rounds": 10,
+  "methods": [
+    "fixed",
+    "state_cache",
+    "full"
+  ],
+  "order": [
+    [
+      "fixed",
+      "state_cache",
+      "full"
+    ],
+    [
+      "fixed",
+      "full",
+      "state_cache"
+    ],
+    [
+      "state_cache",
+      "fixed",
+      "full"
+    ],
+    [
+      "state_cache",
+      "full",
+      "fixed"
+    ],
+    [
+      "full",
+      "fixed",
+      "state_cache"
+    ],
+    [
+      "full",
+      "state_cache",
+      "fixed"
+    ],
+    [
+      "fixed",
+      "state_cache",
+      "full"
+    ],
+    [
+      "fixed",
+      "full",
+      "state_cache"
+    ],
+    [
+      "state_cache",
+      "fixed",
+      "full"
+    ],
+    [
+      "state_cache",
+      "full",
+      "fixed"
+    ]
+  ],
+  "source_ids": [
+    "source-0008",
+    "source-0016",
+    "source-0019",
+    "source-0020",
+    "source-0029",
+    "source-0067",
+    "source-0091",
+    "source-0115"
+  ],
+  "tasks_changed": false,
+  "target_learning": false,
+  "physical_execution": false,
+  "source_hashes": {
+    "scripts/benchmark_fragment_execution.py": "fc34c632b7f1a709b20f390df81c0d082d2189317552c689ee89c357f6a3bbc9",
+    "docs/fragment_execution_protocol_20261116.md": "3b5c6047629d719e8aa6c74b0478405821c279244ca988b96385194b8bd9bb1e",
+    "ch3/revision/__init__.py": "c9182337a7c91d66fb7d147736d7ed32fdc8910e80e6dbe2ae26f4359dc4613a",
+    "ch3/revision/batch_fragment_oracle.py": "efd1675368d2a127dfb3e2fca4345e5bd92988aeac1b0b126bef49a9e93c4461",
+    "ch3/revision/cases.py": "50d4caa35222e2241a2da8e7ce0d6e01b77cedf1cc8dd27bbe40e9354a6f5687",
+    "ch3/revision/compact_fragment_certificates.py": "c000a7bb57c5f438b4a1736ea8c1823034f6e54e12bbb21f3d5a2d97caa8408b",
+    "ch3/revision/diagnosis.py": "83100091fd943d25afdfc5b703f47895b989b92223ad378aa9f53cf12350c586",
+    "ch3/revision/evaluation.py": "a60d5513e7559080418be1574469cc2b7d01c53da1a6f1df54f52be9d3fcfe8a",
+    "ch3/revision/feedback.py": "b3faf7461bd5d3c781e4418bedf177c5836e85af9d53330162f55158baffc985",
+    "ch3/revision/fragment_domain_adapter.py": "3ab9ecffa55f2cbeca63aa12ab3465f65862005df058b9939f2587e46966509c",
+    "ch3/revision/fragment_regions.py": "ed41ee9b57e5cef3c941a7058ed14dee30c4e3286b3b8ce4450362da93820088",
+    "ch3/revision/fragment_runtime.py": "18765f20f7ecefbf5d31061127e747db60d5ac03e9f1980404af5fc4041532dc",
+    "ch3/revision/fragment_session.py": "042c71ce0d1e27f148aefe5c3d9b78d1b3458244d90135ebefce974f917cac4d",
+    "ch3/revision/fragment_state_cache.py": "813b81b06b7ca4f2f4eadfad25fe5d5c6594593d9dd1535b4db90f73c77a951a",
+    "ch3/revision/fragment_state_cache_compiled.py": "079a3f425246f50e8d1ab1c36b33248b0a7a77d6e5fb04cc6fd173dcf884b44a",
+    "ch3/revision/fragments.py": "86cd975ce6d192a2dd50d17b97cbce14c468d3977bd847f3e8df77ba94d76181",
+    "ch3/revision/history.py": "77810a6ea345bab4615b6ee18ff69e6d5821cc2a77d01a1968902d6fb9db8c8f",
+    "ch3/revision/model.py": "0a0715dedc4e95ad3162233e4d7b4990d99a81960bbb1960b1bdbc862a236577",
+    "ch3/revision/recovery_pilot.py": "c128021109c89d6c07083324848b301c51b1fce9905ef6f138388732d252dd4d",
+    "ch3/revision/runtime.py": "51debe5e4c0605b0b05f70db24ce62e71e9066bf3b1c71c3ed84c97e4935e700",
+    "ch3/revision/session.py": "9e98998cfe30a68bdd3012a4547b19be591618219ffca5a00d43323047a3262f",
+    "ch3/schema/model_plan.py": "27fcf794063af0df0001b3cdf1ec1333370386de1a715753379934192c64f443",
+    "tests/test_fragment_runtime.py": "a4ad8f6db5380efe5d9a6c1ea834f3d178215144a53e07579069c5fa6668f7e5",
+    "scripts/benchmark_fragment_three_objects.py": "d134e8dd1e95570e078067af9f510401b40374e2df6b2a430387b12074a04010",
+    "scripts/benchmark_fragment_state_cache.py": "5b6f366b0b67baefc4c1a603a5bac909dca0ef0281466e246dcc54e7c1f061ae",
+    "docs/fragment_state_cache_protocol_20261117.md": "2bb5914bc2b9fff8cb1df5b3beeb8b2be90d03df3f1b1fa2aa1b4d824ac58a92",
+    "tests/test_fragment_state_cache.py": "f55413a9dbde506f8e8eab5ad5d1355c6a238a35544bf8070141b23a1abb1c4a",
+    "scripts/benchmark_fragment_state_cache_compiled.py": "5ea98952dbbce1c50d23f3b662777e99750de3693a03642ecd5029a77ad3f3f8",
+    "docs/fragment_state_cache_compiled_protocol_20261117.md": "246a4076237bc181f9718a81d5f320c0133482878660af9c9e7f7353140140af",
+    "tests/test_fragment_state_cache_compiled.py": "c9ba8e0bcc57c230e0c5af9a5f861c49d6eb3cd08b935acc377b21bc21ef3166"
+  },
+  "input_proofs_sha256": "0ef79710e549c938e9f3c04c56c664803df2d6a3950eb73c7f7e8b2e6f51a446"
+}

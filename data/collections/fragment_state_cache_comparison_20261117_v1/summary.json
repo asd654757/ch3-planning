@@ -1,0 +1,301 @@
+{
+  "rounds": 10,
+  "episodes": 32,
+  "revisions": 384,
+  "methods": {
+    "fixed": {
+      "medians": {
+        "source_ms": 704.7396674752235,
+        "preparation_ms": 57.68686532974243,
+        "decision_ms": 1282.8328907489777,
+        "execution_loop_ms": 2148.997511714697,
+        "online_total_ms": 2213.1957225501537,
+        "total_algorithm_ms": 2913.0937568843365
+      },
+      "backend_calls": 288,
+      "origins": {
+        "independent_action_bound": 134,
+        "backend": 288,
+        "reuse_valid_suffix": 1183,
+        "certified_core": 13
+      },
+      "completed_revisions": 197,
+      "initial_statuses": {
+        "conflict": 166,
+        "ready": 218
+      },
+      "suspended_during_execution": 21,
+      "action_attempts": 1234,
+      "observed_events": 1179,
+      "source_backend_calls": 333,
+      "source_cache_size": 333,
+      "state_cache_points": 0,
+      "serialized_bytes": 257511,
+      "decisions_checked": 1618,
+      "ready_suffixes_checked": 1431,
+      "false_conflicts": 0,
+      "unsafe_ready": 0
+    },
+    "state_cache": {
+      "medians": {
+        "source_ms": 725.3789566457272,
+        "preparation_ms": 77.33071967959404,
+        "decision_ms": 1226.8832623958588,
+        "execution_loop_ms": 2092.6030464470387,
+        "online_total_ms": 2172.4111028015614,
+        "total_algorithm_ms": 2901.174884289503
+      },
+      "backend_calls": 283,
+      "origins": {
+        "independent_action_bound": 134,
+        "backend": 283,
+        "reuse_valid_suffix": 1183,
+        "certified_core": 18
+      },
+      "completed_revisions": 197,
+      "initial_statuses": {
+        "conflict": 166,
+        "ready": 218
+      },
+      "suspended_during_execution": 21,
+      "action_attempts": 1234,
+      "observed_events": 1179,
+      "source_backend_calls": 333,
+      "source_cache_size": 333,
+      "state_cache_points": 96,
+      "serialized_bytes": 261009,
+      "decisions_checked": 1618,
+      "ready_suffixes_checked": 1431,
+      "false_conflicts": 0,
+      "unsafe_ready": 0
+    },
+    "full": {
+      "medians": {
+        "source_ms": 789.6887399256229,
+        "preparation_ms": 132.88243487477303,
+        "decision_ms": 1068.299125880003,
+        "execution_loop_ms": 1948.8295838236809,
+        "online_total_ms": 2084.664076566696,
+        "total_algorithm_ms": 2873.639293015003
+      },
+      "backend_calls": 264,
+      "origins": {
+        "independent_action_bound": 134,
+        "backend": 264,
+        "reuse_valid_suffix": 1183,
+        "certified_core": 37
+      },
+      "completed_revisions": 197,
+      "initial_statuses": {
+        "conflict": 166,
+        "ready": 218
+      },
+      "suspended_during_execution": 21,
+      "action_attempts": 1234,
+      "observed_events": 1179,
+      "source_backend_calls": 333,
+      "source_cache_size": 333,
+      "state_cache_points": 0,
+      "serialized_bytes": 362202,
+      "decisions_checked": 1618,
+      "ready_suffixes_checked": 1431,
+      "false_conflicts": 0,
+      "unsafe_ready": 0
+    }
+  },
+  "target_learning": false,
+  "target_cache_growth": false,
+  "physical_execution": false,
+  "model_calls": 0,
+  "reference_unique_snapshots": 1618,
+  "all_semantic_traces_match_prior": true,
+  "cost_scope": "matched_source_collection_extraction_certification_reload_and_symbolic_execution",
+  "full_comparisons": {
+    "fixed": {
+      "backend_calls_saved": 24,
+      "median_reduction_percent": {
+        "source_ms": -12.053964942080679,
+        "preparation_ms": -130.35128380647328,
+        "decision_ms": 16.723438135712275,
+        "execution_loop_ms": 9.314479276958348,
+        "online_total_ms": 5.8075137537025885,
+        "total_algorithm_ms": 1.3543835922236604
+      },
+      "paired_savings_ms": {
+        "source_ms": [
+          183.39086323976517,
+          -125.27893483638763,
+          -92.46931225061417,
+          -69.1557303071022,
+          -97.84538298845291,
+          -110.8710914850235,
+          -51.678210496902466,
+          -99.75281357765198,
+          -99.2593914270401,
+          -76.30189508199692
+        ],
+        "preparation_ms": [
+          -35.216666758060455,
+          -63.62084299325943,
+          -89.82454985380173,
+          -86.76972985267639,
+          -84.42132920026779,
+          -33.400893211364746,
+          -96.4735895395279,
+          -63.440874218940735,
+          -62.99842894077301,
+          -92.63123571872711
+        ],
+        "decision_ms": [
+          754.6163126826286,
+          219.74457800388336,
+          195.66377997398376,
+          222.1975028514862,
+          215.8239409327507,
+          181.40622228384018,
+          214.41345661878586,
+          184.67463552951813,
+          182.3589876294136,
+          261.30587607622147
+        ],
+        "execution_loop_ms": [
+          1141.9452652335167,
+          174.36567693948746,
+          186.13409996032715,
+          232.9857125878334,
+          195.39833813905716,
+          185.50798296928406,
+          213.61560374498367,
+          180.824913084507,
+          172.06816375255585,
+          247.3454624414444
+        ],
+        "online_total_ms": [
+          1106.7285984754562,
+          110.74483394622803,
+          96.30955010652542,
+          146.215982735157,
+          110.97700893878937,
+          152.1070897579193,
+          117.14201420545578,
+          117.38403886556625,
+          109.06973481178284,
+          154.71422672271729
+        ],
+        "total_algorithm_ms": [
+          1290.1194617152214,
+          -14.534100890159607,
+          3.840237855911255,
+          77.06025242805481,
+          13.131625950336456,
+          41.23599827289581,
+          65.46380370855331,
+          17.631225287914276,
+          9.810343384742737,
+          78.41233164072037
+        ]
+      },
+      "paired_wins": {
+        "source_ms": 1,
+        "preparation_ms": 0,
+        "decision_ms": 10,
+        "execution_loop_ms": 10,
+        "online_total_ms": 10,
+        "total_algorithm_ms": 9
+      }
+    },
+    "state_cache": {
+      "backend_calls_saved": 19,
+      "median_reduction_percent": {
+        "source_ms": -8.865680854222035,
+        "preparation_ms": -71.83654235386344,
+        "decision_ms": 12.925772269985373,
+        "execution_loop_ms": 6.870555926383935,
+        "online_total_ms": 4.039153828743824,
+        "total_algorithm_ms": 0.949118628580826
+      },
+      "paired_savings_ms": {
+        "source_ms": [
+          -55.98088353872299,
+          -66.18865579366684,
+          -58.597661554813385,
+          -42.63277351856232,
+          -41.98051244020462,
+          -91.7276218533516,
+          -35.902030766010284,
+          -107.08694905042648,
+          -70.43147832155228,
+          -60.30789017677307
+        ],
+        "preparation_ms": [
+          -42.144715785980225,
+          -42.83156245946884,
+          -68.75459104776382,
+          -66.04023277759552,
+          -67.61554628610611,
+          -43.81852596998215,
+          -76.22731477022171,
+          -10.328613221645355,
+          -44.01758313179016,
+          -72.44455069303513
+        ],
+        "decision_ms": [
+          165.12275487184525,
+          143.43108236789703,
+          160.81944853067398,
+          161.17121279239655,
+          197.25355505943298,
+          155.12705594301224,
+          188.64207714796066,
+          116.45423620939255,
+          125.16769021749496,
+          194.72510367631912
+        ],
+        "execution_loop_ms": [
+          168.19612681865692,
+          100.88934004306793,
+          145.0335755944252,
+          170.07265239953995,
+          186.01243942975998,
+          159.31659191846848,
+          192.9115504026413,
+          116.17647856473923,
+          113.26964199542999,
+          161.75635159015656
+        ],
+        "online_total_ms": [
+          126.0514110326767,
+          58.05777758359909,
+          76.27898454666138,
+          104.03241962194443,
+          118.39689314365387,
+          115.49806594848633,
+          116.68423563241959,
+          105.84786534309387,
+          69.25205886363983,
+          89.31180089712143
+        ],
+        "total_algorithm_ms": [
+          70.0705274939537,
+          -8.130878210067749,
+          17.681322991847992,
+          61.39964610338211,
+          76.41638070344925,
+          23.770444095134735,
+          80.7822048664093,
+          -1.239083707332611,
+          -1.179419457912445,
+          29.003910720348358
+        ]
+      },
+      "paired_wins": {
+        "source_ms": 0,
+        "preparation_ms": 0,
+        "decision_ms": 10,
+        "execution_loop_ms": 10,
+        "online_total_ms": 10,
+        "total_algorithm_ms": 7
+      }
+    }
+  }
+}

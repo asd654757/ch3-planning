@@ -1,0 +1,4869 @@
+[
+  {
+    "episode": "execution-002",
+    "revision": 11,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 12,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r11-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 36
+          },
+          {
+            "clause": {
+              "id": "r11-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 36
+          },
+          {
+            "clause": {
+              "id": "r11-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 36
+          },
+          {
+            "clause": {
+              "id": "r11-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 36
+          }
+        ]
+      },
+      "state": {
+        "blue": "return",
+        "yellow": "table",
+        "red": "green",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a6"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r0-a7"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r5-a1"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r5-a2"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r5-a3"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r5-a4"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r6-a0"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r6-a1"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r6-a2"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r6-a3"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r6-a4"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r6-a5"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r7-a0"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r7-a1"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r7-a2"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r7-a3"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r7-a4"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r7-a5"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r8-a0"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r8-a1"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r9-a1"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r9-a2"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r9-a3"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r9-a4"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r9-a5"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r9-a6"
+        },
+        {
+          "seq": 33,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r10-a0"
+        },
+        {
+          "seq": 34,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r10-a1"
+        },
+        {
+          "seq": 35,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r10-a2"
+        },
+        {
+          "seq": 36,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-002-r10-a3"
+        }
+      ],
+      "observation_id": "execution-002-r10-a3"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "50177740f017e1af9329004bcb3db3ec3751b25dadc0391f9a8e8f6c13721247",
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f",
+      "72c68998f30de3e96709b029b2c513f360e47e39105893537f9cc5f1a0c64cf3"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 140288,
+        "key": "50177740f017e1af9329004bcb3db3ec3751b25dadc0391f9a8e8f6c13721247"
+      },
+      {
+        "required_mask": 140288,
+        "key": "50177740f017e1af9329004bcb3db3ec3751b25dadc0391f9a8e8f6c13721247"
+      },
+      {
+        "required_mask": 9480,
+        "key": "72c68998f30de3e96709b029b2c513f360e47e39105893537f9cc5f1a0c64cf3"
+      }
+    ]
+  },
+  {
+    "episode": "execution-008",
+    "revision": 11,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 12,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r11-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r11-1",
+              "kind": "visit",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r11-2",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r11-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          }
+        ]
+      },
+      "state": {
+        "blue": "return",
+        "yellow": "table",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a6"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r0-a7"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r1-a1"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r1-a2"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r1-a3"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r1-a4"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r1-a5"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r1-a6"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r4-a0"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r4-a1"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r4-a2"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r4-a3"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r5-a1"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r5-a2"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r5-a3"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r5-a4"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r5-a5"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r5-a6"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r6-a0"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r6-a1"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r6-a2"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r6-a3"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r6-a4"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r6-a5"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a0"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a1"
+        },
+        {
+          "seq": 33,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a2"
+        },
+        {
+          "seq": 34,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a3"
+        },
+        {
+          "seq": 35,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a4"
+        },
+        {
+          "seq": 36,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a5"
+        },
+        {
+          "seq": 37,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a6"
+        },
+        {
+          "seq": 38,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r7-a7"
+        },
+        {
+          "seq": 39,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r9-a1"
+        },
+        {
+          "seq": 40,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r9-a2"
+        },
+        {
+          "seq": 41,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r9-a3"
+        },
+        {
+          "seq": 42,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r9-a4"
+        },
+        {
+          "seq": 43,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r9-a5"
+        },
+        {
+          "seq": 44,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-008-r9-a6"
+        }
+      ],
+      "observation_id": "execution-008-r9-a6"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 135172,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-009",
+    "revision": 8,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 9,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r8-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          },
+          {
+            "clause": {
+              "id": "r8-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          },
+          {
+            "clause": {
+              "id": "r8-2",
+              "kind": "visit",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          },
+          {
+            "clause": {
+              "id": "r8-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          }
+        ]
+      },
+      "state": {
+        "blue": "return",
+        "yellow": "table",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a0"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a1"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a2"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a3"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a4"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a5"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a6"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r2-a7"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a0"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a1"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a2"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a3"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a4"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a5"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a6"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-009-r3-a7"
+        }
+      ],
+      "observation_id": "execution-009-r3-a7"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 49156,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-011",
+    "revision": 7,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 8,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r7-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          },
+          {
+            "clause": {
+              "id": "r7-1",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          },
+          {
+            "clause": {
+              "id": "r7-2",
+              "kind": "visit",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          },
+          {
+            "clause": {
+              "id": "r7-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 18
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "table",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r0-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r0-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r3-a0"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r3-a1"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r3-a2"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r3-a3"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a1"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a2"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a3"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a4"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a5"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a6"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a7"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-011-r5-a8"
+        }
+      ],
+      "observation_id": "execution-011-r5-a8"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-012",
+    "revision": 5,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 6,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r5-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r5-1",
+              "kind": "visit",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r5-2",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r5-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          }
+        ]
+      },
+      "state": {
+        "blue": "return",
+        "yellow": "table",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r1-a5"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r1-a6"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a0"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a1"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a2"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a3"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a4"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a5"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a6"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-012-r3-a7"
+        }
+      ],
+      "observation_id": "execution-012-r3-a7"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-013",
+    "revision": 4,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 5,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r4-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 2
+          },
+          {
+            "clause": {
+              "id": "r4-1",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 2
+          },
+          {
+            "clause": {
+              "id": "r4-2",
+              "kind": "visit",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 2
+          },
+          {
+            "clause": {
+              "id": "r4-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 2
+          },
+          {
+            "clause": {
+              "id": "r4-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 2
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "table",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r0-a1"
+        }
+      ],
+      "observation_id": "execution-013-r0-a1"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-013",
+    "revision": 6,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r6-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          },
+          {
+            "clause": {
+              "id": "r6-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          },
+          {
+            "clause": {
+              "id": "r6-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          },
+          {
+            "clause": {
+              "id": "r6-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "hand",
+        "red": "return",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a1"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a2"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a3"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a4"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a5"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a6"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a7"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r5-a8"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-013-r6-a0"
+        }
+      ],
+      "observation_id": "execution-013-r6-a0"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 33808,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-014",
+    "revision": 10,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 11,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r10-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r10-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r10-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r10-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          },
+          {
+            "clause": {
+              "id": "r10-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 44
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "hand",
+        "red": "return",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a5"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a6"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a7"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r1-a8"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r2-a0"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r2-a1"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r2-a2"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r2-a3"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r2-a4"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r2-a5"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r3-a0"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r3-a1"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r3-a2"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r3-a3"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a0"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a1"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a2"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a3"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a4"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a5"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a6"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r4-a7"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r5-a1"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r5-a2"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r5-a3"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r5-a4"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r6-a0"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r6-a1"
+        },
+        {
+          "seq": 33,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r6-a2"
+        },
+        {
+          "seq": 34,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r6-a3"
+        },
+        {
+          "seq": 35,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r6-a4"
+        },
+        {
+          "seq": 36,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r6-a5"
+        },
+        {
+          "seq": 37,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a0"
+        },
+        {
+          "seq": 38,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a1"
+        },
+        {
+          "seq": 39,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a2"
+        },
+        {
+          "seq": 40,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a3"
+        },
+        {
+          "seq": 41,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a4"
+        },
+        {
+          "seq": 42,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a5"
+        },
+        {
+          "seq": 43,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a6"
+        },
+        {
+          "seq": 44,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r7-a7"
+        },
+        {
+          "seq": 45,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-014-r10-a0"
+        }
+      ],
+      "observation_id": "execution-014-r10-a0"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 33808,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-017",
+    "revision": 10,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 11,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r10-0",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 30
+          },
+          {
+            "clause": {
+              "id": "r10-1",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 30
+          },
+          {
+            "clause": {
+              "id": "r10-2",
+              "kind": "visit",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 30
+          },
+          {
+            "clause": {
+              "id": "r10-3",
+              "kind": "visit",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 30
+          },
+          {
+            "clause": {
+              "id": "r10-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 30
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "green",
+        "red": "table",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a5"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a6"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a7"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r1-a8"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r2-a0"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r4-a0"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r4-a1"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r4-a2"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r4-a3"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r4-a4"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r5-a1"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r5-a2"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r5-a3"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r5-a4"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r5-a5"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r5-a6"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r7-a0"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r7-a1"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r7-a2"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r7-a3"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r7-a4"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r7-a5"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r8-a0"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r8-a1"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r8-a2"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r8-a3"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-017-r10-a0"
+        }
+      ],
+      "observation_id": "execution-017-r10-a0"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": false,
+    "supporting_new_keys": [
+      "50177740f017e1af9329004bcb3db3ec3751b25dadc0391f9a8e8f6c13721247",
+      "808088efa75c7f3c08018407ef3c09252d5c79456dd68f9b93782f0027f34911"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 66560,
+        "key": "808088efa75c7f3c08018407ef3c09252d5c79456dd68f9b93782f0027f34911"
+      },
+      {
+        "required_mask": 66560,
+        "key": "808088efa75c7f3c08018407ef3c09252d5c79456dd68f9b93782f0027f34911"
+      }
+    ]
+  },
+  {
+    "episode": "execution-018",
+    "revision": 2,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 3,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r2-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "hand",
+        "red": "return",
+        "holding": "yellow"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a6"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r0-a7"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r1-a1"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r1-a2"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r1-a3"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r1-a4"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r1-a5"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r1-a6"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-018-r2-a0"
+        }
+      ],
+      "observation_id": "execution-018-r2-a0"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": false,
+    "supporting_new_keys": [
+      "20d9b44c1deb85a54dbc1d8b891bfba08c4c9dae288f40a5214994ea757bc51c",
+      "72d9d6aad53c015e9cce78ef9d25e8ad282ed2ed9afbdde81d28f9321db7732a",
+      "99e046265ac2f55ff965f7491da20f49b430887c2431d4d5b2dd44f23dceaf6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-019",
+    "revision": 5,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 6,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r5-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r5-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r5-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r5-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r5-4",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "green",
+        "red": "return",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a0"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a1"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a2"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a3"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a4"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a5"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a6"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a7"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a0"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a1"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a2"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a3"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a4"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a5"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a6"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a7"
+        }
+      ],
+      "observation_id": "execution-019-r4-a7"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 6400,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-019",
+    "revision": 6,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r6-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r6-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r6-2",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r6-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r6-4",
+              "kind": "visit",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r6-5",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "green",
+        "red": "return",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a1"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a2"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a3"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r1-a4"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a0"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a1"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a2"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a3"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a4"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a5"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a6"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r2-a7"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a0"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a1"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a2"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a3"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a4"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a5"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a6"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-019-r4-a7"
+        }
+      ],
+      "observation_id": "execution-019-r4-a7"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-020",
+    "revision": 2,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 3,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r2-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 4
+          },
+          {
+            "clause": {
+              "id": "r2-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 4
+          },
+          {
+            "clause": {
+              "id": "r2-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 4
+          },
+          {
+            "clause": {
+              "id": "r2-3",
+              "kind": "visit",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 4
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "return",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-020-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-020-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-020-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-020-r0-a3"
+        }
+      ],
+      "observation_id": "execution-020-r0-a3"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 131616,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-021",
+    "revision": 6,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r6-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          },
+          {
+            "clause": {
+              "id": "r6-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          },
+          {
+            "clause": {
+              "id": "r6-2",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          },
+          {
+            "clause": {
+              "id": "r6-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 10
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "table",
+        "red": "return",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r3-a0"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r3-a1"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r3-a2"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r3-a3"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r3-a4"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-021-r3-a5"
+        }
+      ],
+      "observation_id": "execution-021-r3-a5"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 17152,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-023",
+    "revision": 6,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 7,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r6-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 22
+          },
+          {
+            "clause": {
+              "id": "r6-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 22
+          },
+          {
+            "clause": {
+              "id": "r6-2",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 22
+          },
+          {
+            "clause": {
+              "id": "r6-3",
+              "kind": "visit",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 22
+          },
+          {
+            "clause": {
+              "id": "r6-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 22
+          },
+          {
+            "clause": {
+              "id": "r6-5",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 22
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "table",
+        "red": "return",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a0"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a1"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a2"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a3"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a4"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r2-a5"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a0"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a1"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a2"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a3"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a4"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r3-a5"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a0"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a1"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a2"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a3"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a4"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r4-a5"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-023-r6-a0"
+        }
+      ],
+      "observation_id": "execution-023-r6-a0"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-025",
+    "revision": 2,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 3,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r2-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-4",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          },
+          {
+            "clause": {
+              "id": "r2-5",
+              "kind": "visit",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 14
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "return",
+        "red": "table",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r0-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r0-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r0-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r0-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r0-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r0-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a1"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a2"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a3"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a4"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a5"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a6"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a7"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r1-a8"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-025-r2-a0"
+        }
+      ],
+      "observation_id": "execution-025-r2-a0"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": false,
+    "supporting_new_keys": [
+      "20d9b44c1deb85a54dbc1d8b891bfba08c4c9dae288f40a5214994ea757bc51c"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-027",
+    "revision": 8,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 9,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r8-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r8-1",
+              "kind": "at",
+              "object": "red",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r8-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r8-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r8-4",
+              "kind": "visit",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          }
+        ]
+      },
+      "state": {
+        "blue": "table",
+        "yellow": "green",
+        "red": "return",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a6"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a7"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a0"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a1"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a2"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a3"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a4"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a5"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a6"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a7"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a1"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a2"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a3"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a4"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a5"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a6"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a7"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a8"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a0"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a1"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a2"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a3"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a4"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a5"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a6"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a7"
+        }
+      ],
+      "observation_id": "execution-027-r6-a7"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 66064,
+        "key": "577d9f0ffb208786150fc5730f868bc180fb8765b3b1804c6ae0a75b9f8d4e6f"
+      }
+    ]
+  },
+  {
+    "episode": "execution-027",
+    "revision": 10,
+    "decision_index_within_revision": 1,
+    "stage": "post_action_recovery",
+    "snapshot": {
+      "contract": {
+        "version": 11,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r10-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r10-1",
+              "kind": "at",
+              "object": "red",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r10-2",
+              "kind": "at",
+              "object": "yellow",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          },
+          {
+            "clause": {
+              "id": "r10-3",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 32
+          }
+        ]
+      },
+      "state": {
+        "blue": "hand",
+        "yellow": "green",
+        "red": "return",
+        "holding": "blue"
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "yellow",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a4"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a5"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a6"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r2-a7"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a0"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a1"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a2"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a3"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a4"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a5"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a6"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r4-a7"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a1"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a2"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a3"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a4"
+        },
+        {
+          "seq": 21,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a5"
+        },
+        {
+          "seq": 22,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a6"
+        },
+        {
+          "seq": 23,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a7"
+        },
+        {
+          "seq": 24,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r5-a8"
+        },
+        {
+          "seq": 25,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a0"
+        },
+        {
+          "seq": 26,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a1"
+        },
+        {
+          "seq": 27,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a2"
+        },
+        {
+          "seq": 28,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a3"
+        },
+        {
+          "seq": 29,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a4"
+        },
+        {
+          "seq": 30,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a5"
+        },
+        {
+          "seq": 31,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a6"
+        },
+        {
+          "seq": 32,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r6-a7"
+        },
+        {
+          "seq": 33,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-027-r10-a0"
+        }
+      ],
+      "observation_id": "execution-027-r10-a0"
+    },
+    "explanation": "requires_additional_non_symmetry_target_binding_in_frozen_bank",
+    "requires_new_three_object_core": false,
+    "supporting_new_keys": [
+      "20d9b44c1deb85a54dbc1d8b891bfba08c4c9dae288f40a5214994ea757bc51c",
+      "72c68998f30de3e96709b029b2c513f360e47e39105893537f9cc5f1a0c64cf3",
+      "99e046265ac2f55ff965f7491da20f49b430887c2431d4d5b2dd44f23dceaf6f"
+    ],
+    "same_grounded_core_witnesses": []
+  },
+  {
+    "episode": "execution-030",
+    "revision": 10,
+    "decision_index_within_revision": 0,
+    "stage": "task_revision",
+    "snapshot": {
+      "contract": {
+        "version": 11,
+        "obligations": [
+          {
+            "clause": {
+              "id": "r10-0",
+              "kind": "at",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r10-1",
+              "kind": "at",
+              "object": "red",
+              "target": "green",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r10-2",
+              "kind": "visit",
+              "object": "blue",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r10-3",
+              "kind": "visit",
+              "object": "blue",
+              "target": "table",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          },
+          {
+            "clause": {
+              "id": "r10-4",
+              "kind": "visit",
+              "object": "yellow",
+              "target": "return",
+              "first": null,
+              "second": null
+            },
+            "since": 20
+          }
+        ]
+      },
+      "state": {
+        "blue": "green",
+        "yellow": "return",
+        "red": "table",
+        "holding": null
+      },
+      "history": [
+        {
+          "seq": 1,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r4-a0"
+        },
+        {
+          "seq": 2,
+          "kind": "place",
+          "object": "blue",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r4-a1"
+        },
+        {
+          "seq": 3,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r4-a2"
+        },
+        {
+          "seq": 4,
+          "kind": "place",
+          "object": "red",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r4-a3"
+        },
+        {
+          "seq": 5,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r5-a1"
+        },
+        {
+          "seq": 6,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r5-a2"
+        },
+        {
+          "seq": 7,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r5-a3"
+        },
+        {
+          "seq": 8,
+          "kind": "place",
+          "object": "red",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r5-a4"
+        },
+        {
+          "seq": 9,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r5-a5"
+        },
+        {
+          "seq": 10,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r5-a6"
+        },
+        {
+          "seq": 11,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r7-a0"
+        },
+        {
+          "seq": 12,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r7-a1"
+        },
+        {
+          "seq": 13,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r7-a2"
+        },
+        {
+          "seq": 14,
+          "kind": "place",
+          "object": "yellow",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r7-a3"
+        },
+        {
+          "seq": 15,
+          "kind": "pick",
+          "object": "red",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r8-a0"
+        },
+        {
+          "seq": 16,
+          "kind": "place",
+          "object": "red",
+          "target": "table",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r8-a1"
+        },
+        {
+          "seq": 17,
+          "kind": "pick",
+          "object": "yellow",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r8-a2"
+        },
+        {
+          "seq": 18,
+          "kind": "place",
+          "object": "yellow",
+          "target": "return",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r8-a3"
+        },
+        {
+          "seq": 19,
+          "kind": "pick",
+          "object": "blue",
+          "target": null,
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r8-a4"
+        },
+        {
+          "seq": 20,
+          "kind": "place",
+          "object": "blue",
+          "target": "green",
+          "evidence": "confirmed",
+          "observation_id": "execution-030-r8-a5"
+        }
+      ],
+      "observation_id": "execution-030-r8-a5"
+    },
+    "explanation": "same_grounded_core_at_additional_state",
+    "requires_new_three_object_core": true,
+    "supporting_new_keys": [
+      "72c68998f30de3e96709b029b2c513f360e47e39105893537f9cc5f1a0c64cf3",
+      "788083dc21374eccc1f425b2579dccea713f3831126bcb3a4e7ca5984fb7cb4c"
+    ],
+    "same_grounded_core_witnesses": [
+      {
+        "required_mask": 19072,
+        "key": "788083dc21374eccc1f425b2579dccea713f3831126bcb3a4e7ca5984fb7cb4c"
+      },
+      {
+        "required_mask": 18561,
+        "key": "72c68998f30de3e96709b029b2c513f360e47e39105893537f9cc5f1a0c64cf3"
+      }
+    ]
+  }
+]

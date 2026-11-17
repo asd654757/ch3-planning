@@ -1,0 +1,92 @@
+{
+  "episodes": 32,
+  "revisions": 384,
+  "methods": {
+    "fixed": {
+      "medians": {
+        "decision_ms": 1261.7434784770012,
+        "execution_loop_ms": 2136.7667764425278,
+        "preparation_ms": 57.68481642007828,
+        "online_total_ms": 2194.3920850753784,
+        "staged_full_cost_estimate_ms": 3161.849617958069
+      },
+      "backend_calls": 288,
+      "origins": {
+        "independent_action_bound": 134,
+        "backend": 288,
+        "reuse_valid_suffix": 1183,
+        "certified_core": 13
+      },
+      "initial_statuses": {
+        "conflict": 166,
+        "ready": 218
+      },
+      "completed_revisions": 197,
+      "suspended_during_execution": 21,
+      "action_attempts": 1234,
+      "observed_events": 1179,
+      "interventions": {
+        "foreign_legal_event": 52,
+        "normal": 1127,
+        "no_effect": 55
+      },
+      "decisions_checked": 1618,
+      "ready_suffixes_checked": 1431,
+      "false_conflicts": 0,
+      "unsafe_ready": 0
+    },
+    "learned": {
+      "medians": {
+        "decision_ms": 1059.5568642020226,
+        "execution_loop_ms": 1933.791697025299,
+        "preparation_ms": 119.97684836387634,
+        "online_total_ms": 2053.7685453891754,
+        "staged_full_cost_estimate_ms": 3073.0643272399902
+      },
+      "backend_calls": 264,
+      "origins": {
+        "independent_action_bound": 134,
+        "backend": 264,
+        "reuse_valid_suffix": 1183,
+        "certified_core": 37
+      },
+      "initial_statuses": {
+        "conflict": 166,
+        "ready": 218
+      },
+      "completed_revisions": 197,
+      "suspended_during_execution": 21,
+      "action_attempts": 1234,
+      "observed_events": 1179,
+      "interventions": {
+        "foreign_legal_event": 52,
+        "normal": 1127,
+        "no_effect": 55
+      },
+      "decisions_checked": 1618,
+      "ready_suffixes_checked": 1431,
+      "false_conflicts": 0,
+      "unsafe_ready": 0
+    }
+  },
+  "physical_execution": false,
+  "model_calls": 0,
+  "target_learning": false,
+  "target_cache_growth": false,
+  "semantic_traces_identical": true,
+  "reference_unique_snapshots": 1618,
+  "timing_scope": "controlled_symbolic_execution_loop_not_robot_wall_time",
+  "backend_calls_saved": 24,
+  "reduction_percent": {
+    "decision_ms": 16.024383539436226,
+    "execution_loop_ms": 9.499168634358822,
+    "preparation_ms": -107.98687732690115,
+    "online_total_ms": 6.408314204312878,
+    "staged_full_cost_estimate_ms": 2.808017503862704
+  },
+  "paired_online_savings_ms": [
+    828.5564631223679,
+    140.623539686203,
+    154.98363971710205
+  ]
+}

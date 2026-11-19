@@ -1,0 +1,171 @@
+{
+  "requests": 240,
+  "completed": 79,
+  "actions": 524,
+  "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714",
+  "unique_reference_snapshots": 764,
+  "methods": {
+    "standard": {
+      "calls": 191,
+      "medians": {
+        "prep_ms": 29.840674251317978,
+        "loop_ms": 1318.874191492796,
+        "total_ms": 1346.264060586691
+      },
+      "checks": {
+        "ready_suffixes_checked": 603,
+        "decisions_checked": 764,
+        "action_transitions_checked": 524
+      },
+      "backend_by_contract_kind": {
+        "unordered": 126,
+        "ordered": 65
+      },
+      "origins": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      }
+    },
+    "fixed": {
+      "calls": 168,
+      "medians": {
+        "prep_ms": 89.7623747587204,
+        "loop_ms": 1184.9463395774364,
+        "total_ms": 1288.6878550052643
+      },
+      "checks": {
+        "ready_suffixes_checked": 603,
+        "decisions_checked": 764,
+        "action_transitions_checked": 524
+      },
+      "backend_by_contract_kind": {
+        "unordered": 110,
+        "ordered": 58
+      },
+      "origins": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      }
+    },
+    "source_partial": {
+      "calls": 166,
+      "medians": {
+        "prep_ms": 200.52159577608109,
+        "loop_ms": 1183.6837641894817,
+        "total_ms": 1395.162209868431
+      },
+      "checks": {
+        "ready_suffixes_checked": 603,
+        "decisions_checked": 764,
+        "action_transitions_checked": 524
+      },
+      "backend_by_contract_kind": {
+        "unordered": 108,
+        "ordered": 58
+      },
+      "origins": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      }
+    },
+    "learned": {
+      "calls": 134,
+      "medians": {
+        "prep_ms": 185.5456866323948,
+        "loop_ms": 1033.7579399347305,
+        "total_ms": 1227.42173448205
+      },
+      "checks": {
+        "ready_suffixes_checked": 603,
+        "decisions_checked": 764,
+        "action_transitions_checked": 524
+      },
+      "backend_by_contract_kind": {
+        "unordered": 92,
+        "ordered": 42
+      },
+      "origins": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      }
+    }
+  },
+  "comparisons_with_learned": {
+    "standard": {
+      "mean_calls_saved_per_sequence": 2.375,
+      "sequence_bootstrap_95_percentile_interval": [
+        1.7916666666666667,
+        3.0
+      ],
+      "n_sequences": 24,
+      "n_resamples": 5000,
+      "paired_time_saved_ms": [
+        145.60028910636902,
+        145.69489657878876,
+        121.42319232225418,
+        24.695955216884613,
+        174.8320311307907,
+        127.71524488925934,
+        136.89474761486053,
+        77.72602140903473
+      ]
+    },
+    "fixed": {
+      "mean_calls_saved_per_sequence": 1.4166666666666667,
+      "sequence_bootstrap_95_percentile_interval": [
+        1.0416666666666667,
+        1.8333333333333333
+      ],
+      "n_sequences": 24,
+      "n_resamples": 5000,
+      "paired_time_saved_ms": [
+        -18.166542053222656,
+        86.1101970076561,
+        75.38693398237228,
+        -333.43610167503357,
+        -77.33482867479324,
+        124.58468973636627,
+        52.17184126377106,
+        53.74523252248764
+      ]
+    },
+    "source_partial": {
+      "mean_calls_saved_per_sequence": 1.3333333333333333,
+      "sequence_bootstrap_95_percentile_interval": [
+        0.9583333333333334,
+        1.7083333333333333
+      ],
+      "n_sequences": 24,
+      "n_resamples": 5000,
+      "paired_time_saved_ms": [
+        203.89430969953537,
+        233.39055478572845,
+        136.0032707452774,
+        -239.76468294858932,
+        150.4281684756279,
+        171.58926278352737,
+        156.5418243408203,
+        153.19734811782837
+      ]
+    }
+  },
+  "prior_source_preparation_median_ms": {
+    "fixed": 974.7766479849815,
+    "learned": 1015.1854529976845
+  },
+  "incremental_source_preparation_ms": 40.40880501270294,
+  "nominal_payback_workload_batches_vs_fixed": 0.7630272168252714,
+  "target_contract_revisions_adopted": 0,
+  "model_calls": 0
+}

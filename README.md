@@ -1,6 +1,8 @@
-# ch3-planning（第三章 阶段 0/1 工程骨架）
+# ROUTED 第三章任务监督与恢复
 
-冻结版方案（2026-09-08）的代码落地。仅含**不依赖 VLM/真机**的部分：
+本仓库实现基于执行证据和任务契约的机器人任务监督，包含历史补证、单步派发、有界恢复与经核验的失败知识复用。当前验证覆盖有限符号回放与使用 RGB 和本体观测的固定目标 MuJoCo 仿真。实验、论文主张和适用范围见[第三章证据核验](docs/ch3_innovation_assessment_20261119.md)。
+
+第一阶段基础设施仍包括以下模块：
 - `config/capability_registry.yaml`：能力注册表（pick/place → AD-Flow grasp/place policy 映射）
 - `ch3/schema`：ModelPlan / Goal / JSON Schema（pydantic）
 - `ch3/validator`：四层确定性校验（syntax/object/capability/state）+ 首错定位

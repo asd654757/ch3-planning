@@ -1,0 +1,2804 @@
+[
+  {
+    "family": "order",
+    "objects": [
+      "blue",
+      "yellow"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "afc14d8cfb4bb4d5af4310bf474b5f6e406d0113d7be19f796356f7b08bf479f",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "return_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "blue",
+      "yellow"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "afc14d8cfb4bb4d5af4310bf474b5f6e406d0113d7be19f796356f7b08bf479f",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "blue",
+      "yellow"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "70853f2832182569a50e6d8fa47d10563d1831d29f41d7f37f4b5b429a2f1006",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "blue",
+      "yellow"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_INDEPENDENT_ACTION_BOUND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "70853f2832182569a50e6d8fa47d10563d1831d29f41d7f37f4b5b429a2f1006",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "blue",
+      "yellow"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "8bcb36c3e7c85e9c5b1c139c4f213d279b179c4b2571d12f8c5f1034b972f449",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "blue",
+      "yellow"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "8bcb36c3e7c85e9c5b1c139c4f213d279b179c4b2571d12f8c5f1034b972f449",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "blue",
+      "red"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "d9ef16efbc82bdf1cac2726d88a96844e48a89a6cee1997f8d8ebbe4b5d25ba1",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "return_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "blue",
+      "red"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "d9ef16efbc82bdf1cac2726d88a96844e48a89a6cee1997f8d8ebbe4b5d25ba1",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "blue",
+      "red"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "0a29e0efb33eb938ac0690855a0991cbe13bc782a5463547e24e6ecfeef5e8ab",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "red_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "red_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "blue",
+      "red"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_INDEPENDENT_ACTION_BOUND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "0a29e0efb33eb938ac0690855a0991cbe13bc782a5463547e24e6ecfeef5e8ab",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "blue",
+      "red"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "0f117dfb7a4a70670ce2b08f1216007a26f09380f4aadb194f7141f26c5041ef",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "blue",
+      "red"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "blue",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "0f117dfb7a4a70670ce2b08f1216007a26f09380f4aadb194f7141f26c5041ef",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "red_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "red_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "yellow",
+      "blue"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "6d8d2abb634b9bf112961e9abca2d3459ff68a8328ec11766eba060a2cd624d5",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "yellow",
+      "blue"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "6d8d2abb634b9bf112961e9abca2d3459ff68a8328ec11766eba060a2cd624d5",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "yellow",
+      "blue"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "e801ecaa85a98257610f4efcd795bea191489ff9fb193b75f4c7b669719c3094",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "yellow",
+      "blue"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_INDEPENDENT_ACTION_BOUND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "e801ecaa85a98257610f4efcd795bea191489ff9fb193b75f4c7b669719c3094",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "yellow",
+      "blue"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "c2efb216d2f6b3d9509c7176215d78033c778d32a05d04215d757b2eab5467d2",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "yellow",
+      "blue"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "c2efb216d2f6b3d9509c7176215d78033c778d32a05d04215d757b2eab5467d2",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "yellow",
+      "red"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "3d7dc10ba292eea47b86c921e195bff102d6740657803d3b7d5cfb787fecf131",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "return_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "yellow",
+      "red"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "3d7dc10ba292eea47b86c921e195bff102d6740657803d3b7d5cfb787fecf131",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "yellow",
+      "red"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "385126e2c6034d1d82f6479152a1cf7205c820a7603063051a5a29ad081d0ff5",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "red_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "red_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "yellow",
+      "red"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_INDEPENDENT_ACTION_BOUND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "385126e2c6034d1d82f6479152a1cf7205c820a7603063051a5a29ad081d0ff5",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "yellow",
+      "red"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "a9eea8b7338621fbac1559fb161ff725718fafbc785c95f1237d445d17e1d8f0",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "yellow",
+      "red"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "red",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "yellow",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "a9eea8b7338621fbac1559fb161ff725718fafbc785c95f1237d445d17e1d8f0",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "red_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "red_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "red",
+      "blue"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "f187fc434bd3581495dd68a00629841b908024ae9cf00f32c46622a2a7a6ceaa",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "red_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "red_candidate",
+        "target_id": "return_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "red",
+      "blue"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "f187fc434bd3581495dd68a00629841b908024ae9cf00f32c46622a2a7a6ceaa",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "red",
+      "blue"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "11370031d7b71136d216f9cc5cc69badaea3fd9b3fec0ac18a54a18b8540a70f",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "red",
+      "blue"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_INDEPENDENT_ACTION_BOUND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "11370031d7b71136d216f9cc5cc69badaea3fd9b3fec0ac18a54a18b8540a70f",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "red",
+      "blue"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "736ff28c9dab5220aa3f16bcd5f91b627f710de7ab6875c88ab9bc0c4444980c",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "red",
+      "blue"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "blue",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "blue",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "736ff28c9dab5220aa3f16bcd5f91b627f710de7ab6875c88ab9bc0c4444980c",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "blue_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "blue_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "red",
+      "yellow"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      },
+      {
+        "seq": 3,
+        "kind": "pick",
+        "object": "red",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      },
+      {
+        "seq": 4,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-4"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "9a2c4c69b45b691e36bbaa5701ed9466a78ae616b8ef0b415a5d982a3787ae41",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "red_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "red_candidate",
+        "target_id": "return_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "order",
+    "objects": [
+      "red",
+      "yellow"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "prior-second"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "9a2c4c69b45b691e36bbaa5701ed9466a78ae616b8ef0b415a5d982a3787ae41",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "red",
+      "yellow"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "ca0c108d1977ee6c99961e344db49f5a9776e75d5d5b59edc4f863060aa39369",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  },
+  {
+    "family": "visit_then_protect",
+    "objects": [
+      "red",
+      "yellow"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_INDEPENDENT_ACTION_BOUND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "ca0c108d1977ee6c99961e344db49f5a9776e75d5d5b59edc4f863060aa39369",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "red",
+      "yellow"
+    ],
+    "verdict": "confirmed",
+    "before": "need_observation",
+    "after": "conflict",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "confirmed",
+        "observation_id": "prior-uncertain"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "confirmed",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "b9001f2186d5f10da435d1f7927c294e77ea080f834275d22f5aa50718e4cc91",
+        "generation": 1
+      }
+    },
+    "commands": []
+  },
+  {
+    "family": "ongoing_protection",
+    "objects": [
+      "red",
+      "yellow"
+    ],
+    "verdict": "refuted",
+    "before": "need_observation",
+    "after": "ready",
+    "route": "FRAGMENT_BACKEND",
+    "original_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "effective_history": [
+      {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "refuted",
+        "observation_id": "prior-uncertain"
+      },
+      {
+        "seq": 2,
+        "kind": "pick",
+        "object": "yellow",
+        "target": null,
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-2"
+      },
+      {
+        "seq": 3,
+        "kind": "place",
+        "object": "yellow",
+        "target": "green",
+        "evidence": "confirmed",
+        "observation_id": "continued-observation-3"
+      }
+    ],
+    "finding": {
+      "event": {
+        "seq": 1,
+        "kind": "place",
+        "object": "red",
+        "target": "return",
+        "evidence": "unknown",
+        "observation_id": "prior-uncertain"
+      },
+      "finding": {
+        "event_seq": 1,
+        "verdict": "refuted",
+        "observation_id": "new-review-observation",
+        "snapshot_digest": "b9001f2186d5f10da435d1f7927c294e77ea080f834275d22f5aa50718e4cc91",
+        "generation": 1
+      }
+    },
+    "commands": [
+      {
+        "step_id": 1,
+        "skill": "pick",
+        "object_id": "yellow_candidate",
+        "target_id": null,
+        "arm": "right"
+      },
+      {
+        "step_id": 1,
+        "skill": "place",
+        "object_id": "yellow_candidate",
+        "target_id": "green_region",
+        "arm": "right"
+      }
+    ]
+  }
+]

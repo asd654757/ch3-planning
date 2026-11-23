@@ -1,0 +1,85 @@
+{
+  "action_replays": 16,
+  "excluded": [
+    {
+      "state": 3,
+      "reasons": [
+        "missing clean terminal basket observation",
+        "missing supported pickup before inspection window"
+      ]
+    }
+  ],
+  "same_observation_opposite_decision_pairs": 7,
+  "decision_cases": 28,
+  "withheld_evidence_cases": 14,
+  "correct_initial_routed": 28,
+  "correct_after_archive_recovery": 14,
+  "current_only_best_definitive_decisions_on_opposite_pairs": [
+    7,
+    14
+  ],
+  "outcomes": [
+    {
+      "prefix": "clean",
+      "initial": "conflict",
+      "final": "conflict",
+      "count": 7
+    },
+    {
+      "prefix": "clean",
+      "initial": "need_observation",
+      "final": "conflict",
+      "count": 7
+    },
+    {
+      "prefix": "drop",
+      "initial": "need_observation",
+      "final": "ready",
+      "count": 7
+    },
+    {
+      "prefix": "drop",
+      "initial": "ready",
+      "final": "ready",
+      "count": 7
+    }
+  ],
+  "bank_replay": {
+    "standard": {
+      "requests": 88,
+      "backend_calls": 37,
+      "origins": {
+        "backend": 37,
+        "independent_action_bound": 37,
+        "reuse_valid_suffix": 14
+      }
+    },
+    "fixed": {
+      "requests": 88,
+      "backend_calls": 37,
+      "origins": {
+        "backend": 37,
+        "independent_action_bound": 37,
+        "reuse_valid_suffix": 14
+      }
+    },
+    "source_partial": {
+      "requests": 88,
+      "backend_calls": 37,
+      "origins": {
+        "backend": 37,
+        "independent_action_bound": 37,
+        "reuse_valid_suffix": 14
+      }
+    },
+    "learned": {
+      "requests": 88,
+      "backend_calls": 37,
+      "origins": {
+        "backend": 37,
+        "independent_action_bound": 37,
+        "reuse_valid_suffix": 14
+      }
+    }
+  }
+}

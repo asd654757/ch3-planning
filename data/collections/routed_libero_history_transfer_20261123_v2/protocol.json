@@ -1,0 +1,19 @@
+{
+  "initial_states": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "source": "/root/autodl-tmp/routed-pi05-libero/comparison-libero-object-0-heldout-v1",
+  "source_summary_sha256": "0e3aa3146d5a717264afdb3d021cf0f59be77bd6de221fba9be465c8034db05c",
+  "script_sha256": "f4d8059aef1ddc7391420bc159269e05a8e7f50db120aa165d6c77241af47744",
+  "reused_measured_sha256": "ba24eaef53a0ba844b03c41d973c2a69b6a708144e489a441ceaad9c85622f12",
+  "history_design": "Replay clean and disturbed Pi05 actions in MuJoCo, then pair actual historical prefixes with the very same clean terminal observation in each case. This is an explicit common-state decision replay, not a continuous new policy rollout.",
+  "history_window": "The first 20 steps after independently measured pickup. A floor return needs two consecutive settling samples.",
+  "scope": "Simulated contact and geometry; no new model inference or physical dispatch."
+}

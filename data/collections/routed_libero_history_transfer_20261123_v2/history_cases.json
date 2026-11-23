@@ -1,0 +1,1738 @@
+[
+  {
+    "state": 2,
+    "prefix": "clean",
+    "current_observation_digest": "e77c6914b6f48ada3a4f2cdd04d5c40634be594aa7dc778d5518c400600a1ea1",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 2,
+    "prefix": "clean",
+    "current_observation_digest": "e77c6914b6f48ada3a4f2cdd04d5c40634be594aa7dc778d5518c400600a1ea1",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "5625c54758a9ce1ff03dc2b76a074016815f513c8ef9b3ad5e178972b103e95e",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 2,
+    "prefix": "drop",
+    "current_observation_digest": "e77c6914b6f48ada3a4f2cdd04d5c40634be594aa7dc778d5518c400600a1ea1",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 2,
+    "prefix": "drop",
+    "current_observation_digest": "e77c6914b6f48ada3a4f2cdd04d5c40634be594aa7dc778d5518c400600a1ea1",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "5625c54758a9ce1ff03dc2b76a074016815f513c8ef9b3ad5e178972b103e95e",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 4,
+    "prefix": "clean",
+    "current_observation_digest": "7aa02df48664d18f39543e3b7602c17587725c75e82707b2f46174a17c8dd899",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 4,
+    "prefix": "clean",
+    "current_observation_digest": "7aa02df48664d18f39543e3b7602c17587725c75e82707b2f46174a17c8dd899",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "8e7bb57f9cea9ce8472dec5daa9dd36454720d65cc6f688a8e3dcd79840e5518",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 4,
+    "prefix": "drop",
+    "current_observation_digest": "7aa02df48664d18f39543e3b7602c17587725c75e82707b2f46174a17c8dd899",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 4,
+    "prefix": "drop",
+    "current_observation_digest": "7aa02df48664d18f39543e3b7602c17587725c75e82707b2f46174a17c8dd899",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "8e7bb57f9cea9ce8472dec5daa9dd36454720d65cc6f688a8e3dcd79840e5518",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 5,
+    "prefix": "clean",
+    "current_observation_digest": "bbe3bf13a0c2d131f4934deedf41425d123d2adf06b479e62121e5641b158f22",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 5,
+    "prefix": "clean",
+    "current_observation_digest": "bbe3bf13a0c2d131f4934deedf41425d123d2adf06b479e62121e5641b158f22",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "343efb0ad40183d09f9d85a93ebc8c72decf081aa5a7823f805d37bff9ea1c5f",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 5,
+    "prefix": "drop",
+    "current_observation_digest": "bbe3bf13a0c2d131f4934deedf41425d123d2adf06b479e62121e5641b158f22",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 5,
+    "prefix": "drop",
+    "current_observation_digest": "bbe3bf13a0c2d131f4934deedf41425d123d2adf06b479e62121e5641b158f22",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "343efb0ad40183d09f9d85a93ebc8c72decf081aa5a7823f805d37bff9ea1c5f",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 6,
+    "prefix": "clean",
+    "current_observation_digest": "529d27a4ffe392e32c3cd19f94e22522bb59442ded72c222ad2be80cf9ec3e5a",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 6,
+    "prefix": "clean",
+    "current_observation_digest": "529d27a4ffe392e32c3cd19f94e22522bb59442ded72c222ad2be80cf9ec3e5a",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "ef814bc57e70a47a9f73df42659eba3fbb11968053ecf682ea91465bcb67e287",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 6,
+    "prefix": "drop",
+    "current_observation_digest": "529d27a4ffe392e32c3cd19f94e22522bb59442ded72c222ad2be80cf9ec3e5a",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 6,
+    "prefix": "drop",
+    "current_observation_digest": "529d27a4ffe392e32c3cd19f94e22522bb59442ded72c222ad2be80cf9ec3e5a",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "ef814bc57e70a47a9f73df42659eba3fbb11968053ecf682ea91465bcb67e287",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 7,
+    "prefix": "clean",
+    "current_observation_digest": "de59ff578b29a98b3b262e13ac4d6289ee40f9765ec4c7511c0a99e0002fd475",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 7,
+    "prefix": "clean",
+    "current_observation_digest": "de59ff578b29a98b3b262e13ac4d6289ee40f9765ec4c7511c0a99e0002fd475",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "dfd5dded58841f77d0ebc7a598735da5ba7a43a9c89cde03064d77163a4512f6",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 7,
+    "prefix": "drop",
+    "current_observation_digest": "de59ff578b29a98b3b262e13ac4d6289ee40f9765ec4c7511c0a99e0002fd475",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 7,
+    "prefix": "drop",
+    "current_observation_digest": "de59ff578b29a98b3b262e13ac4d6289ee40f9765ec4c7511c0a99e0002fd475",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "dfd5dded58841f77d0ebc7a598735da5ba7a43a9c89cde03064d77163a4512f6",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 8,
+    "prefix": "clean",
+    "current_observation_digest": "b24d39ece015b4c885ca664b35253f866ff2d66aab613b70eba4690f5e931ca4",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 8,
+    "prefix": "clean",
+    "current_observation_digest": "b24d39ece015b4c885ca664b35253f866ff2d66aab613b70eba4690f5e931ca4",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "8daf1a0b083a8b1c7bf6d0d40553c1eb7166efed9b9189e5379b094ebef50203",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 8,
+    "prefix": "drop",
+    "current_observation_digest": "b24d39ece015b4c885ca664b35253f866ff2d66aab613b70eba4690f5e931ca4",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 8,
+    "prefix": "drop",
+    "current_observation_digest": "b24d39ece015b4c885ca664b35253f866ff2d66aab613b70eba4690f5e931ca4",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "8daf1a0b083a8b1c7bf6d0d40553c1eb7166efed9b9189e5379b094ebef50203",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 9,
+    "prefix": "clean",
+    "current_observation_digest": "0cb20dbd274884a23327457bec7e02d41edeb800fb9f79aad3a8626ff69a41cd",
+    "archived_return": false,
+    "initially_hidden": false,
+    "expected": "conflict",
+    "routed_initial": "conflict",
+    "same_history_direct_initial": "conflict",
+    "routed_final": "conflict",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 9,
+    "prefix": "clean",
+    "current_observation_digest": "0cb20dbd274884a23327457bec7e02d41edeb800fb9f79aad3a8626ff69a41cd",
+    "archived_return": false,
+    "initially_hidden": true,
+    "expected": "conflict",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "conflict",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "refuted",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "cb4e14f6ebb1c9c0d84002ffe76942d9290e15e474b84ca76350f2d0cfb1ff34",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 9,
+    "prefix": "drop",
+    "current_observation_digest": "0cb20dbd274884a23327457bec7e02d41edeb800fb9f79aad3a8626ff69a41cd",
+    "archived_return": true,
+    "initially_hidden": false,
+    "expected": "ready",
+    "routed_initial": "ready",
+    "same_history_direct_initial": "ready",
+    "routed_final": "ready",
+    "findings": [],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  },
+  {
+    "state": 9,
+    "prefix": "drop",
+    "current_observation_digest": "0cb20dbd274884a23327457bec7e02d41edeb800fb9f79aad3a8626ff69a41cd",
+    "archived_return": true,
+    "initially_hidden": true,
+    "expected": "ready",
+    "routed_initial": "need_observation",
+    "same_history_direct_initial": "need_observation",
+    "routed_final": "ready",
+    "findings": [
+      {
+        "event": {
+          "seq": 1,
+          "kind": "place",
+          "object": "blue",
+          "target": "table",
+          "evidence": "unknown",
+          "observation_id": "archived-return-check"
+        },
+        "finding": {
+          "event_seq": 1,
+          "verdict": "confirmed",
+          "observation_id": "archive-recovered",
+          "snapshot_digest": "cb4e14f6ebb1c9c0d84002ffe76942d9290e15e474b84ca76350f2d0cfb1ff34",
+          "generation": 1
+        }
+      }
+    ],
+    "current_only_accept": "ready",
+    "current_only_reject": "conflict",
+    "current_only_defer": "need_observation",
+    "contract": {
+      "version": 1,
+      "obligations": [
+        {
+          "clause": {
+            "id": "past_return",
+            "kind": "visit",
+            "object": "blue",
+            "target": "table",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "delivered",
+            "kind": "at",
+            "object": "blue",
+            "target": "green",
+            "first": null,
+            "second": null
+          },
+          "since": 0
+        },
+        {
+          "clause": {
+            "id": "leave_delivered_can",
+            "kind": "forbid",
+            "object": "blue",
+            "target": null,
+            "first": null,
+            "second": null
+          },
+          "since": 1
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,480 @@
+{
+  "audited_episodes": 32,
+  "decisions_and_suffixes_match": true,
+  "scope": "same-history replay, no new actuation",
+  "totals": {
+    "routed_backend_calls": 39,
+    "unconditional_direct_calls": 84,
+    "goal_checked_direct_calls": 65
+  },
+  "episodes": [
+    {
+      "state": 2,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "e5b552b40c32d7810f4971f77d5ba7286a4a51636c0ec54d8440f08b9e175eeb"
+    },
+    {
+      "state": 2,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "71234d4b649725135225d1ab212a3611e5e28d620be5b78bc3fcb2c73270b249"
+    },
+    {
+      "state": 2,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 5,
+        "goal_checked_direct_calls": 4
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "ddb0dd65b342f3f2b948f8730b16a648e2adbe6305d7dda95f711de942507fcb"
+    },
+    {
+      "state": 2,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "edef1ad023ab3c439aecff981aadb1a4e3143d29c25717bdca77eff1d707d115"
+    },
+    {
+      "state": 3,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "8592d2d61cde85ca00a852d4092325992a7103d15abc2ec2ae082479e619e023"
+    },
+    {
+      "state": 3,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "5a190eda57a3c0eba2dc00bc9a0d001a8d114fd3c7c2e2491a14d952dde0227f"
+    },
+    {
+      "state": 3,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "68427c9d6480d2bf7e43a625c320da2e915328bfd2decdb5a72aba86d70a44b1"
+    },
+    {
+      "state": 3,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "08a2c54572f9b3fa078b8b305b9d305ad774f6abe34d11a1e79672152471486c"
+    },
+    {
+      "state": 4,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "d8616c7e0081ff30089f0c8af3c5d6ec9cdaf30590e6a8f0097f200891d97594"
+    },
+    {
+      "state": 4,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "575e712ebc60c88a6886414ec50eab2ec05df6fc84c8149a9b29f372feefabf1"
+    },
+    {
+      "state": 4,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 5,
+        "goal_checked_direct_calls": 4
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "262d2ad22f349882da8d2df7cbeb31509ecc066fdcaebbc5a6b303c5d1f480cb"
+    },
+    {
+      "state": 4,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "4e5eb765ed9cbffc35132ececce77aa56dedc9c44668bd15cb1b30acd3575fcc"
+    },
+    {
+      "state": 5,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "0039d57ae13162e00f376fe477b5a34e19a12e5e5ec845e1dca7c37f3a64cfe2"
+    },
+    {
+      "state": 5,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "10b0d62439b2df78bca12a205a3966ee3f1c69f73b132f525eafd63f18899949"
+    },
+    {
+      "state": 5,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 3
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "b2181ea58f81c0f3534ecc71199206cf2a1d15c9310324d36db5a2828725a99f"
+    },
+    {
+      "state": 5,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "90a1dcffa93bd80f938979a899a1b5b463fec93bd3e40e3bf1ec092bec369fb9"
+    },
+    {
+      "state": 6,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "a8d62b324140e246e9f11d0cae6fbd80f084523b66212a6dcba0eb41c80f7b41"
+    },
+    {
+      "state": 6,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "fa2560c6c9f7bc6a654b3370dcc9aedbbd15e94389ef765aad8f40a4e9c7bc69"
+    },
+    {
+      "state": 6,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 5,
+        "goal_checked_direct_calls": 4
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "fa34b5906a1ad70896325f515bdde129e144e8e142335c516b64a191157e6c2e"
+    },
+    {
+      "state": 6,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "0c71fb955a0a40a222e0e5ebee0a9ccef9d1b399e3d9775eaf1462839c06c684"
+    },
+    {
+      "state": 7,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "17bbee9a5a9a6b5e188c5d694086e5319cdb216c63d39bc6275d9b3e3a0f3135"
+    },
+    {
+      "state": 7,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "e479f79fddeeaae3186bf297ee27fd3df9ec67e84fca6292dfab553231e691f6"
+    },
+    {
+      "state": 7,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 3
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "8e9341d25e458f711bf509b33f5ac8801ff28fb3d82d39a743d2b8eae5116608"
+    },
+    {
+      "state": 7,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "77d773a0d4eb2d671b71057ea88db8a3ddd2436be2db1347f26b3e10278a29d7"
+    },
+    {
+      "state": 8,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "2d5e57f153479c62ffd9ea38a856aece14fa20c1405f0de3616a3deb139bb3d4"
+    },
+    {
+      "state": 8,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "d46384b004213ce552e2900efe56d86f9cd68100cb1b197e51f2b8ae03391b5e"
+    },
+    {
+      "state": 8,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 5,
+        "goal_checked_direct_calls": 4
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "c2d3851835f97402c4fe7731caf6409e210e0e0cd49069757ee1da9ed00460d4"
+    },
+    {
+      "state": 8,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "954fd49d93c1043cfa80e1855f0738b8604fd5466094189dbb4d076ed1e304a7"
+    },
+    {
+      "state": 9,
+      "condition": "clean",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "d65c8cdce6f169a85d3c234daaa24d44ba045b3be6f10ee1549c478375c4012e"
+    },
+    {
+      "state": 9,
+      "condition": "delayed_pick_evidence",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 3,
+        "goal_checked_direct_calls": 2
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "48039cce2324b80a509fd9afd473e8fa2eb75bc26675277c2c6fb14c306e0a7b"
+    },
+    {
+      "state": 9,
+      "condition": "drop_after_pick",
+      "comparison": {
+        "routed_backend_calls": 2,
+        "unconditional_direct_calls": 5,
+        "goal_checked_direct_calls": 4
+      },
+      "routes": [
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "BOUNDED_REPLAN",
+        "REUSE_VALID_SUFFIX",
+        "REUSE_VALID_SUFFIX"
+      ],
+      "trace_sha256": "2f1a903a9513854306b14d74a93d93038292f78739b03e7df117320e28da04d4"
+    },
+    {
+      "state": 9,
+      "condition": "persistent_pick_evidence_dropout",
+      "comparison": {
+        "routed_backend_calls": 1,
+        "unconditional_direct_calls": 1,
+        "goal_checked_direct_calls": 1
+      },
+      "routes": [
+        "BOUNDED_REPLAN"
+      ],
+      "trace_sha256": "81f8569d6b2e10ee1ac6abd76ce19521262bd3ef27d8bd45e6a6d1824a79fb12"
+    }
+  ]
+}

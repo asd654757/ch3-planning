@@ -1,0 +1,1149 @@
+{
+  "request_count": 240,
+  "python": "3.10.20",
+  "platform": "Linux-5.15.0-94-generic-x86_64-with-glibc2.35",
+  "repeat_count": 8,
+  "episode_sha256": "044ea22dd0e3fc9bb4a5b787bf1a3496c99d4d626b5c53dd6cb08ffc157ad249",
+  "prior_source_preparation_median_ms": {
+    "fixed": 974.7766479849815,
+    "learned": 1015.1854529976845
+  },
+  "medians_ms": {
+    "standard": {
+      "bank_load_and_compile": 0.5383005000000001,
+      "suffix_validation": 68.25618800000001,
+      "bank_lookup": 4.8738245,
+      "solver": 537.9033529999999,
+      "other_setup": 17.599178000000002,
+      "other_replay": 437.346538,
+      "target_total": 1065.590155
+    },
+    "fixed": {
+      "bank_load_and_compile": 42.108911500000005,
+      "suffix_validation": 60.440744499999994,
+      "bank_lookup": 5.3018225,
+      "solver": 388.84077049999996,
+      "other_setup": 14.7908255,
+      "other_replay": 392.8860575,
+      "target_total": 897.2845705
+    },
+    "source_partial": {
+      "bank_load_and_compile": 137.974942,
+      "suffix_validation": 60.79586,
+      "bank_lookup": 5.429887,
+      "solver": 391.26849400000003,
+      "other_setup": 16.1917405,
+      "other_replay": 383.117644,
+      "target_total": 977.466053
+    },
+    "learned": {
+      "bank_load_and_compile": 137.5200015,
+      "suffix_validation": 72.9450885,
+      "bank_lookup": 7.4406175,
+      "solver": 310.67939950000005,
+      "other_setup": 17.6719455,
+      "other_replay": 460.296883,
+      "target_total": 997.538857
+    }
+  },
+  "paired_delta_vs_empty_ms": {
+    "fixed": {
+      "bank_load_and_compile": [
+        60.753465,
+        66.582296,
+        41.613533000000004,
+        41.377771,
+        41.643321,
+        41.547870999999994,
+        41.604375000000005,
+        41.71552
+      ],
+      "suffix_validation": [
+        -0.726466000000002,
+        -23.607130999999995,
+        -17.611243,
+        -16.596874000000007,
+        0.8519069999999971,
+        0.18299400000000077,
+        -0.014394000000002904,
+        0.037525999999999726
+      ],
+      "bank_lookup": [
+        1.008019,
+        -0.34629900000000013,
+        0.20394800000000046,
+        -0.12948200000000032,
+        1.013624,
+        1.0153030000000003,
+        0.9549159999999999,
+        0.9708190000000005
+      ],
+      "solver": [
+        -110.3151170000001,
+        -272.081697,
+        -230.121558,
+        -211.52790599999997,
+        -103.60841499999998,
+        -98.64928500000002,
+        -81.795324,
+        -64.21493800000002
+      ],
+      "other_setup": [
+        0.7345420000000011,
+        17.145151000000002,
+        -6.113132,
+        -5.8638639999999995,
+        -0.27227899999999927,
+        0.30798799999999993,
+        0.28388400000000047,
+        0.3925889999999992
+      ],
+      "other_replay": [
+        -18.33178900000007,
+        -134.52741299999997,
+        -114.49781399999995,
+        -105.48967200000004,
+        18.126862000000017,
+        2.2864909999999554,
+        -1.2236110000000053,
+        -0.4948089999999752
+      ],
+      "target_total": [
+        -66.87734599999999,
+        -346.8350929999999,
+        -326.5262660000001,
+        -298.23002700000006,
+        -42.244980000000055,
+        -53.30863799999997,
+        -40.19015400000001,
+        -21.593293000000017
+      ]
+    },
+    "source_partial": {
+      "bank_load_and_compile": [
+        172.263449,
+        168.086461,
+        188.780281,
+        119.538759,
+        138.365507,
+        127.732173,
+        119.179778,
+        136.800262
+      ],
+      "suffix_validation": [
+        0.29320099999999627,
+        -1.088370999999995,
+        1.0387979999999999,
+        -15.307200000000009,
+        0.41125000000000256,
+        0.38654400000000066,
+        0.7959619999999958,
+        -0.19666499999999587
+      ],
+      "bank_lookup": [
+        1.271019,
+        1.5003139999999995,
+        1.6296780000000002,
+        0.03992199999999979,
+        1.0007229999999998,
+        1.0365210000000005,
+        1.0906409999999997,
+        1.072203
+      ],
+      "solver": [
+        -130.06652800000006,
+        -129.35437100000001,
+        -144.81820700000003,
+        -198.40810199999999,
+        -112.61970299999996,
+        -107.43265200000002,
+        -65.475709,
+        -88.52914900000002
+      ],
+      "other_setup": [
+        0.042186000000000945,
+        -3.0438100000000006,
+        0.20922200000000046,
+        -5.813846999999999,
+        3.444124000000002,
+        0.2521380000000004,
+        0.7810310000000005,
+        0.15810299999999877
+      ],
+      "other_replay": [
+        -14.440871000000016,
+        1.4453170000000455,
+        3.931703000000084,
+        -113.00786800000003,
+        6.108230999999989,
+        0.41483699999997725,
+        3.1496119999999905,
+        -1.4646299999999997
+      ],
+      "target_total": [
+        29.362456000000066,
+        37.545540000000074,
+        50.77147500000001,
+        -212.95833600000003,
+        36.71013199999993,
+        22.389560999999958,
+        59.52131500000007,
+        47.84012400000006
+      ]
+    },
+    "learned": {
+      "bank_load_and_compile": [
+        173.627862,
+        152.280642,
+        167.81041000000002,
+        151.242662,
+        106.951618,
+        105.199924,
+        104.745886,
+        122.83456600000001
+      ],
+      "suffix_validation": [
+        2.9415419999999983,
+        -1.6524129999999957,
+        0.6526039999999966,
+        9.076658999999992,
+        0.08239100000000121,
+        -0.18489999999999895,
+        0.8902029999999996,
+        0.02145500000000311
+      ],
+      "bank_lookup": [
+        3.0519349999999994,
+        2.6576710000000006,
+        2.679800000000001,
+        3.300617,
+        1.76023,
+        1.8591570000000006,
+        1.8713829999999998,
+        1.8329690000000003
+      ],
+      "solver": [
+        -296.46677100000005,
+        -309.605044,
+        -327.094088,
+        -235.89844599999998,
+        -236.20505199999997,
+        -212.422997,
+        -189.16355399999998,
+        -212.26579800000002
+      ],
+      "other_setup": [
+        0.7844639999999998,
+        0.6151449999999983,
+        -0.12630599999999959,
+        -0.17073699999999903,
+        -0.28702899999999865,
+        0.2433500000000013,
+        0.5615959999999998,
+        0.30856399999999873
+      ],
+      "other_replay": [
+        10.733751999999981,
+        -0.15940499999999247,
+        2.6284309999999778,
+        45.63546299999996,
+        -0.7888709999999719,
+        0.23079799999999295,
+        2.049293999999975,
+        -0.3167050000000131
+      ],
+      "target_total": [
+        -105.32721599999991,
+        -155.86340399999995,
+        -153.44914900000003,
+        -26.813781999999946,
+        -128.486713,
+        -105.07466799999997,
+        -79.04519199999993,
+        -87.58494899999994
+      ]
+    }
+  },
+  "samples": [
+    {
+      "arm": "standard",
+      "repeat": 0,
+      "ms": {
+        "bank_load_and_compile": 0.651915,
+        "suffix_validation": 85.946903,
+        "bank_lookup": 6.437131,
+        "solver": 660.976384,
+        "other_setup": 20.622094,
+        "other_replay": 559.795601,
+        "target_total": 1334.430028
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 0,
+      "ms": {
+        "bank_load_and_compile": 61.40538,
+        "suffix_validation": 85.220437,
+        "bank_lookup": 7.44515,
+        "solver": 550.661267,
+        "other_setup": 21.356636,
+        "other_replay": 541.463812,
+        "target_total": 1267.552682
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 0,
+      "ms": {
+        "bank_load_and_compile": 172.915364,
+        "suffix_validation": 86.240104,
+        "bank_lookup": 7.70815,
+        "solver": 530.909856,
+        "other_setup": 20.66428,
+        "other_replay": 545.35473,
+        "target_total": 1363.792484
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 0,
+      "ms": {
+        "bank_load_and_compile": 174.279777,
+        "suffix_validation": 88.888445,
+        "bank_lookup": 9.489066,
+        "solver": 364.509613,
+        "other_setup": 21.406558,
+        "other_replay": 570.529353,
+        "target_total": 1229.102812
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 1,
+      "ms": {
+        "bank_load_and_compile": 67.157756,
+        "suffix_validation": 64.572626,
+        "bank_lookup": 5.864103,
+        "solver": 412.386105,
+        "other_setup": 37.441177,
+        "other_replay": 413.634879,
+        "target_total": 1001.056646
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 1,
+      "ms": {
+        "bank_load_and_compile": 168.661921,
+        "suffix_validation": 87.091386,
+        "bank_lookup": 7.710716,
+        "solver": 555.113431,
+        "other_setup": 17.252216,
+        "other_replay": 549.607609,
+        "target_total": 1385.437279
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 1,
+      "ms": {
+        "bank_load_and_compile": 152.856102,
+        "suffix_validation": 86.527344,
+        "bank_lookup": 8.868073,
+        "solver": 374.862758,
+        "other_setup": 20.911171,
+        "other_replay": 548.002887,
+        "target_total": 1192.028335
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 1,
+      "ms": {
+        "bank_load_and_compile": 0.57546,
+        "suffix_validation": 88.179757,
+        "bank_lookup": 6.210402,
+        "solver": 684.467802,
+        "other_setup": 20.296026,
+        "other_replay": 548.162292,
+        "target_total": 1347.891739
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 2,
+      "ms": {
+        "bank_load_and_compile": 189.354762,
+        "suffix_validation": 87.590766,
+        "bank_lookup": 7.802898,
+        "solver": 538.69584,
+        "other_setup": 21.078471,
+        "other_replay": 550.90668,
+        "target_total": 1395.429417
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 2,
+      "ms": {
+        "bank_load_and_compile": 168.384891,
+        "suffix_validation": 87.204572,
+        "bank_lookup": 8.85302,
+        "solver": 356.419959,
+        "other_setup": 20.742943,
+        "other_replay": 549.603408,
+        "target_total": 1191.208793
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 2,
+      "ms": {
+        "bank_load_and_compile": 0.574481,
+        "suffix_validation": 86.551968,
+        "bank_lookup": 6.17322,
+        "solver": 683.514047,
+        "other_setup": 20.869249,
+        "other_replay": 546.974977,
+        "target_total": 1344.657942
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 2,
+      "ms": {
+        "bank_load_and_compile": 42.188014,
+        "suffix_validation": 68.940725,
+        "bank_lookup": 6.377168,
+        "solver": 453.392489,
+        "other_setup": 14.756117,
+        "other_replay": 432.477163,
+        "target_total": 1018.131676
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 3,
+      "ms": {
+        "bank_load_and_compile": 151.813386,
+        "suffix_validation": 85.457167,
+        "bank_lookup": 8.719476,
+        "solver": 353.913113,
+        "other_setup": 20.398325,
+        "other_replay": 542.429268,
+        "target_total": 1162.730735
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 3,
+      "ms": {
+        "bank_load_and_compile": 0.570724,
+        "suffix_validation": 76.380508,
+        "bank_lookup": 5.418859,
+        "solver": 589.811559,
+        "other_setup": 20.569062,
+        "other_replay": 496.793805,
+        "target_total": 1189.544517
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 3,
+      "ms": {
+        "bank_load_and_compile": 41.948495,
+        "suffix_validation": 59.783634,
+        "bank_lookup": 5.289377,
+        "solver": 378.283653,
+        "other_setup": 14.705198,
+        "other_replay": 391.304133,
+        "target_total": 891.31449
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 3,
+      "ms": {
+        "bank_load_and_compile": 120.109483,
+        "suffix_validation": 61.073308,
+        "bank_lookup": 5.458781,
+        "solver": 391.403457,
+        "other_setup": 14.755215,
+        "other_replay": 383.785937,
+        "target_total": 976.586181
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 4,
+      "ms": {
+        "bank_load_and_compile": 107.343682,
+        "suffix_validation": 59.797111,
+        "bank_lookup": 6.050642,
+        "solver": 249.790095,
+        "other_setup": 14.615301,
+        "other_replay": 375.552249,
+        "target_total": 813.14908
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 4,
+      "ms": {
+        "bank_load_and_compile": 138.757571,
+        "suffix_validation": 60.12597,
+        "bank_lookup": 5.291135,
+        "solver": 373.375444,
+        "other_setup": 18.346454,
+        "other_replay": 382.449351,
+        "target_total": 978.345925
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 4,
+      "ms": {
+        "bank_load_and_compile": 42.035385,
+        "suffix_validation": 60.566627,
+        "bank_lookup": 5.304036,
+        "solver": 382.386732,
+        "other_setup": 14.630051,
+        "other_replay": 394.467982,
+        "target_total": 899.390813
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 4,
+      "ms": {
+        "bank_load_and_compile": 0.392064,
+        "suffix_validation": 59.71472,
+        "bank_lookup": 4.290412,
+        "solver": 485.995147,
+        "other_setup": 14.90233,
+        "other_replay": 376.34112,
+        "target_total": 941.635793
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 5,
+      "ms": {
+        "bank_load_and_compile": 128.133767,
+        "suffix_validation": 60.518412,
+        "bank_lookup": 5.316904,
+        "solver": 370.120381,
+        "other_setup": 14.769684,
+        "other_replay": 377.997187,
+        "target_total": 956.856335
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 5,
+      "ms": {
+        "bank_load_and_compile": 41.949465,
+        "suffix_validation": 60.314862,
+        "bank_lookup": 5.295686,
+        "solver": 378.903748,
+        "other_setup": 14.825534,
+        "other_replay": 379.868841,
+        "target_total": 881.158136
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 5,
+      "ms": {
+        "bank_load_and_compile": 0.401594,
+        "suffix_validation": 60.131868,
+        "bank_lookup": 4.280383,
+        "solver": 477.553033,
+        "other_setup": 14.517546,
+        "other_replay": 377.58235,
+        "target_total": 934.466774
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 5,
+      "ms": {
+        "bank_load_and_compile": 105.601518,
+        "suffix_validation": 59.946968,
+        "bank_lookup": 6.13954,
+        "solver": 265.130036,
+        "other_setup": 14.760896,
+        "other_replay": 377.813148,
+        "target_total": 829.392106
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 6,
+      "ms": {
+        "bank_load_and_compile": 42.110252,
+        "suffix_validation": 59.528413,
+        "bank_lookup": 5.223725,
+        "solver": 374.813916,
+        "other_setup": 14.634118,
+        "other_replay": 374.891593,
+        "target_total": 871.202017
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 6,
+      "ms": {
+        "bank_load_and_compile": 0.505877,
+        "suffix_validation": 59.542807,
+        "bank_lookup": 4.268809,
+        "solver": 456.60924,
+        "other_setup": 14.350234,
+        "other_replay": 376.115204,
+        "target_total": 911.392171
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 6,
+      "ms": {
+        "bank_load_and_compile": 105.251763,
+        "suffix_validation": 60.43301,
+        "bank_lookup": 6.140192,
+        "solver": 267.445686,
+        "other_setup": 14.91183,
+        "other_replay": 378.164498,
+        "target_total": 832.346979
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 6,
+      "ms": {
+        "bank_load_and_compile": 119.685655,
+        "suffix_validation": 60.338769,
+        "bank_lookup": 5.35945,
+        "solver": 391.133531,
+        "other_setup": 15.131265,
+        "other_replay": 379.264816,
+        "target_total": 970.913486
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "standard",
+      "repeat": 7,
+      "ms": {
+        "bank_load_and_compile": 0.392051,
+        "suffix_validation": 60.00476,
+        "bank_lookup": 4.32879,
+        "solver": 459.509747,
+        "other_setup": 14.637002,
+        "other_replay": 377.899271,
+        "target_total": 916.771621
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 191
+      },
+      "routes": {
+        "backend": 191,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "learned",
+      "repeat": 7,
+      "ms": {
+        "bank_load_and_compile": 123.226617,
+        "suffix_validation": 60.026215,
+        "bank_lookup": 6.161759,
+        "solver": 247.243949,
+        "other_setup": 14.945566,
+        "other_replay": 377.582566,
+        "target_total": 829.186672
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 134,
+        "bank_hit": 57
+      },
+      "routes": {
+        "backend": 134,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 57,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 7,
+      "ms": {
+        "bank_load_and_compile": 137.192313,
+        "suffix_validation": 59.808095,
+        "bank_lookup": 5.400993,
+        "solver": 370.980598,
+        "other_setup": 14.795105,
+        "other_replay": 376.434641,
+        "target_total": 964.611745
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 166,
+        "bank_hit": 25
+      },
+      "routes": {
+        "backend": 166,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 25,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    },
+    {
+      "arm": "fixed",
+      "repeat": 7,
+      "ms": {
+        "bank_load_and_compile": 42.107571,
+        "suffix_validation": 60.042286,
+        "bank_lookup": 5.299609,
+        "solver": 395.294809,
+        "other_setup": 15.029591,
+        "other_replay": 377.404462,
+        "target_total": 895.178328
+      },
+      "calls": {
+        "bank_load_and_compile": 1,
+        "suffix_validation": 1258,
+        "bank_lookup": 193,
+        "solver": 168,
+        "bank_hit": 23
+      },
+      "routes": {
+        "backend": 168,
+        "reuse_valid_suffix": 492,
+        "independent_action_bound": 79,
+        "certified_core": 23,
+        "exact_cache": 2
+      },
+      "trace_sha256": "54abca5161c9f02c71a1fba974cafe2827b8ee82101a08ff3a3b5e1a0a4a0714"
+    }
+  ]
+}

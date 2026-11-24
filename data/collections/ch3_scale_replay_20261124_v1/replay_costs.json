@@ -1,0 +1,1573 @@
+{
+  "units": "milliseconds for medians and contrasts, nanoseconds for samples",
+  "python": "3.10.20",
+  "platform": "Linux-5.15.0-94-generic-x86_64-with-glibc2.35",
+  "episode_sha256": "044ea22dd0e3fc9bb4a5b787bf1a3496c99d4d626b5c53dd6cb08ffc157ad249",
+  "request_count_per_batch": 240,
+  "medians_ms": {
+    "standard": {
+      "setup": {
+        "bank_setup": 0.3946915,
+        "common_setup": 14.618573
+      },
+      "first": {
+        "replay_total": 917.171956,
+        "trace_hashing_after_replay": 197.041185,
+        "clause_construction": 5.2846905,
+        "snapshot_hash": 299.095894,
+        "suffix_validation": 59.7613385,
+        "action_lower_bound": 10.956536,
+        "bank_lookup": 4.404713,
+        "solver": 452.6486435,
+        "accept": 16.11078,
+        "issue": 1.914579,
+        "consume": 8.6588,
+        "observe": 9.8063935,
+        "assess": 17.7129255,
+        "command_serialization": 2.0263285,
+        "loop_residual": 20.33197
+      },
+      "preloaded": {
+        "replay_total": 916.7622595,
+        "trace_hashing_after_replay": 198.4292525,
+        "clause_construction": 5.2425615,
+        "snapshot_hash": 298.0620885,
+        "suffix_validation": 59.611444,
+        "action_lower_bound": 10.8677415,
+        "bank_lookup": 4.337224,
+        "solver": 457.193926,
+        "accept": 15.93126,
+        "issue": 1.926743,
+        "consume": 8.768312,
+        "observe": 9.5647715,
+        "assess": 17.429019,
+        "command_serialization": 2.0505735,
+        "loop_residual": 22.0126235
+      }
+    },
+    "fixed": {
+      "setup": {
+        "bank_setup": 42.048393,
+        "common_setup": 14.6405075
+      },
+      "first": {
+        "replay_total": 836.213005,
+        "trace_hashing_after_replay": 196.8566745,
+        "clause_construction": 5.243873,
+        "snapshot_hash": 294.932882,
+        "suffix_validation": 59.3510915,
+        "action_lower_bound": 10.953867,
+        "bank_lookup": 5.392568,
+        "solver": 384.080144,
+        "accept": 16.335307,
+        "issue": 1.906906,
+        "consume": 8.6427335,
+        "observe": 9.7968265,
+        "assess": 17.6927005,
+        "command_serialization": 1.9874095,
+        "loop_residual": 20.272671
+      },
+      "preloaded": {
+        "replay_total": 828.2656405,
+        "trace_hashing_after_replay": 197.023605,
+        "clause_construction": 5.240592,
+        "snapshot_hash": 297.040096,
+        "suffix_validation": 59.3631385,
+        "action_lower_bound": 10.8339865,
+        "bank_lookup": 5.3166405,
+        "solver": 370.062129,
+        "accept": 16.05768,
+        "issue": 1.905679,
+        "consume": 8.675589,
+        "observe": 9.534741,
+        "assess": 17.412906,
+        "command_serialization": 1.972158,
+        "loop_residual": 21.9001905
+      }
+    },
+    "source_partial": {
+      "setup": {
+        "bank_setup": 119.218277,
+        "common_setup": 14.7372165
+      },
+      "first": {
+        "replay_total": 824.226642,
+        "trace_hashing_after_replay": 199.907863,
+        "clause_construction": 5.20707,
+        "snapshot_hash": 298.8612505,
+        "suffix_validation": 59.582647,
+        "action_lower_bound": 10.97385,
+        "bank_lookup": 5.4851125,
+        "solver": 364.529966,
+        "accept": 16.417833,
+        "issue": 1.941118,
+        "consume": 8.709636,
+        "observe": 9.8675705,
+        "assess": 17.8971345,
+        "command_serialization": 1.990291,
+        "loop_residual": 20.356822
+      },
+      "preloaded": {
+        "replay_total": 835.764888,
+        "trace_hashing_after_replay": 201.6665955,
+        "clause_construction": 5.2536475,
+        "snapshot_hash": 296.966813,
+        "suffix_validation": 59.4433825,
+        "action_lower_bound": 10.791247,
+        "bank_lookup": 5.4221055,
+        "solver": 380.969847,
+        "accept": 16.1981905,
+        "issue": 1.9238025,
+        "consume": 8.7289335,
+        "observe": 9.5746095,
+        "assess": 17.549177,
+        "command_serialization": 1.975544,
+        "loop_residual": 21.9730625
+      }
+    },
+    "learned": {
+      "setup": {
+        "bank_setup": 109.164209,
+        "common_setup": 14.6594495
+      },
+      "first": {
+        "replay_total": 711.0361495,
+        "trace_hashing_after_replay": 197.104429,
+        "clause_construction": 5.2550995,
+        "snapshot_hash": 300.4492165,
+        "suffix_validation": 59.508637,
+        "action_lower_bound": 10.843614,
+        "bank_lookup": 6.2298715,
+        "solver": 245.896591,
+        "accept": 16.690174,
+        "issue": 1.918968,
+        "consume": 8.713483,
+        "observe": 9.8562745,
+        "assess": 17.870704,
+        "command_serialization": 1.973547,
+        "loop_residual": 20.2871955
+      },
+      "preloaded": {
+        "replay_total": 711.798065,
+        "trace_hashing_after_replay": 197.134141,
+        "clause_construction": 5.230773,
+        "snapshot_hash": 299.345933,
+        "suffix_validation": 59.346078,
+        "action_lower_bound": 10.749533,
+        "bank_lookup": 6.2360975,
+        "solver": 246.272067,
+        "accept": 16.4331225,
+        "issue": 1.90951,
+        "consume": 8.704324,
+        "observe": 9.5860055,
+        "assess": 17.551419,
+        "command_serialization": 1.997948,
+        "loop_residual": 21.599797
+      }
+    }
+  },
+  "learned_vs_fixed_pairs": [
+    {
+      "extra_setup_ms": 107.916562,
+      "first_replay_saving_ms": -210.155975,
+      "preloaded_replay_saving_ms": -184.187828,
+      "cold_total_saving_ms": -318.072537,
+      "on_measured_path_two_batch_saving_ms": -502.260365
+    },
+    {
+      "extra_setup_ms": 25.94322,
+      "first_replay_saving_ms": 498.724263,
+      "preloaded_replay_saving_ms": 511.293773,
+      "cold_total_saving_ms": 472.781043,
+      "on_measured_path_two_batch_saving_ms": 984.074816
+    },
+    {
+      "extra_setup_ms": 61.723768,
+      "first_replay_saving_ms": 127.652199,
+      "preloaded_replay_saving_ms": 113.816382,
+      "cold_total_saving_ms": 65.928431,
+      "on_measured_path_two_batch_saving_ms": 179.744813
+    },
+    {
+      "extra_setup_ms": 74.098458,
+      "first_replay_saving_ms": 149.175066,
+      "preloaded_replay_saving_ms": 112.445621,
+      "cold_total_saving_ms": 75.076608,
+      "on_measured_path_two_batch_saving_ms": 187.522229
+    },
+    {
+      "extra_setup_ms": 62.306647,
+      "first_replay_saving_ms": 148.758815,
+      "preloaded_replay_saving_ms": 104.661731,
+      "cold_total_saving_ms": 86.452168,
+      "on_measured_path_two_batch_saving_ms": 191.113899
+    },
+    {
+      "extra_setup_ms": 77.357299,
+      "first_replay_saving_ms": 135.36852,
+      "preloaded_replay_saving_ms": 102.055481,
+      "cold_total_saving_ms": 58.011221,
+      "on_measured_path_two_batch_saving_ms": 160.066702
+    },
+    {
+      "extra_setup_ms": 63.497718,
+      "first_replay_saving_ms": 104.324956,
+      "preloaded_replay_saving_ms": 151.34249,
+      "cold_total_saving_ms": 40.827238,
+      "on_measured_path_two_batch_saving_ms": 192.169728
+    },
+    {
+      "extra_setup_ms": 69.265856,
+      "first_replay_saving_ms": 100.228725,
+      "preloaded_replay_saving_ms": 141.355992,
+      "cold_total_saving_ms": 30.962869,
+      "on_measured_path_two_batch_saving_ms": 172.318861
+    }
+  ],
+  "samples": [
+    {
+      "arm": "standard",
+      "repeat": 0,
+      "setup": {
+        "bank_setup": 611161,
+        "common_setup": 21043699
+      },
+      "first": {
+        "replay_total": 1184818371,
+        "trace_hashing_after_replay": 201983028,
+        "clause_construction": 6829271,
+        "snapshot_hash": 385875805,
+        "suffix_validation": 77005984,
+        "action_lower_bound": 14312519,
+        "bank_lookup": 5642188,
+        "solver": 595861896,
+        "accept": 20723114,
+        "issue": 2463806,
+        "consume": 11243855,
+        "observe": 12793899,
+        "assess": 23256850,
+        "command_serialization": 2611033,
+        "loop_residual": 26198151
+      },
+      "preloaded": {
+        "replay_total": 924208323,
+        "trace_hashing_after_replay": 196566798,
+        "clause_construction": 5409334,
+        "snapshot_hash": 303207384,
+        "suffix_validation": 60242791,
+        "action_lower_bound": 11236540,
+        "bank_lookup": 4393675,
+        "solver": 461182777,
+        "accept": 16317774,
+        "issue": 1970744,
+        "consume": 8834964,
+        "observe": 9722998,
+        "assess": 17720204,
+        "command_serialization": 2049493,
+        "loop_residual": 21919645
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 0,
+      "setup": {
+        "bank_setup": 51537839,
+        "common_setup": 14584876
+      },
+      "first": {
+        "replay_total": 817236956,
+        "trace_hashing_after_replay": 196421446,
+        "clause_construction": 5152942,
+        "snapshot_hash": 293947660,
+        "suffix_validation": 58506416,
+        "action_lower_bound": 11004915,
+        "bank_lookup": 5339339,
+        "solver": 367550800,
+        "accept": 16219058,
+        "issue": 1848607,
+        "consume": 8491289,
+        "observe": 9700437,
+        "assess": 17534803,
+        "command_serialization": 1963020,
+        "loop_residual": 19977670
+      },
+      "preloaded": {
+        "replay_total": 831226891,
+        "trace_hashing_after_replay": 195867373,
+        "clause_construction": 5150872,
+        "snapshot_hash": 308388571,
+        "suffix_validation": 58411053,
+        "action_lower_bound": 10686816,
+        "bank_lookup": 5329577,
+        "solver": 367425585,
+        "accept": 15998949,
+        "issue": 1833933,
+        "consume": 8457011,
+        "observe": 9393266,
+        "assess": 17199930,
+        "command_serialization": 1939677,
+        "loop_residual": 21011651
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 0,
+      "setup": {
+        "bank_setup": 119552634,
+        "common_setup": 14632598
+      },
+      "first": {
+        "replay_total": 828184830,
+        "trace_hashing_after_replay": 206643441,
+        "clause_construction": 5168153,
+        "snapshot_hash": 301138142,
+        "suffix_validation": 60074329,
+        "action_lower_bound": 11019785,
+        "bank_lookup": 5509811,
+        "solver": 367999698,
+        "accept": 16528398,
+        "issue": 1936369,
+        "consume": 8665911,
+        "observe": 9865227,
+        "assess": 17875051,
+        "command_serialization": 2052260,
+        "loop_residual": 20351696
+      },
+      "preloaded": {
+        "replay_total": 1148388156,
+        "trace_hashing_after_replay": 287872251,
+        "clause_construction": 7078569,
+        "snapshot_hash": 414760940,
+        "suffix_validation": 82238761,
+        "action_lower_bound": 14792670,
+        "bank_lookup": 7302275,
+        "solver": 515775963,
+        "accept": 22036092,
+        "issue": 2628087,
+        "consume": 12001785,
+        "observe": 13312343,
+        "assess": 24284438,
+        "command_serialization": 2777170,
+        "loop_residual": 29399063
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 0,
+      "setup": {
+        "bank_setup": 153028779,
+        "common_setup": 21010498
+      },
+      "first": {
+        "replay_total": 1027392931,
+        "trace_hashing_after_replay": 287754809,
+        "clause_construction": 7342047,
+        "snapshot_hash": 430676915,
+        "suffix_validation": 85945051,
+        "action_lower_bound": 15616787,
+        "bank_lookup": 8980545,
+        "solver": 368074366,
+        "accept": 23924512,
+        "issue": 2695944,
+        "consume": 12362286,
+        "observe": 14211223,
+        "assess": 25810772,
+        "command_serialization": 2848479,
+        "loop_residual": 28904004
+      },
+      "preloaded": {
+        "replay_total": 1015414719,
+        "trace_hashing_after_replay": 288056219,
+        "clause_construction": 7433835,
+        "snapshot_hash": 432095201,
+        "suffix_validation": 86840572,
+        "action_lower_bound": 15378137,
+        "bank_lookup": 8894189,
+        "solver": 352728193,
+        "accept": 23596545,
+        "issue": 2747657,
+        "consume": 12489001,
+        "observe": 13779123,
+        "assess": 25456397,
+        "command_serialization": 2879754,
+        "loop_residual": 31096115
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 1,
+      "setup": {
+        "bank_setup": 60514012,
+        "common_setup": 35615572
+      },
+      "first": {
+        "replay_total": 1211974683,
+        "trace_hashing_after_replay": 288250291,
+        "clause_construction": 7963875,
+        "snapshot_hash": 439329337,
+        "suffix_validation": 87724218,
+        "action_lower_bound": 16173696,
+        "bank_lookup": 8288755,
+        "solver": 539122627,
+        "accept": 24123318,
+        "issue": 2743083,
+        "consume": 12537610,
+        "observe": 14181018,
+        "assess": 26212158,
+        "command_serialization": 3223867,
+        "loop_residual": 30351121
+      },
+      "preloaded": {
+        "replay_total": 1208284996,
+        "trace_hashing_after_replay": 331136671,
+        "clause_construction": 7673767,
+        "snapshot_hash": 436023991,
+        "suffix_validation": 85710604,
+        "action_lower_bound": 15619910,
+        "bank_lookup": 7734320,
+        "solver": 539535488,
+        "accept": 23378516,
+        "issue": 2691204,
+        "consume": 13033114,
+        "observe": 13758063,
+        "assess": 25180009,
+        "command_serialization": 2861541,
+        "loop_residual": 35084469
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 1,
+      "setup": {
+        "bank_setup": 171530269,
+        "common_setup": 21903001
+      },
+      "first": {
+        "replay_total": 1081224322,
+        "trace_hashing_after_replay": 200327598,
+        "clause_construction": 6845421,
+        "snapshot_hash": 394753217,
+        "suffix_validation": 78736292,
+        "action_lower_bound": 14060962,
+        "bank_lookup": 7246262,
+        "solver": 477766231,
+        "accept": 21043614,
+        "issue": 2536340,
+        "consume": 11461991,
+        "observe": 13171326,
+        "assess": 23769542,
+        "command_serialization": 2689743,
+        "loop_residual": 27143381
+      },
+      "preloaded": {
+        "replay_total": 842231242,
+        "trace_hashing_after_replay": 196729151,
+        "clause_construction": 5479875,
+        "snapshot_hash": 296306331,
+        "suffix_validation": 59255401,
+        "action_lower_bound": 10810510,
+        "bank_lookup": 5484639,
+        "solver": 386768443,
+        "accept": 16277378,
+        "issue": 1887248,
+        "consume": 8685275,
+        "observe": 9626625,
+        "assess": 17569614,
+        "command_serialization": 2093909,
+        "loop_residual": 21985994
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 1,
+      "setup": {
+        "bank_setup": 107179467,
+        "common_setup": 14893337
+      },
+      "first": {
+        "replay_total": 713250420,
+        "trace_hashing_after_replay": 195994471,
+        "clause_construction": 5358044,
+        "snapshot_hash": 294975141,
+        "suffix_validation": 59319825,
+        "action_lower_bound": 10744863,
+        "bank_lookup": 6284831,
+        "solver": 259691184,
+        "accept": 16618573,
+        "issue": 1881903,
+        "consume": 8514652,
+        "observe": 9793489,
+        "assess": 17820923,
+        "command_serialization": 1992354,
+        "loop_residual": 20254638
+      },
+      "preloaded": {
+        "replay_total": 696991223,
+        "trace_hashing_after_replay": 198914356,
+        "clause_construction": 5261393,
+        "snapshot_hash": 295108078,
+        "suffix_validation": 59053514,
+        "action_lower_bound": 10744497,
+        "bank_lookup": 6356064,
+        "solver": 242763372,
+        "accept": 16484111,
+        "issue": 1863547,
+        "consume": 8567954,
+        "observe": 9538504,
+        "assess": 17466616,
+        "command_serialization": 1978368,
+        "loop_residual": 21805205
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 1,
+      "setup": {
+        "bank_setup": 383872,
+        "common_setup": 14801814
+      },
+      "first": {
+        "replay_total": 921449540,
+        "trace_hashing_after_replay": 195668896,
+        "clause_construction": 5346290,
+        "snapshot_hash": 297113617,
+        "suffix_validation": 59109871,
+        "action_lower_bound": 10987409,
+        "bank_lookup": 4407743,
+        "solver": 467989861,
+        "accept": 16166258,
+        "issue": 1891936,
+        "consume": 8645467,
+        "observe": 9778447,
+        "assess": 17619452,
+        "command_serialization": 2054652,
+        "loop_residual": 20338537
+      },
+      "preloaded": {
+        "replay_total": 904582128,
+        "trace_hashing_after_replay": 196641177,
+        "clause_construction": 5272248,
+        "snapshot_hash": 297391842,
+        "suffix_validation": 58959763,
+        "action_lower_bound": 10838298,
+        "bank_lookup": 4358359,
+        "solver": 450341845,
+        "accept": 15944312,
+        "issue": 1899167,
+        "consume": 8676850,
+        "observe": 9580028,
+        "assess": 17392660,
+        "command_serialization": 2089853,
+        "loop_residual": 21836903
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 2,
+      "setup": {
+        "bank_setup": 128514517,
+        "common_setup": 14453271
+      },
+      "first": {
+        "replay_total": 816453318,
+        "trace_hashing_after_replay": 197355143,
+        "clause_construction": 5209566,
+        "snapshot_hash": 295396392,
+        "suffix_validation": 59052297,
+        "action_lower_bound": 10863355,
+        "bank_lookup": 5431795,
+        "solver": 363849781,
+        "accept": 16376383,
+        "issue": 1894582,
+        "consume": 8542506,
+        "observe": 9869914,
+        "assess": 17787157,
+        "command_serialization": 1950373,
+        "loop_residual": 20229217
+      },
+      "preloaded": {
+        "replay_total": 834122450,
+        "trace_hashing_after_replay": 194837388,
+        "clause_construction": 5270643,
+        "snapshot_hash": 296499025,
+        "suffix_validation": 59209767,
+        "action_lower_bound": 10720470,
+        "bank_lookup": 5392410,
+        "solver": 379882882,
+        "accept": 16143398,
+        "issue": 1899578,
+        "consume": 8646872,
+        "observe": 9610726,
+        "assess": 17538747,
+        "command_serialization": 1978512,
+        "loop_residual": 21329420
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 2,
+      "setup": {
+        "bank_setup": 104117937,
+        "common_setup": 14206976
+      },
+      "first": {
+        "replay_total": 703938562,
+        "trace_hashing_after_replay": 197274936,
+        "clause_construction": 5064425,
+        "snapshot_hash": 308326891,
+        "suffix_validation": 58372884,
+        "action_lower_bound": 10637632,
+        "bank_lookup": 6110755,
+        "solver": 240026233,
+        "accept": 16328328,
+        "issue": 1841578,
+        "consume": 8388270,
+        "observe": 9703934,
+        "assess": 17492518,
+        "command_serialization": 1932885,
+        "loop_residual": 19712229
+      },
+      "preloaded": {
+        "replay_total": 707318836,
+        "trace_hashing_after_replay": 195671713,
+        "clause_construction": 5200153,
+        "snapshot_hash": 300415910,
+        "suffix_validation": 59329217,
+        "action_lower_bound": 10708306,
+        "bank_lookup": 6178258,
+        "solver": 247913160,
+        "accept": 16438265,
+        "issue": 1884236,
+        "consume": 8632265,
+        "observe": 9629832,
+        "assess": 17607646,
+        "command_serialization": 1987199,
+        "loop_residual": 21394389
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 2,
+      "setup": {
+        "bank_setup": 399883,
+        "common_setup": 14548745
+      },
+      "first": {
+        "replay_total": 917062722,
+        "trace_hashing_after_replay": 195515258,
+        "clause_construction": 5244699,
+        "snapshot_hash": 311441784,
+        "suffix_validation": 59275483,
+        "action_lower_bound": 10809034,
+        "bank_lookup": 4348628,
+        "solver": 450375785,
+        "accept": 16058681,
+        "issue": 1856945,
+        "consume": 8426225,
+        "observe": 9708549,
+        "assess": 17498827,
+        "command_serialization": 1949616,
+        "loop_residual": 20068466
+      },
+      "preloaded": {
+        "replay_total": 901591372,
+        "trace_hashing_after_replay": 196399403,
+        "clause_construction": 5134348,
+        "snapshot_hash": 295690141,
+        "suffix_validation": 59149718,
+        "action_lower_bound": 10705202,
+        "bank_lookup": 4250976,
+        "solver": 450380747,
+        "accept": 15788100,
+        "issue": 1855443,
+        "consume": 8509444,
+        "observe": 9458353,
+        "assess": 17223391,
+        "command_serialization": 2009515,
+        "loop_residual": 21435994
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 2,
+      "setup": {
+        "bank_setup": 42057071,
+        "common_setup": 14544074
+      },
+      "first": {
+        "replay_total": 831590761,
+        "trace_hashing_after_replay": 197291903,
+        "clause_construction": 5217443,
+        "snapshot_hash": 294765600,
+        "suffix_validation": 59002596,
+        "action_lower_bound": 10856644,
+        "bank_lookup": 5291997,
+        "solver": 380730786,
+        "accept": 16136850,
+        "issue": 1855274,
+        "consume": 8552664,
+        "observe": 9686467,
+        "assess": 17544856,
+        "command_serialization": 1975022,
+        "loop_residual": 19974562
+      },
+      "preloaded": {
+        "replay_total": 821135218,
+        "trace_hashing_after_replay": 196829152,
+        "clause_construction": 5234524,
+        "snapshot_hash": 294460625,
+        "suffix_validation": 59133815,
+        "action_lower_bound": 10786463,
+        "bank_lookup": 5267791,
+        "solver": 369377169,
+        "accept": 15983448,
+        "issue": 1848881,
+        "consume": 8664362,
+        "observe": 9516609,
+        "assess": 17387077,
+        "command_serialization": 2016282,
+        "loop_residual": 21458172
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 3,
+      "setup": {
+        "bank_setup": 116381095,
+        "common_setup": 14378215
+      },
+      "first": {
+        "replay_total": 692841368,
+        "trace_hashing_after_replay": 195931010,
+        "clause_construction": 5146765,
+        "snapshot_hash": 294177131,
+        "suffix_validation": 59142290,
+        "action_lower_bound": 10788724,
+        "bank_lookup": 6163798,
+        "solver": 241164208,
+        "accept": 16480717,
+        "issue": 1862776,
+        "consume": 8623933,
+        "observe": 9722795,
+        "assess": 17679303,
+        "command_serialization": 1970308,
+        "loop_residual": 19918620
+      },
+      "preloaded": {
+        "replay_total": 712858769,
+        "trace_hashing_after_replay": 195869657,
+        "clause_construction": 5182445,
+        "snapshot_hash": 311841259,
+        "suffix_validation": 59228326,
+        "action_lower_bound": 10741175,
+        "bank_lookup": 6158436,
+        "solver": 242374134,
+        "accept": 16392393,
+        "issue": 1877612,
+        "consume": 8707426,
+        "observe": 9541950,
+        "assess": 17500391,
+        "command_serialization": 2040736,
+        "loop_residual": 21272486
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 3,
+      "setup": {
+        "bank_setup": 404743,
+        "common_setup": 14598248
+      },
+      "first": {
+        "replay_total": 907610785,
+        "trace_hashing_after_replay": 196368368,
+        "clause_construction": 5440738,
+        "snapshot_hash": 297515150,
+        "suffix_validation": 59859614,
+        "action_lower_bound": 10951598,
+        "bank_lookup": 4401683,
+        "solver": 452868283,
+        "accept": 16074448,
+        "issue": 1875009,
+        "consume": 8645298,
+        "observe": 9842963,
+        "assess": 17777768,
+        "command_serialization": 2032830,
+        "loop_residual": 20325403
+      },
+      "preloaded": {
+        "replay_total": 925583590,
+        "trace_hashing_after_replay": 200003424,
+        "clause_construction": 5454515,
+        "snapshot_hash": 297617171,
+        "suffix_validation": 59681708,
+        "action_lower_bound": 10905093,
+        "bank_lookup": 4338689,
+        "solver": 469787082,
+        "accept": 15918208,
+        "issue": 1856022,
+        "consume": 8805311,
+        "observe": 9549515,
+        "assess": 17465378,
+        "command_serialization": 2040892,
+        "loop_residual": 22164006
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 3,
+      "setup": {
+        "bank_setup": 41853586,
+        "common_setup": 14807266
+      },
+      "first": {
+        "replay_total": 842016434,
+        "trace_hashing_after_replay": 198008278,
+        "clause_construction": 5363408,
+        "snapshot_hash": 296894076,
+        "suffix_validation": 59292895,
+        "action_lower_bound": 11012249,
+        "bank_lookup": 5516580,
+        "solver": 387429502,
+        "accept": 16431334,
+        "issue": 1848352,
+        "consume": 8510066,
+        "observe": 9810666,
+        "assess": 17652842,
+        "command_serialization": 2011876,
+        "loop_residual": 20242588
+      },
+      "preloaded": {
+        "replay_total": 825304390,
+        "trace_hashing_after_replay": 195790826,
+        "clause_construction": 5246660,
+        "snapshot_hash": 296561413,
+        "suffix_validation": 59255542,
+        "action_lower_bound": 10857385,
+        "bank_lookup": 5304968,
+        "solver": 370747089,
+        "accept": 16107014,
+        "issue": 1857845,
+        "consume": 8528979,
+        "observe": 9579733,
+        "assess": 17386473,
+        "command_serialization": 1985300,
+        "loop_residual": 21885989
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 3,
+      "setup": {
+        "bank_setup": 118671053,
+        "common_setup": 29126581
+      },
+      "first": {
+        "replay_total": 816006130,
+        "trace_hashing_after_replay": 200051339,
+        "clause_construction": 5267111,
+        "snapshot_hash": 295949436,
+        "suffix_validation": 59196653,
+        "action_lower_bound": 11058554,
+        "bank_lookup": 5546878,
+        "solver": 362133674,
+        "accept": 16352583,
+        "issue": 1863538,
+        "consume": 8580443,
+        "observe": 9776533,
+        "assess": 18057972,
+        "command_serialization": 1988466,
+        "loop_residual": 20234289
+      },
+      "preloaded": {
+        "replay_total": 823353350,
+        "trace_hashing_after_replay": 212885044,
+        "clause_construction": 5236652,
+        "snapshot_hash": 297152965,
+        "suffix_validation": 59314440,
+        "action_lower_bound": 10848740,
+        "bank_lookup": 5443152,
+        "solver": 367709791,
+        "accept": 16233840,
+        "issue": 1862246,
+        "consume": 8580095,
+        "observe": 9566897,
+        "assess": 17471825,
+        "command_serialization": 1972576,
+        "loop_residual": 21960131
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 4,
+      "setup": {
+        "bank_setup": 104642055,
+        "common_setup": 14152877
+      },
+      "first": {
+        "replay_total": 692076434,
+        "trace_hashing_after_replay": 195912677,
+        "clause_construction": 5277330,
+        "snapshot_hash": 292308513,
+        "suffix_validation": 59086670,
+        "action_lower_bound": 10751328,
+        "bank_lookup": 6206505,
+        "solver": 242338306,
+        "accept": 16428093,
+        "issue": 1859382,
+        "consume": 8503239,
+        "observe": 9785515,
+        "assess": 17714660,
+        "command_serialization": 1939580,
+        "loop_residual": 19877313
+      },
+      "preloaded": {
+        "replay_total": 716595085,
+        "trace_hashing_after_replay": 196875777,
+        "clause_construction": 5575775,
+        "snapshot_hash": 296583312,
+        "suffix_validation": 59389707,
+        "action_lower_bound": 10687497,
+        "bank_lookup": 6154026,
+        "solver": 261545434,
+        "accept": 16238388,
+        "issue": 1863940,
+        "consume": 8519332,
+        "observe": 9542179,
+        "assess": 17499470,
+        "command_serialization": 1935571,
+        "loop_residual": 21060454
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 4,
+      "setup": {
+        "bank_setup": 118883446,
+        "common_setup": 14160541
+      },
+      "first": {
+        "replay_total": 834990559,
+        "trace_hashing_after_replay": 199764387,
+        "clause_construction": 5145922,
+        "snapshot_hash": 315423535,
+        "suffix_validation": 58893512,
+        "action_lower_bound": 10801045,
+        "bank_lookup": 5410339,
+        "solver": 363555699,
+        "accept": 16201949,
+        "issue": 1860609,
+        "consume": 8424056,
+        "observe": 9713446,
+        "assess": 17652793,
+        "command_serialization": 1951410,
+        "loop_residual": 19956244
+      },
+      "preloaded": {
+        "replay_total": 817468961,
+        "trace_hashing_after_replay": 199312830,
+        "clause_construction": 5165417,
+        "snapshot_hash": 298123370,
+        "suffix_validation": 58930833,
+        "action_lower_bound": 10759955,
+        "bank_lookup": 5384047,
+        "solver": 362307303,
+        "accept": 15964414,
+        "issue": 1844550,
+        "consume": 8488070,
+        "observe": 9436514,
+        "assess": 17338494,
+        "command_serialization": 1951010,
+        "loop_residual": 21774984
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 4,
+      "setup": {
+        "bank_setup": 41961350,
+        "common_setup": 14526935
+      },
+      "first": {
+        "replay_total": 840835249,
+        "trace_hashing_after_replay": 196139059,
+        "clause_construction": 5193699,
+        "snapshot_hash": 296523960,
+        "suffix_validation": 59120934,
+        "action_lower_bound": 10890563,
+        "bank_lookup": 5313696,
+        "solver": 387719487,
+        "accept": 16251642,
+        "issue": 1886698,
+        "consume": 8476833,
+        "observe": 9749439,
+        "assess": 17655683,
+        "command_serialization": 1947395,
+        "loop_residual": 20105220
+      },
+      "preloaded": {
+        "replay_total": 821256816,
+        "trace_hashing_after_replay": 198660650,
+        "clause_construction": 5187415,
+        "snapshot_hash": 295551719,
+        "suffix_validation": 59020063,
+        "action_lower_bound": 10732969,
+        "bank_lookup": 5216585,
+        "solver": 368617862,
+        "accept": 15972908,
+        "issue": 1852618,
+        "consume": 8502852,
+        "observe": 9433409,
+        "assess": 17310084,
+        "command_serialization": 1943940,
+        "loop_residual": 21914392
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 4,
+      "setup": {
+        "bank_setup": 392687,
+        "common_setup": 27630005
+      },
+      "first": {
+        "replay_total": 898298803,
+        "trace_hashing_after_replay": 195689300,
+        "clause_construction": 5281926,
+        "snapshot_hash": 295413919,
+        "suffix_validation": 59139644,
+        "action_lower_bound": 10855560,
+        "bank_lookup": 4354592,
+        "solver": 447528931,
+        "accept": 16006094,
+        "issue": 1856024,
+        "consume": 8510774,
+        "observe": 9830955,
+        "assess": 17522346,
+        "command_serialization": 2019827,
+        "loop_residual": 19978211
+      },
+      "preloaded": {
+        "replay_total": 896832220,
+        "trace_hashing_after_replay": 213292066,
+        "clause_construction": 5223367,
+        "snapshot_hash": 294124409,
+        "suffix_validation": 58932848,
+        "action_lower_bound": 10688144,
+        "bank_lookup": 4270348,
+        "solver": 447596890,
+        "accept": 15670009,
+        "issue": 1834024,
+        "consume": 8527420,
+        "observe": 9458265,
+        "assess": 17120807,
+        "command_serialization": 1966789,
+        "loop_residual": 21418900
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 5,
+      "setup": {
+        "bank_setup": 118803451,
+        "common_setup": 14629995
+      },
+      "first": {
+        "replay_total": 817597763,
+        "trace_hashing_after_replay": 196895940,
+        "clause_construction": 5155044,
+        "snapshot_hash": 296055197,
+        "suffix_validation": 59665631,
+        "action_lower_bound": 10842884,
+        "bank_lookup": 5413228,
+        "solver": 363266662,
+        "accept": 16318039,
+        "issue": 1981755,
+        "consume": 8753361,
+        "observe": 9835716,
+        "assess": 17903254,
+        "command_serialization": 1992116,
+        "loop_residual": 20414876
+      },
+      "preloaded": {
+        "replay_total": 837407326,
+        "trace_hashing_after_replay": 197192920,
+        "clause_construction": 5142450,
+        "snapshot_hash": 296769101,
+        "suffix_validation": 59712975,
+        "action_lower_bound": 10770083,
+        "bank_lookup": 5361760,
+        "solver": 382056812,
+        "accept": 16115931,
+        "issue": 1975657,
+        "consume": 8772592,
+        "observe": 9492440,
+        "assess": 17559607,
+        "command_serialization": 1931184,
+        "loop_residual": 21746734
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 5,
+      "setup": {
+        "bank_setup": 42039715,
+        "common_setup": 14925444
+      },
+      "first": {
+        "replay_total": 844190399,
+        "trace_hashing_after_replay": 198438926,
+        "clause_construction": 5210821,
+        "snapshot_hash": 295100164,
+        "suffix_validation": 59662052,
+        "action_lower_bound": 10965091,
+        "bank_lookup": 5345549,
+        "solver": 390993722,
+        "accept": 16335792,
+        "issue": 2013942,
+        "consume": 8732803,
+        "observe": 9787181,
+        "assess": 17787100,
+        "command_serialization": 1953428,
+        "loop_residual": 20302754
+      },
+      "preloaded": {
+        "replay_total": 821451126,
+        "trace_hashing_after_replay": 196128684,
+        "clause_construction": 5183195,
+        "snapshot_hash": 294423337,
+        "suffix_validation": 59486036,
+        "action_lower_bound": 10810588,
+        "bank_lookup": 5239301,
+        "solver": 368856758,
+        "accept": 16008346,
+        "issue": 1960064,
+        "consume": 8686816,
+        "observe": 9493517,
+        "assess": 17438735,
+        "command_serialization": 1945418,
+        "loop_residual": 21919015
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 5,
+      "setup": {
+        "bank_setup": 381618,
+        "common_setup": 14638898
+      },
+      "first": {
+        "replay_total": 923457121,
+        "trace_hashing_after_replay": 199847392,
+        "clause_construction": 5238055,
+        "snapshot_hash": 314318911,
+        "suffix_validation": 59857782,
+        "action_lower_bound": 10905679,
+        "bank_lookup": 4342963,
+        "solver": 452425645,
+        "accept": 16066470,
+        "issue": 1937222,
+        "consume": 8672133,
+        "observe": 9779154,
+        "assess": 17654635,
+        "command_serialization": 2006684,
+        "loop_residual": 20251788
+      },
+      "preloaded": {
+        "replay_total": 909316196,
+        "trace_hashing_after_replay": 199313067,
+        "clause_construction": 5253646,
+        "snapshot_hash": 298595424,
+        "suffix_validation": 59711318,
+        "action_lower_bound": 10813430,
+        "bank_lookup": 4259166,
+        "solver": 453205075,
+        "accept": 15835297,
+        "issue": 1954319,
+        "consume": 8731313,
+        "observe": 9497244,
+        "assess": 17299460,
+        "command_serialization": 2054902,
+        "loop_residual": 22105602
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 5,
+      "setup": {
+        "bank_setup": 119705418,
+        "common_setup": 14617040
+      },
+      "first": {
+        "replay_total": 708821879,
+        "trace_hashing_after_replay": 196933922,
+        "clause_construction": 5203741,
+        "snapshot_hash": 302313492,
+        "suffix_validation": 60026597,
+        "action_lower_bound": 11007905,
+        "bank_lookup": 6213845,
+        "solver": 246130271,
+        "accept": 16990942,
+        "issue": 1989513,
+        "consume": 8803033,
+        "observe": 9919060,
+        "assess": 17944406,
+        "command_serialization": 1959321,
+        "loop_residual": 20319753
+      },
+      "preloaded": {
+        "replay_total": 719395645,
+        "trace_hashing_after_replay": 196770968,
+        "clause_construction": 5167605,
+        "snapshot_hash": 298275956,
+        "suffix_validation": 59362939,
+        "action_lower_bound": 10754569,
+        "bank_lookup": 6164411,
+        "solver": 262265887,
+        "accept": 16427980,
+        "issue": 1959152,
+        "consume": 8701222,
+        "observe": 9522610,
+        "assess": 17537788,
+        "command_serialization": 2008697,
+        "loop_residual": 21246829
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 6,
+      "setup": {
+        "bank_setup": 41593015,
+        "common_setup": 14696139
+      },
+      "first": {
+        "replay_total": 823161013,
+        "trace_hashing_after_replay": 196396358,
+        "clause_construction": 5270303,
+        "snapshot_hash": 293841513,
+        "suffix_validation": 59684763,
+        "action_lower_bound": 10923986,
+        "bank_lookup": 5569785,
+        "solver": 370856161,
+        "accept": 16343983,
+        "issue": 1927114,
+        "consume": 8769559,
+        "observe": 9819441,
+        "assess": 17756069,
+        "command_serialization": 1999797,
+        "loop_residual": 20398539
+      },
+      "preloaded": {
+        "replay_total": 849392774,
+        "trace_hashing_after_replay": 198712224,
+        "clause_construction": 5276736,
+        "snapshot_hash": 297518779,
+        "suffix_validation": 59900413,
+        "action_lower_bound": 10879376,
+        "bank_lookup": 5416873,
+        "solver": 392028532,
+        "accept": 16196903,
+        "issue": 2027397,
+        "consume": 8995218,
+        "observe": 9686242,
+        "assess": 17570772,
+        "command_serialization": 1977519,
+        "loop_residual": 21918014
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 6,
+      "setup": {
+        "bank_setup": 380055,
+        "common_setup": 14579497
+      },
+      "first": {
+        "replay_total": 905411650,
+        "trace_hashing_after_replay": 197714002,
+        "clause_construction": 5287455,
+        "snapshot_hash": 295762981,
+        "suffix_validation": 59664895,
+        "action_lower_bound": 10961474,
+        "bank_lookup": 4411395,
+        "solver": 452429004,
+        "accept": 16147112,
+        "issue": 1956943,
+        "consume": 8831152,
+        "observe": 9781832,
+        "assess": 17771216,
+        "command_serialization": 2051948,
+        "loop_residual": 20354243
+      },
+      "preloaded": {
+        "replay_total": 927928345,
+        "trace_hashing_after_replay": 198300360,
+        "clause_construction": 5231477,
+        "snapshot_hash": 298507006,
+        "suffix_validation": 59541180,
+        "action_lower_bound": 10897185,
+        "bank_lookup": 4335759,
+        "solver": 471044381,
+        "accept": 15997581,
+        "issue": 1979315,
+        "consume": 8938696,
+        "observe": 9591935,
+        "assess": 17631389,
+        "command_serialization": 2086660,
+        "loop_residual": 22145781
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 6,
+      "setup": {
+        "bank_setup": 104902699,
+        "common_setup": 14884173
+      },
+      "first": {
+        "replay_total": 718836057,
+        "trace_hashing_after_replay": 197877034,
+        "clause_construction": 5296523,
+        "snapshot_hash": 298584941,
+        "suffix_validation": 59697449,
+        "action_lower_bound": 10957720,
+        "bank_lookup": 6337912,
+        "solver": 260083456,
+        "accept": 16850458,
+        "issue": 1956033,
+        "consume": 8855647,
+        "observe": 9935232,
+        "assess": 17920485,
+        "command_serialization": 1976786,
+        "loop_residual": 20383415
+      },
+      "preloaded": {
+        "replay_total": 698050284,
+        "trace_hashing_after_replay": 199270020,
+        "clause_construction": 5170226,
+        "snapshot_hash": 296559899,
+        "suffix_validation": 59183089,
+        "action_lower_bound": 10858808,
+        "bank_lookup": 6293937,
+        "solver": 241557812,
+        "accept": 16405566,
+        "issue": 1934784,
+        "consume": 8793353,
+        "observe": 9639742,
+        "assess": 17565050,
+        "command_serialization": 1974386,
+        "loop_residual": 22113632
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 6,
+      "setup": {
+        "bank_setup": 138551599,
+        "common_setup": 14841835
+      },
+      "first": {
+        "replay_total": 820268454,
+        "trace_hashing_after_replay": 200746708,
+        "clause_construction": 5204574,
+        "snapshot_hash": 296584359,
+        "suffix_validation": 59499663,
+        "action_lower_bound": 10938223,
+        "bank_lookup": 5470173,
+        "solver": 365210151,
+        "accept": 16472867,
+        "issue": 1945867,
+        "consume": 8814639,
+        "observe": 9905339,
+        "assess": 17891015,
+        "command_serialization": 1969636,
+        "loop_residual": 20361948
+      },
+      "preloaded": {
+        "replay_total": 847500432,
+        "trace_hashing_after_replay": 204020361,
+        "clause_construction": 5411947,
+        "snapshot_hash": 297752029,
+        "suffix_validation": 59572325,
+        "action_lower_bound": 11145796,
+        "bank_lookup": 5582113,
+        "solver": 389601344,
+        "accept": 16411541,
+        "issue": 1948027,
+        "consume": 8795193,
+        "observe": 9564219,
+        "assess": 17568143,
+        "command_serialization": 1966647,
+        "loop_residual": 22181108
+      }
+    },
+    {
+      "arm": "standard",
+      "repeat": 7,
+      "setup": {
+        "bank_setup": 396696,
+        "common_setup": 14559611
+      },
+      "first": {
+        "replay_total": 917281190,
+        "trace_hashing_after_replay": 200506021,
+        "clause_construction": 5246024,
+        "snapshot_hash": 300676638,
+        "suffix_validation": 60892552,
+        "action_lower_bound": 11088585,
+        "bank_lookup": 4469111,
+        "solver": 457091603,
+        "accept": 16353513,
+        "issue": 2012849,
+        "consume": 8900642,
+        "observe": 9940495,
+        "assess": 17908455,
+        "command_serialization": 1972018,
+        "loop_residual": 20728705
+      },
+      "preloaded": {
+        "replay_total": 943860664,
+        "trace_hashing_after_replay": 198558145,
+        "clause_construction": 5175247,
+        "snapshot_hash": 303533346,
+        "suffix_validation": 61047021,
+        "action_lower_bound": 10964211,
+        "bank_lookup": 4374119,
+        "solver": 478951029,
+        "accept": 16060527,
+        "issue": 2050753,
+        "consume": 9058157,
+        "observe": 9819872,
+        "assess": 17942159,
+        "command_serialization": 2051654,
+        "loop_residual": 22832569
+      }
+    },
+    {
+      "arm": "learned",
+      "repeat": 7,
+      "setup": {
+        "bank_setup": 111148951,
+        "common_setup": 14701859
+      },
+      "first": {
+        "replay_total": 727009858,
+        "trace_hashing_after_replay": 201939126,
+        "clause_construction": 5232869,
+        "snapshot_hash": 318725164,
+        "suffix_validation": 62029508,
+        "action_lower_bound": 10898504,
+        "bank_lookup": 6245898,
+        "solver": 245662911,
+        "accept": 16761775,
+        "issue": 1973607,
+        "consume": 8918501,
+        "observe": 9956577,
+        "assess": 18118799,
+        "command_serialization": 2039329,
+        "loop_residual": 20446416
+      },
+      "preloaded": {
+        "replay_total": 710737361,
+        "trace_hashing_after_replay": 197392505,
+        "clause_construction": 5428793,
+        "snapshot_hash": 300470981,
+        "suffix_validation": 61642741,
+        "action_lower_bound": 11143019,
+        "bank_lookup": 6342639,
+        "solver": 244630974,
+        "accept": 16666055,
+        "issue": 2057967,
+        "consume": 9252375,
+        "observe": 9736330,
+        "assess": 18163720,
+        "command_serialization": 2065354,
+        "loop_residual": 23136413
+      }
+    },
+    {
+      "arm": "source_partial",
+      "repeat": 7,
+      "setup": {
+        "bank_setup": 118883920,
+        "common_setup": 38744992
+      },
+      "first": {
+        "replay_total": 830609671,
+        "trace_hashing_after_replay": 198407483,
+        "clause_construction": 5387153,
+        "snapshot_hash": 302999538,
+        "suffix_validation": 60536480,
+        "action_lower_bound": 11009477,
+        "bank_lookup": 5500052,
+        "solver": 366518113,
+        "accept": 16459283,
+        "issue": 2004271,
+        "consume": 9080977,
+        "observe": 10021153,
+        "assess": 18222514,
+        "command_serialization": 2038607,
+        "loop_residual": 20832053
+      },
+      "preloaded": {
+        "replay_total": 825799319,
+        "trace_hashing_after_replay": 216474844,
+        "clause_construction": 5203899,
+        "snapshot_hash": 296780661,
+        "suffix_validation": 59593632,
+        "action_lower_bound": 10771984,
+        "bank_lookup": 5401059,
+        "solver": 363880975,
+        "accept": 16162541,
+        "issue": 1967770,
+        "consume": 8847112,
+        "observe": 9582322,
+        "assess": 17510402,
+        "command_serialization": 2016627,
+        "loop_residual": 28080335
+      }
+    },
+    {
+      "arm": "fixed",
+      "repeat": 7,
+      "setup": {
+        "bank_setup": 42174788,
+        "common_setup": 14410166
+      },
+      "first": {
+        "replay_total": 827238583,
+        "trace_hashing_after_replay": 196090954,
+        "clause_construction": 5328431,
+        "snapshot_hash": 294678642,
+        "suffix_validation": 59409288,
+        "action_lower_bound": 10942643,
+        "bank_lookup": 5439587,
+        "solver": 374457618,
+        "accept": 16334822,
+        "issue": 1948371,
+        "consume": 8780496,
+        "observe": 9806472,
+        "assess": 17729718,
+        "command_serialization": 2036598,
+        "loop_residual": 20345897
+      },
+      "preloaded": {
+        "replay_total": 852093353,
+        "trace_hashing_after_replay": 197218058,
+        "clause_construction": 5268433,
+        "snapshot_hash": 319438993,
+        "suffix_validation": 59470735,
+        "action_lower_bound": 10873224,
+        "bank_lookup": 5328313,
+        "solver": 374066503,
+        "accept": 16181025,
+        "issue": 1953513,
+        "consume": 8702608,
+        "observe": 9552873,
+        "assess": 17459380,
+        "command_serialization": 1966797,
+        "loop_residual": 21830956
+      }
+    }
+  ]
+}

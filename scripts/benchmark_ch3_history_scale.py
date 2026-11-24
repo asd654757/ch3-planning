@@ -10,12 +10,14 @@ from statistics import median
 from time import perf_counter_ns
 from types import SimpleNamespace
 
+from ch3.revision import runtime
+from ch3.revision.candidate_runtime import bind_candidate_decision
 from ch3.revision.fragment_domain_adapter import _function, build_domain
 from scripts.compare_ch3_history_monitors import HORIZON, bind, counts, decision_functions, obligations, visit
 from scripts.profile_ch3_failure_lookup import PhaseClock
 
 
-ARMS = ("branch_candidate_validation", "same_history_replan", "routed")
+ARMS = ("branch_candidate_validation", "same_history_replan", "routed", "candidate_first")
 FAMILIES = ("inspection_order", "protected_object", "confirmed_backup", "repeat_inspection")
 OBJECTS = ("blue", "yellow", "red", "white")
 REPEATS = 8
@@ -77,7 +79,16 @@ def run_arm(m, validate, arm, cases):
 
     outer = _function(m.decide, {**m.decide.__globals__, "_search": search})
     view = SimpleNamespace(**{**vars(m), "decide": outer})
-    decide = decision_functions(view, validate, clock)[arm]
+    if arm == "candidate_first":
+        route = bind_candidate_decision(view, validate_suffix=clock.measure("suffix_validation", validate),
+                                        decide=clock.measure("solver", outer),
+                                        rebase_suffix=_function(runtime.rebase_suffix, {**vars(runtime), "Event": m.Event}))
+
+        def decide(snap, old):
+            result, _ = route(snap, snap.contract, old, HORIZON)
+            return result.status, result.plan
+    else:
+        decide = decision_functions(view, validate, clock)[arm]
     rows = []
     for case, family, snap, old, gold in cases:
         start = perf_counter_ns()
@@ -123,6 +134,7 @@ def main():
                     for key in ("decision_ms", "solver", "internal_search", "history_inputs", "suffix_validation")},
                     "family_ms": {f: median(s["family_ms"][f] for s in matched) for f in FAMILIES}}
             assert results["routed"]["correct"] == len(cases)
+            assert results["candidate_first"]["correct"] == len(cases)
             assert results["same_history_replan"]["correct"] == len(cases)
             entry = {"objects": n, "unknown": k, "histories": 2**k, "results": results, "timings": samples,
                      "decisions": observations, "cases": [{"case": case, "family": family,

@@ -4,7 +4,8 @@ from dataclasses import asdict, dataclass
 
 import numpy as np
 
-from ch3.revision.evidence_resolution import EvidenceFinding, EvidenceRevisionRuntime
+from ch3.revision.candidate_runtime import CandidateFirstEvidenceRuntime
+from ch3.revision.evidence_resolution import EvidenceFinding
 from ch3.revision.history import Clause, Contract, Event, Obligation, Snapshot, State
 
 
@@ -77,7 +78,7 @@ class LiberoSemanticSupervisor:
         if not initial_sample.settled_on_floor:
             raise ValueError("initial soup can is outside the registered pickup condition")
         self.emit = emit
-        self.runtime = EvidenceRevisionRuntime(Snapshot(Contract(0, ()), FLOOR, (), "reset-supported"))
+        self.runtime = CandidateFirstEvidenceRuntime(Snapshot(Contract(0, ()), FLOOR, (), "reset-supported"))
         task = Contract(1, tuple(Obligation(c) for c in (
             Clause(id="deliver", kind="at", object=OBJECT_SLOT, target=TARGET_SLOT),
             Clause(id="visit", kind="visit", object=OBJECT_SLOT, target=TARGET_SLOT),
